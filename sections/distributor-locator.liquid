@@ -1,0 +1,279 @@
+{{ 'section-distributor-locator.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-distributor-locator.js' | asset_url }}" defer="defer"></script>
+
+<div
+  id="theme-section-{{ section.id }}"
+  class="distributor-locator top-spacing-{{ section.settings.top_spacing }}"
+  data-section-id="{{ section.id }}"
+  data-json-url="{{ 'distribuidores.json' | asset_url }}"
+  data-radius="{{ section.settings.nearby_radius }}"
+>
+
+  <div class="distributor-locator__hero">
+    <div class="page-width">
+      {% if section.settings.subheading != blank %}
+        <p class="distributor-locator__hero-sub accent-color">{{ section.settings.subheading }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h1 class="distributor-locator__hero-title">{{ section.settings.heading }}</h1>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <p class="distributor-locator__hero-desc">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="distributor-locator__controls">
+    <div class="page-width">
+      <div class="distributor-locator__controls-inner">
+
+        {% if section.settings.show_search %}
+        <div class="distributor-locator__search-wrap">
+          <label for="dloc-search-{{ section.id }}" class="visually-hidden">Buscar distribuidor</label>
+          <div class="distributor-locator__search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <input
+            id="dloc-search-{{ section.id }}"
+            class="distributor-locator__search"
+            type="search"
+            placeholder="{{ section.settings.search_placeholder | default: 'Buscar por nombre o ciudad' }}"
+            autocomplete="off"
+          >
+          <button class="distributor-locator__search-clear" aria-label="Limpiar" hidden>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        {% endif %}
+
+        {% if section.settings.show_region_filter %}
+        <div class="distributor-locator__filter-wrap">
+          <label for="dloc-region-{{ section.id }}" class="visually-hidden">Filtrar por region</label>
+          <select id="dloc-region-{{ section.id }}" class="distributor-locator__region-select">
+            <option value="">{{ section.settings.region_all_label | default: 'Todas las regiones' }}</option>
+          </select>
+          <div class="distributor-locator__select-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+
+      <p class="distributor-locator__count" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </div>
+
+  <div class="distributor-locator__geo-banner" hidden>
+    <div class="page-width">
+      <div class="distributor-locator__geo-banner-inner">
+        <span class="distributor-locator__geo-banner-text"></span>
+        <div class="distributor-locator__geo-banner-actions">
+          <button class="distributor-locator__geo-show-all dloc-btn dloc-btn--outline" hidden>Ver todos los distribuidores</button>
+          <button class="distributor-locator__geo-locate dloc-btn dloc-btn--ghost" hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.94 11a8 8 0 1 0-7.94 8.94"/><path d="M22 12h-4"/><path d="M12 22v-4"/><path d="M12 2v4"/><path d="M2 12h4"/></svg>
+            Detectar mi ubicacion
+          </button>
+        </div>
+        <button class="distributor-locator__geo-banner-close" aria-label="Cerrar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {% if section.settings.show_map and section.settings.google_api_key != blank %}
+  <div class="distributor-locator__map-wrap">
+    <div
+      id="dloc-map-{{ section.id }}"
+      class="distributor-locator__map"
+      data-api-key="{{ section.settings.google_api_key }}"
+      data-zoom="{{ section.settings.map_zoom }}"
+      data-lat="{{ section.settings.map_center_lat | default: '-35.6751' }}"
+      data-lng="{{ section.settings.map_center_lng | default: '-71.5430' }}"
+    ></div>
+  </div>
+  {% endif %}
+
+  <div class="distributor-locator__body">
+    <div class="page-width">
+      <div
+        id="dloc-grid-{{ section.id }}"
+        class="distributor-locator__grid distributor-locator__grid--{{ section.settings.columns }}"
+        data-columns="{{ section.settings.columns }}"
+      >
+        <div class="distributor-locator__skeleton-grid">
+          {% for i in (1..6) %}
+          <div class="distributor-locator__skeleton-card"></div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div id="dloc-empty-{{ section.id }}" class="distributor-locator__empty" hidden>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p>{{ section.settings.empty_message | default: 'No se encontraron distribuidores para tu busqueda.' }}</p>
+        <button class="distributor-locator__empty-reset dloc-btn dloc-btn--outline">Mostrar todos</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Distribuidores",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtitulo",
+      "default": "Red de distribuidores"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titulo",
+      "default": "Donde comprar"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripcion",
+      "default": "Encuentra el punto de venta mas cercano a tu ubicacion."
+    },
+    {
+      "type": "header",
+      "content": "Busqueda y filtros"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Mostrar buscador",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder del buscador",
+      "default": "Buscar por nombre o ciudad"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_region_filter",
+      "label": "Mostrar filtro por region",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "region_all_label",
+      "label": "Etiqueta todas las regiones",
+      "default": "Todas las regiones"
+    },
+    {
+      "type": "range",
+      "id": "nearby_radius",
+      "label": "Radio de cercania (km)",
+      "info": "Distribuidores visibles al detectar ubicacion del visitante.",
+      "min": 25,
+      "max": 300,
+      "step": 25,
+      "default": 100,
+      "unit": "km"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_message",
+      "label": "Mensaje sin resultados",
+      "default": "No se encontraron distribuidores para tu busqueda."
+    },
+    {
+      "type": "header",
+      "content": "Mapa de Google"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Mostrar mapa",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "google_api_key",
+      "label": "Google Maps API Key",
+      "info": "Obtén tu API Key en console.cloud.google.com"
+    },
+    {
+      "type": "range",
+      "id": "map_zoom",
+      "label": "Zoom inicial del mapa",
+      "min": 4,
+      "max": 14,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "map_center_lat",
+      "label": "Latitud central del mapa",
+      "default": "-35.6751",
+      "info": "Chile central por defecto"
+    },
+    {
+      "type": "text",
+      "id": "map_center_lng",
+      "label": "Longitud central del mapa",
+      "default": "-71.5430"
+    },
+    {
+      "type": "header",
+      "content": "Grilla"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columnas",
+      "options": [
+        { "value": "2", "label": "2 columnas" },
+        { "value": "3", "label": "3 columnas" },
+        { "value": "4", "label": "4 columnas" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "select",
+      "id": "top_spacing",
+      "label": "Espaciado superior",
+      "options": [
+        { "value": "none", "label": "Ninguno" },
+        { "value": "small", "label": "Pequeño" },
+        { "value": "medium", "label": "Mediano" },
+        { "value": "normal", "label": "Normal" }
+      ],
+      "default": "normal"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Distribuidores",
+      "settings": {
+        "heading": "Donde comprar",
+        "subheading": "Red de distribuidores",
+        "description": "Encuentra el punto de venta mas cercano a tu ubicacion.",
+        "show_search": true,
+        "show_region_filter": true,
+        "show_map": true,
+        "columns": "3"
+      }
+    }
+  ]
+}
+{% endschema %}

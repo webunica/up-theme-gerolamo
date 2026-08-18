@@ -1,0 +1,110 @@
+{%- comment -%}
+A Breadcrumb navigation, also known as breadcrumbs, can reduce the number of actions a visitor needs to take in order to navigate to a higher-level page,
+and improve the discoverability of a website’s sections and pages. Like all Shopify based navigations, it uses the linklist object.
+{%- endcomment -%}
+
+{%- if template != 'index' and settings.enable_breadcrumb -%}
+<div class="breadcrumb{% if settings.background_width_breadcrumb == 'fullwidth' %} breadcrumb-background{% endif %}" aria-label="Breadcrumb">
+    <div class="{{ settings.page_width_main }}">
+        <ul class="unstyle-ul breadcrumb__container body3{% if settings.background_width_breadcrumb == 'content_width' %} breadcrumb-background-boxed{% endif %}">
+            <li><a href="{{ routes.root_url }}" class="breadcrumb__container__home display-flex">{{- 'icon-home-breadcrumbs' | append: settings.system_icon_thickness | inline_asset_content -}}</a></li>
+            {%- if template contains 'product' -%}
+            {%- if collection -%}
+            {%- if collection.handle -%}
+            {%- capture url -%}/collections/{{ collection.handle }}{%- endcapture -%}
+            <li>{{ collection.title | link_to: url | replace:'<a','<a class="clear-underline link link__base-to_accent-color"' }}</li>
+            {%- endif -%}
+            {%- endif -%}
+            <li><span>{{ product.title }}</span></li>
+
+            {%- elsif template contains 'collection' and collection.handle -%}
+            {%- if current_tags -%}
+            {%- capture url -%}/collections/{{ collection.handle }}{%- endcapture -%}
+            <li>{{ collection.title | link_to: url | replace:'<a','<a class="clear-underline link link__base-to_accent-color"' }}</li>
+            {%- else -%}
+            <li>{{ collection.title | capitalize }}</li>
+            {%- endif -%}
+
+            {%- elsif template == 'article' -%}
+            <li><a href="{{ blog.url }}" class="clear-underline link link__base-to_accent-color">{{ blog.title }}</a></li>
+            <li>{{ article.title }}</li>
+
+            {%- elsif template contains 'page' -%}
+            <li>{{ page.title }}</li>
+            {%- else -%}
+            <li>{{ page_title }}</li>
+            {%- endif -%}
+        </ul>
+    </div>
+</div>
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "BreadcrumbList",
+"itemListElement": [
+    {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "{{ shop.url }}"
+    }
+    {%- if template contains 'product' -%}
+    {%- assign position = 2 -%}
+    {%- if collection and collection.handle -%}
+        ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ collection.title | json }},
+        "item": "{{ shop.url }}/collections/{{ collection.handle }}"
+        }
+        {%- assign position = 3 -%}
+    {%- endif -%}
+    ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ product.title | json }},
+        "item": "{{ shop.url }}{{ product.url }}"
+    }
+
+    {%- elsif template contains 'collection' and collection.handle -%}
+    ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ collection.title | json }},
+        "item": "{{ shop.url }}/collections/{{ collection.handle }}"
+    }
+
+    {%- elsif template == 'article' -%}
+    ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ blog.title | json }},
+        "item": "{{ shop.url }}{{ blog.url }}"
+    },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ article.title | json }},
+        "item": "{{ shop.url }}{{ article.url }}"
+    }
+
+    {%- elsif template contains 'page' -%}
+    ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ page.title | json }},
+        "item": "{{ shop.url }}{{ page.url }}"
+    }
+
+    {%- else -%}
+    ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ page_title | json }},
+        "item": "{{ canonical_url }}"
+    }
+    {%- endif -%}
+]
+}
+</script>
+{%- endif -%}

@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_heading": false,
+        "heading_aligment": "text-center",
+        "top_spacing": "none",
+        "width": "default",
+        "background": "hide",
+        "color_background": "rgba(0,0,0,0)",
+        "gradient": "",
+        "image_overlay_opacity": 0,
+        "image_overlay_color": "rgba(0,0,0,0)",
+        "image_overlay_opacity_mobile": 0,
+        "image_overlay_color_mobile": "rgba(0,0,0,0)",
+        "show_parallax": false,
+        "imagealign": "center",
+        "imagesize": "cover",
+        "background_width": "fullwidth",
+        "background_spacing": "normal",
+        "remove_bottom_spacing": false
+      }
+    },
+    "distributor_locator": {
+      "type": "distributor-locator",
+      "settings": {
+        "subheading": "Red de distribuidores",
+        "heading": "¿Dónde comprar?",
+        "description": "Encuentra el punto de venta más cercano a tu ubicación. Tenemos distribuidores en todo Chile.",
+        "show_search": true,
+        "search_placeholder": "Buscar por nombre o ciudad…",
+        "show_region_filter": true,
+        "region_all_label": "Todas las regiones",
+        "empty_message": "No se encontraron distribuidores para tu búsqueda. Intenta con otro término.",
+        "show_map": true,
+        "google_api_key": "",
+        "map_zoom": 5,
+        "map_center_lat": "-35.6751",
+        "map_center_lng": "-71.5430",
+        "columns": "3",
+        "top_spacing": "none"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "distributor_locator"
+  ]
+}
