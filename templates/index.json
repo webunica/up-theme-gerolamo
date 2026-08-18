@@ -397,7 +397,7 @@
           "type": "banner",
           "settings": {
             "content_type": "image",
-            "image": "shopify://shop_images/gatos-banners.webp",
+            "image": "shopify://shop_images/banner-gato.png",
             "image_ratio_mobile": "default",
             "image_overlay_opacity": 70,
             "image_overlay_fill": false,
