@@ -354,7 +354,7 @@
       "name": "t:names.slider",
       "settings": {
         "top_spacing": "none",
-        "width": "page-fullwidth",
+        "width": "page-wide",
         "image_size": "fixed",
         "desktop_image_height": 640,
         "image_size_mobile": "auto",
