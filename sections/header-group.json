@@ -510,7 +510,7 @@
       ],
       "name": "t:header.header_vertical",
       "settings": {
-        "menu": "main-menu",
+        "menu": "productos",
         "width": "default",
         "enable__sticky_header": "mobile__desktop",
         "logo": "shopify://shop_images/gerolamo-logo.svg",
