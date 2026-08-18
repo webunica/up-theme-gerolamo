@@ -373,7 +373,7 @@
         "parallax": true,
         "autoplay_enabled": true,
         "autoplay_time": 5,
-        "desktop_navigation": "dots_arrows",
+        "desktop_navigation": "none",
         "dots_alignment_desktop": "center",
         "arrows_alignment_desktop": "center",
         "mobile_navigation": "dots",
