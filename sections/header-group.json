@@ -70,9 +70,9 @@
         "background_width": "fullwidth",
         "v_padding": 10,
         "color_lines": "rgba(0,0,0,0)",
-        "color_text_link": "rgba(0,0,0,0)",
-        "color_text_link_hover": "rgba(0,0,0,0)",
-        "color_text_icons": "rgba(0,0,0,0)",
+        "color_text_link": "#FFFFFF",
+        "color_text_link_hover": "#FFFFFF",
+        "color_text_icons": "#FFFFFF",
         "color_media_arrows": "rgba(0,0,0,0)"
       }
     },
