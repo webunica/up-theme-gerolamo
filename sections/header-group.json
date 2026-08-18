@@ -160,6 +160,7 @@
     },
     "promo_header_AqWtBf": {
       "type": "promo-header",
+      "disabled": true,
       "name": "t:header.promo_header",
       "settings": {
         "top_spacing": "none",
@@ -448,20 +449,21 @@
         },
         "phone_B4WGKC": {
           "type": "phone",
+          "disabled": true,
           "settings": {
             "open_on": "click",
             "phone_icon__0": "phone",
             "phone__0": "(+56) 5551000",
             "text__0": "Open daily from 9:00 AM – 7:00 PM",
-            "phone_as_link__0": true,
-            "main__0": true,
+            "phone_as_link__0": false,
+            "main__0": false,
             "heading__1": "Online Store Consultants",
-            "show_icon__1": true,
+            "show_icon__1": false,
             "phone_1__1": "(555) 555-1000",
             "phone_2__1": "(555) 555-1001",
             "phone_3__1": "",
             "phone_4__1": "",
-            "phone_as_link__1": true,
+            "phone_as_link__1": false,
             "info__1": "Open daily from 9:00 AM – 7:00 PM",
             "heading__2": "Order Pickup Point",
             "show_icon__2": true,
