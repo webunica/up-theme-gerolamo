@@ -572,7 +572,7 @@
         "autoplay_time": 5,
         "show_lines": false,
         "lines_width": "fullwidth",
-        "background": "color",
+        "background": "image",
         "color_background": "#033097",
         "gradient": "",
         "background_image": "shopify://shop_images/banner-top.png",
