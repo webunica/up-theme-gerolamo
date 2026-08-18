@@ -469,18 +469,19 @@
             "image_overlay_color": "rgba(0,0,0,0)"
           }
         },
-        "banner_PfJpHP": {
+        "banner_RVwBHW": {
           "type": "banner",
           "settings": {
             "content_type": "image",
+            "image": "shopify://shop_images/banner-perro.png",
             "image_ratio_mobile": "default",
-            "image_overlay_opacity": 0,
+            "image_overlay_opacity": 70,
             "image_overlay_fill": false,
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_slide_mode": "autoplay_muted",
             "url": "",
-            "heading_text": "Coffee",
-            "desc": "<h6>Brewed To Perfection</h6>",
+            "heading_text": "Para Perros",
+            "desc": "<h6>Ver Productos</h6>",
             "heading_after_description": false,
             "button_name": "",
             "button_link_1": "",
@@ -505,10 +506,10 @@
             "show_background": false,
             "box_opacity": 90,
             "banner_box_padding": 15,
-            "heading_text_link": "rgba(0,0,0,0)",
-            "heading_text_link_hover": "rgba(0,0,0,0)",
-            "color_desc": "rgba(0,0,0,0)",
-            "color_desc_hover": "rgba(0,0,0,0)",
+            "heading_text_link": "#ffffff",
+            "heading_text_link_hover": "#ffffff",
+            "color_desc": "#ffffff",
+            "color_desc_hover": "#ffffff",
             "show_button_bg": true,
             "color_button": "rgba(0,0,0,0)",
             "color_button_gradient": "",
@@ -547,7 +548,7 @@
       },
       "block_order": [
         "banner_tqj6QW",
-        "banner_PfJpHP"
+        "banner_RVwBHW"
       ],
       "name": "t:names.banners",
       "settings": {
