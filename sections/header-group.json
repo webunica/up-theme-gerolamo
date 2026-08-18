@@ -46,9 +46,9 @@
           "type": "mega_menu",
           "settings": {
             "admin_open_megamenu": false,
-            "mega_menu_item_name": "Store",
+            "mega_menu_item_name": "Productos",
             "grid": "4",
-            "submenu_size": "default",
+            "submenu_size": "big",
             "group_items": true,
             "text_aligment": "left",
             "vertical_spacing": 20,
