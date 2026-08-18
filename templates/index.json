@@ -353,7 +353,7 @@
       ],
       "name": "t:names.slider",
       "settings": {
-        "top_spacing": "none",
+        "top_spacing": "small",
         "width": "page-fullwidth",
         "image_size": "fixed",
         "desktop_image_height": 640,
