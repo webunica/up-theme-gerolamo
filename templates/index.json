@@ -397,14 +397,15 @@
           "type": "banner",
           "settings": {
             "content_type": "image",
+            "image": "shopify://shop_images/gatos-banners.webp",
             "image_ratio_mobile": "default",
             "image_overlay_opacity": 0,
             "image_overlay_fill": false,
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_slide_mode": "autoplay_muted",
             "url": "",
-            "heading_text": "Espresso Machines",
-            "desc": "<h6>Your Daily Shot of Energy</h6>",
+            "heading_text": "Para gatos",
+            "desc": "<h6>Ver Productos</h6>",
             "heading_after_description": false,
             "button_name": "",
             "button_link_1": "",
@@ -548,7 +549,6 @@
         "banner_tqj6QW",
         "banner_PfJpHP"
       ],
-      "disabled": true,
       "name": "t:names.banners",
       "settings": {
         "main_subheading": "",
