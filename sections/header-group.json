@@ -11,11 +11,77 @@
   "name": "Header",
   "type": "header",
   "sections": {
+    "announcement_bar_header_wj7iJY": {
+      "type": "announcement-bar-header",
+      "blocks": {
+        "item_rxbwHR": {
+          "type": "item",
+          "settings": {
+            "show_icon": "svg",
+            "icon_name": "bell-ring",
+            "block_text": "<p>Some descriptive text for your store.</p>"
+          }
+        },
+        "item_3UV73Y": {
+          "type": "item",
+          "settings": {
+            "show_icon": "svg",
+            "icon_name": "like",
+            "block_text": "<p>Some descriptive text for your store.</p>"
+          }
+        },
+        "item_EEiMgk": {
+          "type": "item",
+          "settings": {
+            "show_icon": "svg",
+            "icon_name": "box",
+            "block_text": "<p>Some descriptive text for your store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_rxbwHR",
+        "item_3UV73Y",
+        "item_EEiMgk"
+      ],
+      "name": "t:header.announcement_bar_header",
+      "settings": {
+        "top_spacing": "none",
+        "width": "default",
+        "content_align": "align-items-center",
+        "index_page": true,
+        "desktop_navigation": "arrows",
+        "mobile_navigation": "arrows",
+        "autoplay_enabled": true,
+        "autoplay_time": 3,
+        "show_lines": false,
+        "show_lines_bottom": false,
+        "lines_width": "fullwidth",
+        "background": "image",
+        "color_background": "rgba(0,0,0,0)",
+        "gradient": "",
+        "background_image": "shopify://shop_images/banner-top.png",
+        "image_overlay_opacity": 0,
+        "image_overlay_color": "rgba(0,0,0,0)",
+        "image_overlay_opacity_mobile": 0,
+        "image_overlay_color_mobile": "rgba(0,0,0,0)",
+        "imagealign": "center",
+        "imagesize": "cover",
+        "background_width": "fullwidth",
+        "v_padding": 10,
+        "color_lines": "rgba(0,0,0,0)",
+        "color_text_link": "rgba(0,0,0,0)",
+        "color_text_link_hover": "rgba(0,0,0,0)",
+        "color_text_icons": "rgba(0,0,0,0)",
+        "color_media_arrows": "rgba(0,0,0,0)"
+      }
+    },
     "header_9GztDw": {
       "type": "header",
       "blocks": {
         "topbar_4g9NjH": {
           "type": "topbar",
+          "disabled": true,
           "settings": {
             "secondary_menu": "",
             "show_social": false,
@@ -422,6 +488,7 @@
     }
   },
   "order": [
+    "announcement_bar_header_wj7iJY",
     "header_9GztDw",
     "promo_header_AqWtBf",
     "megamenu_modules_YkjRpU"
