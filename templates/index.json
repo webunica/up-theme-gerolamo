@@ -573,7 +573,7 @@
         "show_lines": false,
         "lines_width": "fullwidth",
         "background": "color",
-        "color_background": "#1F3C71",
+        "color_background": "#033097",
         "gradient": "",
         "background_image": "shopify://shop_images/banner-top.png",
         "image_overlay_opacity": 0,
