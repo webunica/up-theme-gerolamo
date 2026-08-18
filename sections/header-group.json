@@ -18,8 +18,8 @@
           "type": "item",
           "settings": {
             "show_icon": "svg",
-            "icon_name": "bell-ring",
-            "block_text": "<p>Some descriptive text for your store.</p>"
+            "icon_name": "",
+            "block_text": "<p>Nuevos productos premium para tu Perro o Gato!</p>"
           }
         },
         "item_3UV73Y": {
