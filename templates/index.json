@@ -369,7 +369,7 @@
         "logo_tablet_y": 50,
         "logo_mobile_x": 50,
         "logo_mobile_y": 50,
-        "transition_effect": "flip",
+        "transition_effect": "fade",
         "parallax": true,
         "autoplay_enabled": true,
         "autoplay_time": 5,
