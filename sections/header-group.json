@@ -419,76 +419,11 @@
       "settings": {
         "image_hover": "image-hover01"
       }
-    },
-    "ticker_text_header_qFbPDR": {
-      "type": "ticker-text-header",
-      "blocks": {
-        "text_LHypVR": {
-          "type": "text",
-          "settings": {
-            "text": "Scrolling text",
-            "font_size": 14
-          }
-        },
-        "image_8Prakd": {
-          "type": "image",
-          "settings": {
-            "show_icon": "image",
-            "icon_name": "check",
-            "image_height": 20,
-            "url": ""
-          }
-        },
-        "text_yQ3izy": {
-          "type": "text",
-          "settings": {
-            "text": "Scrolling text",
-            "font_size": 14
-          }
-        },
-        "image_4HfJkG": {
-          "type": "image",
-          "settings": {
-            "show_icon": "image",
-            "icon_name": "check",
-            "image_height": 20,
-            "url": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_LHypVR",
-        "image_8Prakd",
-        "text_yQ3izy",
-        "image_4HfJkG"
-      ],
-      "name": "t:header.ticker_text_header",
-      "settings": {
-        "top_spacing": "none",
-        "index_page": true,
-        "h_space": 80,
-        "image_hover": "image-hover-none",
-        "image_roundness": 0,
-        "ticker_time": 20,
-        "direction": "ticker--animation-to-left",
-        "show_lines": false,
-        "show_lines_bottom": false,
-        "background": "color",
-        "color_background": "rgba(0,0,0,0)",
-        "gradient": "",
-        "v_padding": 10,
-        "color_base": "rgba(0,0,0,0)",
-        "color_accent": "rgba(0,0,0,0)",
-        "color_lines": "rgba(0,0,0,0)",
-        "color_icon": "rgba(0,0,0,0)",
-        "color_icon_hover": "rgba(0,0,0,0)"
-      }
     }
   },
   "order": [
     "header_9GztDw",
     "promo_header_AqWtBf",
-    "megamenu_modules_YkjRpU",
-    "ticker_text_header_qFbPDR"
+    "megamenu_modules_YkjRpU"
   ]
 }
