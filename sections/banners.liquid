@@ -35,6 +35,12 @@ component-media-video-button.css
     --description-box-opacity:{{ block.settings.box_opacity | divided_by: 100.00 }};
     {%- endif -%}
   }
+  {%- if block.settings.color_card_background != blank and block.settings.color_card_background != "rgba(0,0,0,0)" -%}
+  #theme-section-{{ section.id }} #theme-block-{{ block.id }} .banner__block-item,
+  #theme-section-{{ section.id }} #theme-block-{{ block.id }} .image-hover-box{
+    background-color: {{ block.settings.color_card_background }} !important;
+  }
+  {%- endif -%}
   @media (min-width:577px){
     #theme-section-{{ section.id }} #theme-block-{{ block.id }} .banner__block-item__heading{
       font-size:{{ block.settings.heading_size_px_tablet }}px;
@@ -1419,6 +1425,13 @@ component-media-video-button.css
         {
           "type": "header",
           "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "color_card_background",
+          "default": "rgba(0,0,0,0)",
+          "label": "Card background color",
+          "info": "Background color for this banner card"
         },
         {
           "type": "color",
