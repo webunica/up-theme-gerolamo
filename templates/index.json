@@ -476,7 +476,7 @@
             "content_type": "image",
             "image": "shopify://shop_images/banner-perro.png",
             "image_ratio_mobile": "default",
-            "image_overlay_opacity": 0,
+            "image_overlay_opacity": 20,
             "image_overlay_fill": false,
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_slide_mode": "autoplay_muted",
