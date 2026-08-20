@@ -104,6 +104,7 @@
   data-section-id="{{ section.id }}"
   data-json-url="{{ 'distribuidores.json' | asset_url }}"
   data-radius="{{ section.settings.nearby_radius | default: 100 }}"
+  data-per-page="{{ section.settings.items_per_page | default: 18 }}"
 >
 
   <!-- Hero Header -->
@@ -234,6 +235,9 @@
               {% endfor %}
             </div>
           </div>
+
+          <!-- Pagination -->
+          <div id="dloc-pagination-{{ section.id }}" class="distributor-locator__pagination" hidden></div>
 
           <div id="dloc-empty-{{ section.id }}" class="distributor-locator__empty" hidden>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -447,7 +451,16 @@
     },
     {
       "type": "header",
-      "content": "Grilla"
+      "content": "Grilla y Paginacion"
+    },
+    {
+      "type": "range",
+      "id": "items_per_page",
+      "label": "Tarjetas por pagina",
+      "min": 6,
+      "max": 36,
+      "step": 6,
+      "default": 18
     },
     {
       "type": "select",
