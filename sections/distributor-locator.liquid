@@ -1,785 +1,510 @@
-/* ============================================================
-   Distributor Locator – section-distributor-locator.css
-   Wokiee / Gerolamo theme – OpenStreetMap Leaflet Split View
-   ============================================================ */
+{{ 'section-distributor-locator.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{{ 'section-distributor-locator.js' | asset_url }}" defer="defer"></script>
 
-/* ── Hero ── */
-.distributor-locator__hero {
-  padding: 50px 0;
-  text-align: left;
-  position: relative;
-}
-
-.distributor-locator__hero-sub {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 0 0 10px;
-  color: var(--color-accent-section, #fcd34d);
-}
-
-.distributor-locator__hero-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  margin: 0 0 14px;
-  line-height: 1.15;
-  color: var(--color-base-section, #ffffff);
-}
-
-.distributor-locator__hero-desc {
-  font-size: 1.05rem;
-  color: var(--color-text, #ffffff);
-  max-width: 560px;
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* ── Controls bar ── */
-.distributor-locator__controls {
-  background: var(--color-background-main, #ffffff);
-  border-top: 1px solid var(--color-lines, rgba(0,0,0,.08));
-  border-bottom: 1px solid var(--color-lines, rgba(0,0,0,.08));
-  padding: 16px 0;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.distributor-locator__controls-inner {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-/* Search */
-.distributor-locator__search-wrap {
-  position: relative;
-  flex: 1 1 280px;
-}
-
-.distributor-locator__search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-text, #888);
-  pointer-events: none;
-  display: flex;
-}
-
-.distributor-locator__search {
-  width: 100%;
-  height: 48px;
-  padding: 0 44px 0 44px;
-  border: 1.5px solid var(--color-lines, rgba(0,0,0,.15));
-  border-radius: var(--radius-image, 8px);
-  background: var(--color-background-main, #fff);
-  font-size: 0.95rem;
-  color: var(--color-base-section, var(--color-heading-main, #1e293b));
-  transition: border-color 0.2s, box-shadow 0.2s;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
-}
-
-.distributor-locator__search:focus {
-  outline: none;
-  border-color: #006654;
-  box-shadow: 0 0 0 3px rgba(0, 102, 84, 0.15);
-}
-
-.distributor-locator__search-clear {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text, #888);
-  display: flex;
-  padding: 4px;
-  border-radius: 50%;
-  transition: color 0.15s, background 0.15s;
-}
-
-.distributor-locator__search-clear:hover {
-  color: #1e293b;
-  background: rgba(0,0,0,.06);
-}
-
-/* Region select */
-.distributor-locator__filter-wrap {
-  position: relative;
-  flex: 0 0 220px;
-}
-
-.distributor-locator__region-select {
-  width: 100%;
-  height: 48px;
-  padding: 0 40px 0 16px;
-  border: 1.5px solid var(--color-lines, rgba(0,0,0,.15));
-  border-radius: var(--radius-image, 8px);
-  background: var(--color-background-main, #fff);
-  font-size: 0.95rem;
-  color: var(--color-base-section, var(--color-heading-main, #1e293b));
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-sizing: border-box;
-}
-
-.distributor-locator__region-select:focus {
-  outline: none;
-  border-color: #006654;
-  box-shadow: 0 0 0 3px rgba(0, 102, 84, 0.15);
-}
-
-.distributor-locator__select-arrow {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: var(--color-text, #888);
-  display: flex;
-}
-
-.distributor-locator__count {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin: 8px 0 0;
-  font-weight: 500;
-}
-
-/* ── Geo Banner ── */
-.distributor-locator__geo-banner {
-  background: #f0fdf4;
-  border-bottom: 1px solid #bbf7d0;
-  padding: 12px 0;
-  font-size: 0.9rem;
-  color: #166534;
-}
-
-.distributor-locator__geo-banner--noneNearby {
-  background: #fffbeb;
-  border-bottom-color: #fef08a;
-  color: #854d0e;
-}
-
-.distributor-locator__geo-banner-inner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.distributor-locator__geo-banner-text {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1 1 auto;
-}
-
-.distributor-locator__geo-banner-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.distributor-locator__geo-banner-close {
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  opacity: 0.7;
-}
-.distributor-locator__geo-banner-close:hover { opacity: 1; }
-
-.dloc-btn {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.dloc-btn--outline {
-  background: #ffffff;
-  border: 1px solid #006654;
-  color: #006654;
-}
-.dloc-btn--outline:hover {
-  background: #006654;
-  color: #ffffff;
-}
-.dloc-btn--ghost {
-  background: transparent;
-  border: 1px solid transparent;
-  color: inherit;
-}
-.dloc-btn--ghost:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-/* ── Split Layout: Left 2 Columns Cards + Right Sticky Map ── */
-.distributor-locator__body {
-  padding: 30px 0 60px;
-}
-
-.distributor-locator__layout {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 28px;
-  align-items: flex-start;
-}
-
-.distributor-locator__layout--no-map {
-  display: block;
-}
-
-.distributor-locator__cards-pane {
-  min-width: 0;
-}
-
-.distributor-locator__grid {
-  display: grid;
-  gap: 16px;
-}
-
-.distributor-locator__grid--1 { grid-template-columns: 1fr; }
-.distributor-locator__grid--2 { grid-template-columns: repeat(2, 1fr); }
-.distributor-locator__grid--3 { grid-template-columns: repeat(3, 1fr); }
-
-@media (max-width: 640px) {
-  .distributor-locator__grid--2,
-  .distributor-locator__grid--3 {
-    grid-template-columns: 1fr;
+<style>
+  #theme-section-{{ section.id }} {
+    {% if section.settings.section_bg_color != blank and section.settings.section_bg_color != 'rgba(0,0,0,0)' %}
+      background-color: {{ section.settings.section_bg_color }};
+    {% endif %}
+    {% if section.settings.section_bg_image != blank %}
+      background-image: url({{ section.settings.section_bg_image | image_url: width: 2000 }});
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    {% endif %}
   }
-}
 
-/* ── Right Map Pane (Sticky) ── */
-.distributor-locator__map-pane {
-  position: sticky;
-  top: 85px;
-  height: calc(100vh - 110px);
-  min-height: 520px;
-  max-height: 780px;
-  min-width: 0;
-  z-index: 10;
-}
+  #theme-section-{{ section.id }} .distributor-locator__hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: {{ section.settings.hero_height_desktop | default: 360 }}px;
+    padding: 50px 0;
+    overflow: hidden;
+    text-align: {{ section.settings.hero_text_align | default: 'left' }};
+  }
 
-.distributor-locator__openmap {
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--color-lines, rgba(0,0,0,.09));
-  box-shadow: 0 4px 20px rgba(0,0,0,.07);
-  background: #e2e8f0;
-}
+  #theme-section-{{ section.id }} .distributor-locator__hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
 
-/* ── Distributor Card ── */
-.distributor-card {
-  background: var(--color-background-main, #ffffff);
-  border: 1.5px solid var(--color-lines, rgba(0,0,0,.08));
-  border-radius: 12px;
-  padding: 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: all 0.22s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
+  #theme-section-{{ section.id }} .distributor-locator__hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
 
-.distributor-card:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  transform: translateY(-2px);
-  border-color: #006654;
-}
-
-.distributor-card.is-active-card {
-  border-color: #006654 !important;
-  box-shadow: 0 0 0 2.5px #006654, 0 10px 28px rgba(0, 102, 84, 0.18) !important;
-  background: #fbfdfc;
-}
-
-.distributor-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.distributor-card__region-badge {
-  display: inline-block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 9px;
-  border-radius: 100px;
-  background: #006654;
-  color: #ffffff;
-}
-
-.distributor-card__distance {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #006654;
-  background: #e6f4f1;
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-
-.distributor-card__name {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #1e293b;
-  margin: 0;
-  line-height: 1.25;
-  text-transform: uppercase;
-}
-
-.distributor-card__info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.distributor-card__row {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  font-size: 0.82rem;
-  color: #475569;
-  line-height: 1.35;
-}
-
-.distributor-card__row svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: #006654;
-}
-
-.distributor-card__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
-}
-
-.distributor-card__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 100px;
-  border: 1.5px solid #cbd5e1;
-  color: #334155;
-  text-decoration: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.distributor-card__link:hover {
-  border-color: #006654;
-  color: #006654;
-  background: rgba(0, 102, 84, 0.05);
-}
-
-.distributor-card__link--primary {
-  background: #006654;
-  border-color: #006654;
-  color: #ffffff;
-}
-
-.distributor-card__link--primary:hover {
-  background: #004d40;
-  border-color: #004d40;
-  color: #ffffff;
-}
-
-/* ── Leaflet OpenStreetMap Marker Pins ── */
-.dloc-leaflet-pin-icon {
-  background: transparent !important;
-  border: none !important;
-}
-
-.dloc-map-pin {
-  width: 30px;
-  height: 30px;
-  background: #006654;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.28);
-  border: 2px solid #ffffff;
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.dloc-map-pin svg {
-  transform: rotate(45deg);
-  width: 14px;
-  height: 14px;
-  color: #ffffff;
-}
-
-.dloc-leaflet-pin-icon:hover .dloc-map-pin,
-.dloc-leaflet-pin-icon.is-active .dloc-map-pin {
-  background: #702283;
-  transform: rotate(-45deg) scale(1.2);
-  box-shadow: 0 5px 15px rgba(112, 34, 131, 0.4);
-}
-
-/* User Location Marker */
-.dloc-user-marker-wrap {
-  background: transparent !important;
-  border: none !important;
-}
-
-.dloc-user-marker-dot {
-  width: 18px;
-  height: 18px;
-  background: #2563eb;
-  border: 2.5px solid #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 0 12px rgba(37, 99, 235, 0.6);
-  position: relative;
-}
-
-.dloc-user-marker-pulse {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: rgba(37, 99, 235, 0.35);
-  animation: dloc-pulse 2s infinite;
-}
-
-@keyframes dloc-pulse {
-  0%   { transform: scale(0.8); opacity: 0.8; }
-  70%  { transform: scale(2.2); opacity: 0; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
-
-/* ── Leaflet Custom Popups ── */
-.dloc-custom-leaflet-popup .leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  padding: 8px 10px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
-  font-family: inherit;
-}
-
-.dloc-leaflet-popup {
-  font-family: inherit;
-  min-width: 200px;
-  max-width: 270px;
-}
-
-.dloc-popup__badge {
-  display: inline-block;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 100px;
-  background: #006654;
-  color: #ffffff;
-  margin-bottom: 6px;
-}
-
-.dloc-popup__title {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #1e293b;
-  margin: 0 0 8px;
-  line-height: 1.25;
-}
-
-.dloc-popup__body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.8rem;
-  color: #475569;
-  margin-bottom: 10px;
-}
-
-.dloc-popup__row {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.dloc-popup__row svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: #006654;
-}
-
-.dloc-popup__row a {
-  color: inherit;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.dloc-popup__actions {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.dloc-popup__btn {
-  padding: 4px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 6px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  border: 1px solid #cbd5e1;
-  color: #334155;
-  transition: all 0.15s ease;
-}
-
-.dloc-popup__btn:hover {
-  border-color: #006654;
-  color: #006654;
-}
-
-.dloc-popup__btn--primary {
-  background: #006654;
-  border-color: #006654;
-  color: #ffffff;
-}
-
-.dloc-popup__btn--primary:hover {
-  background: #004d40;
-  color: #ffffff;
-}
-
-/* ── Mobile View Toggle ── */
-.distributor-locator__mobile-toggle {
-  display: none;
-}
-
-@media (max-width: 991px) {
-  .distributor-locator__layout {
+  #theme-section-{{ section.id }} .distributor-locator__hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     display: block;
   }
 
-  .distributor-locator__mobile-toggle {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
+  #theme-section-{{ section.id }} .distributor-locator__hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ section.settings.hero_overlay_color | default: '#000000' }};
+    opacity: {{ section.settings.hero_overlay_opacity | default: 25 | divided_by: 100.0 }};
+    z-index: 1;
   }
 
-  .distributor-locator__tab-btn {
-    flex: 1;
-    height: 44px;
-    border-radius: 8px;
-    border: 1.5px solid #cbd5e1;
-    background: #ffffff;
-    color: #334155;
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    cursor: pointer;
-    transition: all 0.18s ease;
+  #theme-section-{{ section.id }} .distributor-locator__hero-title {
+    color: {{ section.settings.hero_text_color | default: '#ffffff' }} !important;
+    font-size: {{ section.settings.hero_title_size | default: 36 }}px !important;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    line-height: 1.15;
   }
 
-  .distributor-locator__tab-btn.is-active {
-    background: #006654;
-    border-color: #006654;
-    color: #ffffff;
+  #theme-section-{{ section.id }} .distributor-locator__hero-sub {
+    color: {{ section.settings.hero_sub_color | default: '#fcd34d' }} !important;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 10px;
   }
 
-  .distributor-locator__map-pane {
-    display: none;
-    position: static;
-    height: 440px;
-    min-height: 380px;
-    margin-top: 0;
+  #theme-section-{{ section.id }} .distributor-locator__hero-desc {
+    color: {{ section.settings.hero_text_color | default: '#ffffff' }} !important;
+    opacity: 0.95;
+    font-size: 16px;
+    max-width: 600px;
+    margin: {% if section.settings.hero_text_align == 'center' %}0 auto{% elsif section.settings.hero_text_align == 'right' %}0 0 0 auto{% else %}0{% endif %};
   }
 
-  .distributor-locator__openmap {
-    min-height: 380px;
+  @media (max-width: 767px) {
+    #theme-section-{{ section.id }} .distributor-locator__hero {
+      min-height: {{ section.settings.hero_height_mobile | default: 220 }}px;
+      padding: 35px 0;
+    }
+    #theme-section-{{ section.id }} .distributor-locator__hero-title {
+      font-size: clamp(20px, 6vw, 28px) !important;
+    }
   }
-}
+</style>
 
-/* ── Skeleton loaders ── */
-.distributor-locator__skeleton-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(2, 1fr);
-}
+<div
+  id="theme-section-{{ section.id }}"
+  class="distributor-locator top-spacing-{{ section.settings.top_spacing }}"
+  data-section-id="{{ section.id }}"
+  data-json-url="{{ 'distribuidores.json' | asset_url }}"
+  data-radius="{{ section.settings.nearby_radius | default: 100 }}"
+>
 
-@media (max-width: 640px) {
-  .distributor-locator__skeleton-grid {
-    grid-template-columns: 1fr;
-  }
-}
+  <!-- Hero Header -->
+  <div class="distributor-locator__hero{% if section.settings.hero_image != blank %} distributor-locator__hero--has-bg{% endif %}">
+    {% if section.settings.hero_image != blank %}
+      <div class="distributor-locator__hero-bg">
+        <picture>
+          {% if section.settings.hero_image_mobile != blank %}
+            <source media="(max-width: 767px)" srcset="{{ section.settings.hero_image_mobile | image_url: width: 800 }}">
+          {% endif %}
+          <img
+            src="{{ section.settings.hero_image | image_url: width: 2000 }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="eager"
+            width="{{ section.settings.hero_image.width }}"
+            height="{{ section.settings.hero_image.height }}"
+            class="distributor-locator__hero-img"
+          >
+        </picture>
+        <div class="distributor-locator__hero-overlay"></div>
+      </div>
+    {% endif %}
 
-.distributor-locator__skeleton-card {
-  height: 180px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, rgba(0,0,0,.04) 25%, rgba(0,0,0,.08) 50%, rgba(0,0,0,.04) 75%);
-  background-size: 200% 100%;
-  animation: dloc-shimmer 1.4s infinite;
-}
+    <div class="page-width distributor-locator__hero-content">
+      {% if section.settings.subheading != blank %}
+        <p class="distributor-locator__hero-sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h1 class="distributor-locator__hero-title">{{ section.settings.heading }}</h1>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <p class="distributor-locator__hero-desc">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+  </div>
 
-@keyframes dloc-shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
+  <!-- Search & Filter Controls -->
+  <div class="distributor-locator__controls">
+    <div class="page-width">
+      <div class="distributor-locator__controls-inner">
 
-/* ── Empty state ── */
-.distributor-locator__empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--color-text, #888);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
+        {% if section.settings.show_search %}
+        <div class="distributor-locator__search-wrap">
+          <label for="dloc-search-{{ section.id }}" class="visually-hidden">Buscar distribuidor</label>
+          <div class="distributor-locator__search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <input
+            id="dloc-search-{{ section.id }}"
+            class="distributor-locator__search"
+            type="search"
+            placeholder="{{ section.settings.search_placeholder | default: 'Buscar por nombre o ciudad' }}"
+            autocomplete="off"
+          >
+          <button class="distributor-locator__search-clear" aria-label="Limpiar" hidden>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        {% endif %}
 
-.distributor-locator__empty svg {
-  opacity: 0.3;
-}
+        {% if section.settings.show_region_filter %}
+        <div class="distributor-locator__filter-wrap">
+          <label for="dloc-region-{{ section.id }}" class="visually-hidden">Filtrar por region</label>
+          <select id="dloc-region-{{ section.id }}" class="distributor-locator__region-select">
+            <option value="">{{ section.settings.region_all_label | default: 'Todas las regiones' }}</option>
+          </select>
+          <div class="distributor-locator__select-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        {% endif %}
 
-.distributor-locator__empty p {
-  font-size: 1rem;
-  margin: 0;
-}
+      </div>
 
-/* ── Pagination ── */
-.distributor-locator__pagination {
-  margin-top: 28px;
-  padding-top: 18px;
-  border-top: 1px solid var(--color-lines, rgba(0,0,0,0.08));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
+      <p class="distributor-locator__count" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </div>
 
-.dloc-pagination-summary {
-  font-size: 0.85rem;
-  color: #64748b;
-  text-align: center;
-}
+  <!-- Geolocation Notification Banner -->
+  <div class="distributor-locator__geo-banner" hidden>
+    <div class="page-width">
+      <div class="distributor-locator__geo-banner-inner">
+        <span class="distributor-locator__geo-banner-text"></span>
+        <div class="distributor-locator__geo-banner-actions">
+          <button class="distributor-locator__geo-show-all dloc-btn dloc-btn--outline" hidden>Ver todos los distribuidores</button>
+          <button class="distributor-locator__geo-locate dloc-btn dloc-btn--ghost" hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.94 11a8 8 0 1 0-7.94 8.94"/><path d="M22 12h-4"/><path d="M12 22v-4"/><path d="M12 2v4"/><path d="M2 12h4"/></svg>
+            Detectar mi ubicación
+          </button>
+        </div>
+        <button class="distributor-locator__geo-banner-close" aria-label="Cerrar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 
-.dloc-pagination-summary strong {
-  color: #1e293b;
-}
+  <!-- Main Split Layout (Left: 2 Columns Cards, Right: Interactive OpenStreetMap) -->
+  <div class="distributor-locator__body">
+    <div class="page-width">
 
-.dloc-pagination-nav {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+      <!-- Mobile Tab Selector -->
+      {% if section.settings.show_map %}
+      <div class="distributor-locator__mobile-toggle">
+        <button type="button" class="distributor-locator__tab-btn is-active" data-tab="list">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <span>Ver Lista</span>
+        </button>
+        <button type="button" class="distributor-locator__tab-btn" data-tab="map">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          <span>Ver Mapa</span>
+        </button>
+      </div>
+      {% endif %}
 
-.dloc-pagination-numbers {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+      <div class="distributor-locator__layout{% unless section.settings.show_map %} distributor-locator__layout--no-map{% endunless %}">
+        
+        <!-- Left: 2 Columns Cards Pane -->
+        <div class="distributor-locator__cards-pane">
+          <div
+            id="dloc-grid-{{ section.id }}"
+            class="distributor-locator__grid distributor-locator__grid--{{ section.settings.columns | default: '2' }}"
+            data-columns="{{ section.settings.columns | default: '2' }}"
+          >
+            <div class="distributor-locator__skeleton-grid">
+              {% for i in (1..6) %}
+              <div class="distributor-locator__skeleton-card"></div>
+              {% endfor %}
+            </div>
+          </div>
 
-.dloc-page-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 38px;
-  padding: 0 14px;
-  border-radius: 8px;
-  border: 1.5px solid #cbd5e1;
-  background: #ffffff;
-  color: #334155;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  user-select: none;
-}
+          <div id="dloc-empty-{{ section.id }}" class="distributor-locator__empty" hidden>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <p>{{ section.settings.empty_message | default: 'No se encontraron distribuidores para tu búsqueda.' }}</p>
+            <button class="distributor-locator__empty-reset dloc-btn dloc-btn--outline">Mostrar todos</button>
+          </div>
+        </div>
 
-.dloc-page-btn:hover:not(:disabled) {
-  border-color: #006654;
-  color: #006654;
-  background: #f0fdf4;
-}
+        <!-- Right: OpenStreetMap Container (Leaflet) -->
+        {% if section.settings.show_map %}
+        <div class="distributor-locator__map-pane">
+          <div
+            id="dloc-openmap-{{ section.id }}"
+            class="distributor-locator__openmap"
+            data-zoom="{{ section.settings.map_zoom | default: 6 }}"
+            data-lat="{{ section.settings.map_center_lat | default: '-35.6751' }}"
+            data-lng="{{ section.settings.map_center_lng | default: '-71.5430' }}"
+          ></div>
+        </div>
+        {% endif %}
 
-.dloc-page-btn.is-active {
-  background: #006654;
-  border-color: #006654;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 102, 84, 0.25);
-}
+      </div>
 
-.dloc-page-btn--num {
-  min-width: 38px;
-  padding: 0 6px;
-}
+    </div>
+  </div>
 
-.dloc-page-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  border-color: #e2e8f0;
-  background: #f8fafc;
-}
+</div>
 
-.dloc-page-ellipsis {
-  padding: 0 4px;
-  color: #94a3b8;
-  font-weight: 700;
+{% schema %}
+{
+  "name": "Distribuidores",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Imagen de fondo del banner (Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Imagen de fondo del banner (Mobile - Opcional)"
+    },
+    {
+      "type": "range",
+      "id": "hero_height_desktop",
+      "min": 150,
+      "max": 650,
+      "step": 10,
+      "unit": "px",
+      "default": 360,
+      "label": "Altura del banner (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "hero_height_mobile",
+      "min": 120,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 220,
+      "label": "Altura del banner (Mobile)"
+    },
+    {
+      "type": "select",
+      "id": "hero_text_align",
+      "label": "Alineacion del texto",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "hero_text_color",
+      "label": "Color del titulo y texto",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "hero_sub_color",
+      "label": "Color del subtitulo",
+      "default": "#fcd34d"
+    },
+    {
+      "type": "range",
+      "id": "hero_title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36,
+      "label": "Tamaño del titulo"
+    },
+    {
+      "type": "color",
+      "id": "hero_overlay_color",
+      "label": "Color de superposicion (Overlay)",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "hero_overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 25,
+      "label": "Opacidad de superposicion"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtitulo",
+      "default": "Red de distribuidores"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titulo",
+      "default": "Donde comprar"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripcion",
+      "default": "Encuentra el punto de venta mas cercano a tu ubicacion."
+    },
+    {
+      "type": "header",
+      "content": "Busqueda y filtros"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Mostrar buscador",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder del buscador",
+      "default": "Buscar por nombre o ciudad"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_region_filter",
+      "label": "Mostrar filtro por region",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "region_all_label",
+      "label": "Etiqueta todas las regiones",
+      "default": "Todas las regiones"
+    },
+    {
+      "type": "range",
+      "id": "nearby_radius",
+      "label": "Radio de cercania (km)",
+      "info": "Distribuidores visibles al detectar ubicacion del visitante.",
+      "min": 25,
+      "max": 300,
+      "step": 25,
+      "default": 100,
+      "unit": "km"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_message",
+      "label": "Mensaje sin resultados",
+      "default": "No se encontraron distribuidores para tu busqueda."
+    },
+    {
+      "type": "header",
+      "content": "Mapa interactivo (OpenStreetMap)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Mostrar mapa interactivo (OpenStreetMap)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "map_zoom",
+      "label": "Zoom inicial del mapa",
+      "min": 4,
+      "max": 14,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "map_center_lat",
+      "label": "Latitud central del mapa",
+      "default": "-35.6751",
+      "info": "Chile central por defecto"
+    },
+    {
+      "type": "text",
+      "id": "map_center_lng",
+      "label": "Longitud central del mapa",
+      "default": "-71.5430"
+    },
+    {
+      "type": "header",
+      "content": "Grilla"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columnas en escritorio",
+      "options": [
+        { "value": "1", "label": "1 columna" },
+        { "value": "2", "label": "2 columnas" },
+        { "value": "3", "label": "3 columnas" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Fondo general de la seccion"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Color de fondo de la seccion",
+      "default": "#f5f3ec"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Imagen de fondo de toda la seccion (opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "select",
+      "id": "top_spacing",
+      "label": "Espaciado superior",
+      "options": [
+        { "value": "none", "label": "Ninguno" },
+        { "value": "small", "label": "Pequeño" },
+        { "value": "medium", "label": "Mediano" },
+        { "value": "normal", "label": "Normal" }
+      ],
+      "default": "normal"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Distribuidores",
+      "settings": {
+        "heading": "Donde comprar",
+        "subheading": "Red de distribuidores",
+        "description": "Encuentra el punto de venta mas cercano a tu ubicacion.",
+        "show_search": true,
+        "show_region_filter": true,
+        "show_map": true,
+        "columns": "2"
+      }
+    }
+  ]
 }
-
-/* ── Animations ── */
-.distributor-card {
-  animation: dloc-fadein 0.3s ease both;
-}
-
-@keyframes dloc-fadein {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Accessibility ── */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
-}
+{% endschema %}
