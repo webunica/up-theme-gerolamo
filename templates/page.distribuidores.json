@@ -39,7 +39,7 @@
         "hero_height_mobile": 220,
         "hero_text_align": "left",
         "hero_text_color": "#ffffff",
-        "hero_sub_color": "#F5FDFE",
+        "hero_sub_color": "#f5fdfe",
         "hero_title_size": 36,
         "hero_overlay_color": "#000000",
         "hero_overlay_opacity": 25,
@@ -53,12 +53,11 @@
         "nearby_radius": 100,
         "empty_message": "No se encontraron distribuidores para tu búsqueda. Intenta con otro término.",
         "show_map": true,
-        "google_api_key": "",
         "map_zoom": 5,
         "map_center_lat": "-35.6751",
         "map_center_lng": "-71.5430",
         "columns": "3",
-        "section_bg_color": "#f5f3ec",
+        "section_bg_color": "#ECF4F5",
         "top_spacing": "none"
       }
     }
