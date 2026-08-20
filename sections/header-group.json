@@ -79,6 +79,15 @@
     "header_9GztDw": {
       "type": "header-gerolamo",
       "blocks": {
+        "menu_item_j6m8CH": {
+          "type": "menu_item",
+          "settings": {
+            "title": "Perros",
+            "url": "shopify://collections/perro",
+            "icon_svg": "🐶",
+            "sub_menu": ""
+          }
+        },
         "menu_item_Qy7aaf": {
           "type": "menu_item",
           "settings": {
@@ -88,12 +97,30 @@
             "sub_menu": ""
           }
         },
-        "menu_item_j6m8CH": {
+        "menu_item_VAhhVd": {
           "type": "menu_item",
           "settings": {
-            "title": "Perros",
-            "url": "shopify://collections/perro",
-            "icon_svg": "🐶",
+            "title": "Noticias",
+            "url": "",
+            "icon_svg": "",
+            "sub_menu": ""
+          }
+        },
+        "menu_item_dhq4RP": {
+          "type": "menu_item",
+          "settings": {
+            "title": "Contacto",
+            "url": "",
+            "icon_svg": "",
+            "sub_menu": ""
+          }
+        },
+        "menu_item_MRz7Xg": {
+          "type": "menu_item",
+          "settings": {
+            "title": "Donde Comprar",
+            "url": "",
+            "icon_svg": "",
             "sub_menu": ""
           }
         },
@@ -119,8 +146,11 @@
         }
       },
       "block_order": [
-        "menu_item_Qy7aaf",
         "menu_item_j6m8CH",
+        "menu_item_Qy7aaf",
+        "menu_item_VAhhVd",
+        "menu_item_dhq4RP",
+        "menu_item_MRz7Xg",
         "main_menu_icons_L3Lppw",
         "mega_menu_7hAtMx"
       ],
