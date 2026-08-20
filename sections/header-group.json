@@ -84,7 +84,7 @@
           "settings": {
             "title": "Perros",
             "url": "shopify://collections/perro",
-            "icon_image": "shopify://shop_images/iconperro.png",
+            "icon_image": "shopify://shop_images/iconperro.svg",
             "icon_svg": "",
             "sub_menu": ""
           }
