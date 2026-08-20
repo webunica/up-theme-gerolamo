@@ -1,16 +1,11 @@
 /**
- * section-distributor-locator.js  v2 – Geolocation Edition
+ * section-distributor-locator.js  v3 – OpenStreetMap (Leaflet) Edition
  * Wokiee Theme – Distributor Locator
  *
- * ┌─ Geolocation strategy ──────────────────────────────────────┐
- * │ 1. Browser Geolocation API (accurate, needs permission)     │
- * │ 2. IP Geolocation fallback via ipapi.co (city-level, free)  │
- * │ 3. If both fail → show all distributors                     │
- * └─────────────────────────────────────────────────────────────┘
- * ┌─ Distance ──────────────────────────────────────────────────┐
- * │ Haversine formula on pre-geocoded lat/lng in JSON           │
- * │ Default radius: 100 km (configurable via data attribute)    │
- * └─────────────────────────────────────────────────────────────┘
+ * - Free, no API Key needed (OpenStreetMap tiles + Leaflet.js)
+ * - Split Desktop Layout: 2 Columns of Cards + Right Sticky Interactive Map
+ * - Automatic 100 km radius filter with Geolocation
+ * - Interactive synchronization between cards and map markers
  */
 
 (function () {
@@ -40,7 +35,7 @@
 
   function getRegionColor(region, regionList) {
     const idx = regionList.indexOf(region);
-    return REGION_COLORS[idx % REGION_COLORS.length] || '#555';
+    return REGION_COLORS[idx % REGION_COLORS.length] || '#006654';
   }
 
   // ── Haversine distance (km) ───────────────────────────────────
@@ -114,7 +109,7 @@
   }
 
   // ── Build distributor card ────────────────────────────────────
-  function buildCard(d, regionList, userLat, userLng) {
+  function buildCard(d, regionList, userLat, userLng, index) {
     const color  = getRegionColor(d.region, regionList);
     const mapQ   = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
     const web    = ensureUrl(d.sitio_web);
@@ -143,12 +138,18 @@
 
     // Link buttons
     let links = '';
-    if (mapQ) links += `<a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" class="distributor-card__link distributor-card__link--primary">${ICON.maplink} Ver en mapa</a>`;
-    if (web)  links += `<a href="${esc(web)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.globe} Sitio web</a>`;
+    if (d.lat != null && d.lng != null) {
+      links += `<button type="button" class="distributor-card__link distributor-card__link--primary dloc-focus-map" data-index="${index}">${ICON.pin} Ver en mapa</button>`;
+    } else if (mapQ) {
+      links += `<a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" class="distributor-card__link distributor-card__link--primary">${ICON.maplink} Ver en mapa</a>`;
+    }
+    if (web)  links += `<a href="${esc(web)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.globe} Web</a>`;
     if (ig)   links += `<a href="${esc(ig)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.instagram} Instagram</a>`;
 
     return `
 <article class="distributor-card"
+  id="dloc-card-${index}"
+  data-index="${index}"
   data-name="${escAttr(d.nombre)}"
   data-region="${escAttr(d.region)}"
   data-city="${escAttr(d.ciudad)}"
@@ -165,17 +166,38 @@
 </article>`;
   }
 
-  // ── Geocode cache ─────────────────────────────────────────────
-  const geocodeCache = {};
-  function geocodeAddress(geocoder, address) {
-    if (geocodeCache[address]) return Promise.resolve(geocodeCache[address]);
-    return new Promise(resolve => {
-      geocoder.geocode({ address }, (results, status) => {
-        const loc = status === 'OK' && results[0] ? results[0].geometry.location : null;
-        geocodeCache[address] = loc;
-        resolve(loc);
-      });
-    });
+  // ── Build Popup Content for Leaflet Map ───────────────────────
+  function buildPopupContent(d) {
+    const mapQ = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
+    const ig   = ensureInstagram(d.instagram);
+    const web  = ensureUrl(d.sitio_web);
+
+    let infoHtml = '';
+    if (d.direccion || d.ciudad) {
+      infoHtml += `<div class="dloc-popup__row">${ICON.pin} <span>${esc(d.direccion || '')}${d.ciudad ? ', ' + esc(d.ciudad) : ''}</span></div>`;
+    }
+    if (d.telefono) {
+      infoHtml += `<div class="dloc-popup__row">${ICON.phone} <a href="tel:${esc(d.telefono.replace(/\s/g,''))}">${esc(d.telefono)}</a></div>`;
+    }
+    if (d.horario) {
+      infoHtml += `<div class="dloc-popup__row">${ICON.clock} <span>${esc(d.horario)}</span></div>`;
+    }
+
+    let actionsHtml = `<a href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--primary">${ICON.maplink} Cómo llegar</a>`;
+    if (ig) {
+      actionsHtml += `<a href="${esc(ig)}" target="_blank" rel="noopener" class="dloc-popup__btn">${ICON.instagram} Instagram</a>`;
+    } else if (web) {
+      actionsHtml += `<a href="${esc(web)}" target="_blank" rel="noopener" class="dloc-popup__btn">${ICON.globe} Web</a>`;
+    }
+
+    return `
+      <div class="dloc-leaflet-popup">
+        <span class="dloc-popup__badge">${esc(d.region || 'Distribuidor')}</span>
+        <h4 class="dloc-popup__title">${esc(d.nombre)}</h4>
+        <div class="dloc-popup__body">${infoHtml}</div>
+        <div class="dloc-popup__actions">${actionsHtml}</div>
+      </div>
+    `;
   }
 
   // ── Main initialiser ──────────────────────────────────────────
@@ -191,19 +213,25 @@
     const emptyState   = section.querySelector(`#dloc-empty-${sectionId}`);
     const countEl      = section.querySelector('.distributor-locator__count');
     const skeleton     = section.querySelector('.distributor-locator__skeleton-grid');
-    const mapEl        = section.querySelector(`#dloc-map-${sectionId}`);
+    const mapEl        = section.querySelector(`#dloc-openmap-${sectionId}`);
     const geoBanner    = section.querySelector('.distributor-locator__geo-banner');
     const geoBannerText = section.querySelector('.distributor-locator__geo-banner-text');
     const geoShowAll   = section.querySelector('.distributor-locator__geo-show-all');
     const geoLocate    = section.querySelector('.distributor-locator__geo-locate');
     const geoBannerClose = section.querySelector('.distributor-locator__geo-banner-close');
+    const tabButtons   = section.querySelectorAll('.distributor-locator__tab-btn');
+    const cardsPane    = section.querySelector('.distributor-locator__cards-pane');
+    const mapPane      = section.querySelector('.distributor-locator__map-pane');
 
     let allData      = [];
     let regionList   = [];
     let userLocation = null;   // { lat, lng, city?, source }
     let isNearbyMode = false;
     let mapObj       = null;
-    let markersAll   = [];
+    let markersLayer = null;
+    let userMarker   = null;
+    let radiusCircle = null;
+    let markersMap   = new Map(); // index -> Leaflet Marker
     let searchTerm   = '';
     let activeRegion = '';
     let renderTimer  = null;
@@ -226,28 +254,32 @@
 
         if (skeleton) skeleton.remove();
 
+        // ── Init OpenStreetMap if available ──
+        if (mapEl && typeof window.L !== 'undefined') {
+          initLeafletMap(mapEl);
+        }
+
         // ── Try geolocation ──
         showGeoStatus('loading');
         userLocation = await detectLocation();
 
         if (userLocation) {
-          // Filter nearby
+          // Filter nearby within 100km
           const nearby = filterByRadius(allData, userLocation.lat, userLocation.lng, radiusKm);
           if (nearby.length > 0) {
             isNearbyMode = true;
             showGeoStatus('found', userLocation, nearby.length, radiusKm);
             renderCards(nearby);
           } else {
-            // No distributors nearby → show all with warning
+            // No distributors nearby → show all with message
             showGeoStatus('noneNearby', userLocation, 0, radiusKm);
             renderCards(allData);
           }
+          if (mapObj) updateUserLocationOnMap(userLocation, radiusKm);
         } else {
           showGeoStatus('denied');
           renderCards(allData);
         }
-
-        if (mapEl) initMap(mapEl, allData);
       })
       .catch(err => {
         console.error('[DistributorLocator]', err);
@@ -273,14 +305,14 @@
 
       const messages = {
         loading:    `${ICON.locme} Detectando tu ubicación…`,
-        found:      `${ICON.locme} Mostrando <strong>${count}</strong> distribuidor${count !== 1 ? 'es' : ''} dentro de <strong>${km} km</strong>${loc && loc.city ? ' de <strong>' + esc(loc.city) + '</strong>' : ' de tu ubicación'}.`,
+        found:      `${ICON.locme} Mostrando <strong>${count}</strong> distribuidores dentro de <strong>${km} km</strong>${loc && loc.city ? ' de <strong>' + esc(loc.city) + '</strong>' : ' de tu ubicación'}.`,
         noneNearby: `${ICON.warning} No hay distribuidores dentro de ${km} km de tu ubicación. Mostrando todos.`,
         denied:     `${ICON.locme} No se pudo detectar tu ubicación. Mostrando todos los distribuidores.`,
       };
 
       if (geoBannerText) geoBannerText.innerHTML = messages[state] || '';
 
-      // Show/hide action buttons based on state
+      // Show/hide action buttons
       if (geoShowAll) geoShowAll.hidden  = state !== 'found';
       if (geoLocate)  geoLocate.hidden   = state === 'loading' || state === 'found' || state === 'noneNearby';
     }
@@ -292,6 +324,7 @@
       if (!data.length) {
         showEmpty();
         if (countEl) countEl.textContent = '';
+        if (mapObj) updateMapMarkers([]);
         return;
       }
 
@@ -305,12 +338,31 @@
       const frag = document.createDocumentFragment();
       data.forEach((d, i) => {
         const tmp = document.createElement('div');
-        tmp.innerHTML = buildCard(d, regionList, userLocation?.lat, userLocation?.lng);
+        tmp.innerHTML = buildCard(d, regionList, userLocation?.lat, userLocation?.lng, i);
         const card = tmp.firstElementChild;
-        card.style.animationDelay = Math.min(i * 28, 350) + 'ms';
+        card.style.animationDelay = Math.min(i * 20, 300) + 'ms';
+
+        // Hover & Click interaction with map
+        card.addEventListener('mouseenter', () => {
+          highlightMarker(i, false);
+        });
+
         frag.appendChild(card);
       });
       grid.appendChild(frag);
+
+      // Focus map button event delegation
+      grid.querySelectorAll('.dloc-focus-map').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.index, 10);
+          highlightMarker(idx, true);
+          // If on mobile and in list tab, switch to map tab
+          if (window.innerWidth < 992) {
+            activateTab('map');
+          }
+        });
+      });
 
       if (mapObj) updateMapMarkers(data);
     }
@@ -323,7 +375,6 @@
       const term   = searchTerm.toLowerCase();
       const region = activeRegion;
 
-      // Start from nearby subset or all depending on mode
       let base = isNearbyMode && userLocation
         ? filterByRadius(allData, userLocation.lat, userLocation.lng, radiusKm)
         : allData;
@@ -343,8 +394,161 @@
 
     function scheduleFilter() {
       clearTimeout(renderTimer);
-      renderTimer = setTimeout(applyFilters, 180);
+      renderTimer = setTimeout(applyFilters, 160);
     }
+
+    // ─── OpenStreetMap (Leaflet) Implementation ──────────────
+    function initLeafletMap(el) {
+      const zoom = parseInt(el.dataset.zoom, 10) || 6;
+      const lat  = parseFloat(el.dataset.lat) || -35.6751;
+      const lng  = parseFloat(el.dataset.lng) || -71.5430;
+
+      mapObj = L.map(el, {
+        center: [lat, lng],
+        zoom: zoom,
+        scrollWheelZoom: false,
+        zoomControl: true,
+      });
+
+      // Beautiful OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+      }).addTo(mapObj);
+
+      markersLayer = L.featureGroup().addTo(mapObj);
+    }
+
+    function updateUserLocationOnMap(loc, km) {
+      if (!mapObj || !loc) return;
+
+      if (userMarker) mapObj.removeLayer(userMarker);
+      if (radiusCircle) mapObj.removeLayer(radiusCircle);
+
+      // User location marker
+      const userIcon = L.divIcon({
+        className: 'dloc-user-marker-wrap',
+        html: `<div class="dloc-user-marker-dot" title="Tu ubicación"><div class="dloc-user-marker-pulse"></div></div>`,
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      });
+
+      userMarker = L.marker([loc.lat, loc.lng], { icon: userIcon, zIndexOffset: 1000 })
+        .addTo(mapObj)
+        .bindPopup(`<strong>Tu ubicación</strong>${loc.city ? '<br>' + esc(loc.city) : ''}`);
+
+      // 100 km Radius Circle
+      if (isNearbyMode) {
+        radiusCircle = L.circle([loc.lat, loc.lng], {
+          radius: km * 1000,
+          color: '#006654',
+          fillColor: '#006654',
+          fillOpacity: 0.07,
+          weight: 1.5,
+          dashArray: '5, 5'
+        }).addTo(mapObj);
+      }
+    }
+
+    function updateMapMarkers(data) {
+      if (!mapObj || !markersLayer) return;
+
+      markersLayer.clearLayers();
+      markersMap.clear();
+
+      const validCoords = [];
+
+      data.forEach((d, i) => {
+        if (d.lat == null || d.lng == null) return;
+
+        const pinHtml = `
+          <div class="dloc-map-pin">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+        `;
+
+        const markerIcon = L.divIcon({
+          className: 'dloc-leaflet-pin-icon',
+          html: pinHtml,
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32]
+        });
+
+        const marker = L.marker([d.lat, d.lng], { icon: markerIcon });
+        marker.bindPopup(buildPopupContent(d), { maxWidth: 300, className: 'dloc-custom-leaflet-popup' });
+
+        marker.on('click', () => {
+          highlightCard(i);
+        });
+
+        markersLayer.addLayer(marker);
+        markersMap.set(i, marker);
+        validCoords.push([d.lat, d.lng]);
+      });
+
+      // Fit map bounds to show markers
+      if (validCoords.length > 0) {
+        try {
+          if (userLocation && isNearbyMode) {
+            const bounds = L.latLngBounds(validCoords);
+            bounds.extend([userLocation.lat, userLocation.lng]);
+            mapObj.fitBounds(bounds, { padding: [40, 40], maxZoom: 13, animate: true });
+          } else {
+            mapObj.fitBounds(markersLayer.getBounds(), { padding: [40, 40], maxZoom: 13, animate: true });
+          }
+        } catch (e) {
+          // ignore fitBounds error if single point
+        }
+      }
+    }
+
+    function highlightMarker(index, openPopup) {
+      if (!mapObj || !markersMap.has(index)) return;
+      const marker = markersMap.get(index);
+      const latLng = marker.getLatLng();
+
+      mapObj.panTo(latLng, { animate: true, duration: 0.5 });
+      if (openPopup) {
+        marker.openPopup();
+      }
+    }
+
+    function highlightCard(index) {
+      const card = grid.querySelector(`#dloc-card-${index}`);
+      if (!card) return;
+
+      grid.querySelectorAll('.distributor-card').forEach(c => c.classList.remove('is-active-card'));
+      card.classList.add('is-active-card');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ─── Tab Switching on Mobile ──────────────────────────────
+    function activateTab(tab) {
+      tabButtons.forEach(btn => {
+        const isActive = btn.dataset.tab === tab;
+        btn.classList.toggle('is-active', isActive);
+      });
+
+      if (cardsPane && mapPane) {
+        if (tab === 'map') {
+          cardsPane.style.display = 'none';
+          mapPane.style.display = 'block';
+          if (mapObj) {
+            setTimeout(() => { mapObj.invalidateSize(); }, 50);
+          }
+        } else {
+          cardsPane.style.display = 'block';
+          mapPane.style.display = 'none';
+        }
+      }
+    }
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activateTab(btn.dataset.tab);
+      });
+    });
 
     // ─── Event listeners ──────────────────────────────────────
     if (searchInput) {
@@ -378,6 +582,9 @@
         geoShowAll.hidden = true;
         geoBanner.hidden = true;
         renderCards(allData);
+        if (radiusCircle && mapObj) {
+          mapObj.removeLayer(radiusCircle);
+        }
       });
     }
 
@@ -392,14 +599,11 @@
             isNearbyMode = true;
             showGeoStatus('found', userLocation, nearby.length, radiusKm);
             renderCards(nearby);
-            if (mapObj) {
-              mapObj.setCenter({ lat: userLocation.lat, lng: userLocation.lng });
-              mapObj.setZoom(10);
-            }
           } else {
             showGeoStatus('noneNearby', userLocation, 0, radiusKm);
             renderCards(allData);
           }
+          if (mapObj) updateUserLocationOnMap(userLocation, radiusKm);
         } else {
           showGeoStatus('denied');
         }
@@ -428,132 +632,21 @@
         });
       }
     }
-
-    // ─── Google Maps ──────────────────────────────────────────
-    function initMap(el, data) {
-      const apiKey = el.dataset.apiKey;
-      if (!apiKey) return;
-
-      const zoom = parseInt(el.dataset.zoom, 10) || 5;
-      const lat  = userLocation ? userLocation.lat : parseFloat(el.dataset.lat) || -35.6751;
-      const lng  = userLocation ? userLocation.lng : parseFloat(el.dataset.lng) || -71.5430;
-      const autoZoom = userLocation ? 9 : zoom;
-
-      if (!window.google?.maps) {
-        window.__dlocMapReady = () => {
-          delete window.__dlocMapReady;
-          createMap(el, lat, lng, autoZoom, data);
-        };
-        const s = document.createElement('script');
-        s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=__dlocMapReady&loading=async`;
-        s.async = true;
-        document.head.appendChild(s);
-      } else {
-        createMap(el, lat, lng, autoZoom, data);
-      }
-    }
-
-    function createMap(el, lat, lng, zoom, data) {
-      mapObj = new google.maps.Map(el, {
-        center: { lat, lng },
-        zoom,
-        styles: [
-          { featureType: 'all', elementType: 'labels.text.fill', stylers: [{ color: '#444444' }] },
-          { featureType: 'landscape', elementType: 'all', stylers: [{ color: '#f2f2f2' }] },
-          { featureType: 'road', elementType: 'all', stylers: [{ saturation: -100 }, { lightness: 45 }] },
-          { featureType: 'water', elementType: 'all', stylers: [{ color: '#bde0f7' }] },
-        ],
-        mapTypeControl: false,
-        streetViewControl: false,
-      });
-
-      const infoWindow = new google.maps.InfoWindow();
-
-      // User location marker
-      if (userLocation) {
-        new google.maps.Marker({
-          position: { lat: userLocation.lat, lng: userLocation.lng },
-          map: mapObj,
-          title: 'Tu ubicación',
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 10,
-            fillColor: '#4285F4',
-            fillOpacity: 1,
-            strokeColor: '#fff',
-            strokeWeight: 3,
-          },
-          zIndex: 999,
-        });
-
-        // 100km radius circle
-        new google.maps.Circle({
-          strokeColor: '#4285F4',
-          strokeOpacity: 0.25,
-          strokeWeight: 1.5,
-          fillColor: '#4285F4',
-          fillOpacity: 0.06,
-          map: mapObj,
-          center: { lat: userLocation.lat, lng: userLocation.lng },
-          radius: DEFAULT_RADIUS_KM * 1000,
-        });
-      }
-
-      // Distributor markers (use pre-geocoded coords + Geocoder fallback)
-      const geocoder = new google.maps.Geocoder();
-      const toPlace  = data.filter(d => d.direccion || d.ciudad);
-
-      toPlace.forEach((d, i) => {
-        const placeMarker = (pos) => {
-          if (!pos) return;
-          const marker = new google.maps.Marker({
-            position: pos,
-            map: mapObj,
-            title: d.nombre,
-            _data: d,
-          });
-          markersAll.push(marker);
-          marker.addListener('click', () => {
-            infoWindow.setContent(`
-              <div class="dloc-infowindow">
-                <strong>${esc(d.nombre)}</strong>
-                <span>${esc([d.direccion, d.ciudad].filter(Boolean).join(', '))}</span>
-                ${d.telefono ? `<br><span>${esc(d.telefono)}</span>` : ''}
-                ${d.horario  ? `<br><small>${esc(d.horario)}</small>` : ''}
-              </div>`);
-            infoWindow.open(mapObj, marker);
-          });
-        };
-
-        if (d.lat != null && d.lng != null) {
-          // Pre-geocoded — instant
-          placeMarker({ lat: d.lat, lng: d.lng });
-        } else {
-          // Fallback: Google Geocoder (rate-limited)
-          setTimeout(() => {
-            const address = [d.direccion, d.ciudad, 'Chile'].filter(Boolean).join(', ');
-            geocodeAddress(geocoder, address).then(placeMarker);
-          }, i * 25);
-        }
-      });
-    }
-
-    function updateMapMarkers(visibleData) {
-      const visibleNames = new Set(visibleData.map(d => d.nombre));
-      markersAll.forEach(m => m.setVisible(visibleNames.has(m.title)));
-    }
   }
 
-  // ── Bootstrap ─────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', () => {
+  // ─── Bootstrap on DOMReady & Shopify Section Events ────────
+  function bootstrap() {
     document.querySelectorAll('.distributor-locator').forEach(init);
-  });
-
-  if (window.Shopify?.designMode) {
-    document.addEventListener('shopify:section:load', e => {
-      const s = e.target.querySelector('.distributor-locator');
-      if (s) init(s);
-    });
   }
 
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrap);
+  } else {
+    bootstrap();
+  }
+
+  document.addEventListener('shopify:section:load', e => {
+    const s = e.target.querySelector('.distributor-locator');
+    if (s) init(s);
+  });
 })();
