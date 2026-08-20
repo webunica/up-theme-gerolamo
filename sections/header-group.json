@@ -119,7 +119,7 @@
           "type": "menu_item",
           "settings": {
             "title": "Donde Comprar",
-            "url": "",
+            "url": "shopify://pages/donde-comprar",
             "icon_svg": "",
             "sub_menu": ""
           }
