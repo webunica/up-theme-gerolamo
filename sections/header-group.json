@@ -79,6 +79,15 @@
     "header_9GztDw": {
       "type": "header-gerolamo",
       "blocks": {
+        "menu_item_Qy7aaf": {
+          "type": "menu_item",
+          "settings": {
+            "title": "Gatos",
+            "url": "",
+            "icon_svg": "🐱",
+            "sub_menu": ""
+          }
+        },
         "menu_item_j6m8CH": {
           "type": "menu_item",
           "settings": {
@@ -110,6 +119,7 @@
         }
       },
       "block_order": [
+        "menu_item_Qy7aaf",
         "menu_item_j6m8CH",
         "main_menu_icons_L3Lppw",
         "mega_menu_7hAtMx"
