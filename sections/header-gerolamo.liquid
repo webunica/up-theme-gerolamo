@@ -474,39 +474,68 @@
       <div class="{{ page_width }} header-gerolamo__nav-container">
         <nav class="list-menu list-menu--classic">
           <ul class="header-gerolamo__nav-menu unstyle-ul">
-            {%- for link in section.settings.menu.links -%}
-              {%- liquid
-                assign megamenu_item = '|' | append: link.title | append: '%%'
-                if mega_menu_index contains megamenu_item
-                  assign megamenu_item = mega_menu_index | split: megamenu_item | last | split: '|' | first | plus: 0
-                  assign megamenu_block = section.blocks[megamenu_item]
-                else
-                  assign megamenu_item = ''
-                endif
-              -%}
-              <li class="header-gerolamo__nav-item list-menu--hover{% if megamenu_item != '' %} submenu--megamenu enable-scrollbar-megamenu-js{% endif %}">
-                <a href="{{ link.url }}" class="header-gerolamo__nav-link">
-                  {%- if svg_icons != blank -%}
-                    {%- assign icon_code = "" -%}
-                    {%- capture icon_code -%}
-                      {%- render "get-menu-icon-code", icons: svg_icons, forloop_index: forloop.index, icons_size: 20 -%}
-                    {%- endcapture -%}
-                    {%- if icon_code != blank -%}
-                      <span class="header-gerolamo__nav-icon">{{ icon_code }}</span>
+            {%- assign has_custom_items = false -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'menu_item' -%}
+                {%- assign has_custom_items = true -%}
+                <li class="header-gerolamo__nav-item list-menu--hover" {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.url | default: '#' }}" class="header-gerolamo__nav-link">
+                    {%- if block.settings.icon_image != blank -%}
+                      <span class="header-gerolamo__nav-icon">
+                        <img src="{{ block.settings.icon_image | image_url: width: 44 }}"
+                             alt="{{ block.settings.title | escape }}"
+                             width="22" height="22" loading="lazy">
+                      </span>
+                    {%- elsif block.settings.icon_svg != blank -%}
+                      <span class="header-gerolamo__nav-icon">{{ block.settings.icon_svg }}</span>
                     {%- endif -%}
+                    <span>{{ block.settings.title | escape }}</span>
+                    {%- if block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
+                      {{- 'icon-arrow-down-small' | append: settings.system_icon_thickness | inline_asset_content -}}
+                    {%- endif -%}
+                  </a>
+                  {%- if block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
+                    {%- render "menu-submenu", link: block.settings.sub_menu -%}
                   {%- endif -%}
-                  <span>{{ link.title | escape }}</span>
-                  {%- if link.links != blank or megamenu_item != '' -%}
-                    {{- 'icon-arrow-down-small' | append: settings.system_icon_thickness | inline_asset_content -}}
-                  {%- endif -%}
-                </a>
-                {%- if megamenu_item == '' and link.links != blank -%}
-                  {%- render "menu-submenu", link: link -%}
-                {%- elsif megamenu_item != '' -%}
-                  {%- render "menu-megamenu", link: link, megamenu_item: megamenu_item, fullwidth_menu: true, page_width: page_width -%}
-                {%- endif -%}
-              </li>
+                </li>
+              {%- endif -%}
             {%- endfor -%}
+
+            {%- if has_custom_items == false -%}
+              {%- for link in section.settings.menu.links -%}
+                {%- liquid
+                  assign megamenu_item = '|' | append: link.title | append: '%%'
+                  if mega_menu_index contains megamenu_item
+                    assign megamenu_item = mega_menu_index | split: megamenu_item | last | split: '|' | first | plus: 0
+                    assign megamenu_block = section.blocks[megamenu_item]
+                  else
+                    assign megamenu_item = ''
+                  endif
+                -%}
+                <li class="header-gerolamo__nav-item list-menu--hover{% if megamenu_item != '' %} submenu--megamenu enable-scrollbar-megamenu-js{% endif %}">
+                  <a href="{{ link.url }}" class="header-gerolamo__nav-link">
+                    {%- if svg_icons != blank -%}
+                      {%- assign icon_code = "" -%}
+                      {%- capture icon_code -%}
+                        {%- render "get-menu-icon-code", icons: svg_icons, forloop_index: forloop.index, icons_size: 20 -%}
+                      {%- endcapture -%}
+                      {%- if icon_code != blank -%}
+                        <span class="header-gerolamo__nav-icon">{{ icon_code }}</span>
+                      {%- endif -%}
+                    {%- endif -%}
+                    <span>{{ link.title | escape }}</span>
+                    {%- if link.links != blank or megamenu_item != '' -%}
+                      {{- 'icon-arrow-down-small' | append: settings.system_icon_thickness | inline_asset_content -}}
+                    {%- endif -%}
+                  </a>
+                  {%- if megamenu_item == '' and link.links != blank -%}
+                    {%- render "menu-submenu", link: link -%}
+                  {%- elsif megamenu_item != '' -%}
+                    {%- render "menu-megamenu", link: link, megamenu_item: megamenu_item, fullwidth_menu: true, page_width: page_width -%}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
           </ul>
         </nav>
       </div>
@@ -960,6 +989,39 @@
     }
   ],
   "blocks": [
+    {
+      "type": "menu_item",
+      "name": "Menu Item (Custom)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Perros",
+          "label": "Item Title / Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Item Link / URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Item Icon (Image)"
+        },
+        {
+          "type": "text",
+          "id": "icon_svg",
+          "default": "🐶",
+          "label": "Item Icon (Emoji or SVG code)"
+        },
+        {
+          "type": "link_list",
+          "id": "sub_menu",
+          "label": "Dropdown Submenu (Optional)"
+        }
+      ]
+    },
     {
       "type": "main_menu_icons",
       "name": "Main menu icons",
