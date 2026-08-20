@@ -1272,6 +1272,82 @@
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
       }
+    },
+    "collection_list_with_text_inside_LHzm9y": {
+      "type": "collection-list-with-text-inside",
+      "blocks": {
+        "item_CUKikG": {
+          "type": "item",
+          "settings": {
+            "collection": "gato",
+            "collection_name": "",
+            "custom_link": ""
+          }
+        },
+        "item_CCLYLk": {
+          "type": "item",
+          "settings": {
+            "collection": "perro",
+            "collection_name": "",
+            "custom_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_CUKikG",
+        "item_CCLYLk"
+      ],
+      "name": "t:names.collection_list_type_2",
+      "settings": {
+        "main_subheading": "Subheading",
+        "main_heading": "Collection List Type 2",
+        "main_desc": "Highlight the best collections in your store.",
+        "heading_aligment": "text-center",
+        "top_spacing": "normal",
+        "width": "default",
+        "grid": "page-grid-md-4 page-grid-lg-4 page-grid-4",
+        "grid_tablet": "page-grid-st-4",
+        "mobile_grid": "2",
+        "image_hover": "default",
+        "image_ratio": "auto",
+        "position": "align-items-end justify-content-center",
+        "heading_tag": "h3",
+        "heading_size": "h5",
+        "hover_underline": true,
+        "show_products_count": true,
+        "box_opacity": 90,
+        "swipe": false,
+        "swipe_edges": false,
+        "desktop_navigation": "dots_arrows",
+        "mobile_navigation": "dots",
+        "autoplay_enabled": false,
+        "autoplay_time": 5,
+        "show_lines": false,
+        "lines_width": "fullwidth",
+        "background": "hide",
+        "color_background": "rgba(0,0,0,0)",
+        "gradient": "",
+        "image_overlay_opacity": 0,
+        "image_overlay_color": "rgba(0,0,0,0)",
+        "image_overlay_opacity_mobile": 0,
+        "image_overlay_color_mobile": "rgba(0,0,0,0)",
+        "show_parallax": false,
+        "imagealign": "center",
+        "imagesize": "cover",
+        "background_width": "fullwidth",
+        "background_spacing": "normal",
+        "remove_bottom_spacing": false,
+        "color_base": "rgba(0,0,0,0)",
+        "color_accent": "rgba(0,0,0,0)",
+        "color_lines": "rgba(0,0,0,0)",
+        "color_text_link": "rgba(0,0,0,0)",
+        "color_text_link_hover": "rgba(0,0,0,0)",
+        "color_desc": "rgba(0,0,0,0)",
+        "color_text_icons": "rgba(0,0,0,0)",
+        "color_background_box": "rgba(0,0,0,0)",
+        "color_media_arrows": "rgba(0,0,0,0)",
+        "color_media_dots": "rgba(0,0,0,0)"
+      }
     }
   },
   "order": [
@@ -1281,6 +1357,7 @@
     "slider_EgF6P4",
     "shop_the_feed_CnWRFt",
     "media_with_text_eniTGJ",
-    "blog_posts_NpeDgN"
+    "blog_posts_NpeDgN",
+    "collection_list_with_text_inside_LHzm9y"
   ]
 }
