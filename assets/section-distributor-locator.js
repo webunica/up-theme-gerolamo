@@ -421,11 +421,15 @@
 
       if (totalPages <= 1) {
         paginationEl.hidden = true;
+        paginationEl.classList.add('is-hidden');
+        paginationEl.style.display = 'none';
         paginationEl.innerHTML = '';
         return;
       }
 
       paginationEl.hidden = false;
+      paginationEl.classList.remove('is-hidden');
+      paginationEl.style.display = 'flex';
 
       const pageRange = getPaginationRange(currentPage, totalPages);
       let pageButtonsHtml = '';
@@ -499,8 +503,20 @@
       });
     }
 
-    function showEmpty() { if (emptyState) emptyState.hidden = false; }
-    function hideEmpty() { if (emptyState) emptyState.hidden = true; }
+    function showEmpty() {
+      if (emptyState) {
+        emptyState.hidden = false;
+        emptyState.classList.remove('is-hidden');
+        emptyState.style.display = 'flex';
+      }
+    }
+    function hideEmpty() {
+      if (emptyState) {
+        emptyState.hidden = true;
+        emptyState.classList.add('is-hidden');
+        emptyState.style.display = 'none';
+      }
+    }
 
     // ─── Apply all active filters ─────────────────────────────
     function applyFilters() {
