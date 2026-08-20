@@ -1,29 +1,33 @@
 /**
- * section-distributor-locator.js  v3 – OpenStreetMap (Leaflet) Edition
+ * section-distributor-locator.js  v4 – OpenStreetMap (Leaflet) & Pagination Edition
  * Wokiee Theme – Distributor Locator
  *
  * - Free, no API Key needed (OpenStreetMap tiles + Leaflet.js)
  * - Split Desktop Layout: 2 Columns of Cards + Right Sticky Interactive Map
  * - Automatic 100 km radius filter with Geolocation
- * - Interactive synchronization between cards and map markers
+ * - Maximum 18 cards per page with smart pagination
+ * - Interactive synchronization between cards, pagination, and map markers
  */
 
 (function () {
   'use strict';
 
   const DEFAULT_RADIUS_KM = 100;
+  const DEFAULT_PER_PAGE = 18;
 
   // ── Icon helpers ─────────────────────────────────────────────
   const ICON = {
-    pin:       `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-    clock:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    phone:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
-    globe:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
-    instagram: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
-    maplink:   `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
-    locme:     `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.94 11a8 8 0 1 0-7.94 8.94"/><path d="M22 12h-4"/><path d="M12 22v-4"/><path d="M12 2v4"/><path d="M2 12h4"/></svg>`,
-    warning:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
-    close:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    pin:          `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    clock:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    phone:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+    globe:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    instagram:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+    maplink:      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+    locme:        `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.94 11a8 8 0 1 0-7.94 8.94"/><path d="M22 12h-4"/><path d="M12 22v-4"/><path d="M12 2v4"/><path d="M2 12h4"/></svg>`,
+    warning:      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    close:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    chevronLeft:  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>`,
+    chevronRight: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`,
   };
 
   // ── Region colour palette ─────────────────────────────────────
@@ -109,7 +113,7 @@
   }
 
   // ── Build distributor card ────────────────────────────────────
-  function buildCard(d, regionList, userLat, userLng, index) {
+  function buildCard(d, regionList, userLat, userLng, globalIndex) {
     const color  = getRegionColor(d.region, regionList);
     const mapQ   = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
     const web    = ensureUrl(d.sitio_web);
@@ -139,7 +143,7 @@
     // Link buttons
     let links = '';
     if (d.lat != null && d.lng != null) {
-      links += `<button type="button" class="distributor-card__link distributor-card__link--primary dloc-focus-map" data-index="${index}">${ICON.pin} Ver en mapa</button>`;
+      links += `<button type="button" class="distributor-card__link distributor-card__link--primary dloc-focus-map" data-global-index="${globalIndex}">${ICON.pin} Ver en mapa</button>`;
     } else if (mapQ) {
       links += `<a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" class="distributor-card__link distributor-card__link--primary">${ICON.maplink} Ver en mapa</a>`;
     }
@@ -148,8 +152,8 @@
 
     return `
 <article class="distributor-card"
-  id="dloc-card-${index}"
-  data-index="${index}"
+  id="dloc-card-${globalIndex}"
+  data-global-index="${globalIndex}"
   data-name="${escAttr(d.nombre)}"
   data-region="${escAttr(d.region)}"
   data-city="${escAttr(d.ciudad)}"
@@ -200,41 +204,59 @@
     `;
   }
 
+  // ── Generate Pagination Page Numbers ─────────────────────────
+  function getPaginationRange(current, total) {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    if (current <= 4) {
+      return [1, 2, 3, 4, 5, '...', total];
+    }
+    if (current >= total - 3) {
+      return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+    }
+    return [1, '...', current - 1, current, current + 1, '...', total];
+  }
+
   // ── Main initialiser ──────────────────────────────────────────
   function init(section) {
-    const sectionId = section.dataset.sectionId;
-    const jsonUrl   = section.dataset.jsonUrl;
-    const radiusKm  = parseInt(section.dataset.radius || DEFAULT_RADIUS_KM, 10);
+    const sectionId    = section.dataset.sectionId;
+    const jsonUrl      = section.dataset.jsonUrl;
+    const radiusKm     = parseInt(section.dataset.radius || DEFAULT_RADIUS_KM, 10);
+    const itemsPerPage = parseInt(section.dataset.perPage || DEFAULT_PER_PAGE, 10);
 
-    const searchInput  = section.querySelector('.distributor-locator__search');
-    const searchClear  = section.querySelector('.distributor-locator__search-clear');
-    const regionSelect = section.querySelector('.distributor-locator__region-select');
-    const grid         = section.querySelector(`#dloc-grid-${sectionId}`);
-    const emptyState   = section.querySelector(`#dloc-empty-${sectionId}`);
-    const countEl      = section.querySelector('.distributor-locator__count');
-    const skeleton     = section.querySelector('.distributor-locator__skeleton-grid');
-    const mapEl        = section.querySelector(`#dloc-openmap-${sectionId}`);
-    const geoBanner    = section.querySelector('.distributor-locator__geo-banner');
+    const searchInput   = section.querySelector('.distributor-locator__search');
+    const searchClear   = section.querySelector('.distributor-locator__search-clear');
+    const regionSelect  = section.querySelector('.distributor-locator__region-select');
+    const grid          = section.querySelector(`#dloc-grid-${sectionId}`);
+    const paginationEl  = section.querySelector(`#dloc-pagination-${sectionId}`);
+    const emptyState    = section.querySelector(`#dloc-empty-${sectionId}`);
+    const countEl       = section.querySelector('.distributor-locator__count');
+    const skeleton      = section.querySelector('.distributor-locator__skeleton-grid');
+    const mapEl         = section.querySelector(`#dloc-openmap-${sectionId}`);
+    const geoBanner     = section.querySelector('.distributor-locator__geo-banner');
     const geoBannerText = section.querySelector('.distributor-locator__geo-banner-text');
-    const geoShowAll   = section.querySelector('.distributor-locator__geo-show-all');
-    const geoLocate    = section.querySelector('.distributor-locator__geo-locate');
+    const geoShowAll    = section.querySelector('.distributor-locator__geo-show-all');
+    const geoLocate     = section.querySelector('.distributor-locator__geo-locate');
     const geoBannerClose = section.querySelector('.distributor-locator__geo-banner-close');
-    const tabButtons   = section.querySelectorAll('.distributor-locator__tab-btn');
-    const cardsPane    = section.querySelector('.distributor-locator__cards-pane');
-    const mapPane      = section.querySelector('.distributor-locator__map-pane');
+    const tabButtons    = section.querySelectorAll('.distributor-locator__tab-btn');
+    const cardsPane     = section.querySelector('.distributor-locator__cards-pane');
+    const mapPane       = section.querySelector('.distributor-locator__map-pane');
 
-    let allData      = [];
-    let regionList   = [];
-    let userLocation = null;   // { lat, lng, city?, source }
-    let isNearbyMode = false;
-    let mapObj       = null;
-    let markersLayer = null;
-    let userMarker   = null;
-    let radiusCircle = null;
-    let markersMap   = new Map(); // index -> Leaflet Marker
-    let searchTerm   = '';
-    let activeRegion = '';
-    let renderTimer  = null;
+    let allData         = [];
+    let regionList      = [];
+    let userLocation    = null;   // { lat, lng, city?, source }
+    let isNearbyMode    = false;
+    let mapObj          = null;
+    let markersLayer    = null;
+    let userMarker      = null;
+    let radiusCircle    = null;
+    let markersMap      = new Map(); // globalIndex -> Leaflet Marker
+    let searchTerm      = '';
+    let activeRegion    = '';
+    let renderTimer     = null;
+    let filteredData    = [];
+    let currentPage     = 1;
 
     // ─── Load JSON ────────────────────────────────────────────
     fetch(jsonUrl)
@@ -269,16 +291,15 @@
           if (nearby.length > 0) {
             isNearbyMode = true;
             showGeoStatus('found', userLocation, nearby.length, radiusKm);
-            renderCards(nearby);
+            renderCards(nearby, true);
           } else {
-            // No distributors nearby → show all with message
             showGeoStatus('noneNearby', userLocation, 0, radiusKm);
-            renderCards(allData);
+            renderCards(allData, true);
           }
           if (mapObj) updateUserLocationOnMap(userLocation, radiusKm);
         } else {
           showGeoStatus('denied');
-          renderCards(allData);
+          renderCards(allData, true);
         }
       })
       .catch(err => {
@@ -317,54 +338,165 @@
       if (geoLocate)  geoLocate.hidden   = state === 'loading' || state === 'found' || state === 'noneNearby';
     }
 
-    // ─── Render cards ─────────────────────────────────────────
-    function renderCards(data) {
+    // ─── Render cards with pagination ─────────────────────────
+    function renderCards(data, resetPage = false) {
+      filteredData = data;
+      if (resetPage) {
+        currentPage = 1;
+      }
+
       grid.innerHTML = '';
 
-      if (!data.length) {
+      if (!filteredData.length) {
         showEmpty();
         if (countEl) countEl.textContent = '';
+        if (paginationEl) {
+          paginationEl.hidden = true;
+          paginationEl.innerHTML = '';
+        }
         if (mapObj) updateMapMarkers([]);
         return;
       }
 
       hideEmpty();
 
-      const shown = data.length;
-      if (countEl) {
-        countEl.textContent = `${shown} distribuidor${shown !== 1 ? 'es' : ''} encontrado${shown !== 1 ? 's' : ''}`;
+      const totalItems = filteredData.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+      if (currentPage > totalPages) {
+        currentPage = totalPages;
+      }
+      if (currentPage < 1) {
+        currentPage = 1;
       }
 
-      const frag = document.createDocumentFragment();
-      data.forEach((d, i) => {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = buildCard(d, regionList, userLocation?.lat, userLocation?.lng, i);
-        const card = tmp.firstElementChild;
-        card.style.animationDelay = Math.min(i * 20, 300) + 'ms';
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex   = Math.min(startIndex + itemsPerPage, totalItems);
+      const pageData   = filteredData.slice(startIndex, endIndex);
 
-        // Hover & Click interaction with map
+      if (countEl) {
+        countEl.innerHTML = `<strong>${totalItems}</strong> distribuidor${totalItems !== 1 ? 'es' : ''} encontrado${totalItems !== 1 ? 's' : ''}`;
+      }
+
+      // Render cards for current page
+      const frag = document.createDocumentFragment();
+      pageData.forEach((d, i) => {
+        const globalIdx = startIndex + i;
+        const tmp = document.createElement('div');
+        tmp.innerHTML = buildCard(d, regionList, userLocation?.lat, userLocation?.lng, globalIdx);
+        const card = tmp.firstElementChild;
+        card.style.animationDelay = Math.min(i * 18, 250) + 'ms';
+
+        // Hover interaction with map
         card.addEventListener('mouseenter', () => {
-          highlightMarker(i, false);
+          highlightMarker(globalIdx, false);
         });
 
         frag.appendChild(card);
       });
       grid.appendChild(frag);
 
-      // Focus map button event delegation
+      // Button "Ver en mapa" event
       grid.querySelectorAll('.dloc-focus-map').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const idx = parseInt(btn.dataset.index, 10);
-          highlightMarker(idx, true);
-          // If on mobile and in list tab, switch to map tab
+          const globalIdx = parseInt(btn.dataset.globalIndex, 10);
+          highlightMarker(globalIdx, true);
           if (window.innerWidth < 992) {
             activateTab('map');
           }
         });
       });
 
-      if (mapObj) updateMapMarkers(data);
+      // Render Pagination Controls
+      renderPagination(totalItems, totalPages, startIndex, endIndex);
+
+      // Update Map with all filtered markers
+      if (mapObj) updateMapMarkers(filteredData);
+    }
+
+    // ─── Render Pagination HTML & Event Listeners ─────────────
+    function renderPagination(totalItems, totalPages, startIndex, endIndex) {
+      if (!paginationEl) return;
+
+      if (totalPages <= 1) {
+        paginationEl.hidden = true;
+        paginationEl.innerHTML = '';
+        return;
+      }
+
+      paginationEl.hidden = false;
+
+      const pageRange = getPaginationRange(currentPage, totalPages);
+      let pageButtonsHtml = '';
+
+      pageRange.forEach(p => {
+        if (p === '...') {
+          pageButtonsHtml += `<span class="dloc-page-ellipsis">…</span>`;
+        } else {
+          const isActive = p === currentPage;
+          pageButtonsHtml += `
+            <button
+              type="button"
+              class="dloc-page-btn dloc-page-btn--num${isActive ? ' is-active' : ''}"
+              data-page="${p}"
+              aria-label="Página ${p}"
+              ${isActive ? 'aria-current="page"' : ''}
+            >${p}</button>
+          `;
+        }
+      });
+
+      paginationEl.innerHTML = `
+        <div class="dloc-pagination-summary">
+          Mostrando <strong>${startIndex + 1}–${endIndex}</strong> de <strong>${totalItems}</strong> distribuidores
+        </div>
+        <div class="dloc-pagination-nav">
+          <button
+            type="button"
+            class="dloc-page-btn dloc-page-btn--prev"
+            data-page="${currentPage - 1}"
+            ${currentPage === 1 ? 'disabled' : ''}
+            aria-label="Página anterior"
+          >
+            ${ICON.chevronLeft} <span>Anterior</span>
+          </button>
+
+          <div class="dloc-pagination-numbers">
+            ${pageButtonsHtml}
+          </div>
+
+          <button
+            type="button"
+            class="dloc-page-btn dloc-page-btn--next"
+            data-page="${currentPage + 1}"
+            ${currentPage === totalPages ? 'disabled' : ''}
+            aria-label="Página siguiente"
+          >
+            <span>Siguiente</span> ${ICON.chevronRight}
+          </button>
+        </div>
+      `;
+
+      // Attach click events
+      paginationEl.querySelectorAll('.dloc-page-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.disabled || !btn.dataset.page) return;
+          const targetPage = parseInt(btn.dataset.page, 10);
+          if (targetPage === currentPage || isNaN(targetPage)) return;
+
+          currentPage = targetPage;
+          renderCards(filteredData, false);
+
+          // Smooth scroll to top of list
+          const controlsEl = section.querySelector('.distributor-locator__controls');
+          if (controlsEl) {
+            controlsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
     }
 
     function showEmpty() { if (emptyState) emptyState.hidden = false; }
@@ -389,7 +521,7 @@
         return matchRegion && matchSearch;
       });
 
-      renderCards(filtered);
+      renderCards(filtered, true);
     }
 
     function scheduleFilter() {
@@ -410,7 +542,7 @@
         zoomControl: true,
       });
 
-      // Beautiful OpenStreetMap tiles
+      // OpenStreetMap tiles
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
@@ -458,7 +590,7 @@
 
       const validCoords = [];
 
-      data.forEach((d, i) => {
+      data.forEach((d, globalIdx) => {
         if (d.lat == null || d.lng == null) return;
 
         const pinHtml = `
@@ -479,11 +611,11 @@
         marker.bindPopup(buildPopupContent(d), { maxWidth: 300, className: 'dloc-custom-leaflet-popup' });
 
         marker.on('click', () => {
-          highlightCard(i);
+          handleMarkerClick(globalIdx);
         });
 
         markersLayer.addLayer(marker);
-        markersMap.set(i, marker);
+        markersMap.set(globalIdx, marker);
         validCoords.push([d.lat, d.lng]);
       });
 
@@ -503,9 +635,9 @@
       }
     }
 
-    function highlightMarker(index, openPopup) {
-      if (!mapObj || !markersMap.has(index)) return;
-      const marker = markersMap.get(index);
+    function highlightMarker(globalIdx, openPopup) {
+      if (!mapObj || !markersMap.has(globalIdx)) return;
+      const marker = markersMap.get(globalIdx);
       const latLng = marker.getLatLng();
 
       mapObj.panTo(latLng, { animate: true, duration: 0.5 });
@@ -514,8 +646,19 @@
       }
     }
 
-    function highlightCard(index) {
-      const card = grid.querySelector(`#dloc-card-${index}`);
+    function handleMarkerClick(globalIdx) {
+      // Calculate which page this item belongs to
+      const targetPage = Math.floor(globalIdx / itemsPerPage) + 1;
+      if (targetPage !== currentPage) {
+        currentPage = targetPage;
+        renderCards(filteredData, false);
+      }
+
+      highlightCard(globalIdx);
+    }
+
+    function highlightCard(globalIdx) {
+      const card = grid.querySelector(`#dloc-card-${globalIdx}`);
       if (!card) return;
 
       grid.querySelectorAll('.distributor-card').forEach(c => c.classList.remove('is-active-card'));
@@ -581,7 +724,7 @@
         isNearbyMode = false;
         geoShowAll.hidden = true;
         geoBanner.hidden = true;
-        renderCards(allData);
+        renderCards(allData, true);
         if (radiusCircle && mapObj) {
           mapObj.removeLayer(radiusCircle);
         }
@@ -598,10 +741,10 @@
           if (nearby.length > 0) {
             isNearbyMode = true;
             showGeoStatus('found', userLocation, nearby.length, radiusKm);
-            renderCards(nearby);
+            renderCards(nearby, true);
           } else {
             showGeoStatus('noneNearby', userLocation, 0, radiusKm);
-            renderCards(allData);
+            renderCards(allData, true);
           }
           if (mapObj) updateUserLocationOnMap(userLocation, radiusKm);
         } else {
@@ -625,10 +768,10 @@
           if (searchInput) searchInput.value = '';
           if (regionSelect) regionSelect.value = '';
           if (searchClear) searchClear.hidden = true;
-          searchTerm  = '';
+          searchTerm   = '';
           activeRegion = '';
           isNearbyMode = false;
-          renderCards(allData);
+          renderCards(allData, true);
         });
       }
     }
