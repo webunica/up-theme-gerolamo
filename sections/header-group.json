@@ -84,7 +84,8 @@
           "settings": {
             "title": "Perros",
             "url": "shopify://collections/perro",
-            "icon_svg": "🐶",
+            "icon_image": "shopify://shop_images/iconperro.png",
+            "icon_svg": "",
             "sub_menu": ""
           }
         },
@@ -93,7 +94,8 @@
           "settings": {
             "title": "Gatos",
             "url": "",
-            "icon_svg": "🐱",
+            "icon_image": "shopify://shop_images/icongato.png",
+            "icon_svg": "",
             "sub_menu": ""
           }
         },
