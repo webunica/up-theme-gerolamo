@@ -34,7 +34,7 @@
     "distributor_locator": {
       "type": "distributor-locator",
       "settings": {
-        "hero_image": "shopify://shop_images/Banner_gero_web_26_2.png",
+        "hero_image": "shopify://shop_images/horizonte-hero.jpg",
         "hero_height_desktop": 360,
         "hero_height_mobile": 220,
         "hero_text_align": "left",
