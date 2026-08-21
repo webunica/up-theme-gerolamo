@@ -1,61 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Footer",
   "type": "footer",
   "sections": {
-    "newsletter_signup_MP9jtd": {
-      "type": "newsletter-signup",
-      "name": "t:names.newsletter_signup",
-      "settings": {
-        "main_subheading": "Newsletter Signup",
-        "main_heading": "Join Our Exclusive Community",
-        "main_desc": "",
-        "heading_aligment": "text-left",
-        "top_spacing": "normal",
-        "top_spacing_none_index": false,
-        "width": "default",
-        "show_newsletter": true,
-        "desc2": "<p>By clicking the button you agree to the <a href=\"/\"><strong>Privacy Policy</strong></a> and <a href=\"/\"><strong>Terms and Conditions</strong></a>.</p>",
-        "show_social": false,
-        "show_lines": false,
-        "lines_width": "fullwidth",
-        "background": "color",
-        "color_background": "#005649",
-        "gradient": "",
-        "image_overlay_opacity": 0,
-        "image_overlay_color": "rgba(0,0,0,0)",
-        "image_overlay_opacity_mobile": 0,
-        "image_overlay_color_mobile": "rgba(0,0,0,0)",
-        "show_parallax": false,
-        "imagealign": "center",
-        "imagesize": "cover",
-        "background_width": "fullwidth",
-        "background_spacing": "small",
-        "remove_bottom_spacing": false,
-        "color_base": "#ffffff",
-        "color_accent": "#ffffff",
-        "color_lines": "rgba(0,0,0,0)",
-        "color_heading": "rgba(0,0,0,0)",
-        "color_text_link": "rgba(0,0,0,0)",
-        "color_text_link_hover": "rgba(0,0,0,0)",
-        "color_social_icons": "rgba(0,0,0,0)",
-        "color_social_icons_hover": "rgba(0,0,0,0)",
-        "color_input_background": "#286e63",
-        "color_input_border": "rgba(0,0,0,0)",
-        "color_input_text": "rgba(0,0,0,0)",
-        "color_input_icon": "rgba(0,0,0,0)",
-        "color_input_background_hover": "rgba(0,0,0,0)",
-        "color_input_border_hover": "rgba(0,0,0,0)",
-        "color_input_outline_hover": "rgba(0,0,0,0)",
-        "color_input_text_hover": "#452626",
-        "color_input_icon_hover": "#452626"
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
         "media_with_text_yCnmzf": {
           "type": "media_with_text",
           "settings": {
+            "enable_dynamic_grid": false,
+            "grid_width_desktop": 25,
+            "enable_dynamic_grid_tablet": false,
+            "grid_width_tablet": 25,
             "show_image": "hide",
             "image_ratio": "auto",
             "logo_svg": "",
@@ -98,11 +63,20 @@
         },
         "emptycolumn_pfiR8w": {
           "type": "emptycolumn",
-          "settings": {}
+          "settings": {
+            "enable_dynamic_grid": false,
+            "grid_width_desktop": 25,
+            "enable_dynamic_grid_tablet": false,
+            "grid_width_tablet": 25
+          }
         },
         "link_list_tCkgCf": {
           "type": "link_list",
           "settings": {
+            "enable_dynamic_grid": false,
+            "grid_width_desktop": 25,
+            "enable_dynamic_grid_tablet": false,
+            "grid_width_tablet": 25,
             "block_size": "big",
             "heading_text": "Collections",
             "enable_heading_text": false,
@@ -115,6 +89,10 @@
         "link_list_J8pkUf": {
           "type": "link_list",
           "settings": {
+            "enable_dynamic_grid": false,
+            "grid_width_desktop": 25,
+            "enable_dynamic_grid_tablet": false,
+            "grid_width_tablet": 25,
             "block_size": "default",
             "heading_text": "",
             "enable_heading_text": false,
@@ -138,6 +116,7 @@
         "grid": "page-grid-md-2 page-grid-4",
         "grid_tablet": "page-grid-st-3",
         "image_hover": "default",
+        "copyright_aligment": "left",
         "show_all_text_in_admin": false,
         "enable_accordion": false,
         "enable_country_selector": true,
@@ -165,7 +144,6 @@
     }
   },
   "order": [
-    "newsletter_signup_MP9jtd",
     "footer"
   ]
 }
