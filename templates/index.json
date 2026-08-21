@@ -29,7 +29,7 @@
             "button_link_1": "shopify://collections",
             "button_name_2": "Conoce más",
             "button_link_2": "shopify://pages/nosotros",
-            "customize_button_size": "default",
+            "customize_button_size": "custom",
             "btn_min_height": 40,
             "btn_min_height_mobile": 40,
             "btn_wide_width": 300,
