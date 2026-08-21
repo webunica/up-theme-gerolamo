@@ -47,7 +47,7 @@
             "mobile_x": 50,
             "mobile_y": 50,
             "text_align": "text-right",
-            "description_width": 45,
+            "description_width": 40,
             "description_width_tablet": 70,
             "description_width_mobile": 90,
             "show_background": false,
