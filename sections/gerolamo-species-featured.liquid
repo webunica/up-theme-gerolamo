@@ -1,0 +1,587 @@
+{% comment %}
+  Gerolamo Featured Products by Species (Perros & Gatos) with interactive Category Tabs
+{% endcomment %}
+
+<style>
+  .gerolamo-species-section {
+    padding-top: var(--sec-pt-desktop, 40px);
+    padding-bottom: var(--sec-pb-desktop, 60px);
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-species-section {
+      padding-top: var(--sec-pt-mobile, 25px);
+      padding-bottom: var(--sec-pb-mobile, 40px);
+    }
+  }
+
+  /* Section Title with lines */
+  .gerolamo-species__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .gerolamo-species__header-line {
+    flex: 0 0 45px;
+    height: 2px;
+    background-color: var(--title-color, #1B4B8A);
+    opacity: 0.6;
+    border-radius: 2px;
+  }
+
+  .gerolamo-species__main-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--title-color, #1B4B8A);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-species__main-title {
+      font-size: 20px;
+    }
+    .gerolamo-species__header-line {
+      flex: 0 0 25px;
+    }
+  }
+
+  /* Main 2-Column Grid */
+  .gerolamo-species__columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-species__columns-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  /* Species Box */
+  .gerolamo-species-box {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
+  }
+
+  /* Species Header Bar */
+  .gerolamo-species-box__top {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #ffffff;
+  }
+
+  .gerolamo-species-box__top-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gerolamo-species-box__top-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .gerolamo-species-box__top-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Inside Tabs */
+  .gerolamo-species-box__tabs {
+    display: flex;
+    justify-content: space-around;
+    padding: 16px 16px 8px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 10px;
+  }
+
+  .gerolamo-species-tab-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    padding: 6px 12px 10px 12px;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .gerolamo-species-tab-btn:hover {
+    color: var(--tab-accent, #0F6445);
+  }
+
+  .gerolamo-species-tab-btn.is-active {
+    color: var(--tab-accent, #0F6445);
+    font-weight: 700;
+  }
+
+  .gerolamo-species-tab-btn.is-active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background-color: var(--tab-accent, #0F6445);
+    border-radius: 3px;
+  }
+
+  /* Products Grid */
+  .gerolamo-species-tab-pane {
+    display: none;
+    padding: 20px 16px 16px 16px;
+  }
+
+  .gerolamo-species-tab-pane.is-active {
+    display: block;
+  }
+
+  .gerolamo-species-products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-species-products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+  }
+
+  .gerolamo-mini-product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+  }
+
+  .gerolamo-mini-product:hover {
+    transform: translateY(-4px);
+  }
+
+  .gerolamo-mini-product__img-wrap {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .gerolamo-mini-product__img-wrap img {
+    max-width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+  }
+
+  .gerolamo-mini-product__title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
+  }
+
+  .gerolamo-mini-product__subtitle {
+    margin: 3px 0 0 0;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.2;
+  }
+
+  /* Footer Link */
+  .gerolamo-species-box__footer {
+    margin-top: auto;
+    padding: 12px 16px 18px 16px;
+    text-align: center;
+  }
+
+  .gerolamo-species-box__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--tab-accent, #0F6445);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .gerolamo-species-box__link:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+  }
+</style>
+
+<div class="gerolamo-species-section"
+     id="theme-section-{{ section.id }}"
+     style="
+       --sec-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+       --sec-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+       --sec-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+       --sec-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+       --title-color: {{ section.settings.title_color | default: '#1B4B8A' }};
+     ">
+  <div class="page-width">
+    
+    <!-- Section Title -->
+    {%- if section.settings.main_title != blank -%}
+      <div class="gerolamo-species__header">
+        <span class="gerolamo-species__header-line"></span>
+        <h2 class="gerolamo-species__main-title">{{ section.settings.main_title }}</h2>
+        <span class="gerolamo-species__header-line"></span>
+      </div>
+    {%- endif -%}
+
+    <div class="gerolamo-species__columns-grid">
+      
+      <!-- ==================== COLUMN 1: PERROS ==================== -->
+      <div class="gerolamo-species-box" style="--tab-accent: {{ section.settings.col1_accent | default: '#0F6445' }};">
+        
+        <!-- Header -->
+        <div class="gerolamo-species-box__top" style="background-color: {{ section.settings.col1_header_bg | default: '#0F6445' }};">
+          <span class="gerolamo-species-box__top-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.4.9 4.6 2.3 6.3L4 22l3.7-.3c1.3.8 2.8 1.3 4.3 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm-3.5 6c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8zm7 0c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5zm-3.5 3c1.4 0 2.5 1.1 2.5 2.5S13.4 16 12 16s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5z"/></svg>
+          </span>
+          <h3 class="gerolamo-species-box__top-title">{{ section.settings.col1_title | default: 'PERROS' }}</h3>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="gerolamo-species-box__tabs" role="tablist">
+          <button type="button" class="gerolamo-species-tab-btn is-active" data-target="col1-tab1">{{ section.settings.col1_tab1_name | default: 'Mantención' }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col1-tab2">{{ section.settings.col1_tab2_name | default: 'Prescripción' }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col1-tab3">{{ section.settings.col1_tab3_name | default: 'Snacks' }}</button>
+        </div>
+
+        <!-- Tab 1 Products -->
+        <div class="gerolamo-species-tab-pane is-active" id="col1-tab1">
+          <div class="gerolamo-species-products-grid">
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p1_img, title: section.settings.col1_t1_p1_title | default: 'Adulto', sub: section.settings.col1_t1_p1_sub | default: 'Todas las razas', link: section.settings.col1_t1_p1_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p2_img, title: section.settings.col1_t1_p2_title | default: 'Cachorro', sub: section.settings.col1_t1_p2_sub | default: 'Todas las razas', link: section.settings.col1_t1_p2_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p3_img, title: section.settings.col1_t1_p3_title | default: 'Senior', sub: section.settings.col1_t1_p3_sub | default: 'Todas las razas', link: section.settings.col1_t1_p3_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p4_img, title: section.settings.col1_t1_p4_title | default: 'Razas grandes', sub: section.settings.col1_t1_p4_sub | default: 'Adulto', link: section.settings.col1_t1_p4_url -%}
+          </div>
+        </div>
+
+        <!-- Tab 2 Products -->
+        <div class="gerolamo-species-tab-pane" id="col1-tab2">
+          <div class="gerolamo-species-products-grid">
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p1_img, title: section.settings.col1_t2_p1_title | default: 'Renal', sub: section.settings.col1_t2_p1_sub | default: 'Cuidado renal', link: section.settings.col1_t2_p1_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p2_img, title: section.settings.col1_t2_p2_title | default: 'Gastro', sub: section.settings.col1_t2_p2_sub | default: 'Digestivo', link: section.settings.col1_t2_p2_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p3_img, title: section.settings.col1_t2_p3_title | default: 'Skin Care', sub: section.settings.col1_t2_p3_sub | default: 'Dermatológico', link: section.settings.col1_t2_p3_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p4_img, title: section.settings.col1_t2_p4_title | default: 'Obesity', sub: section.settings.col1_t2_p4_sub | default: 'Control peso', link: section.settings.col1_t2_p4_url -%}
+          </div>
+        </div>
+
+        <!-- Tab 3 Products -->
+        <div class="gerolamo-species-tab-pane" id="col1-tab3">
+          <div class="gerolamo-species-products-grid">
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p1_img, title: section.settings.col1_t3_p1_title | default: 'Dental', sub: section.settings.col1_t3_p1_sub | default: 'Salud bucal', link: section.settings.col1_t3_p1_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p2_img, title: section.settings.col1_t3_p2_title | default: 'Sticks', sub: section.settings.col1_t3_p2_sub | default: 'Premios carne', link: section.settings.col1_t3_p2_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p3_img, title: section.settings.col1_t3_p3_title | default: 'Bites', sub: section.settings.col1_t3_p3_sub | default: 'Entrenamiento', link: section.settings.col1_t3_p3_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p4_img, title: section.settings.col1_t3_p4_title | default: 'Crunchy', sub: section.settings.col1_t3_p4_sub | default: 'Galletas', link: section.settings.col1_t3_p4_url -%}
+          </div>
+        </div>
+
+        <!-- Footer Link -->
+        {%- if section.settings.col1_footer_text != blank -%}
+          <div class="gerolamo-species-box__footer">
+            <a href="{{ section.settings.col1_footer_url | default: '#' }}" class="gerolamo-species-box__link">
+              {{ section.settings.col1_footer_text }} →
+            </a>
+          </div>
+        {%- endif -%}
+
+      </div>
+
+      <!-- ==================== COLUMN 2: GATOS ==================== -->
+      <div class="gerolamo-species-box" style="--tab-accent: {{ section.settings.col2_accent | default: '#3B702A' }};">
+        
+        <!-- Header -->
+        <div class="gerolamo-species-box__top" style="background-color: {{ section.settings.col2_header_bg | default: '#3B702A' }};">
+          <span class="gerolamo-species-box__top-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 2.4.9 4.6 2.3 6.3L4 22l3.7-.3c1.3.8 2.8 1.3 4.3 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm-3.5 6c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8zm7 0c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5zm-3.5 3c1.4 0 2.5 1.1 2.5 2.5S13.4 16 12 16s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5z"/></svg>
+          </span>
+          <h3 class="gerolamo-species-box__top-title">{{ section.settings.col2_title | default: 'GATOS' }}</h3>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="gerolamo-species-box__tabs" role="tablist">
+          <button type="button" class="gerolamo-species-tab-btn is-active" data-target="col2-tab1">{{ section.settings.col2_tab1_name | default: 'Mantención' }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col2-tab2">{{ section.settings.col2_tab2_name | default: 'Prescripción' }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col2-tab3">{{ section.settings.col2_tab3_name | default: 'Snacks' }}</button>
+        </div>
+
+        <!-- Tab 1 Products -->
+        <div class="gerolamo-species-tab-pane is-active" id="col2-tab1">
+          <div class="gerolamo-species-products-grid">
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p1_img, title: section.settings.col2_t1_p1_title | default: 'Adulto', sub: section.settings.col2_t1_p1_sub | default: 'Indoor', link: section.settings.col2_t1_p1_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p2_img, title: section.settings.col2_t1_p2_title | default: 'Castrado', sub: section.settings.col2_t1_p2_sub | default: 'Control de peso', link: section.settings.col2_t1_p2_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p3_img, title: section.settings.col2_t1_p3_title | default: 'Senior', sub: section.settings.col2_t1_p3_sub | default: '+7 años', link: section.settings.col2_t1_p3_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p4_img, title: section.settings.col2_t1_p4_title | default: 'Cachorro', sub: section.settings.col2_t1_p4_sub | default: 'Hasta 12 meses', link: section.settings.col2_t1_p4_url -%}
+          </div>
+        </div>
+
+        <!-- Tab 2 Products -->
+        <div class="gerolamo-species-tab-pane" id="col2-tab2">
+          <div class="gerolamo-species-products-grid">
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p1_img, title: section.settings.col2_t2_p1_title | default: 'Urinary', sub: section.settings.col2_t2_p1_sub | default: 'Tracto urinario', link: section.settings.col2_t2_p1_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p2_img, title: section.settings.col2_t2_p2_title | default: 'Renal', sub: section.settings.col2_t2_p2_sub | default: 'Salud renal', link: section.settings.col2_t2_p2_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p3_img, title: section.settings.col2_t2_p3_title | default: 'Gastro', sub: section.settings.col2_t2_p3_sub | default: 'Fácil digestión', link: section.settings.col2_t2_p3_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p4_img, title: section.settings.col2_t2_p4_title | default: 'Hypo', sub: section.settings.col2_t2_p4_sub | default: 'Hipoalergénico', link: section.settings.col2_t2_p4_url -%}
+          </div>
+        </div>
+
+        <!-- Tab 3 Products -->
+        <div class="gerolamo-species-tab-pane" id="col2-tab3">
+          <div class="gerolamo-species-products-grid">
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p1_img, title: section.settings.col2_t3_p1_title | default: 'Creamy', sub: section.settings.col2_t3_p1_sub | default: 'Puré snack', link: section.settings.col2_t3_p1_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p2_img, title: section.settings.col2_t3_p2_title | default: 'Crunchy', sub: section.settings.col2_t3_p2_sub | default: 'Bocados crujientes', link: section.settings.col2_t3_p2_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p3_img, title: section.settings.col2_t3_p3_title | default: 'Hairball', sub: section.settings.col2_t3_p3_sub | default: 'Control bolas pelo', link: section.settings.col2_t3_p3_url -%}
+            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p4_img, title: section.settings.col2_t3_p4_title | default: 'Dental Cat', sub: section.settings.col2_t3_p4_sub | default: 'Cuidado dental', link: section.settings.col2_t3_p4_url -%}
+          </div>
+        </div>
+
+        <!-- Footer Link -->
+        {%- if section.settings.col2_footer_text != blank -%}
+          <div class="gerolamo-species-box__footer">
+            <a href="{{ section.settings.col2_footer_url | default: '#' }}" class="gerolamo-species-box__link">
+              {{ section.settings.col2_footer_text }} →
+            </a>
+          </div>
+        {%- endif -%}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initSpeciesTabs() {
+      const section = document.getElementById('theme-section-{{ section.id }}');
+      if (!section) return;
+      const tabButtons = section.querySelectorAll('.gerolamo-species-tab-btn');
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const parentBox = this.closest('.gerolamo-species-box');
+          if (!parentBox) return;
+          const targetId = this.getAttribute('data-target');
+          
+          parentBox.querySelectorAll('.gerolamo-species-tab-btn').forEach(b => b.classList.remove('is-active'));
+          parentBox.querySelectorAll('.gerolamo-species-tab-pane').forEach(p => p.classList.remove('is-active'));
+          
+          this.classList.add('is-active');
+          const targetPane = parentBox.querySelector('#' + targetId);
+          if (targetPane) targetPane.classList.add('is-active');
+        });
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSpeciesTabs);
+    } else {
+      initSpeciesTabs();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Destacados por Especie",
+  "tag": "section",
+  "class": "section-gerolamo-species",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_title",
+      "default": "PRODUCTOS DESTACADOS",
+      "label": "Título Principal"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#1B4B8A",
+      "label": "Color del título"
+    },
+    {
+      "type": "header",
+      "content": "Columna 1: Perros"
+    },
+    {
+      "type": "text",
+      "id": "col1_title",
+      "default": "PERROS",
+      "label": "Título de cabecera"
+    },
+    {
+      "type": "color",
+      "id": "col1_header_bg",
+      "default": "#0F6445",
+      "label": "Fondo de cabecera"
+    },
+    {
+      "type": "color",
+      "id": "col1_accent",
+      "default": "#0F6445",
+      "label": "Color de acento / pestañas"
+    },
+    {
+      "type": "text",
+      "id": "col1_tab1_name",
+      "default": "Mantención",
+      "label": "Nombre Pestaña 1"
+    },
+    {
+      "type": "text",
+      "id": "col1_tab2_name",
+      "default": "Prescripción",
+      "label": "Nombre Pestaña 2"
+    },
+    {
+      "type": "text",
+      "id": "col1_tab3_name",
+      "default": "Snacks",
+      "label": "Nombre Pestaña 3"
+    },
+    {
+      "type": "text",
+      "id": "col1_footer_text",
+      "default": "Ver todos los productos para perros",
+      "label": "Texto del enlace inferior"
+    },
+    {
+      "type": "url",
+      "id": "col1_footer_url",
+      "label": "Enlace inferior"
+    },
+    {
+      "type": "header",
+      "content": "Columna 2: Gatos"
+    },
+    {
+      "type": "text",
+      "id": "col2_title",
+      "default": "GATOS",
+      "label": "Título de cabecera"
+    },
+    {
+      "type": "color",
+      "id": "col2_header_bg",
+      "default": "#3B702A",
+      "label": "Fondo de cabecera"
+    },
+    {
+      "type": "color",
+      "id": "col2_accent",
+      "default": "#3B702A",
+      "label": "Color de acento / pestañas"
+    },
+    {
+      "type": "text",
+      "id": "col2_tab1_name",
+      "default": "Mantención",
+      "label": "Nombre Pestaña 1"
+    },
+    {
+      "type": "text",
+      "id": "col2_tab2_name",
+      "default": "Prescripción",
+      "label": "Nombre Pestaña 2"
+    },
+    {
+      "type": "text",
+      "id": "col2_tab3_name",
+      "default": "Snacks",
+      "label": "Nombre Pestaña 3"
+    },
+    {
+      "type": "text",
+      "id": "col2_footer_text",
+      "default": "Ver todos los productos para gatos",
+      "label": "Texto del enlace inferior"
+    },
+    {
+      "type": "url",
+      "id": "col2_footer_url",
+      "label": "Enlace inferior"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Móvil)",
+      "default": 35
+    }
+  ],
+  "presets": [
+    {
+      "name": "Destacados por Especie (Perros / Gatos)"
+    }
+  ]
+}
+{% endschema %}
