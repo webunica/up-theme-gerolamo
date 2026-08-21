@@ -167,6 +167,11 @@ swiper-bundle.min.css,component-swiper-slider.css
     font-size:{{ block.settings.heading_size_px_mobile }}px;
   }
 }
+{%- if block.settings.heading_font_weight != 'default' and block.settings.heading_font_weight != blank -%}
+#theme-section-{{ section.id }} #theme-block-{{ block.id }} .section-slider__heading{
+  font-weight: {{ block.settings.heading_font_weight }};
+}
+{%- endif -%}
 {%- if block.settings.image_overlay_opacity > 0 -%}
 #theme-section-{{ section.id }} #theme-block-{{ block.id }} .image-hover-box:after {
     content: "";
@@ -1158,6 +1163,46 @@ swiper-bundle.min.css,component-swiper-slider.css
           ],
           "default": "h2",
           "label": "Heading tag"
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "options": [
+            {
+              "value": "default",
+              "label": "Predeterminado"
+            },
+            {
+              "value": "300",
+              "label": "300 - Light"
+            },
+            {
+              "value": "400",
+              "label": "400 - Regular"
+            },
+            {
+              "value": "500",
+              "label": "500 - Medium"
+            },
+            {
+              "value": "600",
+              "label": "600 - Semi Bold"
+            },
+            {
+              "value": "700",
+              "label": "700 - Bold"
+            },
+            {
+              "value": "800",
+              "label": "800 - Extra Bold"
+            },
+            {
+              "value": "900",
+              "label": "900 - Black"
+            }
+          ],
+          "default": "default",
+          "label": "Peso de fuente del título (Font Weight)"
         },
         {
             "type": "range",
