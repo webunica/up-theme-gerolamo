@@ -350,6 +350,28 @@
         "padding_bottom_mobile": 35
       }
     },
+    "gerolamo_our_story_L63Cib": {
+      "type": "gerolamo-our-story",
+      "name": "Nuestra Historia",
+      "settings": {
+        "image": "shopify://shop_images/historia.jpg",
+        "img_radius": 20,
+        "title": "NUESTRA HISTORIA",
+        "text": "<p>Nuestro antepasado, un hombre con espíritu emprendedor y aventurero, que llegó desde Italia a Argentina para luego emprender desde allí, junto a su perro, en el viaje hasta Chile.</p><p>De ese viaje nació Gerolamo, con la misión de entregar nutrición premium para compañero perruno y gatos en todas las etapas de su vida.</p>",
+        "button_text": "Conoce nuestra historia",
+        "button_link": "",
+        "show_leaf_deco": true,
+        "bg_color": "#ffffff",
+        "title_color": "#1B4B8A",
+        "text_color": "#334155",
+        "btn_bg_color": "#1B4B8A",
+        "btn_text_color": "#ffffff",
+        "padding_top_desktop": 50,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 30,
+        "padding_bottom_mobile": 40
+      }
+    },
     "banners_XmxcEi": {
       "type": "banners",
       "blocks": {
@@ -551,27 +573,6 @@
         "color_lines": "rgba(0,0,0,0)",
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
-      }
-    },
-    "gerolamo_our_story_L63Cib": {
-      "type": "gerolamo-our-story",
-      "name": "Nuestra Historia",
-      "settings": {
-        "img_radius": 20,
-        "title": "NUESTRA HISTORIA",
-        "text": "<p>Nuestro antepasado, un hombre con espíritu emprendedor y aventurero, que llegó desde Italia a Argentina para luego emprender desde allí, junto a su perro, en el viaje hasta Chile.</p><p>De ese viaje nació Gerolamo, con la misión de entregar nutrición premium para compañero perruno y gatos en todas las etapas de su vida.</p>",
-        "button_text": "Conoce nuestra historia",
-        "button_link": "",
-        "show_leaf_deco": true,
-        "bg_color": "#ffffff",
-        "title_color": "#1B4B8A",
-        "text_color": "#334155",
-        "btn_bg_color": "#1B4B8A",
-        "btn_text_color": "#ffffff",
-        "padding_top_desktop": 50,
-        "padding_bottom_desktop": 60,
-        "padding_top_mobile": 30,
-        "padding_bottom_mobile": 40
       }
     }
   },
