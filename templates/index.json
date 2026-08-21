@@ -1163,12 +1163,41 @@
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
       }
+    },
+    "gerolamo_species_featured_QVqkcU": {
+      "type": "gerolamo-species-featured",
+      "name": "Destacados por Especie (Perros / Gatos)",
+      "settings": {
+        "main_title": "PRODUCTOS DESTACADOS",
+        "title_color": "#1B4B8A",
+        "col1_title": "PERROS",
+        "col1_header_bg": "#0F6445",
+        "col1_accent": "#0F6445",
+        "col1_tab1_name": "Mantención",
+        "col1_tab2_name": "Prescripción",
+        "col1_tab3_name": "Snacks",
+        "col1_footer_text": "Ver todos los productos para perros",
+        "col1_footer_url": "",
+        "col2_title": "GATOS",
+        "col2_header_bg": "#3B702A",
+        "col2_accent": "#3B702A",
+        "col2_tab1_name": "Mantención",
+        "col2_tab2_name": "Prescripción",
+        "col2_tab3_name": "Snacks",
+        "col2_footer_text": "Ver todos los productos para gatos",
+        "col2_footer_url": "",
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 35
+      }
     }
   },
   "order": [
     "slider_frPfz4",
     "gerolamo_curved_features",
     "gerolamo_line_cards_VW7xdt",
+    "gerolamo_species_featured_QVqkcU",
     "banners_XmxcEi",
     "featured_collection_qt6T3w",
     "slider_EgF6P4",
