@@ -355,7 +355,7 @@
       "name": "Nuestra Historia",
       "settings": {
         "image": "shopify://shop_images/historia.jpg",
-        "img_radius": 20,
+        "img_radius": 10,
         "title": "NUESTRA HISTORIA",
         "text": "<p>Nuestro antepasado, un hombre con espíritu emprendedor y aventurero, que llegó desde Italia a Argentina para luego emprender desde allí, junto a su perro, en el viaje hasta Chile.</p><p>De ese viaje nació Gerolamo, con la misión de entregar nutrición premium para compañero perruno y gatos en todas las etapas de su vida.</p>",
         "button_text": "Conoce nuestra historia",
