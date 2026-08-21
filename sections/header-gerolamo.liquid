@@ -21,15 +21,34 @@
     --gerolamo-font-family: {{ header_font }};
     --gerolamo-topbar-bg: {{ section.settings.topbar_bg | default: '#004d40' }};
     --gerolamo-topbar-color: {{ section.settings.topbar_color | default: '#ffffff' }};
-    --gerolamo-main-bg: {{ section.settings.main_bg | default: '#006654' }};
-    --gerolamo-main-color: {{ section.settings.main_color | default: '#ffffff' }};
+    --gerolamo-main-bg: {{ section.settings.main_bg | default: '#ffffff' }};
+    --gerolamo-main-color: {{ section.settings.main_color | default: '#1e293b' }};
+    
+    /* Search Bar Colors */
     --gerolamo-search-bg: {{ section.settings.search_bg | default: '#ffffff' }};
+    --gerolamo-search-border: {{ section.settings.search_border_color | default: '#dbeafe' }};
+    --gerolamo-search-focus-border: {{ section.settings.search_focus_border | default: '#0c4ca3' }};
     --gerolamo-search-color: {{ section.settings.search_color | default: '#1e293b' }};
-    --gerolamo-search-btn-bg: {{ section.settings.search_btn_bg | default: '#006654' }};
-    --gerolamo-search-btn-color: {{ section.settings.search_btn_color | default: '#ffffff' }};
+    --gerolamo-search-placeholder: {{ section.settings.search_placeholder_color | default: '#94a3af' }};
+    --gerolamo-search-icon: {{ section.settings.search_icon_color | default: '#374151' }};
+    --gerolamo-search-icon-hover: {{ section.settings.search_icon_hover | default: '#0c4ca3' }};
+    
+    /* Action Items Colors */
+    --gerolamo-cta-line1-color: {{ section.settings.cta_line1_color | default: '#2b2b2b' }};
+    --gerolamo-cta-line2-color: {{ section.settings.cta_line2_color | default: '#0c4ca3' }};
+    --gerolamo-cta-dash-color: {{ section.settings.cta_dash_color | default: '#0c4ca3' }};
+    
+    --gerolamo-account-line1-color: {{ section.settings.account_line1_color | default: '#64748b' }};
+    --gerolamo-account-line2-color: {{ section.settings.account_line2_color | default: '#0c4ca3' }};
+    
+    --gerolamo-cart-color: {{ section.settings.cart_icon_color | default: '#0c4ca3' }};
+    --gerolamo-cart-badge-bg: {{ section.settings.cart_badge_bg | default: '#006654' }};
+    --gerolamo-cart-badge-color: {{ section.settings.cart_badge_color | default: '#ffffff' }};
+    
+    /* Navigation Bar Colors */
     --gerolamo-nav-bg: {{ section.settings.nav_bg | default: '#ffffff' }};
     --gerolamo-nav-color: {{ section.settings.nav_color | default: '#1e293b' }};
-    --gerolamo-nav-hover: {{ section.settings.nav_hover | default: '#006654' }};
+    --gerolamo-nav-hover: {{ section.settings.nav_hover | default: '#0c4ca3' }};
   }
 
   .header-gerolamo-wrapper {
@@ -68,7 +87,7 @@
     gap: 25px;
   }
 
-  /* 2. Main Green Bar */
+  /* 2. Main Header Bar (Logo + Search + Right Actions) */
   .header-gerolamo__main {
     background-color: var(--gerolamo-main-bg);
     color: var(--gerolamo-main-color);
@@ -89,125 +108,195 @@
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 40px;
+    gap: 36px;
+  }
+
+  /* Logo */
+  .header-gerolamo__logo {
+    display: flex;
+    align-items: center;
   }
 
   /* Search Pill Bar (Rounded Oval) */
   .header-gerolamo__search {
+    position: relative;
     width: 100%;
     max-width: {{ section.settings.search_max_width | default: 520 }}px;
     margin: 0 auto;
   }
   .header-gerolamo__search form {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     width: 100%;
+    height: {{ section.settings.search_height | default: 46 }}px;
     background: var(--gerolamo-search-bg);
+    border: {{ section.settings.search_border_width | default: 1 }}px solid var(--gerolamo-search-border);
     border-radius: {{ section.settings.search_border_radius | default: 50 }}px;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    transition: box-shadow 0.2s ease;
+    padding: 0 8px 0 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .header-gerolamo__search form:focus-within {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--gerolamo-search-focus-border);
+    box-shadow: 0 2px 10px rgba(12, 76, 163, 0.12);
   }
   .header-gerolamo__search input[type="search"] {
     flex: 1;
     border: none;
     outline: none;
-    padding: 10px 22px;
-    font-size: 14px;
+    padding: 0;
+    font-size: {{ section.settings.search_font_size | default: 14 }}px;
     font-family: var(--gerolamo-font-family);
     color: var(--gerolamo-search-color);
     background: transparent;
+    height: 100%;
   }
   .header-gerolamo__search input[type="search"]::placeholder {
-    color: #94a3b8;
+    color: var(--gerolamo-search-placeholder);
     font-family: var(--gerolamo-font-family);
   }
   .header-gerolamo__search-btn {
     background-color: transparent;
-    color: var(--gerolamo-search-btn-bg);
+    color: var(--gerolamo-search-icon);
     border: none;
-    padding: 0 18px 0 10px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.15s ease, opacity 0.2s ease;
+    border-radius: 50%;
+    padding: 0;
+    transition: transform 0.15s ease, color 0.2s ease, background-color 0.2s ease;
+    flex-shrink: 0;
   }
   .header-gerolamo__search-btn:hover {
-    transform: scale(1.08);
-    opacity: 0.9;
+    color: var(--gerolamo-search-icon-hover);
+    background-color: rgba(12, 76, 163, 0.06);
+    transform: scale(1.05);
   }
   .header-gerolamo__search-btn svg {
-    width: 19px;
-    height: 19px;
-    fill: currentColor;
+    width: 20px;
+    height: 20px;
     stroke: currentColor;
   }
 
-  /* Right Actions */
+  /* Right Actions (Iconos y textos organizados) */
   .header-gerolamo__actions {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: {{ section.settings.actions_gap | default: 30 }}px;
+    justify-content: flex-end;
   }
-  .header-gerolamo__action-link {
-    color: var(--gerolamo-main-color);
-    text-decoration: none;
-    font-size: {{ section.settings.cta_font_size | default: 15 }}px;
-    font-weight: {{ section.settings.cta_font_weight | default: '600' }};
-    letter-spacing: 0.3px;
-    transition: opacity 0.2s ease;
+  .header-gerolamo__action-box {
     display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-  }
-  .header-gerolamo__action-link:hover {
-    opacity: 0.85;
-  }
-  .header-gerolamo__action-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
     text-decoration: none;
-    color: var(--gerolamo-main-color);
-    font-family: var(--gerolamo-font-family);
-    font-size: {{ section.settings.actions_font_size | default: 13 }}px;
-    font-weight: {{ section.settings.actions_font_weight | default: '600' }};
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: opacity 0.2s ease;
+    line-height: 1.2;
+    transition: opacity 0.2s ease, transform 0.15s ease;
   }
-  .header-gerolamo__action-item:hover {
+  .header-gerolamo__action-box:hover {
     opacity: 0.85;
+    transform: translateY(-1px);
   }
-  .header-gerolamo__action-item svg {
-    width: 22px;
-    height: 22px;
-    stroke: currentColor;
-    fill: none;
-  }
-  .header-gerolamo__cart-bubble {
-    position: relative;
+
+  /* Item 1: Comunidad Gerolamo */
+  .header-gerolamo__cta-content {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
   }
-  .header-gerolamo__cart-count {
-    background: #ffffff;
-    color: var(--gerolamo-main-bg);
-    font-size: 11px;
-    font-weight: bold;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 50%;
+  .header-gerolamo__cta-line1 {
+    font-family: var(--gerolamo-font-family);
+    font-size: {{ section.settings.cta_line1_size | default: 13 }}px;
+    font-weight: {{ section.settings.cta_line1_weight | default: '700' }};
+    color: var(--gerolamo-cta-line1-color);
+    letter-spacing: -0.2px;
+  }
+  .header-gerolamo__cta-line2 {
+    font-family: var(--gerolamo-font-family);
+    font-size: {{ section.settings.cta_line2_size | default: 15 }}px;
+    font-weight: {{ section.settings.cta_line2_weight | default: '700' }};
+    color: var(--gerolamo-cta-line2-color);
+    letter-spacing: -0.2px;
+  }
+  .header-gerolamo__cta-dash {
+    display: block;
+    width: 14px;
+    height: 2px;
+    background-color: var(--gerolamo-cta-dash-color);
+    margin-top: 3px;
+    border-radius: 2px;
+  }
+
+  /* Item 2: Iniciar sesión / Mi cuenta */
+  .header-gerolamo__account-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-gerolamo__account-line1 {
+    font-family: var(--gerolamo-font-family);
+    font-size: {{ section.settings.account_line1_size | default: 12 }}px;
+    font-weight: {{ section.settings.account_line1_weight | default: '500' }};
+    color: var(--gerolamo-account-line1-color);
+    letter-spacing: -0.1px;
+  }
+  .header-gerolamo__account-line2 {
+    font-family: var(--gerolamo-font-family);
+    font-size: {{ section.settings.account_line2_size | default: 15 }}px;
+    font-weight: {{ section.settings.account_line2_weight | default: '700' }};
+    color: var(--gerolamo-account-line2-color);
+    letter-spacing: -0.2px;
+  }
+
+  /* Item 3: Shopping Cart Icon & Circular Green Badge */
+  .header-gerolamo__cart-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-left: 4px;
+    text-decoration: none;
+    position: relative;
+    padding: 6px;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+  }
+  .header-gerolamo__cart-btn:hover {
+    transform: scale(1.08);
+    opacity: 0.92;
+  }
+  .header-gerolamo__cart-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-gerolamo__cart-svg {
+    width: {{ section.settings.cart_icon_size | default: 28 }}px;
+    height: {{ section.settings.cart_icon_size | default: 28 }}px;
+    color: var(--gerolamo-cart-color);
+    stroke: var(--gerolamo-cart-color);
+    fill: none;
+  }
+  .header-gerolamo__cart-count {
+    position: absolute;
+    top: -7px;
+    right: -10px;
+    background-color: var(--gerolamo-cart-badge-bg);
+    color: var(--gerolamo-cart-badge-color);
+    font-family: var(--gerolamo-font-family);
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0 4px;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   }
 
   /* 3. Bottom White Navigation Bar */
@@ -238,7 +327,7 @@
     flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: {{ section.settings.menu_alignment | default: 'center' }} !important;
-    gap: {{ section.settings.menu_gap | default: 36 }}px !important;
+    gap: {{ section.settings.menu_gap | default: 48 }}px !important;
     list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -249,16 +338,18 @@
     align-items: center;
   }
   .header-gerolamo__nav-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: {{ section.settings.nav_padding_vertical | default: 14 }}px 0;
+    padding: {{ section.settings.nav_padding_vertical | default: 14 }}px {{ section.settings.menu_item_padding_x | default: 4 }}px;
     text-decoration: none;
     color: var(--gerolamo-nav-color);
     font-family: var(--gerolamo-font-family);
     font-size: {{ section.settings.nav_font_size | default: 16 }}px;
     font-weight: {{ section.settings.nav_font_weight | default: '600' }};
+    letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
     transition: color 0.2s ease;
+    white-space: nowrap;
   }
   .header-gerolamo__nav-link:hover,
   .header-gerolamo__nav-item:hover > .header-gerolamo__nav-link {
@@ -388,7 +479,7 @@
     </div>
     {%- endif -%}
 
-    <!-- 2. Main Green Bar (Logo + Search Pill + Right Link/Icons) -->
+    <!-- 2. Main Header Bar (Logo + Search Pill + Right Organized Actions) -->
     <div class="header-gerolamo__main{% if is_boxed_bg %} header-boxed-bg{% endif %}">
       <div class="{{ page_width }}">
         <div class="header-gerolamo__main-grid">
@@ -398,7 +489,7 @@
             {%- render "header-logo-desktop", section: section -%}
           </div>
 
-          <!-- Search Bar (Center Pill) -->
+          <!-- Search Bar (Center Pill Shape with clean Outline Magnifying Glass) -->
           <div class="header-gerolamo__search">
             {%- if settings.predictive_search_enabled -%}
             <predictive-search class="header-short-search" data-loading-text="{{ 'accessibility.loading' | t }}">
@@ -407,7 +498,7 @@
                 <input type="search"
                        name="q"
                        value="{{ search.terms | escape }}"
-                       placeholder="{{ section.settings.search_placeholder | default: 'Buscar productos, marcas y más...' }}"
+                       placeholder="{{ section.settings.search_placeholder | default: '¿Qué producto estás buscando?' }}"
                        {%- if settings.predictive_search_enabled -%}
                        role="combobox"
                        aria-expanded="false"
@@ -423,7 +514,10 @@
                 >
                 <input type="hidden" name="options[prefix]" value="last">
                 <button type="submit" class="header-gerolamo__search-btn" aria-label="{{ 'general.search.search' | t }}">
-                  {{- 'icon-search' | append: settings.system_icon_thickness | inline_asset_content -}}
+                  <svg class="header-gerolamo__search-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
                 </button>
               </form>
             {%- if settings.predictive_search_enabled -%}
@@ -431,45 +525,61 @@
             {%- endif -%}
           </div>
 
-          <!-- Right Actions (Comunidad Gerolamo + User Account / Cart) -->
+          <!-- Right Actions (Comunidad Gerolamo + Iniciar Sesión/Mi Cuenta + Cart Badge) -->
           <div class="header-gerolamo__actions">
-            {%- if section.settings.cta_text != blank -%}
-              <a href="{{ section.settings.cta_url | default: '#' }}" class="header-gerolamo__action-link">
-                <span>{{ section.settings.cta_text }}</span>
+            
+            <!-- 1. Comunidad Gerolamo -->
+            {%- if section.settings.show_cta -%}
+              <a href="{{ section.settings.cta_url | default: '#' }}" class="header-gerolamo__action-box header-gerolamo__cta">
+                <div class="header-gerolamo__cta-content">
+                  <span class="header-gerolamo__cta-line1">{{ section.settings.cta_line1 | default: 'Comunidad' }}</span>
+                  <span class="header-gerolamo__cta-line2">{{ section.settings.cta_line2 | default: 'Gerolamo' }}</span>
+                  {%- if section.settings.cta_show_dash -%}
+                    <span class="header-gerolamo__cta-dash"></span>
+                  {%- endif -%}
+                </div>
               </a>
             {%- endif -%}
 
+            <!-- 2. Iniciar sesión / Mi cuenta -->
             {%- if section.settings.show_account_btn and shop.customer_accounts_enabled -%}
-              <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header-gerolamo__action-item">
-                {{- 'icon-account' | append: settings.system_icon_thickness | inline_asset_content -}}
-                {%- if section.settings.account_label != blank -%}
-                  <span>
+              <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header-gerolamo__action-box header-gerolamo__account">
+                <div class="header-gerolamo__account-content">
+                  <span class="header-gerolamo__account-line1">
                     {%- if customer -%}
-                      {{ customer.first_name | default: 'MI CUENTA' }}
+                      {{ 'customer.account_fallback' | t | default: 'Hola,' }} {{ customer.first_name }}
                     {%- else -%}
-                      {{ section.settings.account_label }}
+                      {{ section.settings.account_line1_text | default: 'Iniciar sesión' }}
                     {%- endif -%}
                   </span>
-                {%- endif -%}
+                  <span class="header-gerolamo__account-line2">
+                    {{ section.settings.account_line2_text | default: 'Mi cuenta' }}
+                  </span>
+                </div>
               </a>
             {%- endif -%}
 
+            <!-- 3. Cart Icon with Green Count Badge -->
             {%- if section.settings.show_cart_btn and settings.cart_type != "catalog_mode" -%}
-              <a href="{{ routes.cart_url }}" class="header-gerolamo__action-item header-gerolamo__cart-bubble" id="cart-icon-bubble">
-                {{- 'icon-cart' | append: settings.system_icon_thickness | inline_asset_content -}}
-                {%- if section.settings.cart_label != blank -%}
-                  <span>{{ section.settings.cart_label }}</span>
-                {%- endif -%}
-                <span class="header-gerolamo__cart-count" id="cart-count-bubble">{{ cart.item_count }}</span>
+              <a href="{{ routes.cart_url }}" class="header-gerolamo__cart-btn" id="cart-icon-bubble" aria-label="{{ 'sections.header.icon_cart' | t }}">
+                <div class="header-gerolamo__cart-wrap">
+                  <svg class="header-gerolamo__cart-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1.2"></circle>
+                    <circle cx="20" cy="21" r="1.2"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
+                  <span class="header-gerolamo__cart-count" id="cart-count-bubble">{{ cart.item_count }}</span>
+                </div>
               </a>
             {%- endif -%}
+
           </div>
 
         </div>
       </div>
     </div>
 
-    <!-- 3. Bottom White Navigation Bar (Perros, Gatos, Noticias, Contacto) -->
+    <!-- 3. Bottom Navigation Bar (Perros, Gatos, Nosotros, Dónde comprar, Contacto) -->
     <div class="header-gerolamo__nav header-gerolamo__desktop-nav{% if is_boxed_bg %} header-boxed-bg{% endif %}">
       <div class="{{ page_width }} header-gerolamo__nav-container">
         <nav class="list-menu list-menu--classic">
@@ -604,19 +714,19 @@
     },
     {
       "type": "header",
-      "content": "Main Green Bar"
+      "content": "Main Header Bar"
     },
     {
       "type": "color",
       "id": "main_bg",
-      "default": "#006654",
+      "default": "#ffffff",
       "label": "Main Bar Background Color"
     },
     {
       "type": "color",
       "id": "main_color",
-      "default": "#ffffff",
-      "label": "Main Bar Text & Icon Color"
+      "default": "#1e293b",
+      "label": "Main Bar Text Color"
     },
     {
       "type": "range",
@@ -626,7 +736,7 @@
       "step": 1,
       "unit": "px",
       "label": "Main Bar Padding Top",
-      "default": 16
+      "default": 14
     },
     {
       "type": "range",
@@ -636,7 +746,7 @@
       "step": 1,
       "unit": "px",
       "label": "Main Bar Padding Bottom",
-      "default": 16
+      "default": 14
     },
     {
       "type": "image_picker",
@@ -657,7 +767,7 @@
       "step": 5,
       "unit": "px",
       "label": "Logo width (Desktop)",
-      "default": 200
+      "default": 220
     },
     {
       "type": "header",
@@ -666,7 +776,7 @@
     {
       "type": "text",
       "id": "search_placeholder",
-      "default": "¿Qué estás buscando?",
+      "default": "¿Qué producto estás buscando?",
       "label": "Search Placeholder"
     },
     {
@@ -677,25 +787,69 @@
     },
     {
       "type": "color",
+      "id": "search_border_color",
+      "default": "#e2e8f0",
+      "label": "Search Border Color"
+    },
+    {
+      "type": "color",
+      "id": "search_focus_border",
+      "default": "#0c4ca3",
+      "label": "Search Focus Border Color"
+    },
+    {
+      "type": "range",
+      "id": "search_border_width",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Border Width",
+      "default": 1
+    },
+    {
+      "type": "color",
       "id": "search_color",
       "default": "#1e293b",
       "label": "Search Text Color"
     },
     {
       "type": "color",
-      "id": "search_btn_bg",
-      "default": "#006654",
+      "id": "search_placeholder_color",
+      "default": "#94a3af",
+      "label": "Search Placeholder Color"
+    },
+    {
+      "type": "color",
+      "id": "search_icon_color",
+      "default": "#374151",
       "label": "Search Icon Color"
+    },
+    {
+      "type": "color",
+      "id": "search_icon_hover",
+      "default": "#0c4ca3",
+      "label": "Search Icon Hover Color"
     },
     {
       "type": "range",
       "id": "search_max_width",
       "min": 250,
-      "max": 750,
+      "max": 800,
       "step": 10,
       "unit": "px",
       "label": "Search Max Width",
-      "default": 480
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "search_height",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Search Bar Height",
+      "default": 46
     },
     {
       "type": "range",
@@ -708,65 +862,239 @@
       "default": 50
     },
     {
+      "type": "range",
+      "id": "search_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Font Size",
+      "default": 14
+    },
+    {
       "type": "header",
-      "content": "Right Side Actions"
+      "content": "Right Side Actions (Icons & Texts)"
+    },
+    {
+      "type": "range",
+      "id": "actions_gap",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing Between Right Actions",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Action 1: Comunidad Gerolamo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "default": true,
+      "label": "Show Comunidad Block"
     },
     {
       "type": "text",
-      "id": "cta_text",
-      "default": "Comunidad Gerolamo",
-      "label": "Action Text / Link Label"
+      "id": "cta_line1",
+      "default": "Comunidad",
+      "label": "Comunidad Line 1 Text"
+    },
+    {
+      "type": "text",
+      "id": "cta_line2",
+      "default": "Gerolamo",
+      "label": "Comunidad Line 2 Text"
     },
     {
       "type": "url",
       "id": "cta_url",
-      "label": "Action Link URL"
+      "label": "Comunidad Link URL"
+    },
+    {
+      "type": "color",
+      "id": "cta_line1_color",
+      "default": "#2b2b2b",
+      "label": "Comunidad Line 1 Color"
+    },
+    {
+      "type": "color",
+      "id": "cta_line2_color",
+      "default": "#0c4ca3",
+      "label": "Comunidad Line 2 Color"
     },
     {
       "type": "range",
-      "id": "cta_font_size",
-      "min": 11,
+      "id": "cta_line1_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Comunidad Line 1 Font Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "cta_line2_size",
+      "min": 12,
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Action Link Font Size",
+      "label": "Comunidad Line 2 Font Size",
       "default": 15
     },
     {
       "type": "select",
-      "id": "cta_font_weight",
+      "id": "cta_line1_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
         { "value": "500", "label": "Medium (500)" },
         { "value": "600", "label": "Semi Bold (600)" },
         { "value": "700", "label": "Bold (700)" }
       ],
-      "default": "600",
-      "label": "Action Link Font Weight"
+      "default": "700",
+      "label": "Comunidad Line 1 Font Weight"
+    },
+    {
+      "type": "select",
+      "id": "cta_line2_weight",
+      "options": [
+        { "value": "normal", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700",
+      "label": "Comunidad Line 2 Font Weight"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_show_dash",
+      "default": true,
+      "label": "Show Small Underline Dash"
+    },
+    {
+      "type": "color",
+      "id": "cta_dash_color",
+      "default": "#0c4ca3",
+      "label": "Underline Dash Color"
+    },
+    {
+      "type": "header",
+      "content": "Action 2: Iniciar sesión / Mi cuenta"
     },
     {
       "type": "checkbox",
       "id": "show_account_btn",
-      "default": false,
-      "label": "Show Account Icon/Button"
+      "default": true,
+      "label": "Show Account Block"
     },
     {
       "type": "text",
-      "id": "account_label",
-      "default": "MI CUENTA",
-      "label": "Account Button Label"
+      "id": "account_line1_text",
+      "default": "Iniciar sesión",
+      "label": "Account Line 1 Text"
+    },
+    {
+      "type": "text",
+      "id": "account_line2_text",
+      "default": "Mi cuenta",
+      "label": "Account Line 2 Text"
+    },
+    {
+      "type": "color",
+      "id": "account_line1_color",
+      "default": "#64748b",
+      "label": "Account Line 1 Color"
+    },
+    {
+      "type": "color",
+      "id": "account_line2_color",
+      "default": "#0c4ca3",
+      "label": "Account Line 2 Color"
+    },
+    {
+      "type": "range",
+      "id": "account_line1_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Account Line 1 Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "account_line2_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Account Line 2 Font Size",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "account_line1_weight",
+      "options": [
+        { "value": "normal", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "500",
+      "label": "Account Line 1 Font Weight"
+    },
+    {
+      "type": "select",
+      "id": "account_line2_weight",
+      "options": [
+        { "value": "normal", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700",
+      "label": "Account Line 2 Font Weight"
+    },
+    {
+      "type": "header",
+      "content": "Action 3: Shopping Cart"
     },
     {
       "type": "checkbox",
       "id": "show_cart_btn",
-      "default": false,
-      "label": "Show Cart Icon/Button"
+      "default": true,
+      "label": "Show Shopping Cart Icon"
     },
     {
-      "type": "text",
-      "id": "cart_label",
-      "default": "CARRITO",
-      "label": "Cart Button Label"
+      "type": "color",
+      "id": "cart_icon_color",
+      "default": "#0c4ca3",
+      "label": "Cart Icon Color"
+    },
+    {
+      "type": "color",
+      "id": "cart_badge_bg",
+      "default": "#006654",
+      "label": "Cart Badge Background Color"
+    },
+    {
+      "type": "color",
+      "id": "cart_badge_color",
+      "default": "#ffffff",
+      "label": "Cart Badge Number Color"
+    },
+    {
+      "type": "range",
+      "id": "cart_icon_size",
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Cart Icon Size",
+      "default": 28
     },
     {
       "type": "header",
@@ -785,7 +1113,8 @@
         { "value": "flex-start", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "space-between", "label": "Space Between" },
-        { "value": "space-around", "label": "Space Around" }
+        { "value": "space-around", "label": "Space Around" },
+        { "value": "flex-end", "label": "Right" }
       ],
       "default": "center",
       "label": "Menu Alignment"
@@ -794,11 +1123,21 @@
       "type": "range",
       "id": "menu_gap",
       "min": 10,
-      "max": 60,
+      "max": 120,
       "step": 2,
       "unit": "px",
-      "label": "Spacing Between Menu Items",
-      "default": 36
+      "label": "Spacing Between Menu Items (Gap)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "menu_item_padding_x",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Item Horizontal Padding",
+      "default": 4
     },
     {
       "type": "color",
@@ -815,14 +1154,14 @@
     {
       "type": "color",
       "id": "nav_hover",
-      "default": "#006654",
+      "default": "#0c4ca3",
       "label": "Menu Links Hover Color"
     },
     {
       "type": "range",
       "id": "nav_font_size",
       "min": 12,
-      "max": 20,
+      "max": 24,
       "step": 1,
       "unit": "px",
       "label": "Menu Font Size",
@@ -839,6 +1178,16 @@
       ],
       "default": "600",
       "label": "Menu Font Weight"
+    },
+    {
+      "type": "range",
+      "id": "nav_letter_spacing",
+      "min": -1,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Menu Letter Spacing",
+      "default": 0
     },
     {
       "type": "range",
@@ -1135,18 +1484,42 @@
       "category": "t:categories.header_design",
       "settings": {
         "menu": "main-menu",
-        "main_bg": "#006654",
-        "main_color": "#ffffff",
+        "main_bg": "#ffffff",
+        "main_color": "#1e293b",
+        "search_placeholder": "¿Qué producto estás buscando?",
         "search_bg": "#ffffff",
+        "search_border_color": "#e2e8f0",
+        "search_focus_border": "#0c4ca3",
         "search_color": "#1e293b",
-        "search_btn_bg": "#006654",
+        "search_placeholder_color": "#94a3af",
+        "search_icon_color": "#374151",
+        "search_icon_hover": "#0c4ca3",
         "search_border_radius": 50,
-        "cta_text": "Comunidad Gerolamo",
+        "search_max_width": 520,
+        "search_height": 46,
+        "actions_gap": 30,
+        "show_cta": true,
+        "cta_line1": "Comunidad",
+        "cta_line2": "Gerolamo",
+        "cta_line1_color": "#2b2b2b",
+        "cta_line2_color": "#0c4ca3",
+        "cta_show_dash": true,
+        "show_account_btn": true,
+        "account_line1_text": "Iniciar sesión",
+        "account_line2_text": "Mi cuenta",
+        "account_line1_color": "#64748b",
+        "account_line2_color": "#0c4ca3",
+        "show_cart_btn": true,
+        "cart_icon_color": "#0c4ca3",
+        "cart_badge_bg": "#006654",
+        "cart_badge_color": "#ffffff",
+        "cart_icon_size": 28,
         "nav_bg": "#ffffff",
         "nav_color": "#1e293b",
-        "nav_hover": "#006654",
+        "nav_hover": "#0c4ca3",
         "menu_alignment": "center",
-        "menu_gap": 36,
+        "menu_gap": 48,
+        "menu_item_padding_x": 4,
         "nav_font_size": 16,
         "nav_font_weight": "600",
         "width": "default",
