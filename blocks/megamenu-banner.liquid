@@ -57,14 +57,16 @@
   {%- if block.settings.color_button_text_hover  != "rgba(0,0,0,0)" -%}--color-button-text-hover_main:{{ block.settings.color_button_text_hover }};{%- endif -%}
   {%- if block.settings.show_button_bg -%}
   {%- if block.settings.color_button_gradient != blank or block.settings.color_button != "rgba(0,0,0,0)" -%}
-  --color-button-block:{%- if block.settings.color_button_gradient == blank -%}{{ block.settings.color_button }}{%- else -%}{{ block.settings.color_button_gradient }}{%- endif -%};
+  {%- assign btn_opacity = block.settings.button_bg_opacity | default: 100 | divided_by: 100.00 -%}
+  --color-button-block:{%- if block.settings.color_button_gradient == blank -%}{{ block.settings.color_button | color_modify: 'alpha', btn_opacity }}{%- else -%}{{ block.settings.color_button_gradient }}{%- endif -%};
   {%- endif -%}
   {%- else -%}
   --color-button-block:rgba(0,0,0,0);
   {%- endif -%}
   {%- if block.settings.show_button_bg_hover -%}
   {%- if block.settings.color_button_gradient_hover != blank or block.settings.color_button_hover != "rgba(0,0,0,0)" -%}  
-  --color-button-hover-block:{%- if block.settings.color_button_gradient_hover == blank -%}{{ block.settings.color_button_hover }}{%- else -%}{{ block.settings.color_button_gradient_hover }}{%- endif -%};
+  {%- assign btn_hover_opacity = block.settings.button_bg_hover_opacity | default: 100 | divided_by: 100.00 -%}
+  --color-button-hover-block:{%- if block.settings.color_button_gradient_hover == blank -%}{{ block.settings.color_button_hover | color_modify: 'alpha', btn_hover_opacity }}{%- else -%}{{ block.settings.color_button_gradient_hover }}{%- endif -%};
   {%- endif -%}
   {%- else -%}
   --color-button-hover-block:rgba(0,0,0,0);
@@ -486,6 +488,17 @@
       },
       {
         "visible_if": "{{ block.settings.show_button_bg == true }}",
+        "type": "range",
+        "id": "button_bg_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "label": "Background opacity",
+        "default": 100
+      },
+      {
+        "visible_if": "{{ block.settings.show_button_bg == true }}",
         "type": "color_background",
         "id": "color_button_gradient",
         "label": "Background gradient"
@@ -514,6 +527,17 @@
         "id": "color_button_hover",
         "default":"rgba(0,0,0,0)",
         "label": "Background hover"
+      },
+      {
+        "visible_if": "{{ block.settings.show_button_bg_hover == true }}",
+        "type": "range",
+        "id": "button_bg_hover_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "label": "Background hover opacity",
+        "default": 100
       },
       {
         "visible_if": "{{ block.settings.show_button_bg_hover == true }}",
