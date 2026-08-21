@@ -137,6 +137,19 @@ swiper-bundle.min.css,component-swiper-slider.css
     --text-offset:0%;
     {%- elsif block.settings.text_align == "text-right" -%}
     --text-offset:100%;
+    {%- else -%}
+    --text-offset:50%;
+    {%- endif -%}
+    {%- assign mobile_align = block.settings.text_align_mobile | default: 'inherit' -%}
+    {%- if mobile_align == 'inherit' -%}
+      {%- assign mobile_align = block.settings.text_align -%}
+    {%- endif -%}
+    {%- if mobile_align == "text-left" or mobile_align == "text-left-mobile" -%}
+    --text-offset-mobile:0%;
+    {%- elsif mobile_align == "text-right" or mobile_align == "text-right-mobile" -%}
+    --text-offset-mobile:100%;
+    {%- else -%}
+    --text-offset-mobile:50%;
     {%- endif -%}
 }
 @media (min-width:577px){
@@ -1268,6 +1281,30 @@ swiper-bundle.min.css,component-swiper-slider.css
           ],
           "default": "text-center",
           "label": "Text align"
+        },
+        {
+          "type": "select",
+          "id": "text_align_mobile",
+          "options": [
+            {
+              "value": "inherit",
+              "label": "Igual al escritorio"
+            },
+            {
+              "value": "text-left-mobile",
+              "label": "Izquierda"
+            },
+            {
+              "value": "text-center-mobile",
+              "label": "Centro"
+            },
+            {
+              "value": "text-right-mobile",
+              "label": "Derecha"
+            }
+          ],
+          "default": "inherit",
+          "label": "Alineación de texto (Móvil)"
         },
         {
           "type": "range",
