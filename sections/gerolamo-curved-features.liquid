@@ -1,0 +1,549 @@
+{% comment %}
+  Gerolamo Curved Features / Trust Badges Bar
+  Barra de caracteristicas con divisor de curva SVG superior para superponerse al hero slider.
+{% endcomment %}
+
+<style>
+  #theme-section-{{ section.id }} {
+    position: relative;
+    z-index: 10;
+    margin-top: calc(-1 * var(--curve-overlap-desktop, 70px));
+    background: transparent;
+  }
+
+  @media (max-width: 1024px) {
+    #theme-section-{{ section.id }} {
+      margin-top: calc(-1 * var(--curve-overlap-tablet, 50px));
+    }
+  }
+
+  @media (max-width: 576px) {
+    #theme-section-{{ section.id }} {
+      margin-top: calc(-1 * var(--curve-overlap-mobile, 35px));
+    }
+  }
+
+  .gerolamo-curved-bar {
+    position: relative;
+    width: 100%;
+  }
+
+  .gerolamo-curved-bar__svg-wrap {
+    display: block;
+    width: 100%;
+    height: var(--curve-height-desktop, 80px);
+    overflow: hidden;
+    line-height: 0;
+    pointer-events: none;
+  }
+
+  .gerolamo-curved-bar__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 1024px) {
+    .gerolamo-curved-bar__svg-wrap {
+      height: var(--curve-height-tablet, 55px);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-curved-bar__svg-wrap {
+      height: var(--curve-height-mobile, 40px);
+    }
+  }
+
+  .gerolamo-curved-bar__body {
+    background-color: var(--bar-bg-color, #ffffff);
+    padding-top: var(--body-pt-desktop, 10px);
+    padding-bottom: var(--body-pb-desktop, 35px);
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-curved-bar__body {
+      padding-top: var(--body-pt-mobile, 15px);
+      padding-bottom: var(--body-pb-mobile, 25px);
+    }
+  }
+
+  .gerolamo-curved-bar__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size | default: 3 }}, 1fr);
+    gap: var(--bar-gap-desktop, 30px);
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .gerolamo-curved-bar__grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-curved-bar__grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .gerolamo-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 6px 12px;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-feature-item {
+      justify-content: var(--item-align-mobile, flex-start);
+      padding: 4px 8px;
+    }
+  }
+
+  .gerolamo-feature-item__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-box-size, 46px);
+    height: var(--icon-box-size, 46px);
+    color: var(--icon-color, #0F6445);
+  }
+
+  .gerolamo-feature-item__icon svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gerolamo-feature-item__icon img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .gerolamo-feature-item__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gerolamo-feature-item__title {
+    margin: 0;
+    font-size: var(--title-font-size, 15px);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--text-color, #1e293b);
+  }
+
+  .gerolamo-feature-item__desc {
+    margin: 3px 0 0 0;
+    font-size: var(--desc-font-size, 13px);
+    line-height: 1.35;
+    color: var(--desc-color, #64748b);
+  }
+</style>
+
+<div id="theme-section-{{ section.id }}"
+     style="
+       --curve-overlap-desktop: {{ section.settings.overlap_desktop }}px;
+       --curve-overlap-tablet: {{ section.settings.overlap_tablet }}px;
+       --curve-overlap-mobile: {{ section.settings.overlap_mobile }}px;
+       --curve-height-desktop: {{ section.settings.curve_height_desktop }}px;
+       --curve-height-tablet: {{ section.settings.curve_height_tablet }}px;
+       --curve-height-mobile: {{ section.settings.curve_height_mobile }}px;
+       --bar-bg-color: {{ section.settings.bg_color | default: '#ffffff' }};
+       --body-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+       --body-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+       --body-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+       --body-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+       --bar-gap-desktop: {{ section.settings.gap_desktop }}px;
+       --icon-box-size: {{ section.settings.icon_size }}px;
+       --icon-color: {{ section.settings.icon_color | default: '#0F6445' }};
+       --title-font-size: {{ section.settings.title_size }}px;
+       --desc-font-size: {{ section.settings.desc_size }}px;
+       --text-color: {{ section.settings.title_color | default: '#1e293b' }};
+       --desc-color: {{ section.settings.desc_color | default: '#64748b' }};
+       --item-align-mobile: {{ section.settings.mobile_alignment | default: 'flex-start' }};
+     ">
+
+  <div class="gerolamo-curved-bar">
+    
+    <!-- Top Curved SVG Divider -->
+    {%- if section.settings.show_curve -%}
+    <div class="gerolamo-curved-bar__svg-wrap" aria-hidden="true">
+      <svg class="gerolamo-curved-bar__svg" viewBox="0 0 1440 100" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,70 C360,110 820,25 1440,0 L1440,100 L0,100 Z" fill="{{ section.settings.bg_color | default: '#ffffff' }}"/>
+      </svg>
+    </div>
+    {%- endif -%}
+
+    <!-- Features Content Body -->
+    <div class="gerolamo-curved-bar__body">
+      <div class="page-width">
+        <div class="gerolamo-curved-bar__grid">
+          {%- for block in section.blocks -%}
+            <div class="gerolamo-feature-item" {{ block.shopify_attributes }}>
+              
+              <!-- Icon -->
+              <div class="gerolamo-feature-item__icon">
+                {%- if block.settings.custom_svg != blank -%}
+                  {{ block.settings.custom_svg }}
+                {%- elsif block.settings.icon_image != blank -%}
+                  <img src="{{ block.settings.icon_image | image_url: width: 100 }}"
+                       alt="{{ block.settings.title | escape }}"
+                       width="{{ section.settings.icon_size }}"
+                       height="{{ section.settings.icon_size }}"
+                       loading="lazy">
+                {%- else -%}
+                  {%- case block.settings.icon_preset -%}
+                    {%- when 'leaf' -%}
+                      <!-- Leaf / Natural Icon -->
+                      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M24 42V22"/>
+                        <path d="M24 22C24 12 34 6 42 6C42 14 36 24 24 22Z"/>
+                        <path d="M24 28C24 20 16 14 8 14C8 22 14 30 24 28Z"/>
+                        <path d="M24 35C28 32 36 32 38 28"/>
+                      </svg>
+                    {%- when 'shield' -%}
+                      <!-- Shield / Scientific Balance Icon -->
+                      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M24 4L10 9V20C10 30 16 38.5 24 44C32 38.5 38 30 38 20V9L24 4Z"/>
+                        <path d="M24 14V34"/>
+                        <path d="M24 18C28 15 32 17 32 21C32 25 28 27 24 27"/>
+                        <path d="M24 23C20 20 16 22 16 26C16 30 20 32 24 32"/>
+                      </svg>
+                    {%- when 'paw' -%}
+                      <!-- Paw with Heart / Wellness Icon -->
+                      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="14" cy="15" rx="3.5" ry="5"/>
+                        <ellipse cx="21" cy="10" rx="3.5" ry="5"/>
+                        <ellipse cx="27" cy="10" rx="3.5" ry="5"/>
+                        <ellipse cx="34" cy="15" rx="3.5" ry="5"/>
+                        <path d="M24 20C17 20 12 25 12 32C12 37 16 41 24 41C32 41 36 37 36 32C36 25 31 20 24 20Z"/>
+                        <path d="M24 27C22.5 25 19 25.5 19 28C19 31 24 35 24 35C24 35 29 31 29 28C29 25.5 25.5 25 24 27Z" fill="currentColor"/>
+                      </svg>
+                    {%- else -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                  {%- endcase -%}
+                {%- endif -%}
+              </div>
+
+              <!-- Text Content -->
+              <div class="gerolamo-feature-item__content">
+                {%- if block.settings.title != blank -%}
+                  <p class="gerolamo-feature-item__title">{{ block.settings.title }}</p>
+                {%- endif -%}
+                {%- if block.settings.desc != blank -%}
+                  <p class="gerolamo-feature-item__desc">{{ block.settings.desc }}</p>
+                {%- endif -%}
+              </div>
+
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Barra curva beneficios",
+  "tag": "section",
+  "class": "section-gerolamo-curved-features",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Curva y Solapamiento"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_curve",
+      "default": true,
+      "label": "Mostrar curva superior"
+    },
+    {
+      "type": "range",
+      "id": "overlap_desktop",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Solapamiento sobre Hero (Desktop)",
+      "default": 70,
+      "info": "Superpone la curva sobre la foto del slider."
+    },
+    {
+      "type": "range",
+      "id": "overlap_tablet",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Solapamiento sobre Hero (Tablet)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "overlap_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Solapamiento sobre Hero (Móvil)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "curve_height_desktop",
+      "min": 30,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Altura de la curva (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "curve_height_tablet",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Altura de la curva (Tablet)",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "curve_height_mobile",
+      "min": 15,
+      "max": 70,
+      "step": 5,
+      "unit": "px",
+      "label": "Altura de la curva (Móvil)",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Colores y Fondo"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#ffffff",
+      "label": "Color de fondo / curva"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "default": "#0F6445",
+      "label": "Color de los iconos"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#1e293b",
+      "label": "Color del texto"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "default": "#64748b",
+      "label": "Color de descripción"
+    },
+    {
+      "type": "header",
+      "content": "Tipografía y Tamaños"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 24,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del icono",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño del texto",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de descripción",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Espaciado y Alineación"
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacio entre columnas (Desktop)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior interno (Desktop)",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Desktop)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior interno (Móvil)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        }
+      ],
+      "default": "flex-start",
+      "label": "Alineación en Móvil"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_preset",
+          "options": [
+            {
+              "value": "leaf",
+              "label": "Hoja (Natural)"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo (Científico)"
+            },
+            {
+              "value": "paw",
+              "label": "Huella / Corazón (Bienestar)"
+            },
+            {
+              "value": "check",
+              "label": "Check (Estándar)"
+            }
+          ],
+          "default": "leaf",
+          "label": "Icono predeterminado"
+        },
+        {
+          "type": "html",
+          "id": "custom_svg",
+          "label": "Código SVG personalizado",
+          "info": "Si se ingresa, reemplaza el icono predeterminado."
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "O subir imagen de icono"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Ingredientes de calidad seleccionados y naturales",
+          "label": "Texto / Título"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Descripción secundaria (Opcional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra curva beneficios",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_preset": "leaf",
+            "title": "Ingredientes de calidad seleccionados y naturales"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_preset": "shield",
+            "title": "Nutrición científica y balanceada"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_preset": "paw",
+            "title": "Bienestar para hoy y para siempre"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
