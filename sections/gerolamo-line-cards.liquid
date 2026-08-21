@@ -1,0 +1,501 @@
+{% comment %}
+  Gerolamo Product Line Cards
+  Sección de tarjetas de líneas de producto (Mantención, Prescripción, Snacks)
+{% endcomment %}
+
+<style>
+  .gerolamo-cards-section {
+    padding-top: var(--sec-pt-desktop, 40px);
+    padding-bottom: var(--sec-pb-desktop, 60px);
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-cards-section {
+      padding-top: var(--sec-pt-mobile, 25px);
+      padding-bottom: var(--sec-pb-mobile, 40px);
+    }
+  }
+
+  .gerolamo-cards__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--cards-gap-desktop, 24px);
+    align-items: stretch;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-cards__grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-cards__grid--swipe {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 12px;
+      gap: 14px;
+      scrollbar-width: none;
+    }
+    .gerolamo-cards__grid--swipe::-webkit-scrollbar {
+      display: none;
+    }
+    .gerolamo-cards__grid--swipe .gerolamo-card {
+      flex: 0 0 85%;
+      min-width: 270px;
+      scroll-snap-align: center;
+    }
+    .gerolamo-cards__grid--stack {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .gerolamo-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--card-bg, #f4f8f6);
+    border-radius: var(--card-radius, 20px);
+    padding: 28px 24px 22px 24px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+  }
+
+  .gerolamo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .gerolamo-card__header {
+    position: relative;
+    z-index: 2;
+  }
+
+  .gerolamo-card__overline {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--card-accent, #0F6445);
+    line-height: 1.2;
+  }
+
+  .gerolamo-card__title {
+    margin: 4px 0 0 0;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--card-accent, #0F6445);
+    line-height: 1.15;
+  }
+
+  @media (max-width: 1200px) {
+    .gerolamo-card__title {
+      font-size: 20px;
+    }
+  }
+
+  .gerolamo-card__desc {
+    margin: 10px 0 0 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--card-desc-color, #475569);
+    max-width: 90%;
+  }
+
+  .gerolamo-card__media-wrap {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gerolamo-card__img {
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .gerolamo-card:hover .gerolamo-card__img {
+    transform: scale(1.03);
+  }
+
+  .gerolamo-card__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 56px;
+    height: 56px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .gerolamo-card__badge img,
+  .gerolamo-card__badge svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gerolamo-card__footer {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+  }
+
+  .gerolamo-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
+    color: var(--card-btn-text, #ffffff);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    line-height: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .gerolamo-card__btn:hover {
+    opacity: 0.9;
+    transform: translateX(2px);
+  }
+
+  .gerolamo-card__btn-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  .gerolamo-card:hover .gerolamo-card__btn-arrow {
+    transform: translateX(3px);
+  }
+</style>
+
+<div class="gerolamo-cards-section"
+     id="theme-section-{{ section.id }}"
+     style="
+       --sec-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+       --sec-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+       --sec-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+       --sec-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+       --cards-gap-desktop: {{ section.settings.gap_desktop }}px;
+       --card-radius: {{ section.settings.card_radius }}px;
+     ">
+  <div class="page-width">
+    
+    {%- if section.settings.section_title != blank -%}
+      <div class="section-header text-center mb30">
+        <h2 class="h2 mb0">{{ section.settings.section_title }}</h2>
+        {%- if section.settings.section_desc != blank -%}
+          <p class="body2 mt8 text-muted">{{ section.settings.section_desc }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="gerolamo-cards__grid{% if section.settings.mobile_layout == 'swipe' %} gerolamo-cards__grid--swipe{% else %} gerolamo-cards__grid--stack{% endif %}">
+      {%- for block in section.blocks -%}
+        <div class="gerolamo-card"
+             {{ block.shopify_attributes }}
+             style="
+               --card-bg: {{ block.settings.bg_color | default: '#f4f8f6' }};
+               --card-accent: {{ block.settings.accent_color | default: '#0F6445' }};
+               --card-desc-color: {{ block.settings.desc_color | default: '#475569' }};
+               --card-btn-bg: {{ block.settings.btn_bg_color | default: block.settings.accent_color | default: '#0F6445' }};
+               --card-btn-text: {{ block.settings.btn_text_color | default: '#ffffff' }};
+             ">
+          
+          <!-- Card Header (Overline, Title, Description) -->
+          <div class="gerolamo-card__header">
+            {%- if block.settings.overline != blank -%}
+              <p class="gerolamo-card__overline">{{ block.settings.overline }}</p>
+            {%- endif -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="gerolamo-card__title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.desc != blank -%}
+              <p class="gerolamo-card__desc">{{ block.settings.desc }}</p>
+            {%- endif -%}
+          </div>
+
+          <!-- Product Image & Optional Badge -->
+          <div class="gerolamo-card__media-wrap">
+            {%- if block.settings.badge_image != blank -%}
+              <div class="gerolamo-card__badge">
+                <img src="{{ block.settings.badge_image | image_url: width: 120 }}"
+                     alt="Sello"
+                     width="56"
+                     height="56"
+                     loading="lazy">
+              </div>
+            {%- endif -%}
+            
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 600 }}"
+                   alt="{{ block.settings.title | escape }}"
+                   class="gerolamo-card__img"
+                   loading="lazy"
+                   width="300"
+                   height="220">
+            {%- else -%}
+              <div style="width:100%;height:180px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.03);border-radius:12px;color:#94a3b8;font-size:13px;">
+                Selecciona una imagen
+              </div>
+            {%- endif -%}
+          </div>
+
+          <!-- Bottom Button -->
+          <div class="gerolamo-card__footer">
+            {%- if block.settings.button_text != blank -%}
+              <a href="{{ block.settings.button_link | default: '#' }}" class="gerolamo-card__btn">
+                <span>{{ block.settings.button_text }}</span>
+                <svg class="gerolamo-card__btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tarjetas de Líneas",
+  "tag": "section",
+  "class": "section-gerolamo-line-cards",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Título de sección (Opcional)"
+    },
+    {
+      "type": "text",
+      "id": "section_desc",
+      "label": "Subtítulo / Descripción (Opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Diseño y Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de las tarjetas",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Espacio entre tarjetas (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "options": [
+        {
+          "value": "swipe",
+          "label": "Carrusel deslizante (Swipe)"
+        },
+        {
+          "value": "stack",
+          "label": "Apiladas verticalmente"
+        }
+      ],
+      "default": "swipe",
+      "label": "Diseño en Móvil"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Móvil)",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta de Línea",
+      "settings": [
+        {
+          "type": "text",
+          "id": "overline",
+          "default": "LÍNEA",
+          "label": "Texto superior (Overline)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "MANTENCIÓN",
+          "label": "Nombre de la línea / Título"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "default": "Nutrición completa y balanceada para cada etapa de vida.",
+          "label": "Descripción"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen de productos / pack"
+        },
+        {
+          "type": "image_picker",
+          "id": "badge_image",
+          "label": "Sello / Badge circular (Opcional)"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "Ver productos",
+          "label": "Texto del botón"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Enlace del botón / colección"
+        },
+        {
+          "type": "header",
+          "content": "Colores de la tarjeta"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "default": "#F0F7F4",
+          "label": "Color de fondo de tarjeta"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "default": "#0F6445",
+          "label": "Color de acento (Títulos y Botón)"
+        },
+        {
+          "type": "color",
+          "id": "desc_color",
+          "default": "#475569",
+          "label": "Color del texto descriptivo"
+        },
+        {
+          "type": "color",
+          "id": "btn_bg_color",
+          "label": "Fondo del botón (Opcional, usa acento si está vacío)"
+        },
+        {
+          "type": "color",
+          "id": "btn_text_color",
+          "default": "#ffffff",
+          "label": "Color de texto del botón"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tarjetas de Líneas Gerolamo",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "overline": "LÍNEA",
+            "title": "MANTENCIÓN",
+            "desc": "Nutrición completa y balanceada para cada etapa de vida.",
+            "button_text": "Ver productos",
+            "bg_color": "#F0F7F4",
+            "accent_color": "#0F6445"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "overline": "LÍNEA",
+            "title": "PRESCRIPCIÓN VETERINARIA",
+            "desc": "Nutrición especializada para necesidades de salud específicas.",
+            "button_text": "Ver productos",
+            "bg_color": "#F0F4F9",
+            "accent_color": "#1B4B8A"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "overline": "LÍNEA",
+            "title": "SNACKS",
+            "desc": "Premios saludables que complementan su bienestar.",
+            "button_text": "Ver productos",
+            "bg_color": "#FCF6F0",
+            "accent_color": "#D97706"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
