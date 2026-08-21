@@ -36,7 +36,6 @@
     /* Action Items Colors */
     --gerolamo-cta-line1-color: {{ section.settings.cta_line1_color | default: '#2b2b2b' }};
     --gerolamo-cta-line2-color: {{ section.settings.cta_line2_color | default: '#0c4ca3' }};
-    --gerolamo-cta-dash-color: {{ section.settings.cta_dash_color | default: '#0c4ca3' }};
     
     --gerolamo-account-line1-color: {{ section.settings.account_line1_color | default: '#64748b' }};
     --gerolamo-account-line2-color: {{ section.settings.account_line2_color | default: '#0c4ca3' }};
@@ -221,14 +220,6 @@
     font-weight: {{ section.settings.cta_line2_weight | default: '700' }};
     color: var(--gerolamo-cta-line2-color);
     letter-spacing: -0.2px;
-  }
-  .header-gerolamo__cta-dash {
-    display: block;
-    width: 14px;
-    height: 2px;
-    background-color: var(--gerolamo-cta-dash-color);
-    margin-top: 3px;
-    border-radius: 2px;
   }
 
   /* Item 2: Iniciar sesión / Mi cuenta */
@@ -534,9 +525,6 @@
                 <div class="header-gerolamo__cta-content">
                   <span class="header-gerolamo__cta-line1">{{ section.settings.cta_line1 | default: 'Comunidad' }}</span>
                   <span class="header-gerolamo__cta-line2">{{ section.settings.cta_line2 | default: 'Gerolamo' }}</span>
-                  {%- if section.settings.cta_show_dash -%}
-                    <span class="header-gerolamo__cta-dash"></span>
-                  {%- endif -%}
                 </div>
               </a>
             {%- endif -%}
@@ -967,18 +955,6 @@
       ],
       "default": "700",
       "label": "Grosor Línea 2"
-    },
-    {
-      "type": "checkbox",
-      "id": "cta_show_dash",
-      "default": true,
-      "label": "Mostrar guion/subrayado decorativo"
-    },
-    {
-      "type": "color",
-      "id": "cta_dash_color",
-      "default": "#0c4ca3",
-      "label": "Color del guion/subrayado"
     },
     {
       "type": "header",
@@ -1503,7 +1479,6 @@
         "cta_line2": "Gerolamo",
         "cta_line1_color": "#2b2b2b",
         "cta_line2_color": "#0c4ca3",
-        "cta_show_dash": true,
         "show_account_btn": true,
         "account_line1_text": "Iniciar sesión",
         "account_line2_text": "Mi cuenta",
