@@ -170,7 +170,7 @@
         "logo": "shopify://shop_images/logo-gerolamo-tienda.png",
         "logo_svg": "",
         "logo_max_width": 250,
-        "search_placeholder": "¿Qué estás buscando?",
+        "search_placeholder": "¿Qué productos estás buscando?",
         "search_bg": "#ffffff",
         "search_color": "#1A538A",
         "search_btn_bg": "#1A538A",
