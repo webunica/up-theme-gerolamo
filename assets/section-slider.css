@@ -223,12 +223,52 @@
     .section-slider{
         height: var(--mobile-height, unset);
     }
+    .section-slider .banner__block-item__content{
+        padding: 0;
+        --position: 10px;
+        top: var(--position);
+        left: var(--position);
+        width: calc(100% - (var(--position) * 2));
+        height: calc(100% - (var(--position) * 2));
+        box-sizing: border-box;
+    }
     .section-slider .banner__block-item__content .banner__block-item__content__items{
         position: absolute;
         left:var(--mobile-x, 0%);
         top:var(--mobile-y, 0%);
-        transform: translate(calc(-1 * min(var(--text-offset, var(--mobile-x, 0%)), 100%)), calc(-1 * min(var(--mobile-y, 0%), 100%)));
+        transform: translate(calc(-1 * var(--text-offset-mobile, var(--text-offset, var(--mobile-x, 0%)))), calc(-1 * min(var(--mobile-y, 0%), 100%)));
+        box-sizing: border-box;
+        max-width: 100%;
+        padding: 8px 12px;
     }
+    .section-slider .section-slider__heading{
+        overflow-wrap: break-word;
+        word-break: normal;
+        line-height: 1.15;
+        max-width: 100%;
+    }
+    .section-slider .section-slider__texts{
+        overflow-wrap: break-word;
+        word-break: normal;
+        max-width: 100%;
+    }
+    .section-slider .banner__block-buttons{
+        max-width: 100%;
+        gap: 8px;
+    }
+    .section-slider .banner__block-buttons .btn{
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .text-left-mobile { text-align: left !important; }
+    .text-center-mobile { text-align: center !important; }
+    .text-right-mobile { text-align: right !important; }
+    .text-left-mobile.banner__block-item__content__items .banner__block-buttons,
+    .text-left-mobile .banner__block-buttons { justify-content: flex-start !important; }
+    .text-center-mobile.banner__block-item__content__items .banner__block-buttons,
+    .text-center-mobile .banner__block-buttons { justify-content: center !important; }
+    .text-right-mobile.banner__block-item__content__items .banner__block-buttons,
+    .text-right-mobile .banner__block-buttons { justify-content: flex-end !important; }
     .slider-logo>*{
         position: absolute;
         display: flex;
