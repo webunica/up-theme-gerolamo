@@ -1,5 +1,5 @@
 {% comment %}
-  Gerolamo Featured Products by Species (Perros & Gatos) with interactive Category Tabs
+  Gerolamo Featured Products by Species (Perros & Gatos) with Collection Tabs
 {% endcomment %}
 
 <style>
@@ -142,8 +142,8 @@
     content: "";
     position: absolute;
     bottom: 0;
-    left: 20%;
-    right: 20%;
+    left: 15%;
+    right: 15%;
     height: 3px;
     background-color: var(--tab-accent, #0F6445);
     border-radius: 3px;
@@ -180,6 +180,7 @@
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s ease;
+    padding: 6px 4px;
   }
 
   .gerolamo-mini-product:hover {
@@ -207,6 +208,11 @@
     font-weight: 700;
     color: #1e293b;
     line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .gerolamo-mini-product__subtitle {
@@ -263,6 +269,15 @@
     <div class="gerolamo-species__columns-grid">
       
       <!-- ==================== COLUMN 1: PERROS ==================== -->
+      {%- liquid
+        assign col1_coll1 = collections[section.settings.col1_tab1_collection]
+        assign col1_coll2 = collections[section.settings.col1_tab2_collection]
+        assign col1_coll3 = collections[section.settings.col1_tab3_collection]
+
+        assign col1_tab1_title = section.settings.col1_tab1_name | default: col1_coll1.title | default: 'Mantención'
+        assign col1_tab2_title = section.settings.col1_tab2_name | default: col1_coll2.title | default: 'Prescripción'
+        assign col1_tab3_title = section.settings.col1_tab3_name | default: col1_coll3.title | default: 'Snacks'
+      -%}
       <div class="gerolamo-species-box" style="--tab-accent: {{ section.settings.col1_accent | default: '#0F6445' }};">
         
         <!-- Header -->
@@ -275,45 +290,88 @@
 
         <!-- Category Tabs -->
         <div class="gerolamo-species-box__tabs" role="tablist">
-          <button type="button" class="gerolamo-species-tab-btn is-active" data-target="col1-tab1">{{ section.settings.col1_tab1_name | default: 'Mantención' }}</button>
-          <button type="button" class="gerolamo-species-tab-btn" data-target="col1-tab2">{{ section.settings.col1_tab2_name | default: 'Prescripción' }}</button>
-          <button type="button" class="gerolamo-species-tab-btn" data-target="col1-tab3">{{ section.settings.col1_tab3_name | default: 'Snacks' }}</button>
+          <button type="button" class="gerolamo-species-tab-btn is-active" data-target="col1-tab1">{{ col1_tab1_title }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col1-tab2">{{ col1_tab2_title }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col1-tab3">{{ col1_tab3_title }}</button>
         </div>
 
-        <!-- Tab 1 Products -->
+        <!-- Tab 1 Products (Colección 1) -->
         <div class="gerolamo-species-tab-pane is-active" id="col1-tab1">
           <div class="gerolamo-species-products-grid">
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p1_img, title: section.settings.col1_t1_p1_title | default: 'Adulto', sub: section.settings.col1_t1_p1_sub | default: 'Todas las razas', link: section.settings.col1_t1_p1_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p2_img, title: section.settings.col1_t1_p2_title | default: 'Cachorro', sub: section.settings.col1_t1_p2_sub | default: 'Todas las razas', link: section.settings.col1_t1_p2_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p3_img, title: section.settings.col1_t1_p3_title | default: 'Senior', sub: section.settings.col1_t1_p3_sub | default: 'Todas las razas', link: section.settings.col1_t1_p3_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t1_p4_img, title: section.settings.col1_t1_p4_title | default: 'Razas grandes', sub: section.settings.col1_t1_p4_sub | default: 'Adulto', link: section.settings.col1_t1_p4_url -%}
+            {%- if col1_coll1 != blank and col1_coll1.products_count > 0 -%}
+              {%- for product in col1_coll1.products limit: 4 -%}
+                <a href="{{ product.url }}" class="gerolamo-mini-product">
+                  <div class="gerolamo-mini-product__img-wrap">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="120" height="120">
+                    {%- endif -%}
+                  </div>
+                  <p class="gerolamo-mini-product__title">{{ product.title }}</p>
+                  <p class="gerolamo-mini-product__subtitle">{{ product.metafields.descriptors.subtitle | default: product.type | default: 'Todas las razas' }}</p>
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Adulto', sub: 'Todas las razas' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Cachorro', sub: 'Todas las razas' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Senior', sub: 'Todas las razas' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Razas grandes', sub: 'Adulto' -%}
+            {%- endif -%}
           </div>
         </div>
 
-        <!-- Tab 2 Products -->
+        <!-- Tab 2 Products (Colección 2) -->
         <div class="gerolamo-species-tab-pane" id="col1-tab2">
           <div class="gerolamo-species-products-grid">
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p1_img, title: section.settings.col1_t2_p1_title | default: 'Renal', sub: section.settings.col1_t2_p1_sub | default: 'Cuidado renal', link: section.settings.col1_t2_p1_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p2_img, title: section.settings.col1_t2_p2_title | default: 'Gastro', sub: section.settings.col1_t2_p2_sub | default: 'Digestivo', link: section.settings.col1_t2_p2_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p3_img, title: section.settings.col1_t2_p3_title | default: 'Skin Care', sub: section.settings.col1_t2_p3_sub | default: 'Dermatológico', link: section.settings.col1_t2_p3_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t2_p4_img, title: section.settings.col1_t2_p4_title | default: 'Obesity', sub: section.settings.col1_t2_p4_sub | default: 'Control peso', link: section.settings.col1_t2_p4_url -%}
+            {%- if col1_coll2 != blank and col1_coll2.products_count > 0 -%}
+              {%- for product in col1_coll2.products limit: 4 -%}
+                <a href="{{ product.url }}" class="gerolamo-mini-product">
+                  <div class="gerolamo-mini-product__img-wrap">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="120" height="120">
+                    {%- endif -%}
+                  </div>
+                  <p class="gerolamo-mini-product__title">{{ product.title }}</p>
+                  <p class="gerolamo-mini-product__subtitle">{{ product.metafields.descriptors.subtitle | default: product.type | default: 'Cuidado específico' }}</p>
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Renal', sub: 'Cuidado renal' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Gastro', sub: 'Digestivo' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Skin Care', sub: 'Dermatológico' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Obesity', sub: 'Control peso' -%}
+            {%- endif -%}
           </div>
         </div>
 
-        <!-- Tab 3 Products -->
+        <!-- Tab 3 Products (Colección 3) -->
         <div class="gerolamo-species-tab-pane" id="col1-tab3">
           <div class="gerolamo-species-products-grid">
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p1_img, title: section.settings.col1_t3_p1_title | default: 'Dental', sub: section.settings.col1_t3_p1_sub | default: 'Salud bucal', link: section.settings.col1_t3_p1_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p2_img, title: section.settings.col1_t3_p2_title | default: 'Sticks', sub: section.settings.col1_t3_p2_sub | default: 'Premios carne', link: section.settings.col1_t3_p2_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p3_img, title: section.settings.col1_t3_p3_title | default: 'Bites', sub: section.settings.col1_t3_p3_sub | default: 'Entrenamiento', link: section.settings.col1_t3_p3_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col1_t3_p4_img, title: section.settings.col1_t3_p4_title | default: 'Crunchy', sub: section.settings.col1_t3_p4_sub | default: 'Galletas', link: section.settings.col1_t3_p4_url -%}
+            {%- if col1_coll3 != blank and col1_coll3.products_count > 0 -%}
+              {%- for product in col1_coll3.products limit: 4 -%}
+                <a href="{{ product.url }}" class="gerolamo-mini-product">
+                  <div class="gerolamo-mini-product__img-wrap">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="120" height="120">
+                    {%- endif -%}
+                  </div>
+                  <p class="gerolamo-mini-product__title">{{ product.title }}</p>
+                  <p class="gerolamo-mini-product__subtitle">{{ product.metafields.descriptors.subtitle | default: product.type | default: 'Premios saludables' }}</p>
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Dental', sub: 'Salud bucal' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Sticks', sub: 'Premios carne' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Bites', sub: 'Entrenamiento' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Crunchy', sub: 'Galletas' -%}
+            {%- endif -%}
           </div>
         </div>
 
         <!-- Footer Link -->
+        {%- assign col1_url = section.settings.col1_footer_url | default: col1_coll1.url | default: '#' -%}
         {%- if section.settings.col1_footer_text != blank -%}
           <div class="gerolamo-species-box__footer">
-            <a href="{{ section.settings.col1_footer_url | default: '#' }}" class="gerolamo-species-box__link">
+            <a href="{{ col1_url }}" class="gerolamo-species-box__link">
               {{ section.settings.col1_footer_text }} →
             </a>
           </div>
@@ -322,6 +380,15 @@
       </div>
 
       <!-- ==================== COLUMN 2: GATOS ==================== -->
+      {%- liquid
+        assign col2_coll1 = collections[section.settings.col2_tab1_collection]
+        assign col2_coll2 = collections[section.settings.col2_tab2_collection]
+        assign col2_coll3 = collections[section.settings.col2_tab3_collection]
+
+        assign col2_tab1_title = section.settings.col2_tab1_name | default: col2_coll1.title | default: 'Mantención'
+        assign col2_tab2_title = section.settings.col2_tab2_name | default: col2_coll2.title | default: 'Prescripción'
+        assign col2_tab3_title = section.settings.col2_tab3_name | default: col2_coll3.title | default: 'Snacks'
+      -%}
       <div class="gerolamo-species-box" style="--tab-accent: {{ section.settings.col2_accent | default: '#3B702A' }};">
         
         <!-- Header -->
@@ -334,45 +401,88 @@
 
         <!-- Category Tabs -->
         <div class="gerolamo-species-box__tabs" role="tablist">
-          <button type="button" class="gerolamo-species-tab-btn is-active" data-target="col2-tab1">{{ section.settings.col2_tab1_name | default: 'Mantención' }}</button>
-          <button type="button" class="gerolamo-species-tab-btn" data-target="col2-tab2">{{ section.settings.col2_tab2_name | default: 'Prescripción' }}</button>
-          <button type="button" class="gerolamo-species-tab-btn" data-target="col2-tab3">{{ section.settings.col2_tab3_name | default: 'Snacks' }}</button>
+          <button type="button" class="gerolamo-species-tab-btn is-active" data-target="col2-tab1">{{ col2_tab1_title }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col2-tab2">{{ col2_tab2_title }}</button>
+          <button type="button" class="gerolamo-species-tab-btn" data-target="col2-tab3">{{ col2_tab3_title }}</button>
         </div>
 
-        <!-- Tab 1 Products -->
+        <!-- Tab 1 Products (Colección 1) -->
         <div class="gerolamo-species-tab-pane is-active" id="col2-tab1">
           <div class="gerolamo-species-products-grid">
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p1_img, title: section.settings.col2_t1_p1_title | default: 'Adulto', sub: section.settings.col2_t1_p1_sub | default: 'Indoor', link: section.settings.col2_t1_p1_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p2_img, title: section.settings.col2_t1_p2_title | default: 'Castrado', sub: section.settings.col2_t1_p2_sub | default: 'Control de peso', link: section.settings.col2_t1_p2_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p3_img, title: section.settings.col2_t1_p3_title | default: 'Senior', sub: section.settings.col2_t1_p3_sub | default: '+7 años', link: section.settings.col2_t1_p3_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t1_p4_img, title: section.settings.col2_t1_p4_title | default: 'Cachorro', sub: section.settings.col2_t1_p4_sub | default: 'Hasta 12 meses', link: section.settings.col2_t1_p4_url -%}
+            {%- if col2_coll1 != blank and col2_coll1.products_count > 0 -%}
+              {%- for product in col2_coll1.products limit: 4 -%}
+                <a href="{{ product.url }}" class="gerolamo-mini-product">
+                  <div class="gerolamo-mini-product__img-wrap">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="120" height="120">
+                    {%- endif -%}
+                  </div>
+                  <p class="gerolamo-mini-product__title">{{ product.title }}</p>
+                  <p class="gerolamo-mini-product__subtitle">{{ product.metafields.descriptors.subtitle | default: product.type | default: 'Indoor' }}</p>
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Adulto', sub: 'Indoor' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Castrado', sub: 'Control de peso' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Senior', sub: '+7 años' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Cachorro', sub: 'Hasta 12 meses' -%}
+            {%- endif -%}
           </div>
         </div>
 
-        <!-- Tab 2 Products -->
+        <!-- Tab 2 Products (Colección 2) -->
         <div class="gerolamo-species-tab-pane" id="col2-tab2">
           <div class="gerolamo-species-products-grid">
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p1_img, title: section.settings.col2_t2_p1_title | default: 'Urinary', sub: section.settings.col2_t2_p1_sub | default: 'Tracto urinario', link: section.settings.col2_t2_p1_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p2_img, title: section.settings.col2_t2_p2_title | default: 'Renal', sub: section.settings.col2_t2_p2_sub | default: 'Salud renal', link: section.settings.col2_t2_p2_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p3_img, title: section.settings.col2_t2_p3_title | default: 'Gastro', sub: section.settings.col2_t2_p3_sub | default: 'Fácil digestión', link: section.settings.col2_t2_p3_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t2_p4_img, title: section.settings.col2_t2_p4_title | default: 'Hypo', sub: section.settings.col2_t2_p4_sub | default: 'Hipoalergénico', link: section.settings.col2_t2_p4_url -%}
+            {%- if col2_coll2 != blank and col2_coll2.products_count > 0 -%}
+              {%- for product in col2_coll2.products limit: 4 -%}
+                <a href="{{ product.url }}" class="gerolamo-mini-product">
+                  <div class="gerolamo-mini-product__img-wrap">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="120" height="120">
+                    {%- endif -%}
+                  </div>
+                  <p class="gerolamo-mini-product__title">{{ product.title }}</p>
+                  <p class="gerolamo-mini-product__subtitle">{{ product.metafields.descriptors.subtitle | default: product.type | default: 'Salud específica' }}</p>
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Urinary', sub: 'Tracto urinario' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Renal', sub: 'Salud renal' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Gastro', sub: 'Fácil digestión' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Hypo', sub: 'Hipoalergénico' -%}
+            {%- endif -%}
           </div>
         </div>
 
-        <!-- Tab 3 Products -->
+        <!-- Tab 3 Products (Colección 3) -->
         <div class="gerolamo-species-tab-pane" id="col2-tab3">
           <div class="gerolamo-species-products-grid">
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p1_img, title: section.settings.col2_t3_p1_title | default: 'Creamy', sub: section.settings.col2_t3_p1_sub | default: 'Puré snack', link: section.settings.col2_t3_p1_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p2_img, title: section.settings.col2_t3_p2_title | default: 'Crunchy', sub: section.settings.col2_t3_p2_sub | default: 'Bocados crujientes', link: section.settings.col2_t3_p2_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p3_img, title: section.settings.col2_t3_p3_title | default: 'Hairball', sub: section.settings.col2_t3_p3_sub | default: 'Control bolas pelo', link: section.settings.col2_t3_p3_url -%}
-            {%- render 'gerolamo-mini-product-item', image: section.settings.col2_t3_p4_img, title: section.settings.col2_t3_p4_title | default: 'Dental Cat', sub: section.settings.col2_t3_p4_sub | default: 'Cuidado dental', link: section.settings.col2_t3_p4_url -%}
+            {%- if col2_coll3 != blank and col2_coll3.products_count > 0 -%}
+              {%- for product in col2_coll3.products limit: 4 -%}
+                <a href="{{ product.url }}" class="gerolamo-mini-product">
+                  <div class="gerolamo-mini-product__img-wrap">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="120" height="120">
+                    {%- endif -%}
+                  </div>
+                  <p class="gerolamo-mini-product__title">{{ product.title }}</p>
+                  <p class="gerolamo-mini-product__subtitle">{{ product.metafields.descriptors.subtitle | default: product.type | default: 'Premios para gatos' }}</p>
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Creamy', sub: 'Puré snack' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Crunchy', sub: 'Bocados crujientes' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Hairball', sub: 'Control bolas pelo' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Dental Cat', sub: 'Cuidado dental' -%}
+            {%- endif -%}
           </div>
         </div>
 
         <!-- Footer Link -->
+        {%- assign col2_url = section.settings.col2_footer_url | default: col2_coll1.url | default: '#' -%}
         {%- if section.settings.col2_footer_text != blank -%}
           <div class="gerolamo-species-box__footer">
-            <a href="{{ section.settings.col2_footer_url | default: '#' }}" class="gerolamo-species-box__link">
+            <a href="{{ col2_url }}" class="gerolamo-species-box__link">
               {{ section.settings.col2_footer_text }} →
             </a>
           </div>
@@ -454,22 +564,49 @@
       "label": "Color de acento / pestañas"
     },
     {
+      "type": "paragraph",
+      "content": "--- Pestaña 1 ---"
+    },
+    {
+      "type": "collection",
+      "id": "col1_tab1_collection",
+      "label": "Colección Pestaña 1 (Perros)"
+    },
+    {
       "type": "text",
       "id": "col1_tab1_name",
       "default": "Mantención",
-      "label": "Nombre Pestaña 1"
+      "label": "Nombre Pestaña 1 (Opcional, usa título de colección si está vacío)"
+    },
+    {
+      "type": "paragraph",
+      "content": "--- Pestaña 2 ---"
+    },
+    {
+      "type": "collection",
+      "id": "col1_tab2_collection",
+      "label": "Colección Pestaña 2 (Perros)"
     },
     {
       "type": "text",
       "id": "col1_tab2_name",
       "default": "Prescripción",
-      "label": "Nombre Pestaña 2"
+      "label": "Nombre Pestaña 2 (Opcional)"
+    },
+    {
+      "type": "paragraph",
+      "content": "--- Pestaña 3 ---"
+    },
+    {
+      "type": "collection",
+      "id": "col1_tab3_collection",
+      "label": "Colección Pestaña 3 (Perros)"
     },
     {
       "type": "text",
       "id": "col1_tab3_name",
       "default": "Snacks",
-      "label": "Nombre Pestaña 3"
+      "label": "Nombre Pestaña 3 (Opcional)"
     },
     {
       "type": "text",
@@ -480,7 +617,7 @@
     {
       "type": "url",
       "id": "col1_footer_url",
-      "label": "Enlace inferior"
+      "label": "Enlace inferior (Opcional, usa colección 1 si está vacío)"
     },
     {
       "type": "header",
@@ -505,22 +642,49 @@
       "label": "Color de acento / pestañas"
     },
     {
+      "type": "paragraph",
+      "content": "--- Pestaña 1 ---"
+    },
+    {
+      "type": "collection",
+      "id": "col2_tab1_collection",
+      "label": "Colección Pestaña 1 (Gatos)"
+    },
+    {
       "type": "text",
       "id": "col2_tab1_name",
       "default": "Mantención",
-      "label": "Nombre Pestaña 1"
+      "label": "Nombre Pestaña 1 (Opcional, usa título de colección si está vacío)"
+    },
+    {
+      "type": "paragraph",
+      "content": "--- Pestaña 2 ---"
+    },
+    {
+      "type": "collection",
+      "id": "col2_tab2_collection",
+      "label": "Colección Pestaña 2 (Gatos)"
     },
     {
       "type": "text",
       "id": "col2_tab2_name",
       "default": "Prescripción",
-      "label": "Nombre Pestaña 2"
+      "label": "Nombre Pestaña 2 (Opcional)"
+    },
+    {
+      "type": "paragraph",
+      "content": "--- Pestaña 3 ---"
+    },
+    {
+      "type": "collection",
+      "id": "col2_tab3_collection",
+      "label": "Colección Pestaña 3 (Gatos)"
     },
     {
       "type": "text",
       "id": "col2_tab3_name",
       "default": "Snacks",
-      "label": "Nombre Pestaña 3"
+      "label": "Nombre Pestaña 3 (Opcional)"
     },
     {
       "type": "text",
@@ -531,7 +695,7 @@
     {
       "type": "url",
       "id": "col2_footer_url",
-      "label": "Enlace inferior"
+      "label": "Enlace inferior (Opcional, usa colección 1 si está vacío)"
     },
     {
       "type": "header",
