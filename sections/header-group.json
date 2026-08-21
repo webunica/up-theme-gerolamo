@@ -212,7 +212,7 @@
         "cart_icon_size": 28,
         "menu": "main-menu",
         "menu_alignment": "center",
-        "menu_gap": 36,
+        "menu_gap": 150,
         "menu_item_padding_x": 4,
         "nav_padding_vertical": 14,
         "nav_bg": "#ffffff",
