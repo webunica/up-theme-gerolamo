@@ -170,16 +170,16 @@
   {%- endcapture -%}
   {%- if content != blank -%}
   {% if block.settings.desktop_boxed %}
-  <div class="banner__block-item__content {{ block.settings.text_align }} banner__block-boxed{% if block.settings.show_background %} banner__block-boxed-bg{% endif %}">
+  <div class="banner__block-item__content {{ block.settings.text_align }} {{ block.settings.text_align_mobile }} banner__block-boxed{% if block.settings.show_background %} banner__block-boxed-bg{% endif %}">
     <div class="position-relative w-full banner__block-boxed__content">
-        <div class="banner__block-item__content__items mt-first-0{% if block.settings.show_background %} banner__background-box{% endif %}">
+        <div class="banner__block-item__content__items mt-first-0 {{ block.settings.text_align }} {{ block.settings.text_align_mobile }}{% if block.settings.show_background %} banner__background-box{% endif %}">
             {{ content }}
         </div>
     </div>
   </div>
   {%- else -%}
-  <div class="banner__block-item__content">
-    <div class="banner__block-item__content__items mt-first-0 {{ block.settings.text_align }}{% if block.settings.show_background %} banner__background-box{% endif %}">
+  <div class="banner__block-item__content {{ block.settings.text_align_mobile }}">
+    <div class="banner__block-item__content__items mt-first-0 {{ block.settings.text_align }} {{ block.settings.text_align_mobile }}{% if block.settings.show_background %} banner__background-box{% endif %}">
       {{ content }}
     </div>
   </div>
