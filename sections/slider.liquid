@@ -34,6 +34,36 @@ swiper-bundle.min.css,component-swiper-slider.css
   }
 }
 {{ section_styles }}
+{%- if section.settings.width == "page-fullwidth" -%}
+#theme-section-{{ section.id }} .section-slider__container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+#theme-section-{{ section.id }} .section-slider,
+#theme-section-{{ section.id }} .banner__block-item,
+#theme-section-{{ section.id }} .image-hover-box {
+  border-radius: 0 !important;
+}
+{%- endif -%}
+
+{%- if section.settings.fullwidth_mobile or section.settings.width == "page-fullwidth" -%}
+@media (max-width: 768px) {
+  #theme-section-{{ section.id }} .section-slider__container,
+  #theme-section-{{ section.id }} .section-slider--mobile-fullwidth {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  #theme-section-{{ section.id }} .section-slider,
+  #theme-section-{{ section.id }} .banner__block-item,
+  #theme-section-{{ section.id }} .image-hover-box {
+    border-radius: 0 !important;
+  }
+}
+{%- endif -%}
 #theme-section-{{ section.id }}{
     {%- if section.settings.image_size == 'fixed' -%}
     --desktop-height:{{ section.settings.desktop_image_height }}px;
@@ -171,14 +201,16 @@ swiper-bundle.min.css,component-swiper-slider.css
 {%- if block.settings.color_button_text_hover  != "rgba(0,0,0,0)" -%}--color-button-text-hover_main:{{ block.settings.color_button_text_hover }};{%- endif -%}
 {%- if block.settings.show_button_bg -%}
 {%- if block.settings.color_button_gradient != blank or block.settings.color_button != "rgba(0,0,0,0)" -%}
---color-button-block:{%- if block.settings.color_button_gradient == blank -%}{{ block.settings.color_button }}{%- else -%}{{ block.settings.color_button_gradient }}{%- endif -%};
+{%- assign btn_opacity = block.settings.button_bg_opacity | default: 100 | divided_by: 100.00 -%}
+--color-button-block:{%- if block.settings.color_button_gradient == blank -%}{{ block.settings.color_button | color_modify: 'alpha', btn_opacity }}{%- else -%}{{ block.settings.color_button_gradient }}{%- endif -%};
 {%- endif -%}
 {%- else -%}
 --color-button-block:rgba(0,0,0,0);
 {%- endif -%}
 {%- if block.settings.show_button_bg_hover -%}
 {%- if block.settings.color_button_gradient_hover != blank or block.settings.color_button_hover != "rgba(0,0,0,0)" -%}  
---color-button-hover-block:{%- if block.settings.color_button_gradient_hover == blank -%}{{ block.settings.color_button_hover }}{%- else -%}{{ block.settings.color_button_gradient_hover }}{%- endif -%};
+{%- assign btn_hover_opacity = block.settings.button_bg_hover_opacity | default: 100 | divided_by: 100.00 -%}
+--color-button-hover-block:{%- if block.settings.color_button_gradient_hover == blank -%}{{ block.settings.color_button_hover | color_modify: 'alpha', btn_hover_opacity }}{%- else -%}{{ block.settings.color_button_gradient_hover }}{%- endif -%};
 {%- endif -%}
 {%- else -%}
 --color-button-hover-block:rgba(0,0,0,0);
@@ -220,14 +252,16 @@ swiper-bundle.min.css,component-swiper-slider.css
 {%- if block.settings.color_button_text_hover2 != "rgba(0,0,0,0)" -%}--color-button-text-hover_main:{{ block.settings.color_button_text_hover2 }};{%- endif -%}
 {%- if block.settings.show_button_bg2 -%}
 {%- if block.settings.color_button_gradient2 != blank or block.settings.color_button2 != "rgba(0,0,0,0)" -%}
---color-button-block:{%- if block.settings.color_button_gradient2 == blank -%}{{ block.settings.color_button2 }}{%- else -%}{{ block.settings.color_button_gradient2 }}{%- endif -%};
+{%- assign btn_opacity2 = block.settings.button_bg_opacity2 | default: 100 | divided_by: 100.00 -%}
+--color-button-block:{%- if block.settings.color_button_gradient2 == blank -%}{{ block.settings.color_button2 | color_modify: 'alpha', btn_opacity2 }}{%- else -%}{{ block.settings.color_button_gradient2 }}{%- endif -%};
 {%- endif -%}
 {%- else -%}
 --color-button-block:rgba(0,0,0,0);
 {%- endif -%}
 {%- if block.settings.show_button_bg_hover2 -%}
 {%- if block.settings.color_button_gradient_hover2 != blank or block.settings.color_button_hover2 != "rgba(0,0,0,0)" -%}  
---color-button-hover-block:{%- if block.settings.color_button_gradient_hover2 == blank -%}{{ block.settings.color_button_hover2 }}{%- else -%}{{ block.settings.color_button_gradient_hover2 }}{%- endif -%};
+{%- assign btn_hover_opacity2 = block.settings.button_bg_hover_opacity2 | default: 100 | divided_by: 100.00 -%}
+--color-button-hover-block:{%- if block.settings.color_button_gradient_hover2 == blank -%}{{ block.settings.color_button_hover2 | color_modify: 'alpha', btn_hover_opacity2 }}{%- else -%}{{ block.settings.color_button_gradient_hover2 }}{%- endif -%};
 {%- endif -%}
 {%- else -%}
 --color-button-hover-block:rgba(0,0,0,0);
@@ -279,7 +313,7 @@ swiper-bundle.min.css,component-swiper-slider.css
 <div id="theme-section-{{ section.id }}"
      class="{% if section.settings.show_lines == false %}top-spacing-{{ section.settings.top_spacing }}{% endif %}"
      data-section-name="slider">
-  <div class="{{ page_width }} section-slider__container">
+  <div class="{{ page_width }} section-slider__container{% if section.settings.fullwidth_mobile %} section-slider--mobile-fullwidth{% endif %}">
     <div class="page-grid-1 section-slider__container__page">
 
         {%- capture content -%}
@@ -327,7 +361,7 @@ swiper-bundle.min.css,component-swiper-slider.css
                 <main-slider class="swiper swiper-loop{% if desk_nav contains "arrows" %} slider__arrows-aligment__desktop--{{ arr_al_desk }}{% endif %} slider__dots-aligment__desktop--{{ dots_al_desk }} slider__dots-aligment__mobile--{{ dots_al_mob }}"
                                data-effect="{{ section.settings.transition_effect }}"
                                {% if page_width =="page-fullwidth" %}data-gutter="0"{% else %}data-gutter="10"{% endif %}
-                               data-gutter-mobile="15"
+                               data-gutter-mobile="{% if page_width == 'page-fullwidth' or section.settings.fullwidth_mobile %}0{% else %}15{% endif %}"
                                data-grid="1,1,1,1,1"
                                data-speed="300"
                                {% if section.settings.autoplay_enabled and request.design_mode == false %} data-autoplay-delay="{{ section.settings.autoplay_time | times: 1000 }}"{% endif %}
@@ -431,6 +465,13 @@ swiper-bundle.min.css,component-swiper-slider.css
       "default": "default",
       "label": "Width",
       "info": "The Wide option works for screens with 1440px width and more."
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth_mobile",
+      "default": false,
+      "label": "Full width on mobile",
+      "info": "Remove side padding and borders on mobile devices so the slider spans 100% edge-to-edge."
     },
     {
       "type": "select",
@@ -1413,6 +1454,17 @@ swiper-bundle.min.css,component-swiper-slider.css
         },
         {
           "visible_if": "{{ block.settings.show_button_bg == true }}",
+          "type": "range",
+          "id": "button_bg_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Background opacity",
+          "default": 100
+        },
+        {
+          "visible_if": "{{ block.settings.show_button_bg == true }}",
           "type": "color_background",
           "id": "color_button_gradient",
           "label": "Background gradient"
@@ -1441,6 +1493,17 @@ swiper-bundle.min.css,component-swiper-slider.css
           "id": "color_button_hover",
           "default":"rgba(0,0,0,0)",
           "label": "Background hover"
+        },
+        {
+          "visible_if": "{{ block.settings.show_button_bg_hover == true }}",
+          "type": "range",
+          "id": "button_bg_hover_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Background hover opacity",
+          "default": 100
         },
         {
           "visible_if": "{{ block.settings.show_button_bg_hover == true }}",
@@ -1499,6 +1562,17 @@ swiper-bundle.min.css,component-swiper-slider.css
         },
         {
           "visible_if": "{{ block.settings.show_button_bg2 == true }}",
+          "type": "range",
+          "id": "button_bg_opacity2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Background opacity",
+          "default": 100
+        },
+        {
+          "visible_if": "{{ block.settings.show_button_bg2 == true }}",
           "type": "color_background",
           "id": "color_button_gradient2",
           "label": "Background gradient"
@@ -1527,6 +1601,17 @@ swiper-bundle.min.css,component-swiper-slider.css
           "id": "color_button_hover2",
           "default":"rgba(0,0,0,0)",
           "label": "Background hover"
+        },
+        {
+          "visible_if": "{{ block.settings.show_button_bg_hover2 == true }}",
+          "type": "range",
+          "id": "button_bg_hover_opacity2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Background hover opacity",
+          "default": 100
         },
         {
           "visible_if": "{{ block.settings.show_button_bg_hover2 == true }}",
