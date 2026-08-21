@@ -228,15 +228,15 @@
     text-align: center;
   }
 
-  @media (max-width: 576px) {
-    .gerolamo-showcase__footer-badge {
-      margin-top: 20px;
-      padding-top: 14px;
-      font-size: 13px;
-    }
+  .gerolamo-showcase__footer-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    max-width: 22px;
+    display: inline-block;
   }
 
-  .gerolamo-showcase__footer-icon {
   .gerolamo-container {
     width: 100%;
     max-width: var(--page-width, 1320px);
@@ -361,7 +361,7 @@
       <!-- Bottom Trust Badge Footer -->
       {%- if section.settings.show_footer_badge and section.settings.footer_badge_text != blank -%}
         <div class="gerolamo-showcase__footer-badge">
-          <svg class="gerolamo-showcase__footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="gerolamo-showcase__footer-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             <polyline points="9 12 11 14 15 10"></polyline>
           </svg>
