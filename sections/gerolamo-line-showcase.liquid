@@ -237,9 +237,20 @@
   }
 
   .gerolamo-showcase__footer-icon {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
+  .gerolamo-container {
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+  @media (max-width: 576px) {
+    .gerolamo-container {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
   }
 </style>
 
@@ -258,7 +269,7 @@
        --showcase-radius: {{ section.settings.box_radius }}px;
        --subcard-radius: {{ section.settings.subcard_radius }}px;
      ">
-  <div class="page-width">
+  <div class="gerolamo-container">
     <div class="gerolamo-showcase-box">
       
       <div class="gerolamo-showcase__main-grid">
