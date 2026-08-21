@@ -95,7 +95,7 @@
           "settings": {
             "title": "Gatos",
             "url": "shopify://collections/gato",
-            "icon_image": "shopify://shop_images/cat.svg",
+            "icon_image": "shopify://shop_images/icongato.svg",
             "icon_svg": "",
             "sub_menu": ""
           }
