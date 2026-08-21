@@ -49,7 +49,7 @@
             "mobile_x": 0,
             "mobile_y": 71,
             "text_align": "text-left",
-            "description_width": 50,
+            "description_width": 40,
             "description_width_tablet": 50,
             "description_width_mobile": 100,
             "show_background": false,
