@@ -299,7 +299,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   }
 
-  /* 3. Bottom White Navigation Bar */
+  /* 3. Bottom Navigation Bar */
   .header-gerolamo__nav {
     background-color: var(--gerolamo-nav-bg);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -665,68 +665,68 @@
   "settings": [
     {
       "type": "header",
-      "content": "Typography / Fonts"
+      "content": "Tipografía y Fuentes"
     },
     {
       "type": "select",
       "id": "header_font_family",
       "options": [
-        { "value": "body", "label": "Global Body Font" },
-        { "value": "nexa", "label": "Nexa (Custom)" },
-        { "value": "agressive", "label": "Agressive (Custom)" },
-        { "value": "heading", "label": "Global Heading Font" },
-        { "value": "mainmenu", "label": "Global Menu Font" }
+        { "value": "body", "label": "Fuente principal (Body)" },
+        { "value": "nexa", "label": "Nexa (Personalizada)" },
+        { "value": "agressive", "label": "Agressive (Personalizada)" },
+        { "value": "heading", "label": "Fuente de encabezados (Headings)" },
+        { "value": "mainmenu", "label": "Fuente de menú global" }
       ],
       "default": "mainmenu",
-      "label": "Header Font Family"
+      "label": "Familia tipográfica del Header"
     },
     {
       "type": "header",
-      "content": "Layout & Width"
+      "content": "Diseño y Ancho"
     },
     {
       "type": "select",
       "id": "width",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "page-width", "label": "Boxed" },
-        { "value": "page-wide", "label": "Wide" },
-        { "value": "page-fullwidth", "label": "Fullwidth" }
+        { "value": "default", "label": "Por defecto" },
+        { "value": "page-width", "label": "En caja (Boxed)" },
+        { "value": "page-wide", "label": "Ancho (Wide)" },
+        { "value": "page-fullwidth", "label": "Ancho completo (Fullwidth)" }
       ],
       "default": "default",
-      "label": "Container width"
+      "label": "Ancho del contenedor"
     },
     {
       "type": "select",
       "id": "background_width",
       "options": [
-        { "value": "fullwidth", "label": "Fullwidth" },
-        { "value": "content_width", "label": "Content width" }
+        { "value": "fullwidth", "label": "Ancho completo" },
+        { "value": "content_width", "label": "Ancho del contenido" }
       ],
       "default": "fullwidth",
-      "label": "Background width"
+      "label": "Ancho del fondo"
     },
     {
       "type": "checkbox",
       "id": "show_shadow",
       "default": true,
-      "label": "Show Header Bottom Shadow"
+      "label": "Mostrar sombra inferior del Header"
     },
     {
       "type": "header",
-      "content": "Main Header Bar"
+      "content": "Barra Principal (Logo y Colores)"
     },
     {
       "type": "color",
       "id": "main_bg",
       "default": "#ffffff",
-      "label": "Main Bar Background Color"
+      "label": "Color de fondo de la barra principal"
     },
     {
       "type": "color",
       "id": "main_color",
       "default": "#1e293b",
-      "label": "Main Bar Text Color"
+      "label": "Color de texto de la barra principal"
     },
     {
       "type": "range",
@@ -735,7 +735,7 @@
       "max": 50,
       "step": 1,
       "unit": "px",
-      "label": "Main Bar Padding Top",
+      "label": "Espaciado superior (Padding Top)",
       "default": 14
     },
     {
@@ -745,19 +745,19 @@
       "max": 50,
       "step": 1,
       "unit": "px",
-      "label": "Main Bar Padding Bottom",
+      "label": "Espaciado inferior (Padding Bottom)",
       "default": 14
     },
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo image (Desktop)"
+      "label": "Logo en imagen (Escritorio)"
     },
     {
       "type": "html",
       "id": "logo_svg",
-      "label": "SVG Logo code (Desktop)",
-      "info": "Use instead of an image. SVG should have width and height attributes."
+      "label": "Código SVG del Logo (Escritorio)",
+      "info": "Úsalo en lugar de una imagen."
     },
     {
       "type": "range",
@@ -766,36 +766,36 @@
       "max": 350,
       "step": 5,
       "unit": "px",
-      "label": "Logo width (Desktop)",
+      "label": "Ancho máximo del Logo (Escritorio)",
       "default": 220
     },
     {
       "type": "header",
-      "content": "Search Bar (Pill Shape)"
+      "content": "Buscador (Estilo Píldora)"
     },
     {
       "type": "text",
       "id": "search_placeholder",
       "default": "¿Qué producto estás buscando?",
-      "label": "Search Placeholder"
+      "label": "Texto de ayuda (Placeholder)"
     },
     {
       "type": "color",
       "id": "search_bg",
       "default": "#ffffff",
-      "label": "Search Background"
+      "label": "Fondo del buscador"
     },
     {
       "type": "color",
       "id": "search_border_color",
       "default": "#e2e8f0",
-      "label": "Search Border Color"
+      "label": "Color del borde del buscador"
     },
     {
       "type": "color",
       "id": "search_focus_border",
       "default": "#0c4ca3",
-      "label": "Search Focus Border Color"
+      "label": "Color del borde al hacer clic (Focus)"
     },
     {
       "type": "range",
@@ -804,32 +804,32 @@
       "max": 3,
       "step": 1,
       "unit": "px",
-      "label": "Search Border Width",
+      "label": "Grosor del borde del buscador",
       "default": 1
     },
     {
       "type": "color",
       "id": "search_color",
       "default": "#1e293b",
-      "label": "Search Text Color"
+      "label": "Color del texto escrito"
     },
     {
       "type": "color",
       "id": "search_placeholder_color",
       "default": "#94a3af",
-      "label": "Search Placeholder Color"
+      "label": "Color del placeholder"
     },
     {
       "type": "color",
       "id": "search_icon_color",
       "default": "#374151",
-      "label": "Search Icon Color"
+      "label": "Color del icono de búsqueda"
     },
     {
       "type": "color",
       "id": "search_icon_hover",
       "default": "#0c4ca3",
-      "label": "Search Icon Hover Color"
+      "label": "Color del icono al pasar el cursor"
     },
     {
       "type": "range",
@@ -838,7 +838,7 @@
       "max": 800,
       "step": 10,
       "unit": "px",
-      "label": "Search Max Width",
+      "label": "Ancho máximo del buscador",
       "default": 520
     },
     {
@@ -848,7 +848,7 @@
       "max": 60,
       "step": 2,
       "unit": "px",
-      "label": "Search Bar Height",
+      "label": "Altura del buscador",
       "default": 46
     },
     {
@@ -858,7 +858,7 @@
       "max": 50,
       "step": 1,
       "unit": "px",
-      "label": "Search Pill Radius",
+      "label": "Redondeo de esquinas (Radio)",
       "default": 50
     },
     {
@@ -868,12 +868,12 @@
       "max": 18,
       "step": 1,
       "unit": "px",
-      "label": "Search Font Size",
+      "label": "Tamaño de fuente del buscador",
       "default": 14
     },
     {
       "type": "header",
-      "content": "Right Side Actions (Icons & Texts)"
+      "content": "Acciones Derecha: Espaciado General"
     },
     {
       "type": "range",
@@ -882,47 +882,47 @@
       "max": 60,
       "step": 2,
       "unit": "px",
-      "label": "Spacing Between Right Actions",
+      "label": "Espacio entre bloques derechos (px)",
       "default": 30
     },
     {
       "type": "header",
-      "content": "Action 1: Comunidad Gerolamo"
+      "content": "Acción 1: Comunidad Gerolamo"
     },
     {
       "type": "checkbox",
       "id": "show_cta",
       "default": true,
-      "label": "Show Comunidad Block"
+      "label": "Mostrar bloque Comunidad"
     },
     {
       "type": "text",
       "id": "cta_line1",
       "default": "Comunidad",
-      "label": "Comunidad Line 1 Text"
+      "label": "Texto Línea 1"
     },
     {
       "type": "text",
       "id": "cta_line2",
       "default": "Gerolamo",
-      "label": "Comunidad Line 2 Text"
+      "label": "Texto Línea 2"
     },
     {
       "type": "url",
       "id": "cta_url",
-      "label": "Comunidad Link URL"
+      "label": "Enlace / URL de Comunidad"
     },
     {
       "type": "color",
       "id": "cta_line1_color",
       "default": "#2b2b2b",
-      "label": "Comunidad Line 1 Color"
+      "label": "Color Texto Línea 1"
     },
     {
       "type": "color",
       "id": "cta_line2_color",
       "default": "#0c4ca3",
-      "label": "Comunidad Line 2 Color"
+      "label": "Color Texto Línea 2"
     },
     {
       "type": "range",
@@ -931,7 +931,7 @@
       "max": 18,
       "step": 1,
       "unit": "px",
-      "label": "Comunidad Line 1 Font Size",
+      "label": "Tamaño Fuente Línea 1",
       "default": 13
     },
     {
@@ -941,7 +941,7 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Comunidad Line 2 Font Size",
+      "label": "Tamaño Fuente Línea 2",
       "default": 15
     },
     {
@@ -949,70 +949,70 @@
       "id": "cta_line1_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi Bold (600)" },
-        { "value": "700", "label": "Bold (700)" }
+        { "value": "500", "label": "Medio (500)" },
+        { "value": "600", "label": "Seminegrita (600)" },
+        { "value": "700", "label": "Negrita (700)" }
       ],
       "default": "700",
-      "label": "Comunidad Line 1 Font Weight"
+      "label": "Grosor Línea 1"
     },
     {
       "type": "select",
       "id": "cta_line2_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi Bold (600)" },
-        { "value": "700", "label": "Bold (700)" }
+        { "value": "500", "label": "Medio (500)" },
+        { "value": "600", "label": "Seminegrita (600)" },
+        { "value": "700", "label": "Negrita (700)" }
       ],
       "default": "700",
-      "label": "Comunidad Line 2 Font Weight"
+      "label": "Grosor Línea 2"
     },
     {
       "type": "checkbox",
       "id": "cta_show_dash",
       "default": true,
-      "label": "Show Small Underline Dash"
+      "label": "Mostrar guion/subrayado decorativo"
     },
     {
       "type": "color",
       "id": "cta_dash_color",
       "default": "#0c4ca3",
-      "label": "Underline Dash Color"
+      "label": "Color del guion/subrayado"
     },
     {
       "type": "header",
-      "content": "Action 2: Iniciar sesión / Mi cuenta"
+      "content": "Acción 2: Iniciar sesión / Mi cuenta"
     },
     {
       "type": "checkbox",
       "id": "show_account_btn",
       "default": true,
-      "label": "Show Account Block"
+      "label": "Mostrar bloque Mi cuenta"
     },
     {
       "type": "text",
       "id": "account_line1_text",
       "default": "Iniciar sesión",
-      "label": "Account Line 1 Text"
+      "label": "Texto Línea 1 (Sin iniciar sesión)"
     },
     {
       "type": "text",
       "id": "account_line2_text",
       "default": "Mi cuenta",
-      "label": "Account Line 2 Text"
+      "label": "Texto Línea 2"
     },
     {
       "type": "color",
       "id": "account_line1_color",
       "default": "#64748b",
-      "label": "Account Line 1 Color"
+      "label": "Color Texto Línea 1"
     },
     {
       "type": "color",
       "id": "account_line2_color",
       "default": "#0c4ca3",
-      "label": "Account Line 2 Color"
+      "label": "Color Texto Línea 2"
     },
     {
       "type": "range",
@@ -1021,7 +1021,7 @@
       "max": 18,
       "step": 1,
       "unit": "px",
-      "label": "Account Line 1 Font Size",
+      "label": "Tamaño Fuente Línea 1",
       "default": 12
     },
     {
@@ -1031,7 +1031,7 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Account Line 2 Font Size",
+      "label": "Tamaño Fuente Línea 2",
       "default": 15
     },
     {
@@ -1039,52 +1039,52 @@
       "id": "account_line1_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi Bold (600)" },
-        { "value": "700", "label": "Bold (700)" }
+        { "value": "500", "label": "Medio (500)" },
+        { "value": "600", "label": "Seminegrita (600)" },
+        { "value": "700", "label": "Negrita (700)" }
       ],
       "default": "500",
-      "label": "Account Line 1 Font Weight"
+      "label": "Grosor Línea 1"
     },
     {
       "type": "select",
       "id": "account_line2_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi Bold (600)" },
-        { "value": "700", "label": "Bold (700)" }
+        { "value": "500", "label": "Medio (500)" },
+        { "value": "600", "label": "Seminegrita (600)" },
+        { "value": "700", "label": "Negrita (700)" }
       ],
       "default": "700",
-      "label": "Account Line 2 Font Weight"
+      "label": "Grosor Línea 2"
     },
     {
       "type": "header",
-      "content": "Action 3: Shopping Cart"
+      "content": "Acción 3: Carrito de Compras"
     },
     {
       "type": "checkbox",
       "id": "show_cart_btn",
       "default": true,
-      "label": "Show Shopping Cart Icon"
+      "label": "Mostrar icono del carrito"
     },
     {
       "type": "color",
       "id": "cart_icon_color",
       "default": "#0c4ca3",
-      "label": "Cart Icon Color"
+      "label": "Color del icono de carrito"
     },
     {
       "type": "color",
       "id": "cart_badge_bg",
       "default": "#006654",
-      "label": "Cart Badge Background Color"
+      "label": "Color de fondo de la insignia (Burbuja)"
     },
     {
       "type": "color",
       "id": "cart_badge_color",
       "default": "#ffffff",
-      "label": "Cart Badge Number Color"
+      "label": "Color del número en la insignia"
     },
     {
       "type": "range",
@@ -1093,69 +1093,79 @@
       "max": 40,
       "step": 1,
       "unit": "px",
-      "label": "Cart Icon Size",
+      "label": "Tamaño del icono del carrito",
       "default": 28
     },
     {
       "type": "header",
-      "content": "Bottom Navigation Bar"
+      "content": "Barra de Navegación (Menú Inferior)"
     },
     {
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
-      "label": "Main Navigation Menu"
+      "label": "Menú de navegación"
     },
     {
       "type": "select",
       "id": "menu_alignment",
       "options": [
-        { "value": "flex-start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "space-between", "label": "Space Between" },
-        { "value": "space-around", "label": "Space Around" },
-        { "value": "flex-end", "label": "Right" }
+        { "value": "flex-start", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "space-between", "label": "Espacio uniforme (Space Between)" },
+        { "value": "space-around", "label": "Espacio alrededor (Space Around)" },
+        { "value": "flex-end", "label": "Derecha" }
       ],
       "default": "center",
-      "label": "Menu Alignment"
+      "label": "Alineación de los enlaces del menú"
     },
     {
       "type": "range",
       "id": "menu_gap",
       "min": 10,
-      "max": 120,
+      "max": 150,
       "step": 2,
       "unit": "px",
-      "label": "Spacing Between Menu Items (Gap)",
+      "label": "Espacio entre enlaces del menú (Gap)",
       "default": 48
     },
     {
       "type": "range",
       "id": "menu_item_padding_x",
       "min": 0,
-      "max": 30,
+      "max": 40,
       "step": 1,
       "unit": "px",
-      "label": "Menu Item Horizontal Padding",
+      "label": "Relleno horizontal de cada enlace (Padding X)",
       "default": 4
+    },
+    {
+      "type": "range",
+      "id": "nav_padding_vertical",
+      "min": 6,
+      "max": 35,
+      "step": 1,
+      "unit": "px",
+      "label": "Relleno vertical de la barra de menú",
+      "default": 14
     },
     {
       "type": "color",
       "id": "nav_bg",
       "default": "#ffffff",
-      "label": "Nav Bar Background Color"
+      "label": "Color de fondo de la barra de menú"
     },
     {
       "type": "color",
       "id": "nav_color",
       "default": "#1e293b",
-      "label": "Menu Links Color"
+      "label": "Color de los enlaces del menú"
     },
     {
       "type": "color",
       "id": "nav_hover",
       "default": "#0c4ca3",
-      "label": "Menu Links Hover Color"
+      "label": "Color de los enlaces al pasar el cursor (Hover)"
     },
     {
       "type": "range",
@@ -1164,7 +1174,7 @@
       "max": 24,
       "step": 1,
       "unit": "px",
-      "label": "Menu Font Size",
+      "label": "Tamaño de fuente de los enlaces",
       "default": 16
     },
     {
@@ -1172,12 +1182,12 @@
       "id": "nav_font_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi Bold (600)" },
-        { "value": "700", "label": "Bold (700)" }
+        { "value": "500", "label": "Medio (500)" },
+        { "value": "600", "label": "Seminegrita (600)" },
+        { "value": "700", "label": "Negrita (700)" }
       ],
       "default": "600",
-      "label": "Menu Font Weight"
+      "label": "Grosor de fuente del menú"
     },
     {
       "type": "range",
@@ -1186,22 +1196,12 @@
       "max": 3,
       "step": 0.5,
       "unit": "px",
-      "label": "Menu Letter Spacing",
+      "label": "Espaciado entre letras (Letter Spacing)",
       "default": 0
     },
     {
-      "type": "range",
-      "id": "nav_padding_vertical",
-      "min": 6,
-      "max": 30,
-      "step": 1,
-      "unit": "px",
-      "label": "Nav Bar Vertical Padding",
-      "default": 14
-    },
-    {
       "type": "header",
-      "content": "Mobile Logo & Header"
+      "content": "Encabezado Móvil"
     },
     {
       "type": "range",
@@ -1210,7 +1210,7 @@
       "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Mobile Header padding top",
+      "label": "Espaciado superior móvil",
       "default": 10
     },
     {
@@ -1220,20 +1220,20 @@
       "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Mobile Header padding bottom",
+      "label": "Espaciado inferior móvil",
       "default": 10
     },
     {
       "type": "image_picker",
       "id": "logo_mobile",
-      "label": "Logo image (Mobile)",
-      "info": "If empty, the desktop logo will be used."
+      "label": "Logo en imagen (Móvil)",
+      "info": "Si está vacío, se usará el logo de escritorio."
     },
     {
       "type": "html",
       "id": "logo_svg_mobile",
-      "label": "SVG Logo code (Mobile)",
-      "info": "Use instead of an image."
+      "label": "Código SVG del Logo (Móvil)",
+      "info": "Úsalo en lugar de una imagen."
     },
     {
       "type": "range",
@@ -1242,30 +1242,30 @@
       "max": 250,
       "step": 5,
       "unit": "px",
-      "label": "Logo width (Mobile)",
+      "label": "Ancho del Logo (Móvil)",
       "default": 120
     },
     {
       "type": "header",
-      "content": "Top Bar (Optional)"
+      "content": "Barra Superior / Topbar (Opcional)"
     },
     {
       "type": "checkbox",
       "id": "show_topbar",
       "default": false,
-      "label": "Show Top Bar"
+      "label": "Mostrar Barra Superior (Topbar)"
     },
     {
       "type": "color",
       "id": "topbar_bg",
       "default": "#004d40",
-      "label": "Top Bar Background Color"
+      "label": "Color de fondo de la barra superior"
     },
     {
       "type": "color",
       "id": "topbar_color",
       "default": "#ffffff",
-      "label": "Top Bar Text Color"
+      "label": "Color de texto de la barra superior"
     },
     {
       "type": "range",
@@ -1274,7 +1274,7 @@
       "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Top bar padding top",
+      "label": "Espaciado superior (Topbar)",
       "default": 6
     },
     {
@@ -1284,7 +1284,7 @@
       "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Top bar padding bottom",
+      "label": "Espaciado inferior (Topbar)",
       "default": 6
     },
     {
@@ -1294,7 +1294,7 @@
       "max": 18,
       "step": 1,
       "unit": "px",
-      "label": "Top bar font size",
+      "label": "Tamaño de fuente (Topbar)",
       "default": 13
     },
     {
@@ -1302,163 +1302,163 @@
       "id": "topbar_font_weight",
       "options": [
         { "value": "normal", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "600", "label": "Semi Bold (600)" },
-        { "value": "700", "label": "Bold (700)" }
+        { "value": "500", "label": "Medio (500)" },
+        { "value": "600", "label": "Seminegrita (600)" },
+        { "value": "700", "label": "Negrita (700)" }
       ],
       "default": "600",
-      "label": "Top bar font weight"
+      "label": "Grosor de fuente (Topbar)"
     },
     {
       "type": "link_list",
       "id": "secondary_menu",
-      "label": "Secondary Menu for Top Bar"
+      "label": "Menú secundario para la barra superior"
     },
     {
       "type": "text",
       "id": "topbar_text1",
       "default": "ASESORIA ONLINE",
-      "label": "Link 1 Text"
+      "label": "Texto Enlace 1"
     },
     {
       "type": "url",
       "id": "topbar_url1",
-      "label": "Link 1 URL"
+      "label": "URL Enlace 1"
     },
     {
       "type": "text",
       "id": "topbar_text2",
       "default": "TIENDAS",
-      "label": "Link 2 Text"
+      "label": "Texto Enlace 2"
     },
     {
       "type": "url",
       "id": "topbar_url2",
-      "label": "Link 2 URL"
+      "label": "URL Enlace 2"
     }
   ],
   "blocks": [
     {
       "type": "menu_item",
-      "name": "Menu Item (Custom)",
+      "name": "Item de menu",
       "settings": [
         {
           "type": "text",
           "id": "title",
           "default": "Perros",
-          "label": "Item Title / Text"
+          "label": "Título del ítem"
         },
         {
           "type": "url",
           "id": "url",
-          "label": "Item Link / URL"
+          "label": "Enlace / URL del ítem"
         },
         {
           "type": "image_picker",
           "id": "icon_image",
-          "label": "Item Icon (Image)"
+          "label": "Icono (Imagen)"
         },
         {
           "type": "text",
           "id": "icon_svg",
           "default": "🐶",
-          "label": "Item Icon (Emoji or SVG code)"
+          "label": "Icono (Emoji o SVG)"
         },
         {
           "type": "link_list",
           "id": "sub_menu",
-          "label": "Dropdown Submenu (Optional)"
+          "label": "Submenú desplegable (Opcional)"
         }
       ]
     },
     {
       "type": "main_menu_icons",
-      "name": "Main menu icons",
+      "name": "Iconos de menu",
       "limit": 1,
       "settings": [
         {
           "type": "header",
-          "content": "Icons for menu items"
+          "content": "Iconos para ítems de menú"
         },
         {
           "type": "image_picker",
           "id": "icon_image1",
-          "label": "Item 1 icon (Image)"
+          "label": "Icono Ítem 1 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon1",
-          "label": "Item 1 icon name (SVG / emoji)"
+          "label": "Icono Ítem 1 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image2",
-          "label": "Item 2 icon (Image)"
+          "label": "Icono Ítem 2 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon2",
-          "label": "Item 2 icon name (SVG / emoji)"
+          "label": "Icono Ítem 2 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image3",
-          "label": "Item 3 icon (Image)"
+          "label": "Icono Ítem 3 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon3",
-          "label": "Item 3 icon name (SVG / emoji)"
+          "label": "Icono Ítem 3 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image4",
-          "label": "Item 4 icon (Image)"
+          "label": "Icono Ítem 4 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon4",
-          "label": "Item 4 icon name (SVG / emoji)"
+          "label": "Icono Ítem 4 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image5",
-          "label": "Item 5 icon (Image)"
+          "label": "Icono Ítem 5 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon5",
-          "label": "Item 5 icon name (SVG / emoji)"
+          "label": "Icono Ítem 5 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image6",
-          "label": "Item 6 icon (Image)"
+          "label": "Icono Ítem 6 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon6",
-          "label": "Item 6 icon name (SVG / emoji)"
+          "label": "Icono Ítem 6 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image7",
-          "label": "Item 7 icon (Image)"
+          "label": "Icono Ítem 7 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon7",
-          "label": "Item 7 icon name (SVG / emoji)"
+          "label": "Icono Ítem 7 (Nombre SVG / Emoji)"
         },
         {
           "type": "image_picker",
           "id": "icon_image8",
-          "label": "Item 8 icon (Image)"
+          "label": "Icono Ítem 8 (Imagen)"
         },
         {
           "type": "text",
           "id": "icon8",
-          "label": "Item 8 icon name (SVG / emoji)"
+          "label": "Icono Ítem 8 (Nombre SVG / Emoji)"
         }
       ]
     },
@@ -1469,8 +1469,8 @@
         {
           "type": "text",
           "id": "mega_menu_item_name",
-          "label": "Menu item name",
-          "info": "Case sensitive! Must match the menu item title."
+          "label": "Nombre del ítem de menú",
+          "info": "¡Sensible a mayúsculas! Debe coincidir exactamente con el título del enlace."
         }
       ]
     }
