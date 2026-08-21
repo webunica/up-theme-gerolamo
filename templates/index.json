@@ -17,6 +17,7 @@
           "settings": {
             "content_type": "image",
             "image": "shopify://shop_images/hero-oficial.png",
+            "image_mobile": "shopify://shop_images/hero-oficial-mobile.png",
             "image_aligment": "center",
             "image_overlay_opacity": 0,
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
