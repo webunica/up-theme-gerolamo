@@ -1,0 +1,384 @@
+{% comment %}
+  Gerolamo "Nuestra Historia" (Our Story) Section
+  Imagen a la izquierda con esquinas redondeadas + Texto descriptivo, botón y hojas decorativas a la derecha.
+{% endcomment %}
+
+<style>
+  .gerolamo-story-section {
+    padding-top: var(--story-pt-desktop, 50px);
+    padding-bottom: var(--story-pt-desktop, 60px);
+    background-color: var(--story-bg, #ffffff);
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-story-section {
+      padding-top: var(--story-pt-mobile, 30px);
+      padding-bottom: var(--story-pt-mobile, 40px);
+    }
+  }
+
+  .gerolamo-story__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-story__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  /* Left Column: Image */
+  .gerolamo-story__media-wrap {
+    position: relative;
+    border-radius: var(--story-img-radius, 20px);
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    aspect-ratio: 16 / 10;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-story__media-wrap {
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+    }
+  }
+
+  .gerolamo-story__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Right Column: Content */
+  .gerolamo-story__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-right: 20px;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-story__content {
+      padding-right: 0;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-story__content {
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .gerolamo-story__title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--story-title-color, #1B4B8A);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-story__title {
+      font-size: 26px;
+    }
+  }
+
+  .gerolamo-story__text {
+    margin: 18px 0 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--story-text-color, #334155);
+  }
+
+  .gerolamo-story__text p {
+    margin: 0 0 12px 0;
+  }
+
+  .gerolamo-story__text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .gerolamo-story__btn {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--story-btn-bg, #1B4B8A);
+    color: var(--story-btn-text, #ffffff);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    line-height: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .gerolamo-story__btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Decorative Leaf Botanical Watermark on Right */
+  .gerolamo-story__deco-leaf {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 220px;
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-story__deco-leaf {
+      display: none;
+    }
+  }
+
+  .gerolamo-container {
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+  @media (max-width: 576px) {
+    .gerolamo-container {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+  }
+</style>
+
+<div class="gerolamo-story-section"
+     id="theme-section-{{ section.id }}"
+     style="
+       --story-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+       --story-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+       --story-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+       --story-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+       --story-bg: {{ section.settings.bg_color | default: '#ffffff' }};
+       --story-title-color: {{ section.settings.title_color | default: '#1B4B8A' }};
+       --story-text-color: {{ section.settings.text_color | default: '#334155' }};
+       --story-btn-bg: {{ section.settings.btn_bg_color | default: '#1B4B8A' }};
+       --story-btn-text: {{ section.settings.btn_text_color | default: '#ffffff' }};
+       --story-img-radius: {{ section.settings.img_radius }}px;
+     ">
+  
+  <!-- Right Botanical Leaf Decoration SVG -->
+  {%- if section.settings.show_leaf_deco -%}
+    <svg class="gerolamo-story__deco-leaf" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M190 20C170 60 140 100 130 160C120 220 135 270 150 290" stroke="#7BAE7F" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+      <!-- Leaves -->
+      <path d="M140 70C110 50 100 25 115 15C130 5 155 35 140 70Z" fill="#84BD88" opacity="0.75"/>
+      <path d="M140 120C105 110 90 90 105 75C120 60 150 90 140 120Z" fill="#6A9B6E" opacity="0.6"/>
+      <path d="M130 170C90 165 80 140 98 130C116 120 142 145 130 170Z" fill="#84BD88" opacity="0.7"/>
+      <path d="M135 220C100 230 85 210 95 195C105 180 140 195 135 220Z" fill="#6A9B6E" opacity="0.65"/>
+      <path d="M150 270C125 285 105 270 115 255C125 240 155 250 150 270Z" fill="#84BD88" opacity="0.6"/>
+      <circle cx="85" cy="105" r="4" fill="#84BD88" opacity="0.5"/>
+      <circle cx="70" cy="180" r="3.5" fill="#6A9B6E" opacity="0.4"/>
+      <circle cx="60" cy="240" r="3" fill="#84BD88" opacity="0.5"/>
+    </svg>
+  {%- endif -%}
+
+  <div class="gerolamo-container">
+    <div class="gerolamo-story__grid">
+      
+      <!-- Left Column: Story Image -->
+      <div class="gerolamo-story__media-wrap">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1200 }}"
+               alt="{{ section.settings.title | escape }}"
+               class="gerolamo-story__img"
+               loading="lazy"
+               width="600"
+               height="400">
+        {%- else -%}
+          <!-- Placeholder with Explorer Theme Tone -->
+          <div style="width:100%;height:100%;min-height:280px;background:linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:15px;font-weight:600;">
+            Selecciona la imagen de Nuestra Historia
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Right Column: Story Text Content -->
+      <div class="gerolamo-story__content">
+        {%- if section.settings.title != blank -%}
+          <h2 class="gerolamo-story__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        <div class="gerolamo-story__text">
+          {%- if section.settings.text != blank -%}
+            {{ section.settings.text }}
+          {%- else -%}
+            <p>Nuestro antepasado, un hombre con espíritu emprendedor y aventurero, que llegó desde Italia a Argentina para luego emprender desde allí, junto a su perro, en el viaje hasta Chile.</p>
+            <p>De ese viaje nació Gerolamo, con la misión de entregar nutrición premium para compañero perruno y gatos en todas las etapas de su vida.</p>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.button_text != blank -%}
+          <a href="{{ section.settings.button_link | default: '#' }}" class="gerolamo-story__btn">
+            {{ section.settings.button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Nuestra Historia",
+  "tag": "section",
+  "class": "section-gerolamo-our-story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de la historia (Aventurero / Cordillera)",
+      "info": "Recomendado: 1200x800 px aprox."
+    },
+    {
+      "type": "range",
+      "id": "img_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de esquinas de imagen",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "NUESTRA HISTORIA",
+      "label": "Título Principal"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto descriptivo",
+      "default": "<p>Nuestro antepasado, un hombre con espíritu emprendedor y aventurero, que llegó desde Italia a Argentina para luego emprender desde allí, junto a su perro, en el viaje hasta Chile.</p><p>De ese viaje nació Gerolamo, con la misión de entregar nutrición premium para compañero perruno y gatos en todas las etapas de su vida.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "default": "Conoce nuestra historia",
+      "label": "Texto del botón"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_leaf_deco",
+      "default": true,
+      "label": "Mostrar hojas botánicas decorativas al fondo"
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#ffffff",
+      "label": "Fondo de la sección"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#1B4B8A",
+      "label": "Color del título"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#334155",
+      "label": "Color de párrafos"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "default": "#1B4B8A",
+      "label": "Fondo del botón"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "default": "#ffffff",
+      "label": "Texto del botón"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Desktop)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Móvil)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Móvil)",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nuestra Historia"
+    }
+  ]
+}
+{% endschema %}
