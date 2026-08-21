@@ -137,19 +137,6 @@ swiper-bundle.min.css,component-swiper-slider.css
     --text-offset:0%;
     {%- elsif block.settings.text_align == "text-right" -%}
     --text-offset:100%;
-    {%- else -%}
-    --text-offset:50%;
-    {%- endif -%}
-    {%- assign mobile_align = block.settings.text_align_mobile | default: 'inherit' -%}
-    {%- if mobile_align == 'inherit' -%}
-      {%- assign mobile_align = block.settings.text_align -%}
-    {%- endif -%}
-    {%- if mobile_align == "text-left" or mobile_align == "text-left-mobile" -%}
-    --text-offset-mobile:0%;
-    {%- elsif mobile_align == "text-right" or mobile_align == "text-right-mobile" -%}
-    --text-offset-mobile:100%;
-    {%- else -%}
-    --text-offset-mobile:50%;
     {%- endif -%}
 }
 @media (min-width:577px){
@@ -1201,7 +1188,7 @@ swiper-bundle.min.css,component-swiper-slider.css
               "label": "900 - Black"
             }
           ],
-          "default": "default",
+          "default": "600",
           "label": "Peso de fuente del título (Font Weight)"
         },
         {
@@ -1212,7 +1199,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 2,
             "unit": "px",
             "label": "Heading size",
-            "default": 96
+            "default": 56
         },
         {
             "type": "range",
@@ -1222,7 +1209,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "px",
             "label": "Heading size tablet",
-            "default": 48
+            "default": 40
         },
         {
             "type": "range",
@@ -1232,12 +1219,12 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "px",
             "label": "Heading size mobile",
-            "default": 48
+            "default": 30
         },
         {
           "type": "checkbox",
           "id": "hover_underline",
-          "default": true,
+          "default": false,
           "label": "Underline on hover"
         },
         {
@@ -1255,7 +1242,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "%",
             "label": "Desktop x",
-            "default": 50
+            "default": 7
         },
         {
             "type": "range",
@@ -1265,7 +1252,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "%",
             "label": "Desktop y",
-            "default": 50
+            "default": 52
         },
         {
             "type": "range",
@@ -1275,7 +1262,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "%",
             "label": "Tablet x",
-            "default": 50
+            "default": 8
         },
         {
             "type": "range",
@@ -1285,7 +1272,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "%",
             "label": "Tablet y",
-            "default": 50
+            "default": 45
         },
         {
             "type": "range",
@@ -1295,7 +1282,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "%",
             "label": "Mobile x",
-            "default": 50
+            "default": 6
         },
         {
             "type": "range",
@@ -1305,7 +1292,7 @@ swiper-bundle.min.css,component-swiper-slider.css
             "step": 1,
             "unit": "%",
             "label": "Mobile y",
-            "default": 50
+            "default": 25
         },
         {
           "type": "select",
@@ -1324,32 +1311,8 @@ swiper-bundle.min.css,component-swiper-slider.css
               "label": "Right"
             }
           ],
-          "default": "text-center",
+          "default": "text-left",
           "label": "Text align"
-        },
-        {
-          "type": "select",
-          "id": "text_align_mobile",
-          "options": [
-            {
-              "value": "inherit",
-              "label": "Igual al escritorio"
-            },
-            {
-              "value": "text-left-mobile",
-              "label": "Izquierda"
-            },
-            {
-              "value": "text-center-mobile",
-              "label": "Centro"
-            },
-            {
-              "value": "text-right-mobile",
-              "label": "Derecha"
-            }
-          ],
-          "default": "inherit",
-          "label": "Alineación de texto (Móvil)"
         },
         {
           "type": "range",
@@ -1357,7 +1320,7 @@ swiper-bundle.min.css,component-swiper-slider.css
           "min": 0,
           "max": 100,
           "step": 1,
-          "default": 50,
+          "default": 48,
           "unit": "%",
           "label": "Description width"
         },
@@ -1367,7 +1330,7 @@ swiper-bundle.min.css,component-swiper-slider.css
           "min": 0,
           "max": 100,
           "step": 1,
-          "default": 70,
+          "default": 65,
           "unit": "%",
           "label": "Description width tablet"
         },
@@ -1377,7 +1340,7 @@ swiper-bundle.min.css,component-swiper-slider.css
           "min": 40,
           "max": 100,
           "step": 1,
-          "default": 90,
+          "default": 92,
           "unit": "%",
           "label": "Description width mobile"
         },
