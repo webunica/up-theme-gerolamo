@@ -271,6 +271,40 @@
         "padding_bottom_mobile": 40
       }
     },
+    "gerolamo_species_featured_QVqkcU": {
+      "type": "gerolamo-species-featured",
+      "name": "Destacados por Especie (Perros / Gatos)",
+      "settings": {
+        "main_title": "PRODUCTOS DESTACADOS",
+        "title_color": "#1b4b8a",
+        "col1_title": "PERROS",
+        "col1_header_bg": "#0f6445",
+        "col1_accent": "#007665",
+        "col1_tab1_collection": "perro",
+        "col1_tab1_name": "Mantención",
+        "col1_tab2_collection": "",
+        "col1_tab2_name": "Prescripción",
+        "col1_tab3_collection": "",
+        "col1_tab3_name": "Snacks",
+        "col1_footer_text": "Ver todos los productos para perros",
+        "col1_footer_url": "",
+        "col2_title": "GATOS",
+        "col2_header_bg": "#3b702a",
+        "col2_accent": "#3b702a",
+        "col2_tab1_collection": "",
+        "col2_tab1_name": "Mantención",
+        "col2_tab2_collection": "",
+        "col2_tab2_name": "Prescripción",
+        "col2_tab3_collection": "",
+        "col2_tab3_name": "Snacks",
+        "col2_footer_text": "Ver todos los productos para gatos",
+        "col2_footer_url": "",
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 35
+      }
+    },
     "banners_XmxcEi": {
       "type": "banners",
       "blocks": {
@@ -1162,34 +1196,6 @@
         "color_shadow_hover_button2": "rgba(0,0,0,0)",
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
-      }
-    },
-    "gerolamo_species_featured_QVqkcU": {
-      "type": "gerolamo-species-featured",
-      "name": "Destacados por Especie (Perros / Gatos)",
-      "settings": {
-        "main_title": "PRODUCTOS DESTACADOS",
-        "title_color": "#1B4B8A",
-        "col1_title": "PERROS",
-        "col1_header_bg": "#0F6445",
-        "col1_accent": "#0F6445",
-        "col1_tab1_name": "Mantención",
-        "col1_tab2_name": "Prescripción",
-        "col1_tab3_name": "Snacks",
-        "col1_footer_text": "Ver todos los productos para perros",
-        "col1_footer_url": "",
-        "col2_title": "GATOS",
-        "col2_header_bg": "#3B702A",
-        "col2_accent": "#3B702A",
-        "col2_tab1_name": "Mantención",
-        "col2_tab2_name": "Prescripción",
-        "col2_tab3_name": "Snacks",
-        "col2_footer_text": "Ver todos los productos para gatos",
-        "col2_footer_url": "",
-        "padding_top_desktop": 40,
-        "padding_bottom_desktop": 60,
-        "padding_top_mobile": 25,
-        "padding_bottom_mobile": 35
       }
     }
   },
