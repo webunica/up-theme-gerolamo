@@ -204,6 +204,73 @@
         "mobile_alignment": "flex-start"
       }
     },
+    "gerolamo_line_cards_VW7xdt": {
+      "type": "gerolamo-line-cards",
+      "blocks": {
+        "card_93kgwX": {
+          "type": "card",
+          "settings": {
+            "overline": "LÍNEA",
+            "title": "MANTENCIÓN",
+            "desc": "Nutrición completa y balanceada para cada etapa de vida.",
+            "button_text": "Ver productos",
+            "button_link": "",
+            "bg_color": "#f0f7f4",
+            "accent_color": "#0f6445",
+            "desc_color": "#475569",
+            "btn_bg_color": "",
+            "btn_text_color": "#ffffff"
+          }
+        },
+        "card_BNLDz9": {
+          "type": "card",
+          "settings": {
+            "overline": "LÍNEA",
+            "title": "PRESCRIPCIÓN VETERINARIA",
+            "desc": "Nutrición especializada para necesidades de salud específicas.",
+            "button_text": "Ver productos",
+            "button_link": "",
+            "bg_color": "#f0f4f9",
+            "accent_color": "#1b4b8a",
+            "desc_color": "#475569",
+            "btn_bg_color": "",
+            "btn_text_color": "#ffffff"
+          }
+        },
+        "card_CcizAR": {
+          "type": "card",
+          "settings": {
+            "overline": "LÍNEA",
+            "title": "SNACKS",
+            "desc": "Premios saludables que complementan su bienestar.",
+            "button_text": "Ver productos",
+            "button_link": "",
+            "bg_color": "#fcf6f0",
+            "accent_color": "#d97706",
+            "desc_color": "#475569",
+            "btn_bg_color": "",
+            "btn_text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "card_93kgwX",
+        "card_BNLDz9",
+        "card_CcizAR"
+      ],
+      "name": "Tarjetas de Líneas Gerolamo",
+      "settings": {
+        "section_title": "",
+        "section_desc": "",
+        "card_radius": 20,
+        "gap_desktop": 24,
+        "mobile_layout": "swipe",
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 40
+      }
+    },
     "banners_XmxcEi": {
       "type": "banners",
       "blocks": {
@@ -1096,84 +1163,17 @@
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
       }
-    },
-    "gerolamo_line_cards_VW7xdt": {
-      "type": "gerolamo-line-cards",
-      "blocks": {
-        "card_93kgwX": {
-          "type": "card",
-          "settings": {
-            "overline": "LÍNEA",
-            "title": "MANTENCIÓN",
-            "desc": "Nutrición completa y balanceada para cada etapa de vida.",
-            "button_text": "Ver productos",
-            "button_link": "",
-            "bg_color": "#f0f7f4",
-            "accent_color": "#0f6445",
-            "desc_color": "#475569",
-            "btn_bg_color": "",
-            "btn_text_color": "#ffffff"
-          }
-        },
-        "card_BNLDz9": {
-          "type": "card",
-          "settings": {
-            "overline": "LÍNEA",
-            "title": "PRESCRIPCIÓN VETERINARIA",
-            "desc": "Nutrición especializada para necesidades de salud específicas.",
-            "button_text": "Ver productos",
-            "button_link": "",
-            "bg_color": "#f0f4f9",
-            "accent_color": "#1b4b8a",
-            "desc_color": "#475569",
-            "btn_bg_color": "",
-            "btn_text_color": "#ffffff"
-          }
-        },
-        "card_CcizAR": {
-          "type": "card",
-          "settings": {
-            "overline": "LÍNEA",
-            "title": "SNACKS",
-            "desc": "Premios saludables que complementan su bienestar.",
-            "button_text": "Ver productos",
-            "button_link": "",
-            "bg_color": "#fcf6f0",
-            "accent_color": "#d97706",
-            "desc_color": "#475569",
-            "btn_bg_color": "",
-            "btn_text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "card_93kgwX",
-        "card_BNLDz9",
-        "card_CcizAR"
-      ],
-      "name": "Tarjetas de Líneas Gerolamo",
-      "settings": {
-        "section_title": "",
-        "section_desc": "",
-        "card_radius": 20,
-        "gap_desktop": 24,
-        "mobile_layout": "swipe",
-        "padding_top_desktop": 40,
-        "padding_bottom_desktop": 60,
-        "padding_top_mobile": 25,
-        "padding_bottom_mobile": 40
-      }
     }
   },
   "order": [
     "slider_frPfz4",
     "gerolamo_curved_features",
+    "gerolamo_line_cards_VW7xdt",
     "banners_XmxcEi",
     "featured_collection_qt6T3w",
     "slider_EgF6P4",
     "shop_the_feed_CnWRFt",
     "media_with_text_eniTGJ",
-    "blog_posts_NpeDgN",
-    "gerolamo_line_cards_VW7xdt"
+    "blog_posts_NpeDgN"
   ]
 }
