@@ -1,0 +1,570 @@
+{% comment %}
+  Gerolamo Product Line Showcase
+  Sección destacada de línea de producto (ej. Prescripción Veterinaria: Info izquierda + Sub-tarjetas Secos / Húmedos + Footer badge)
+{% endcomment %}
+
+<style>
+  .gerolamo-showcase-section {
+    padding-top: var(--showcase-pt-desktop, 40px);
+    padding-bottom: var(--showcase-pb-desktop, 60px);
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-showcase-section {
+      padding-top: var(--showcase-pt-mobile, 25px);
+      padding-bottom: var(--showcase-pb-mobile, 35px);
+    }
+  }
+
+  .gerolamo-showcase-box {
+    background-color: var(--showcase-bg, #f0f4f9);
+    border-radius: var(--showcase-radius, 24px);
+    padding: 40px 40px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-showcase-box {
+      padding: 30px 24px 20px 24px;
+      border-radius: 20px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-showcase-box {
+      padding: 24px 16px 18px 16px;
+      border-radius: 16px;
+    }
+  }
+
+  .gerolamo-showcase__main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-showcase__main-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* Left Column */
+  .gerolamo-showcase__info {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-showcase__info {
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .gerolamo-showcase__badge-wrap {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-showcase__badge-wrap {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  .gerolamo-showcase__badge-wrap img,
+  .gerolamo-showcase__badge-wrap svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gerolamo-showcase__text-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-showcase__text-wrap {
+      align-items: center;
+    }
+  }
+
+  .gerolamo-showcase__title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: var(--showcase-accent, #1B4B8A);
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 1200px) {
+    .gerolamo-showcase__title {
+      font-size: 24px;
+    }
+  }
+
+  .gerolamo-showcase__desc {
+    margin: 14px 0 0 0;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--showcase-desc-color, #475569);
+  }
+
+  .gerolamo-showcase__btn {
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--showcase-btn-bg, var(--showcase-accent, #1B4B8A));
+    color: var(--showcase-btn-text, #ffffff);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    line-height: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .gerolamo-showcase__btn:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+  }
+
+  /* Right Column (Sub-cards) */
+  .gerolamo-showcase__subcards-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size | default: 2 }}, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-showcase__subcards-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .gerolamo-subcard {
+    background-color: var(--subcard-bg, #ffffff);
+    border-radius: var(--subcard-radius, 18px);
+    padding: 24px 20px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .gerolamo-subcard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .gerolamo-subcard__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--showcase-accent, #1B4B8A);
+    line-height: 1.2;
+  }
+
+  .gerolamo-subcard__desc {
+    margin: 8px 0 0 0;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--showcase-desc-color, #475569);
+  }
+
+  .gerolamo-subcard__media {
+    margin-top: 16px;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gerolamo-subcard__img {
+    width: 100%;
+    height: auto;
+    max-height: 160px;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .gerolamo-subcard:hover .gerolamo-subcard__img {
+    transform: scale(1.03);
+  }
+
+  /* Bottom Trust Badge */
+  .gerolamo-showcase__footer-badge {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--showcase-accent, #1B4B8A);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-showcase__footer-badge {
+      margin-top: 20px;
+      padding-top: 14px;
+      font-size: 13px;
+    }
+  }
+
+  .gerolamo-showcase__footer-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+</style>
+
+<div class="gerolamo-showcase-section"
+     id="theme-section-{{ section.id }}"
+     style="
+       --showcase-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+       --showcase-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+       --showcase-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+       --showcase-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+       --showcase-bg: {{ section.settings.bg_color | default: '#F0F4F9' }};
+       --showcase-accent: {{ section.settings.accent_color | default: '#1B4B8A' }};
+       --showcase-desc-color: {{ section.settings.desc_color | default: '#475569' }};
+       --showcase-btn-bg: {{ section.settings.btn_bg_color | default: section.settings.accent_color | default: '#1B4B8A' }};
+       --showcase-btn-text: {{ section.settings.btn_text_color | default: '#ffffff' }};
+       --showcase-radius: {{ section.settings.box_radius }}px;
+       --subcard-radius: {{ section.settings.subcard_radius }}px;
+     ">
+  <div class="page-width">
+    <div class="gerolamo-showcase-box">
+      
+      <div class="gerolamo-showcase__main-grid">
+        
+        <!-- Left Hero Info -->
+        <div class="gerolamo-showcase__info">
+          
+          <!-- Seal / Badge Icon -->
+          <div class="gerolamo-showcase__badge-wrap">
+            {%- if section.settings.badge_image != blank -%}
+              <img src="{{ section.settings.badge_image | image_url: width: 160 }}"
+                   alt="{{ section.settings.title | escape }}"
+                   width="80"
+                   height="80"
+                   loading="lazy">
+            {%- else -%}
+              <!-- Default Blue Medical / Superfood Seal SVG -->
+              <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="38" fill="{{ section.settings.accent_color | default: '#1B4B8A' }}"/>
+                <circle cx="40" cy="40" r="35" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <path d="M36 26H44V34H52V42H44V50H36V42H28V34H36V26Z" fill="#ffffff"/>
+                <path d="M40 31V45M33 38H47" stroke="{{ section.settings.accent_color | default: '#1B4B8A' }}" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M40 54C46.6274 54 52 48.6274 52 42" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="40" y="22" fill="#ffffff" font-size="6.5" font-weight="700" text-anchor="middle" font-family="sans-serif" letter-spacing="0.5">SUPERFOOD</text>
+              </svg>
+            {%- endif -%}
+          </div>
+
+          <!-- Text & Button -->
+          <div class="gerolamo-showcase__text-wrap">
+            {%- if section.settings.title != blank -%}
+              <h2 class="gerolamo-showcase__title">{{ section.settings.title }}</h2>
+            {%- endif -%}
+            {%- if section.settings.desc != blank -%}
+              <p class="gerolamo-showcase__desc">{{ section.settings.desc }}</p>
+            {%- endif -%}
+            {%- if section.settings.button_text != blank -%}
+              <a href="{{ section.settings.button_link | default: '#' }}" class="gerolamo-showcase__btn">
+                {{ section.settings.button_text }}
+              </a>
+            {%- endif -%}
+          </div>
+
+        </div>
+
+        <!-- Right Sub-cards (Secos, Húmedos, etc.) -->
+        <div class="gerolamo-showcase__subcards-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.card_link != blank -%}
+              <a href="{{ block.settings.card_link }}" class="gerolamo-subcard" {{ block.shopify_attributes }}>
+            {%- else -%}
+              <div class="gerolamo-subcard" {{ block.shopify_attributes }}>
+            {%- endif -%}
+              
+              <div>
+                {%- if block.settings.title != blank -%}
+                  <h3 class="gerolamo-subcard__title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.desc != blank -%}
+                  <p class="gerolamo-subcard__desc">{{ block.settings.desc }}</p>
+                {%- endif -%}
+              </div>
+
+              <div class="gerolamo-subcard__media">
+                {%- if block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 500 }}"
+                       alt="{{ block.settings.title | escape }}"
+                       class="gerolamo-subcard__img"
+                       loading="lazy"
+                       width="250"
+                       height="160">
+                {%- else -%}
+                  <div style="width:100%;height:130px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.02);border-radius:10px;color:#94a3b8;font-size:12px;">
+                    Selecciona imagen
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- if block.settings.card_link != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+      </div>
+
+      <!-- Bottom Trust Badge Footer -->
+      {%- if section.settings.show_footer_badge and section.settings.footer_badge_text != blank -%}
+        <div class="gerolamo-showcase__footer-badge">
+          <svg class="gerolamo-showcase__footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <polyline points="9 12 11 14 15 10"></polyline>
+          </svg>
+          <span>{{ section.settings.footer_badge_text }}</span>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Línea Prescripción",
+  "tag": "section",
+  "class": "section-gerolamo-line-showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Información Principal (Columna Izquierda)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "PRESCRIPCIÓN VETERINARIA",
+      "label": "Título Principal"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "default": "Fórmulas desarrolladas por veterinarios para apoyar el tratamiento nutricional de diversas condiciones de salud.",
+      "label": "Descripción Principal"
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_image",
+      "label": "Sello circular / Badge (Opcional)",
+      "info": "Si está vacío, se mostrará el sello azul predeterminado."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "default": "Conoce más",
+      "label": "Texto del Botón"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del Botón"
+    },
+    {
+      "type": "header",
+      "content": "Barra Inferior (Trust Badge)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_footer_badge",
+      "default": true,
+      "label": "Mostrar texto inferior con escudo"
+    },
+    {
+      "type": "text",
+      "id": "footer_badge_text",
+      "default": "Apoyo nutricional para necesidades de salud específicas.",
+      "label": "Texto del badge inferior"
+    },
+    {
+      "type": "header",
+      "content": "Colores y Estilo"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#F0F4F9",
+      "label": "Color de fondo del contenedor"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "default": "#1B4B8A",
+      "label": "Color de acento (Títulos y Botón)"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "default": "#475569",
+      "label": "Color de textos"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Fondo del botón (Opcional, usa acento si está vacío)"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "default": "#ffffff",
+      "label": "Texto del botón"
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo del contenedor principal",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "subcard_radius",
+      "min": 8,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de las sub-tarjetas",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Móvil)",
+      "default": 35
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subcard",
+      "name": "Sub-tarjeta",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "SECOS",
+          "label": "Título de la sub-tarjeta"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "default": "Nutrición completa y especializada en formato seco.",
+          "label": "Descripción"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen de productos"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Enlace de la tarjeta (Opcional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Línea Prescripción (Secos y Húmedos)",
+      "blocks": [
+        {
+          "type": "subcard",
+          "settings": {
+            "title": "SECOS",
+            "desc": "Nutrición completa y especializada en formato seco."
+          }
+        },
+        {
+          "type": "subcard",
+          "settings": {
+            "title": "HÚMEDOS",
+            "desc": "Alimentación húmeda altamente palatable y de fácil digestión."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
