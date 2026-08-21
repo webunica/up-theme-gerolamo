@@ -80,7 +80,7 @@
             "show_button_bg2": false,
             "color_button2": "rgba(0,0,0,0)",
             "color_button_gradient2": "",
-            "color_button_border2": "rgba(0,0,0,0)",
+            "color_button_border2": "#FFFFFF",
             "color_button_text2": "rgba(0,0,0,0)",
             "show_button_bg_hover2": true,
             "color_button_hover2": "rgba(0,0,0,0)",
