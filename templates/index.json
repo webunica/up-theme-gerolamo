@@ -32,7 +32,7 @@
             "customize_button_size": "custom",
             "btn_min_height": 40,
             "btn_min_height_mobile": 40,
-            "btn_wide_width": 300,
+            "btn_wide_width": 200,
             "roundness_button": 20,
             "heading_tag": "h2",
             "heading_size_px": 66,
