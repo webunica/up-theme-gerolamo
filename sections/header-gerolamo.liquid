@@ -684,13 +684,23 @@
               {%- if block.type == 'menu_item' -%}
                 {%- assign has_custom_items = true -%}
                 {%- liquid
-                  assign title_lower = block.settings.title | downcase
+                  assign title_lower = block.settings.title | downcase | strip
+                  assign is_species = false
+                  if title_lower contains 'perro' or title_lower contains 'gato'
+                    assign is_species = true
+                  endif
+
                   assign is_rich_target = false
-                  if title_lower contains 'perro' or title_lower contains 'gato' or block.settings.enable_rich_dropdown
+                  if is_species and block.settings.enable_rich_dropdown != false
+                    assign is_rich_target = true
+                  elsif block.settings.enable_rich_dropdown == true
                     assign is_rich_target = true
                   endif
+
                   assign has_dropdown = false
-                  if is_rich_target or block.settings.sub_menu != blank
+                  if is_rich_target
+                    assign has_dropdown = true
+                  elsif block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0
                     assign has_dropdown = true
                   endif
                 -%}
@@ -1477,7 +1487,7 @@
         {
           "type": "checkbox",
           "id": "enable_rich_dropdown",
-          "default": true,
+          "default": false,
           "label": "Activar tarjeta de submenú (Mantención, Prescripción, Snacks)"
         },
         {
