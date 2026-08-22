@@ -127,20 +127,6 @@
             "sub_menu": ""
           }
         },
-        "main_menu_icons_L3Lppw": {
-          "type": "main_menu_icons",
-          "disabled": true,
-          "settings": {
-            "icon1": "",
-            "icon2": "",
-            "icon3": "",
-            "icon4": "",
-            "icon5": "",
-            "icon6": "",
-            "icon7": "",
-            "icon8": ""
-          }
-        },
         "mega_menu_7hAtMx": {
           "type": "mega_menu",
           "settings": {
@@ -154,7 +140,6 @@
         "menu_item_VAhhVd",
         "menu_item_dhq4RP",
         "menu_item_MRz7Xg",
-        "main_menu_icons_L3Lppw",
         "mega_menu_7hAtMx"
       ],
       "name": "Header: Classic menu",
