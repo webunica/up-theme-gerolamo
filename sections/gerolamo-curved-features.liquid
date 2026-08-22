@@ -73,7 +73,7 @@
     flex-direction: row;
     gap: var(--bar-gap-desktop, 40px);
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   @media (max-width: 900px) {
@@ -193,8 +193,15 @@
     <!-- Top Curved SVG Divider -->
     {%- if section.settings.show_curve -%}
     <div class="gerolamo-curved-bar__svg-wrap" aria-hidden="true">
+      <!--
+        Curva cóncava: comienza alta a la izquierda y desciende suavemente hacia la derecha.
+        viewBox 0 0 1440 120:
+          - A x=0 (izquierda) el borde blanco está en y=15 (casi arriba, mucho blanco)
+          - Curva cúbica bezier desciende hasta y=105 hacia la derecha
+          - Rellena el rectángulo completo por debajo
+      -->
       <svg class="gerolamo-curved-bar__svg" viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,100 C300,10 700,120 1440,5 L1440,120 L0,120 Z" fill="{{ section.settings.bg_color | default: '#ffffff' }}"/>
+        <path d="M0,15 C420,15 900,110 1440,90 L1440,120 L0,120 Z" fill="{{ section.settings.bg_color | default: '#ffffff' }}"/>
       </svg>
     </div>
     {%- endif -%}
