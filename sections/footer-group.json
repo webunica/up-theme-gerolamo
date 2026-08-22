@@ -31,6 +31,7 @@
         "phone": "+56 2 1234 5678",
         "email": "hola@gerolamo.cl",
         "address": "Laguna Sur Multigón Norte 9710 Bodega 201 Pudahuel, Santiago de Chile",
+        "badge_image": "shopify://shop_images/iconpre2.png",
         "terms_text": "Términos y condiciones",
         "terms_url": "",
         "privacy_text": "Política de privacidad",
