@@ -648,6 +648,17 @@
             {%- for block in section.blocks -%}
               {%- if block.type == 'menu_item' -%}
                 {%- assign has_custom_items = true -%}
+                {%- liquid
+                  assign title_lower = block.settings.title | downcase
+                  assign is_rich_target = false
+                  if title_lower contains 'perro' or title_lower contains 'gato' or block.settings.enable_rich_dropdown
+                    assign is_rich_target = true
+                  endif
+                  assign has_dropdown = false
+                  if is_rich_target or block.settings.sub_menu != blank
+                    assign has_dropdown = true
+                  endif
+                -%}
                 <li class="header-gerolamo__nav-item list-menu--hover" {{ block.shopify_attributes }}>
                   <a href="{{ block.settings.url | default: '#' }}" class="header-gerolamo__nav-link">
                     {%- if block.settings.icon_image != blank -%}
@@ -660,11 +671,13 @@
                       <span class="header-gerolamo__nav-icon">{{ block.settings.icon_svg }}</span>
                     {%- endif -%}
                     <span>{{ block.settings.title | escape }}</span>
-                    {%- if block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
+                    {%- if has_dropdown -%}
                       {{- 'icon-arrow-down-small' | append: settings.system_icon_thickness | inline_asset_content -}}
                     {%- endif -%}
                   </a>
-                  {%- if block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
+                  {%- if is_rich_target -%}
+                    {%- render "gerolamo-rich-submenu", link: block.settings.sub_menu, category: block.settings.title, url_mantencion: block.settings.url_mantencion, url_prescripcion: block.settings.url_prescripcion, url_snacks: block.settings.url_snacks -%}
+                  {%- elsif block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
                     {%- render "menu-submenu", link: block.settings.sub_menu -%}
                   {%- endif -%}
                 </li>
@@ -1425,6 +1438,27 @@
           "type": "link_list",
           "id": "sub_menu",
           "label": "Submenú desplegable (Opcional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_rich_dropdown",
+          "default": true,
+          "label": "Activar tarjeta de submenú (Mantención, Prescripción, Snacks)"
+        },
+        {
+          "type": "url",
+          "id": "url_mantencion",
+          "label": "Enlace a Mantención (Opcional)"
+        },
+        {
+          "type": "url",
+          "id": "url_prescripcion",
+          "label": "Enlace a Prescripción (Opcional)"
+        },
+        {
+          "type": "url",
+          "id": "url_snacks",
+          "label": "Enlace a Snacks (Opcional)"
         }
       ]
     },
