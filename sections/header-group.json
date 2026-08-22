@@ -280,8 +280,8 @@
           "type": "megamenu-item",
           "name": "Megamenu item",
           "settings": {
-            "heading": "Store",
-            "heading_closed_menu": false
+            "heading": "Perro",
+            "heading_closed_menu": true
           },
           "blocks": {
             "megamenu_fake_links_kzGGdH": {
