@@ -31,7 +31,7 @@
   .gerolamo-curved-bar__svg-wrap {
     display: block;
     width: 100%;
-    height: var(--curve-height-desktop, 80px);
+    height: var(--curve-height-desktop, 120px);
     overflow: hidden;
     line-height: 0;
     pointer-events: none;
@@ -45,13 +45,13 @@
 
   @media (max-width: 1024px) {
     .gerolamo-curved-bar__svg-wrap {
-      height: var(--curve-height-tablet, 55px);
+      height: var(--curve-height-tablet, 80px);
     }
   }
 
   @media (max-width: 576px) {
     .gerolamo-curved-bar__svg-wrap {
-      height: var(--curve-height-mobile, 40px);
+      height: var(--curve-height-mobile, 55px);
     }
   }
 
@@ -69,23 +69,25 @@
   }
 
   .gerolamo-curved-bar__grid {
-    display: grid;
-    grid-template-columns: repeat({{ section.blocks.size | default: 3 }}, 1fr);
-    gap: var(--bar-gap-desktop, 30px);
+    display: flex;
+    flex-direction: row;
+    gap: var(--bar-gap-desktop, 40px);
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   @media (max-width: 900px) {
     .gerolamo-curved-bar__grid {
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
     }
   }
 
   @media (max-width: 576px) {
     .gerolamo-curved-bar__grid {
-      grid-template-columns: 1fr;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 16px;
     }
   }
@@ -93,14 +95,14 @@
   .gerolamo-feature-item {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 6px 12px;
+    gap: 12px;
+    padding: 6px 0;
+    flex-shrink: 0;
   }
 
   @media (max-width: 576px) {
     .gerolamo-feature-item {
       justify-content: var(--item-align-mobile, flex-start);
-      padding: 4px 8px;
     }
   }
 
@@ -145,6 +147,22 @@
     line-height: 1.35;
     color: var(--desc-color, #64748b);
   }
+
+  .gerolamo-container {
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+  @media (max-width: 576px) {
+    .gerolamo-container {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+  }
 </style>
 
 <div id="theme-section-{{ section.id }}"
@@ -175,15 +193,15 @@
     <!-- Top Curved SVG Divider -->
     {%- if section.settings.show_curve -%}
     <div class="gerolamo-curved-bar__svg-wrap" aria-hidden="true">
-      <svg class="gerolamo-curved-bar__svg" viewBox="0 0 1440 100" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,70 C360,110 820,25 1440,0 L1440,100 L0,100 Z" fill="{{ section.settings.bg_color | default: '#ffffff' }}"/>
+      <svg class="gerolamo-curved-bar__svg" viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,100 C300,10 700,120 1440,5 L1440,120 L0,120 Z" fill="{{ section.settings.bg_color | default: '#ffffff' }}"/>
       </svg>
     </div>
     {%- endif -%}
 
     <!-- Features Content Body -->
     <div class="gerolamo-curved-bar__body">
-      <div class="page-width">
+      <div class="gerolamo-container">
         <div class="gerolamo-curved-bar__grid">
           {%- for block in section.blocks -%}
             <div class="gerolamo-feature-item" {{ block.shopify_attributes }}>
@@ -273,62 +291,62 @@
       "type": "range",
       "id": "overlap_desktop",
       "min": 0,
-      "max": 140,
+      "max": 160,
       "step": 5,
       "unit": "px",
       "label": "Solapamiento sobre Hero (Desktop)",
-      "default": 70,
+      "default": 100,
       "info": "Superpone la curva sobre la foto del slider."
     },
     {
       "type": "range",
       "id": "overlap_tablet",
       "min": 0,
-      "max": 100,
+      "max": 120,
       "step": 5,
       "unit": "px",
       "label": "Solapamiento sobre Hero (Tablet)",
-      "default": 50
+      "default": 70
     },
     {
       "type": "range",
       "id": "overlap_mobile",
       "min": 0,
-      "max": 80,
+      "max": 100,
       "step": 5,
       "unit": "px",
       "label": "Solapamiento sobre Hero (Móvil)",
-      "default": 35
+      "default": 50
     },
     {
       "type": "range",
       "id": "curve_height_desktop",
       "min": 30,
-      "max": 140,
+      "max": 160,
       "step": 5,
       "unit": "px",
       "label": "Altura de la curva (Desktop)",
-      "default": 80
+      "default": 120
     },
     {
       "type": "range",
       "id": "curve_height_tablet",
       "min": 20,
-      "max": 100,
+      "max": 120,
       "step": 5,
       "unit": "px",
       "label": "Altura de la curva (Tablet)",
-      "default": 55
+      "default": 80
     },
     {
       "type": "range",
       "id": "curve_height_mobile",
       "min": 15,
-      "max": 70,
+      "max": 80,
       "step": 5,
       "unit": "px",
       "label": "Altura de la curva (Móvil)",
-      "default": 40
+      "default": 55
     },
     {
       "type": "header",
@@ -400,11 +418,11 @@
       "type": "range",
       "id": "gap_desktop",
       "min": 10,
-      "max": 60,
+      "max": 80,
       "step": 5,
       "unit": "px",
       "label": "Espacio entre columnas (Desktop)",
-      "default": 30
+      "default": 40
     },
     {
       "type": "range",
