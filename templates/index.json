@@ -593,7 +593,7 @@
         "title_color": "#1B4B8A",
         "text_color": "#475569",
         "link_color": "#0F6445",
-        "box_radius": 22,
+        "box_radius": 12,
         "padding_top_desktop": 40,
         "padding_bottom_desktop": 60,
         "padding_top_mobile": 25,
