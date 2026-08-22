@@ -87,7 +87,11 @@
             "url": "shopify://collections/perro",
             "icon_image": "shopify://shop_images/iconperro.svg",
             "icon_svg": "",
-            "sub_menu": ""
+            "sub_menu": "",
+            "enable_rich_dropdown": true,
+            "url_mantencion": "shopify://collections/mantencion",
+            "url_prescripcion": "",
+            "url_snacks": ""
           }
         },
         "menu_item_Qy7aaf": {
@@ -97,7 +101,11 @@
             "url": "shopify://collections/gato",
             "icon_image": "shopify://shop_images/icongato.svg",
             "icon_svg": "",
-            "sub_menu": ""
+            "sub_menu": "",
+            "enable_rich_dropdown": true,
+            "url_mantencion": "",
+            "url_prescripcion": "",
+            "url_snacks": ""
           }
         },
         "menu_item_VAhhVd": {
@@ -106,7 +114,11 @@
             "title": "Noticias",
             "url": "",
             "icon_svg": "",
-            "sub_menu": ""
+            "sub_menu": "",
+            "enable_rich_dropdown": true,
+            "url_mantencion": "",
+            "url_prescripcion": "",
+            "url_snacks": ""
           }
         },
         "menu_item_dhq4RP": {
@@ -115,7 +127,11 @@
             "title": "Contacto",
             "url": "",
             "icon_svg": "",
-            "sub_menu": ""
+            "sub_menu": "",
+            "enable_rich_dropdown": true,
+            "url_mantencion": "",
+            "url_prescripcion": "",
+            "url_snacks": ""
           }
         },
         "menu_item_MRz7Xg": {
@@ -124,7 +140,11 @@
             "title": "Donde Comprar",
             "url": "shopify://pages/donde-comprar",
             "icon_svg": "",
-            "sub_menu": ""
+            "sub_menu": "",
+            "enable_rich_dropdown": true,
+            "url_mantencion": "",
+            "url_prescripcion": "",
+            "url_snacks": ""
           }
         },
         "mega_menu_7hAtMx": {
