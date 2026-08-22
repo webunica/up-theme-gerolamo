@@ -279,6 +279,7 @@
         "megamenu_item_qJMRdV": {
           "type": "megamenu-item",
           "name": "Megamenu item",
+          "disabled": true,
           "settings": {
             "heading": "Perro",
             "heading_closed_menu": true
@@ -473,6 +474,7 @@
       "block_order": [
         "megamenu_item_qJMRdV"
       ],
+      "disabled": true,
       "name": "Megamenu modules",
       "settings": {
         "image_hover": "image-hover01"
