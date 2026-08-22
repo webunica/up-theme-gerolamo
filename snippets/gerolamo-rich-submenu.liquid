@@ -2,61 +2,118 @@
   Rich Submenu Dropdown for Gerolamo Header
   Muestra los ítems de Mantención, Prescripción Veterinaria y Snacks con icono verde, título y subtítulo descriptivo.
 {% endcomment %}
+{%- liquid
+  assign species = category | default: 'perros' | downcase
+-%}
 
 <div class="gerolamo-rich-dropdown">
   <div class="gerolamo-rich-dropdown__list">
-    {%- for childlink in link.links -%}
-      {%- assign title_down = childlink.title | downcase -%}
-      <a href="{{ childlink.url }}" class="gerolamo-rich-dropdown__item">
-        
-        <!-- Icono Vectorial Verde -->
-        <div class="gerolamo-rich-dropdown__icon">
-          {%- if title_down contains 'mantenci' -%}
-            <!-- Escudo con Hoja -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <path d="M12 8c0 4-3 5-3 5s4 1 5-2"/>
-            </svg>
-          {%- elsif title_down contains 'prescripci' or title_down contains 'veterinari' -%}
-            <!-- Hexágono / Salud Veterinaria -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2l7.5 4.5v9L12 20l-7.5-4.5v-9L12 2z"/>
-              <path d="M12 8v8M8 12h8"/>
-            </svg>
-          {%- elsif title_down contains 'snack' or title_down contains 'premio' -%}
-            <!-- Hueso de Premio -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 5a2 2 0 0 0-2 2v.5L8 10.5V10a2 2 0 1 0-2 2 2 2 0 0 0 2 2v.5l8 3v.5a2 2 0 1 0 2-2 2 2 0 0 0-2-2v-.5l-8-3V11a2 2 0 0 0 2-2 2 2 0 0 0 2-2z"/>
-              <circle cx="5" cy="8" r="2"/>
-              <circle cx="5" cy="16" r="2"/>
-              <circle cx="19" cy="8" r="2"/>
-              <circle cx="19" cy="16" r="2"/>
-            </svg>
-          {%- else -%}
-            <!-- Genérico -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="4"/>
-            </svg>
-          {%- endif -%}
-        </div>
-
-        <!-- Textos: Título en negrita y Subtítulo Verde -->
-        <div class="gerolamo-rich-dropdown__texts">
-          <span class="gerolamo-rich-dropdown__title">{{ childlink.title }}</span>
-          <span class="gerolamo-rich-dropdown__subtitle">
+    {%- if link != blank and link.links.size > 0 -%}
+      {%- for childlink in link.links -%}
+        {%- assign title_down = childlink.title | downcase -%}
+        <a href="{{ childlink.url }}" class="gerolamo-rich-dropdown__item">
+          <div class="gerolamo-rich-dropdown__icon">
             {%- if title_down contains 'mantenci' -%}
-              Nutrición diaria completa
-            {%- elsif title_down contains 'prescripci' -%}
-              Nutrición para necesidades específicas
-            {%- elsif title_down contains 'snack' -%}
-              Premios saludables
+              <!-- Escudo con Hoja -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M12 8c0 4-3 5-3 5s4 1 5-2"/>
+              </svg>
+            {%- elsif title_down contains 'prescripci' or title_down contains 'veterinari' -%}
+              <!-- Hexágono / Salud Veterinaria -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l7.5 4.5v9L12 20l-7.5-4.5v-9L12 2z"/>
+                <path d="M12 8v8M8 12h8"/>
+              </svg>
+            {%- elsif title_down contains 'snack' or title_down contains 'premio' -%}
+              <!-- Hueso de Premio -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 5a2 2 0 0 0-2 2v.5L8 10.5V10a2 2 0 1 0-2 2 2 2 0 0 0 2 2v.5l8 3v.5a2 2 0 1 0 2-2 2 2 0 0 0-2-2v-.5l-8-3V11a2 2 0 0 0 2-2 2 2 0 0 0 2-2z"/>
+                <circle cx="5" cy="8" r="2"/>
+                <circle cx="5" cy="16" r="2"/>
+                <circle cx="19" cy="8" r="2"/>
+                <circle cx="19" cy="16" r="2"/>
+              </svg>
             {%- else -%}
-              Ver colección
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+              </svg>
             {%- endif -%}
-          </span>
+          </div>
+          <div class="gerolamo-rich-dropdown__texts">
+            <span class="gerolamo-rich-dropdown__title">{{ childlink.title }}</span>
+            <span class="gerolamo-rich-dropdown__subtitle">
+              {%- if title_down contains 'mantenci' -%}
+                Nutrición diaria completa
+              {%- elsif title_down contains 'prescripci' -%}
+                Nutrición para necesidades específicas
+              {%- elsif title_down contains 'snack' -%}
+                Premios saludables
+              {%- else -%}
+                Ver colección
+              {%- endif -%}
+            </span>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Default Gerolamo 3-Category Submenu -->
+      {%- liquid
+        if url_mantencion == blank
+          assign url_mantencion = '/collections/' | append: species | append: '-mantencion'
+        endif
+        if url_prescripcion == blank
+          assign url_prescripcion = '/collections/' | append: species | append: '-prescripcion-veterinaria'
+        endif
+        if url_snacks == blank
+          assign url_snacks = '/collections/' | append: species | append: '-snacks'
+        endif
+      -%}
+      
+      <!-- 1. Mantención -->
+      <a href="{{ url_mantencion }}" class="gerolamo-rich-dropdown__item">
+        <div class="gerolamo-rich-dropdown__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8c0 4-3 5-3 5s4 1 5-2"/>
+          </svg>
         </div>
-
+        <div class="gerolamo-rich-dropdown__texts">
+          <span class="gerolamo-rich-dropdown__title">Mantención</span>
+          <span class="gerolamo-rich-dropdown__subtitle">Nutrición diaria completa</span>
+        </div>
       </a>
-    {%- endfor -%}
+
+      <!-- 2. Prescripción Veterinaria -->
+      <a href="{{ url_prescripcion }}" class="gerolamo-rich-dropdown__item">
+        <div class="gerolamo-rich-dropdown__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l7.5 4.5v9L12 20l-7.5-4.5v-9L12 2z"/>
+            <path d="M12 8v8M8 12h8"/>
+          </svg>
+        </div>
+        <div class="gerolamo-rich-dropdown__texts">
+          <span class="gerolamo-rich-dropdown__title">Prescripción Veterinaria</span>
+          <span class="gerolamo-rich-dropdown__subtitle">Nutrición para necesidades específicas</span>
+        </div>
+      </a>
+
+      <!-- 3. Snacks -->
+      <a href="{{ url_snacks }}" class="gerolamo-rich-dropdown__item">
+        <div class="gerolamo-rich-dropdown__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 5a2 2 0 0 0-2 2v.5L8 10.5V10a2 2 0 1 0-2 2 2 2 0 0 0 2 2v.5l8 3v.5a2 2 0 1 0 2-2 2 2 0 0 0-2-2v-.5l-8-3V11a2 2 0 0 0 2-2 2 2 0 0 0 2-2z"/>
+            <circle cx="5" cy="8" r="2"/>
+            <circle cx="5" cy="16" r="2"/>
+            <circle cx="19" cy="8" r="2"/>
+            <circle cx="19" cy="16" r="2"/>
+          </svg>
+        </div>
+        <div class="gerolamo-rich-dropdown__texts">
+          <span class="gerolamo-rich-dropdown__title">Snacks</span>
+          <span class="gerolamo-rich-dropdown__subtitle">Premios saludables</span>
+        </div>
+      </a>
+    {%- endif -%}
   </div>
 </div>
