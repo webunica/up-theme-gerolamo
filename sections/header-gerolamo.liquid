@@ -368,23 +368,39 @@
     object-fit: contain;
   }
 
+  .header-gerolamo-wrapper {
+    position: relative;
+    z-index: 99999 !important;
+  }
+  .header-gerolamo__desktop-nav,
+  .header-gerolamo__nav {
+    position: relative;
+    z-index: 99999 !important;
+    overflow: visible !important;
+  }
+  .header-gerolamo__nav-container,
+  .header-gerolamo__nav-menu,
+  .header-gerolamo__nav-item {
+    overflow: visible !important;
+  }
+
   /* Rich Gerolamo Submenu */
   .gerolamo-rich-dropdown {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #ffffff;
+    background: #ffffff !important;
     border-radius: 16px;
     padding: 16px 18px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    min-width: 270px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    min-width: 280px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
-    transform: translateY(10px);
-    z-index: 1000;
+    transform: translateY(8px);
+    z-index: 999999 !important;
   }
   .header-gerolamo__nav-item:hover > .gerolamo-rich-dropdown {
     opacity: 1;
@@ -395,49 +411,52 @@
   .gerolamo-rich-dropdown__list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
   .gerolamo-rich-dropdown__item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    padding: 8px 10px;
-    border-radius: 10px;
+    gap: 14px;
+    text-decoration: none !important;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: transparent;
     transition: background-color 0.15s ease, transform 0.15s ease;
   }
   .gerolamo-rich-dropdown__item:hover {
-    background-color: #f8fafc;
+    background-color: #f1f5f9 !important;
     transform: translateX(3px);
   }
   .gerolamo-rich-dropdown__icon {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .gerolamo-rich-dropdown__icon svg {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
   }
   .gerolamo-rich-dropdown__texts {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    text-align: left;
   }
   .gerolamo-rich-dropdown__title {
-    font-size: 14.5px;
+    font-size: 15px;
     font-weight: 700;
-    color: #1e293b;
+    color: #1e293b !important;
     line-height: 1.2;
   }
   .gerolamo-rich-dropdown__subtitle {
-    font-size: 11.5px;
-    color: #0F6445;
+    font-size: 12px;
+    color: #0F6445 !important;
     line-height: 1.2;
-    margin-top: 2px;
+    margin-top: 3px;
+    font-weight: 500;
   }
 
   {% if section.settings.show_shadow %}
