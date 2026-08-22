@@ -362,9 +362,9 @@
         "button_link": "",
         "show_leaf_deco": true,
         "bg_color": "#ffffff",
-        "title_color": "#1B4B8A",
+        "title_color": "#1b4b8a",
         "text_color": "#334155",
-        "btn_bg_color": "#1B4B8A",
+        "btn_bg_color": "#1b4b8a",
         "btn_text_color": "#ffffff",
         "padding_top_desktop": 50,
         "padding_bottom_desktop": 60,
@@ -574,6 +574,30 @@
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
       }
+    },
+    "gerolamo_contact_bar_WnCMfF": {
+      "type": "gerolamo-contact-bar",
+      "name": "Barra de Contacto",
+      "settings": {
+        "col1_title": "¿DÓNDE COMPRAR?",
+        "col1_desc": "Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.",
+        "col1_link_text": "Ver puntos de venta",
+        "col1_url": "",
+        "col2_title": "¿TIENES DUDAS?",
+        "col2_desc": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
+        "col2_link_text": "Contáctanos",
+        "col2_url": "",
+        "box_bg": "#F0F4F9",
+        "icon_bg_color": "#1B4B8A",
+        "title_color": "#1B4B8A",
+        "text_color": "#475569",
+        "link_color": "#0F6445",
+        "box_radius": 22,
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 35
+      }
     }
   },
   "order": [
@@ -583,6 +607,7 @@
     "gerolamo_species_featured_QVqkcU",
     "gerolamo_line_showcase_qf4dLE",
     "gerolamo_our_story_L63Cib",
-    "banners_XmxcEi"
+    "banners_XmxcEi",
+    "gerolamo_contact_bar_WnCMfF"
   ]
 }
