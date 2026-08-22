@@ -691,9 +691,7 @@
                   endif
 
                   assign is_rich_target = false
-                  if is_species and block.settings.enable_rich_dropdown != false
-                    assign is_rich_target = true
-                  elsif block.settings.enable_rich_dropdown == true
+                  if is_species
                     assign is_rich_target = true
                   endif
 
