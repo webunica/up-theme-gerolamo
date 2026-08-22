@@ -1,0 +1,492 @@
+{% comment %}
+  Gerolamo Contact & Store Locator Bar
+  Banner con 2 bloques de acción (¿Dónde comprar? y ¿Tienes dudas?) + Imagen de mascotas a la derecha.
+{% endcomment %}
+
+<style>
+  .gerolamo-contact-section {
+    padding-top: var(--cb-pt-desktop, 40px);
+    padding-bottom: var(--cb-pb-desktop, 60px);
+    background-color: var(--cb-section-bg, transparent);
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-contact-section {
+      padding-top: var(--cb-pt-mobile, 25px);
+      padding-bottom: var(--cb-pb-mobile, 35px);
+    }
+  }
+
+  .gerolamo-contact-box {
+    background-color: var(--cb-box-bg, #f0f4f9);
+    border: 1px solid rgba(27, 75, 138, 0.08);
+    border-radius: var(--cb-radius, 22px);
+    padding: 36px 40px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-contact-box {
+      padding: 30px 24px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 28px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-contact-box {
+      padding: 24px 18px 100px 18px; /* space for mascots at bottom on mobile */
+    }
+  }
+
+  /* Actions Container */
+  .gerolamo-contact__actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    flex: 1;
+    max-width: calc(100% - 220px); /* Leave room for pet image on desktop */
+  }
+
+  @media (max-width: 1200px) {
+    .gerolamo-contact__actions-grid {
+      max-width: calc(100% - 190px);
+      gap: 30px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-contact__actions-grid {
+      max-width: 100%;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-contact__actions-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* Single Action Item */
+  .gerolamo-contact__item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .gerolamo-contact__item--has-divider::after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: 5%;
+    bottom: 5%;
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-contact__item--has-divider::after {
+      display: none;
+    }
+  }
+
+  .gerolamo-contact__icon-wrap {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--cb-icon-bg, #1B4B8A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-contact__icon-wrap {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .gerolamo-contact__icon-wrap svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-contact__icon-wrap svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .gerolamo-contact__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gerolamo-contact__title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--cb-title-color, #1B4B8A);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .gerolamo-contact__desc {
+    margin: 6px 0 0 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--cb-text-color, #475569);
+  }
+
+  .gerolamo-contact__link {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cb-link-color, #0F6445);
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .gerolamo-contact__link:hover {
+    opacity: 0.85;
+    transform: translateX(3px);
+  }
+
+  /* Right Pets Mascot Image */
+  .gerolamo-contact__mascot-wrap {
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    width: 200px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  @media (max-width: 1200px) {
+    .gerolamo-contact__mascot-wrap {
+      width: 170px;
+      right: 15px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .gerolamo-contact__mascot-wrap {
+      position: static;
+      width: 160px;
+      margin: -10px 0 -30px auto;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-contact__mascot-wrap {
+      position: absolute;
+      right: 10px;
+      bottom: 0;
+      width: 120px;
+      margin: 0;
+    }
+  }
+
+  .gerolamo-contact__mascot-img {
+    max-width: 100%;
+    max-height: 125%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.05));
+  }
+
+  .gerolamo-container {
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+  @media (max-width: 576px) {
+    .gerolamo-container {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+  }
+</style>
+
+<div class="gerolamo-contact-section"
+     id="theme-section-{{ section.id }}"
+     style="
+       --cb-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+       --cb-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+       --cb-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+       --cb-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+       --cb-box-bg: {{ section.settings.box_bg | default: '#F0F4F9' }};
+       --cb-radius: {{ section.settings.box_radius }}px;
+       --cb-icon-bg: {{ section.settings.icon_bg_color | default: '#1B4B8A' }};
+       --cb-title-color: {{ section.settings.title_color | default: '#1B4B8A' }};
+       --cb-text-color: {{ section.settings.text_color | default: '#475569' }};
+       --cb-link-color: {{ section.settings.link_color | default: '#0F6445' }};
+     ">
+  <div class="gerolamo-container">
+    <div class="gerolamo-contact-box">
+      
+      <!-- Actions Grid (Where to buy & Support) -->
+      <div class="gerolamo-contact__actions-grid">
+        
+        <!-- Action 1: Dónde Comprar -->
+        <div class="gerolamo-contact__item gerolamo-contact__item--has-divider">
+          <div class="gerolamo-contact__icon-wrap">
+            {%- if section.settings.col1_icon_custom != blank -%}
+              <img src="{{ section.settings.col1_icon_custom | image_url: width: 60 }}" alt="" width="30" height="30" loading="lazy">
+            {%- else -%}
+              <!-- Map Pin SVG -->
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            {%- endif -%}
+          </div>
+          <div class="gerolamo-contact__content">
+            <h3 class="gerolamo-contact__title">{{ section.settings.col1_title | default: '¿DÓNDE COMPRAR?' }}</h3>
+            <p class="gerolamo-contact__desc">{{ section.settings.col1_desc | default: 'Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.' }}</p>
+            {%- if section.settings.col1_link_text != blank -%}
+              <a href="{{ section.settings.col1_url | default: '/pages/distribuidores' }}" class="gerolamo-contact__link">
+                {{ section.settings.col1_link_text }} →
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!-- Action 2: ¿Tienes Dudas? -->
+        <div class="gerolamo-contact__item">
+          <div class="gerolamo-contact__icon-wrap">
+            {%- if section.settings.col2_icon_custom != blank -%}
+              <img src="{{ section.settings.col2_icon_custom | image_url: width: 60 }}" alt="" width="30" height="30" loading="lazy">
+            {%- else -%}
+              <!-- Headset / Support SVG -->
+              <svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 0 0-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 0 0-9-9z"/></svg>
+            {%- endif -%}
+          </div>
+          <div class="gerolamo-contact__content">
+            <h3 class="gerolamo-contact__title">{{ section.settings.col2_title | default: '¿TIENES DUDAS?' }}</h3>
+            <p class="gerolamo-contact__desc">{{ section.settings.col2_desc | default: 'Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.' }}</p>
+            {%- if section.settings.col2_link_text != blank -%}
+              <a href="{{ section.settings.col2_url | default: '/pages/contacto' }}" class="gerolamo-contact__link">
+                {{ section.settings.col2_link_text }} →
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Pets Mascot Image -->
+      {%- if section.settings.mascot_image != blank -%}
+        <div class="gerolamo-contact__mascot-wrap">
+          <img src="{{ section.settings.mascot_image | image_url: width: 400 }}"
+               alt="Gerolamo Pets"
+               class="gerolamo-contact__mascot-img"
+               loading="lazy"
+               width="200"
+               height="160">
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Barra de Contacto",
+  "tag": "section",
+  "class": "section-gerolamo-contact-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Columna 1: ¿Dónde Comprar?"
+    },
+    {
+      "type": "text",
+      "id": "col1_title",
+      "default": "¿DÓNDE COMPRAR?",
+      "label": "Título Columna 1"
+    },
+    {
+      "type": "textarea",
+      "id": "col1_desc",
+      "default": "Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.",
+      "label": "Descripción Columna 1"
+    },
+    {
+      "type": "text",
+      "id": "col1_link_text",
+      "default": "Ver puntos de venta",
+      "label": "Texto del enlace 1"
+    },
+    {
+      "type": "url",
+      "id": "col1_url",
+      "label": "Enlace Columna 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "col1_icon_custom",
+      "label": "Icono personalizado Columna 1 (Opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Columna 2: ¿Tienes Dudas?"
+    },
+    {
+      "type": "text",
+      "id": "col2_title",
+      "default": "¿TIENES DUDAS?",
+      "label": "Título Columna 2"
+    },
+    {
+      "type": "textarea",
+      "id": "col2_desc",
+      "default": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
+      "label": "Descripción Columna 2"
+    },
+    {
+      "type": "text",
+      "id": "col2_link_text",
+      "default": "Contáctanos",
+      "label": "Texto del enlace 2"
+    },
+    {
+      "type": "url",
+      "id": "col2_url",
+      "label": "Enlace Columna 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "col2_icon_custom",
+      "label": "Icono personalizado Columna 2 (Opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Imagen de Mascotas (Derecha)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mascot_image",
+      "label": "Foto de Perro y Gato recortados",
+      "info": "PNG transparente de las mascotas asomándose a la derecha."
+    },
+    {
+      "type": "header",
+      "content": "Colores y Estilo"
+    },
+    {
+      "type": "color",
+      "id": "box_bg",
+      "default": "#F0F4F9",
+      "label": "Color de fondo del contenedor"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "default": "#1B4B8A",
+      "label": "Color de fondo de los iconos"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#1B4B8A",
+      "label": "Color de los títulos"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#475569",
+      "label": "Color de textos"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "default": "#0F6445",
+      "label": "Color de los enlaces con flecha"
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo del contenedor",
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior (Móvil)",
+      "default": 35
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra de Contacto"
+    }
+  ]
+}
+{% endschema %}
