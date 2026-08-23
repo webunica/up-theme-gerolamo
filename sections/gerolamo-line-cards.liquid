@@ -54,86 +54,90 @@
     }
   }
 
-  /* ---- Card: imagen como fondo ---- */
+  /* ---- Card: fondo claro, imagen flotante a la derecha ---- */
   .gerolamo-card {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--card-bg, #f4f8f6);
-    background-size: cover;
-    background-position: center bottom;
-    background-repeat: no-repeat;
     border-radius: var(--card-radius, 20px);
-    padding: 28px 24px 22px 24px;
+    padding: 28px 24px 24px 24px;
     overflow: hidden;
     min-height: 340px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-decoration: none;
   }
 
-  /* Overlay oscuro sobre la imagen para legibilidad del texto */
-  .gerolamo-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--card-overlay, linear-gradient(160deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.0) 100%));
-    border-radius: inherit;
-    z-index: 1;
-    pointer-events: none;
-  }
-
   .gerolamo-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
   }
 
+  /* Texto: limitado al 55% izquierdo para dejar espacio a la imagen */
   .gerolamo-card__header {
     position: relative;
     z-index: 2;
+    max-width: 58%;
   }
 
   .gerolamo-card__overline {
     margin: 0;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--card-overline-color, rgba(255,255,255,0.85));
+    color: var(--card-accent, #0F6445);
     line-height: 1.2;
   }
 
   .gerolamo-card__title {
-    margin: 4px 0 0 0;
-    font-size: 24px;
+    margin: 3px 0 0 0;
+    font-size: 26px;
     font-weight: 800;
     letter-spacing: -0.01em;
     text-transform: uppercase;
-    color: var(--card-title-color, #ffffff);
-    line-height: 1.15;
+    color: var(--card-accent, #0F6445);
+    line-height: 1.1;
   }
 
   @media (max-width: 1200px) {
-    .gerolamo-card__title {
-      font-size: 20px;
-    }
+    .gerolamo-card__title { font-size: 22px; }
   }
 
   .gerolamo-card__desc {
     margin: 10px 0 0 0;
     font-size: 14px;
-    line-height: 1.4;
-    color: var(--card-desc-color, rgba(255,255,255,0.82));
-    max-width: 90%;
+    line-height: 1.45;
+    color: var(--card-desc-color, #4a5568);
   }
 
-  /* Badge (sello circular) */
+  /* Imagen del producto: absoluta, fondo derecho/inferior */
+  .gerolamo-card__img-wrap {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 58%;
+    height: 82%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .gerolamo-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right bottom;
+    display: block;
+  }
+
+  /* Badge (sello circular) – esquina superior derecha */
   .gerolamo-card__badge {
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 64px;
-    height: 64px;
+    width: 70px;
+    height: 70px;
     z-index: 3;
     pointer-events: none;
   }
@@ -145,40 +149,39 @@
     object-fit: contain;
   }
 
+  /* Footer: botón abajo izquierda */
   .gerolamo-card__footer {
     position: relative;
     z-index: 2;
     margin-top: auto;
-    padding-top: 20px;
+    padding-top: 18px;
   }
 
   .gerolamo-card__btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    background-color: var(--card-btn-bg, rgba(255,255,255,0.15));
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1.5px solid rgba(255,255,255,0.6);
+    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
     color: var(--card-btn-text, #ffffff);
     font-size: 13px;
     font-weight: 600;
-    padding: 10px 20px;
+    padding: 11px 22px;
     border-radius: 30px;
     text-decoration: none;
     line-height: 1;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
   .gerolamo-card__btn:hover {
-    background-color: rgba(255,255,255,0.28);
+    opacity: 0.88;
     transform: translateX(2px);
   }
 
   .gerolamo-card__btn-arrow {
     width: 14px;
     height: 14px;
+    flex-shrink: 0;
     transition: transform 0.2s ease;
   }
 
@@ -186,30 +189,44 @@
     transform: translateX(3px);
   }
 
-  /* Placeholder cuando no hay imagen */
-  .gerolamo-card--no-img {
-    background-image: none;
+  /* Placeholder sin imagen */
+  .gerolamo-card__img-placeholder {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 52%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.04);
+    border-radius: 10px;
+    color: #94a3b8;
+    font-size: 12px;
+    z-index: 1;
   }
-  .gerolamo-card--no-img::before {
-    display: none;
+
+  .gerolamo-container {
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
   }
-  .gerolamo-card--no-img .gerolamo-card__overline {
-    color: var(--card-accent, #0F6445);
-  }
-  .gerolamo-card--no-img .gerolamo-card__title {
-    color: var(--card-accent, #0F6445);
-  }
-  .gerolamo-card--no-img .gerolamo-card__desc {
-    color: var(--card-desc-color, #475569);
-  }
-  .gerolamo-card--no-img .gerolamo-card__btn {
-    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
-    border-color: transparent;
-    color: var(--card-btn-text, #ffffff);
-  }
-  .gerolamo-card--no-img .gerolamo-card__btn:hover {
-    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
-    opacity: 0.88;
+  @media (max-width: 576px) {
+    .gerolamo-container {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+    .gerolamo-card__header {
+      max-width: 60%;
+    }
+    .gerolamo-card__img-wrap {
+      width: 55%;
+      height: 75%;
+    }
   }
 </style>
 
@@ -224,7 +241,7 @@
        --card-radius: {{ section.settings.card_radius }}px;
      ">
   <div class="gerolamo-container">
-    
+
     {%- if section.settings.section_title != blank -%}
       <div class="section-header text-center mb30">
         <h2 class="h2 mb0">{{ section.settings.section_title }}</h2>
@@ -237,34 +254,44 @@
     <div class="gerolamo-cards__grid{% if section.settings.mobile_layout == 'swipe' %} gerolamo-cards__grid--swipe{% else %} gerolamo-cards__grid--stack{% endif %}">
       {%- for block in section.blocks -%}
 
-        {%- assign has_image = false -%}
-        {%- if block.settings.image != blank -%}
-          {%- assign has_image = true -%}
-        {%- endif -%}
-
-        <div class="gerolamo-card{% unless has_image %} gerolamo-card--no-img{% endunless %}"
+        <div class="gerolamo-card"
              {{ block.shopify_attributes }}
              style="
                --card-bg: {{ block.settings.bg_color | default: '#f4f8f6' }};
                --card-accent: {{ block.settings.accent_color | default: '#0F6445' }};
-               --card-desc-color: {{ block.settings.desc_color | default: '#475569' }};
+               --card-desc-color: {{ block.settings.desc_color | default: '#4a5568' }};
                --card-btn-bg: {{ block.settings.btn_bg_color | default: block.settings.accent_color | default: '#0F6445' }};
                --card-btn-text: {{ block.settings.btn_text_color | default: '#ffffff' }};
-               {% if has_image %}background-image: url('{{ block.settings.image | image_url: width: 800 }}');{% endif %}
              ">
 
           <!-- Badge (sello circular) -->
           {%- if block.settings.badge_image != blank -%}
             <div class="gerolamo-card__badge">
-              <img src="{{ block.settings.badge_image | image_url: width: 140 }}"
+              <img src="{{ block.settings.badge_image | image_url: width: 160 }}"
                    alt="Sello"
-                   width="64"
-                   height="64"
+                   width="70"
+                   height="70"
                    loading="lazy">
             </div>
           {%- endif -%}
 
-          <!-- Card Header (Overline, Title, Description) -->
+          <!-- Imagen del producto: flotante abajo-derecha -->
+          {%- if block.settings.image != blank -%}
+            <div class="gerolamo-card__img-wrap">
+              <img src="{{ block.settings.image | image_url: width: 700 }}"
+                   alt="{{ block.settings.title | escape }}"
+                   class="gerolamo-card__img"
+                   loading="lazy"
+                   width="350"
+                   height="280">
+            </div>
+          {%- else -%}
+            <div class="gerolamo-card__img-placeholder">
+              Sin imagen
+            </div>
+          {%- endif -%}
+
+          <!-- Texto: overline, título, descripción (izquierda) -->
           <div class="gerolamo-card__header">
             {%- if block.settings.overline != blank -%}
               <p class="gerolamo-card__overline">{{ block.settings.overline }}</p>
@@ -277,7 +304,7 @@
             {%- endif -%}
           </div>
 
-          <!-- Bottom Button -->
+          <!-- Botón -->
           <div class="gerolamo-card__footer">
             {%- if block.settings.button_text != blank -%}
               <a href="{{ block.settings.button_link | default: '#' }}" class="gerolamo-card__btn">
@@ -295,6 +322,8 @@
 
   </div>
 </div>
+
+
 
 {% schema %}
 {
