@@ -54,22 +54,38 @@
     }
   }
 
+  /* ---- Card: imagen como fondo ---- */
   .gerolamo-card {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--card-bg, #f4f8f6);
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
     border-radius: var(--card-radius, 20px);
     padding: 28px 24px 22px 24px;
     overflow: hidden;
+    min-height: 340px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-decoration: none;
   }
 
+  /* Overlay oscuro sobre la imagen para legibilidad del texto */
+  .gerolamo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--card-overlay, linear-gradient(160deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.0) 100%));
+    border-radius: inherit;
+    z-index: 1;
+    pointer-events: none;
+  }
+
   .gerolamo-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
   }
 
   .gerolamo-card__header {
@@ -81,9 +97,9 @@
     margin: 0;
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--card-accent, #0F6445);
+    color: var(--card-overline-color, rgba(255,255,255,0.85));
     line-height: 1.2;
   }
 
@@ -93,7 +109,7 @@
     font-weight: 800;
     letter-spacing: -0.01em;
     text-transform: uppercase;
-    color: var(--card-accent, #0F6445);
+    color: var(--card-title-color, #ffffff);
     line-height: 1.15;
   }
 
@@ -107,39 +123,17 @@
     margin: 10px 0 0 0;
     font-size: 14px;
     line-height: 1.4;
-    color: var(--card-desc-color, #475569);
+    color: var(--card-desc-color, rgba(255,255,255,0.82));
     max-width: 90%;
   }
 
-  .gerolamo-card__media-wrap {
-    position: relative;
-    margin-top: 16px;
-    margin-bottom: 16px;
-    min-height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .gerolamo-card__img {
-    width: 100%;
-    height: auto;
-    max-height: 220px;
-    object-fit: contain;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-
-  .gerolamo-card:hover .gerolamo-card__img {
-    transform: scale(1.03);
-  }
-
+  /* Badge (sello circular) */
   .gerolamo-card__badge {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 56px;
-    height: 56px;
+    top: 16px;
+    right: 16px;
+    width: 64px;
+    height: 64px;
     z-index: 3;
     pointer-events: none;
   }
@@ -155,6 +149,7 @@
     position: relative;
     z-index: 2;
     margin-top: auto;
+    padding-top: 20px;
   }
 
   .gerolamo-card__btn {
@@ -162,7 +157,10 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
+    background-color: var(--card-btn-bg, rgba(255,255,255,0.15));
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1.5px solid rgba(255,255,255,0.6);
     color: var(--card-btn-text, #ffffff);
     font-size: 13px;
     font-weight: 600;
@@ -170,11 +168,11 @@
     border-radius: 30px;
     text-decoration: none;
     line-height: 1;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
   }
 
   .gerolamo-card__btn:hover {
-    opacity: 0.9;
+    background-color: rgba(255,255,255,0.28);
     transform: translateX(2px);
   }
 
@@ -186,6 +184,32 @@
 
   .gerolamo-card:hover .gerolamo-card__btn-arrow {
     transform: translateX(3px);
+  }
+
+  /* Placeholder cuando no hay imagen */
+  .gerolamo-card--no-img {
+    background-image: none;
+  }
+  .gerolamo-card--no-img::before {
+    display: none;
+  }
+  .gerolamo-card--no-img .gerolamo-card__overline {
+    color: var(--card-accent, #0F6445);
+  }
+  .gerolamo-card--no-img .gerolamo-card__title {
+    color: var(--card-accent, #0F6445);
+  }
+  .gerolamo-card--no-img .gerolamo-card__desc {
+    color: var(--card-desc-color, #475569);
+  }
+  .gerolamo-card--no-img .gerolamo-card__btn {
+    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
+    border-color: transparent;
+    color: var(--card-btn-text, #ffffff);
+  }
+  .gerolamo-card--no-img .gerolamo-card__btn:hover {
+    background-color: var(--card-btn-bg, var(--card-accent, #0F6445));
+    opacity: 0.88;
   }
 </style>
 
@@ -199,7 +223,7 @@
        --cards-gap-desktop: {{ section.settings.gap_desktop }}px;
        --card-radius: {{ section.settings.card_radius }}px;
      ">
-  <div class="page-width">
+  <div class="gerolamo-container">
     
     {%- if section.settings.section_title != blank -%}
       <div class="section-header text-center mb30">
@@ -212,7 +236,13 @@
 
     <div class="gerolamo-cards__grid{% if section.settings.mobile_layout == 'swipe' %} gerolamo-cards__grid--swipe{% else %} gerolamo-cards__grid--stack{% endif %}">
       {%- for block in section.blocks -%}
-        <div class="gerolamo-card"
+
+        {%- assign has_image = false -%}
+        {%- if block.settings.image != blank -%}
+          {%- assign has_image = true -%}
+        {%- endif -%}
+
+        <div class="gerolamo-card{% unless has_image %} gerolamo-card--no-img{% endunless %}"
              {{ block.shopify_attributes }}
              style="
                --card-bg: {{ block.settings.bg_color | default: '#f4f8f6' }};
@@ -220,8 +250,20 @@
                --card-desc-color: {{ block.settings.desc_color | default: '#475569' }};
                --card-btn-bg: {{ block.settings.btn_bg_color | default: block.settings.accent_color | default: '#0F6445' }};
                --card-btn-text: {{ block.settings.btn_text_color | default: '#ffffff' }};
+               {% if has_image %}background-image: url('{{ block.settings.image | image_url: width: 800 }}');{% endif %}
              ">
-          
+
+          <!-- Badge (sello circular) -->
+          {%- if block.settings.badge_image != blank -%}
+            <div class="gerolamo-card__badge">
+              <img src="{{ block.settings.badge_image | image_url: width: 140 }}"
+                   alt="Sello"
+                   width="64"
+                   height="64"
+                   loading="lazy">
+            </div>
+          {%- endif -%}
+
           <!-- Card Header (Overline, Title, Description) -->
           <div class="gerolamo-card__header">
             {%- if block.settings.overline != blank -%}
@@ -232,32 +274,6 @@
             {%- endif -%}
             {%- if block.settings.desc != blank -%}
               <p class="gerolamo-card__desc">{{ block.settings.desc }}</p>
-            {%- endif -%}
-          </div>
-
-          <!-- Product Image & Optional Badge -->
-          <div class="gerolamo-card__media-wrap">
-            {%- if block.settings.badge_image != blank -%}
-              <div class="gerolamo-card__badge">
-                <img src="{{ block.settings.badge_image | image_url: width: 120 }}"
-                     alt="Sello"
-                     width="56"
-                     height="56"
-                     loading="lazy">
-              </div>
-            {%- endif -%}
-            
-            {%- if block.settings.image != blank -%}
-              <img src="{{ block.settings.image | image_url: width: 600 }}"
-                   alt="{{ block.settings.title | escape }}"
-                   class="gerolamo-card__img"
-                   loading="lazy"
-                   width="300"
-                   height="220">
-            {%- else -%}
-              <div style="width:100%;height:180px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.03);border-radius:12px;color:#94a3b8;font-size:13px;">
-                Selecciona una imagen
-              </div>
             {%- endif -%}
           </div>
 
