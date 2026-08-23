@@ -88,7 +88,11 @@
   .gerolamo-card__header {
     position: relative;
     z-index: 2;
-    padding-right: 60px; /* dejar espacio si hay sello */
+    padding-right: 70px; /* dejar espacio si hay sello */
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .gerolamo-card__overline {
@@ -113,6 +117,11 @@
 
   @media (max-width: 1200px) {
     .gerolamo-card__title { font-size: 22px; }
+    .gerolamo-card__header { min-height: 110px; }
+  }
+
+  @media (max-width: 576px) {
+    .gerolamo-card__header { min-height: auto; padding-right: 0; }
   }
 
   .gerolamo-card__desc {
@@ -122,27 +131,27 @@
     color: var(--card-desc-color, #4a5568);
   }
 
-  /* 2. Imagen: en flujo normal, entre texto y botón */
+  /* 2. Imagen: en flujo normal, alineada al fondo sobre el botón */
   .gerolamo-card__img-wrap {
     width: calc(100% + 48px);
     margin-left: -24px;
     margin-right: -24px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 16px;
+    margin-bottom: 16px;
     flex: 1;
-    min-height: 190px;
+    min-height: 200px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     overflow: hidden;
   }
 
   .gerolamo-card__img {
     width: 100%;
-    height: auto;
-    max-height: 260px;
+    height: 100%;
+    max-height: 240px;
     object-fit: contain;
-    object-position: center center;
+    object-position: center bottom;
     display: block;
   }
 
@@ -151,9 +160,9 @@
     width: calc(100% + 48px);
     margin-left: -24px;
     margin-right: -24px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    min-height: 190px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    min-height: 200px;
     flex: 1;
     display: flex;
     align-items: center;
