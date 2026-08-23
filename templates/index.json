@@ -342,6 +342,7 @@
         "col1_footer_text": "Ver todos los productos para perros",
         "col1_footer_url": "",
         "col2_title": "GATOS",
+        "col2_icon_image": "shopify://shop_images/icono-gato-blanco.svg",
         "col2_icon_svg": "",
         "col2_header_bg": "#3b702a",
         "col2_header_text_color": "#ffffff",
