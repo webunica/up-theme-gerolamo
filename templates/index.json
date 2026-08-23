@@ -555,6 +555,51 @@
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)"
       }
+    },
+    "gerolamo_our_story_aYrJ8X": {
+      "type": "gerolamo-our-story",
+      "name": "Nuestra Historia",
+      "settings": {
+        "img_radius": 20,
+        "title": "NUESTRA HISTORIA",
+        "text": "<p>Nuestro antepasado, un hombre con espíritu emprendedor y aventurero, que llegó desde Italia a Argentina para luego emprender desde allí, junto a su perro, en el viaje hasta Chile.</p><p>De ese viaje nació Gerolamo, con la misión de entregar nutrición premium para compañero perruno y gatos en todas las etapas de su vida.</p>",
+        "button_text": "Conoce nuestra historia",
+        "button_link": "",
+        "show_leaf_deco": true,
+        "bg_color": "#ffffff",
+        "title_color": "#1B4B8A",
+        "text_color": "#334155",
+        "btn_bg_color": "#1B4B8A",
+        "btn_text_color": "#ffffff",
+        "padding_top_desktop": 50,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 30,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "gerolamo_contact_bar_weFEn3": {
+      "type": "gerolamo-contact-bar",
+      "name": "Barra de Contacto",
+      "settings": {
+        "col1_title": "¿DÓNDE COMPRAR?",
+        "col1_desc": "Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.",
+        "col1_link_text": "Ver puntos de venta",
+        "col1_url": "",
+        "col2_title": "¿TIENES DUDAS?",
+        "col2_desc": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
+        "col2_link_text": "Contáctanos",
+        "col2_url": "",
+        "box_bg": "#F0F4F9",
+        "icon_bg_color": "#1B4B8A",
+        "title_color": "#1B4B8A",
+        "text_color": "#475569",
+        "link_color": "#0F6445",
+        "box_radius": 22,
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 35
+      }
     }
   },
   "order": [
@@ -563,6 +608,8 @@
     "gerolamo_line_cards_VW7xdt",
     "gerolamo_line_showcase_qf4dLE",
     "gerolamo_species_featured_QVqkcU",
-    "banners_XmxcEi"
+    "banners_XmxcEi",
+    "gerolamo_our_story_aYrJ8X",
+    "gerolamo_contact_bar_weFEn3"
   ]
 }
