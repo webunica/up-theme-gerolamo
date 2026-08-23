@@ -229,6 +229,7 @@
             "title": "PRESCRIPCIÓN VETERINARIA",
             "desc": "Nutrición especializada para necesidades de salud específicas.",
             "image": "shopify://shop_images/prescripcion-02.png",
+            "badge_image": "shopify://shop_images/iconpre2.png",
             "button_text": "Ver productos",
             "button_link": "",
             "bg_color": "#f0f4f9",
