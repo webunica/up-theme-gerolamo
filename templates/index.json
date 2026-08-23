@@ -31,7 +31,7 @@
             "button_name_2": "Conoce más",
             "button_link_2": "shopify://pages/nosotros",
             "customize_button_size": "custom",
-            "btn_min_height": 35,
+            "btn_min_height": 50,
             "btn_min_height_mobile": 50,
             "btn_wide_width": 192,
             "roundness_button": 30,
