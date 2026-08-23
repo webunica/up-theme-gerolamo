@@ -71,16 +71,37 @@
   .gerolamo-curved-bar__grid {
     display: flex;
     flex-direction: row;
-    gap: var(--bar-gap-desktop, 40px);
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: var(--bar-gap-desktop, 24px);
+    width: 58%;
+    margin-left: auto;
+  }
+
+  .gerolamo-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    flex: 1;
+  }
+
+  @media (max-width: 1200px) {
+    .gerolamo-curved-bar__grid {
+      width: 70%;
+    }
   }
 
   @media (max-width: 900px) {
     .gerolamo-curved-bar__grid {
+      width: 100%;
+      margin-left: 0;
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
+    }
+    .gerolamo-feature-item {
+      flex: 0 0 auto;
     }
   }
 
@@ -90,17 +111,6 @@
       align-items: flex-start;
       gap: 16px;
     }
-  }
-
-  .gerolamo-feature-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 6px 0;
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 576px) {
     .gerolamo-feature-item {
       justify-content: var(--item-align-mobile, flex-start);
     }
