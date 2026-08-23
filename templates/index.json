@@ -186,7 +186,7 @@
         "overlap_desktop": 70,
         "overlap_tablet": 50,
         "overlap_mobile": 35,
-        "curve_height_desktop": 70,
+        "curve_height_desktop": 80,
         "curve_height_tablet": 55,
         "curve_height_mobile": 25,
         "bg_color": "#ffffff",
