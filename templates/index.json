@@ -302,6 +302,7 @@
       "settings": {
         "title": "PRESCRIPCIÓN VETERINARIA",
         "desc": "Fórmulas desarrolladas por veterinarios para apoyar el tratamiento nutricional de diversas condiciones de salud.",
+        "badge_image": "shopify://shop_images/iconpre2.png",
         "button_text": "Conoce más",
         "button_link": "",
         "show_footer_badge": true,
