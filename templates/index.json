@@ -283,6 +283,7 @@
           "settings": {
             "title": "SECOS",
             "desc": "Nutrición completa y especializada en formato seco.",
+            "image": "shopify://shop_images/secos-gerolamo.png",
             "card_link": ""
           }
         },
