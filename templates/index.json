@@ -292,6 +292,7 @@
           "settings": {
             "title": "HÚMEDOS",
             "desc": "Alimentación húmeda altamente palatable y de fácil digestión.",
+            "image": "shopify://shop_images/humedos.png",
             "card_link": ""
           }
         }
