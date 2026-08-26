@@ -152,10 +152,12 @@
     {%- if section_settings_background -%}<div class="section-background section-background--{{ section.settings.background_spacing }} border__radius">{%- endif -%}
   
     <div class="page-grid-1 main-collection-banner__top-center{% if section.settings.text_align == "text-center" %} main-collection-banner__left-center{% endif %} main-collection-banner__height main-collection-banner__height_mobile {{ section.settings.text_align }}">
+      {%- if section.settings.show_title or collection.description != blank and section.settings.show_text_description -%}
       <div class="main-collection-banner__content">
-        <h1 class="mt0 mb0">{{ collection.title }}</h1>
-        {%- if collection.description != blank and section.settings.show_text_description -%}<div class="mt16 section__richtext__editor">{{ collection.description }}</div>{%- endif -%}
+        {%- if section.settings.show_title -%}<h1 class="mt0 mb0">{{ collection.title }}</h1>{%- endif -%}
+        {%- if collection.description != blank and section.settings.show_text_description -%}<div class="{% if section.settings.show_title %}mt16 {% endif %}section__richtext__editor">{{ collection.description }}</div>{%- endif -%}
       </div>
+      {%- endif -%}
     </div>
 
     {% if section_settings_background %}</div>{%- endif -%}
@@ -231,6 +233,12 @@
       ],
       "default": "text-center",
       "label": "Text align"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Show collection title"
     },
     {
       "type": "checkbox",
