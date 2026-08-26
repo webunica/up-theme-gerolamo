@@ -719,7 +719,7 @@
                     {%- endif -%}
                   </a>
                   {%- if is_rich_target -%}
-                    {%- render "gerolamo-rich-submenu", link: block.settings.sub_menu, category: block.settings.title, url_mantencion: block.settings.url_mantencion, url_prescripcion: block.settings.url_prescripcion, url_snacks: block.settings.url_snacks -%}
+                    {%- render "gerolamo-rich-submenu", link: block.settings.sub_menu, category: block.settings.title, url_premium: block.settings.url_mantencion, url_prescripcion: block.settings.url_prescripcion, url_snacks: block.settings.url_snacks -%}
                   {%- elsif block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
                     {%- render "menu-submenu", link: block.settings.sub_menu -%}
                   {%- endif -%}
@@ -1486,12 +1486,12 @@
           "type": "checkbox",
           "id": "enable_rich_dropdown",
           "default": false,
-          "label": "Activar tarjeta de submenú (Mantención, Prescripción, Snacks)"
+          "label": "Activar tarjeta de submenú (Premium, Prescripción, Snacks)"
         },
         {
           "type": "url",
           "id": "url_mantencion",
-          "label": "Enlace a Mantención (Opcional)"
+          "label": "Enlace a Premium (Opcional)"
         },
         {
           "type": "url",
