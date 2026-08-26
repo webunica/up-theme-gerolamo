@@ -31,6 +31,7 @@
         "image_overlay_color": "rgba(0,0,0,0)",
         "image_size": "fixed",
         "desktop_image_height": 400,
+        "background_image_mobile": "shopify://shop_images/banner-mobile.png",
         "image_overlay_opacity_mobile": 0,
         "image_overlay_color_mobile": "rgba(0,0,0,0)",
         "image_size_mobile": "fixed",
