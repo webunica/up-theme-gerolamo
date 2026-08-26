@@ -1,6 +1,6 @@
 {% comment %}
   Rich Submenu Dropdown for Gerolamo Header
-  Muestra los ítems de Mantención, Prescripción Veterinaria y Snacks con icono verde, título y subtítulo descriptivo.
+  Muestra los ítems de Premium, Prescripción Veterinaria y Snacks con icono verde, título y subtítulo descriptivo.
 {% endcomment %}
 {%- liquid
   assign species = category | default: 'perros' | downcase
@@ -13,7 +13,7 @@
         {%- assign title_down = childlink.title | downcase -%}
         <a href="{{ childlink.url }}" class="gerolamo-rich-dropdown__item">
           <div class="gerolamo-rich-dropdown__icon">
-            {%- if title_down contains 'mantenci' -%}
+            {%- if title_down contains 'mantenci' or title_down contains 'premium' -%}
               <!-- Escudo con Hoja -->
               <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -43,7 +43,7 @@
           <div class="gerolamo-rich-dropdown__texts">
             <span class="gerolamo-rich-dropdown__title">{{ childlink.title }}</span>
             <span class="gerolamo-rich-dropdown__subtitle">
-              {%- if title_down contains 'mantenci' -%}
+              {%- if title_down contains 'mantenci' or title_down contains 'premium' -%}
                 Nutrición diaria completa
               {%- elsif title_down contains 'prescripci' -%}
                 Nutrición para necesidades específicas
@@ -59,8 +59,8 @@
     {%- else -%}
       <!-- Default Gerolamo 3-Category Submenu -->
       {%- liquid
-        if url_mantencion == blank
-          assign url_mantencion = '/collections/' | append: species | append: '-mantencion'
+        if url_premium == blank
+          assign url_premium = '/collections/' | append: species | append: '-premium'
         endif
         if url_prescripcion == blank
           assign url_prescripcion = '/collections/' | append: species | append: '-prescripcion-veterinaria'
@@ -70,8 +70,8 @@
         endif
       -%}
       
-      <!-- 1. Mantención -->
-      <a href="{{ url_mantencion }}" class="gerolamo-rich-dropdown__item">
+      <!-- 1. Premium -->
+      <a href="{{ url_premium }}" class="gerolamo-rich-dropdown__item">
         <div class="gerolamo-rich-dropdown__icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#0F6445" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -79,7 +79,7 @@
           </svg>
         </div>
         <div class="gerolamo-rich-dropdown__texts">
-          <span class="gerolamo-rich-dropdown__title">Mantención</span>
+          <span class="gerolamo-rich-dropdown__title">Premium</span>
           <span class="gerolamo-rich-dropdown__subtitle">Nutrición diaria completa</span>
         </div>
       </a>
