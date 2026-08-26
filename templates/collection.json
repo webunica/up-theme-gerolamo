@@ -130,8 +130,8 @@
       "name": "t:names.product_recommendations",
       "settings": {
         "product": "galleta-gerolamo-hueso-adulto-clasica",
-        "main_subheading": "Subheading",
-        "main_heading": "Product Recommendations",
+        "main_subheading": "",
+        "main_heading": "Productos Recomendados",
         "main_desc": "Some descriptive text for your store.",
         "heading_aligment": "text-center",
         "top_spacing": "normal",
