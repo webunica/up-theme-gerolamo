@@ -103,9 +103,9 @@
             "icon_svg": "",
             "sub_menu": "",
             "enable_rich_dropdown": true,
-            "url_mantencion": "",
-            "url_prescripcion": "",
-            "url_snacks": ""
+            "url_mantencion": "shopify://collections/premium-gatos",
+            "url_prescripcion": "shopify://collections/prescripcion-gato",
+            "url_snacks": "shopify://collections/snaks-gatos"
           }
         },
         "menu_item_VAhhVd": {
