@@ -89,7 +89,7 @@
             "icon_svg": "",
             "sub_menu": "",
             "enable_rich_dropdown": true,
-            "url_mantencion": "",
+            "url_mantencion": "shopify://collections/premium-perro",
             "url_prescripcion": "shopify://collections/prescripcion-perro",
             "url_snacks": ""
           }
