@@ -39,8 +39,8 @@
         "hero_height_desktop": 360,
         "hero_height_mobile": 250,
         "hero_text_align": "left",
-        "hero_text_color": "#1A538A",
-        "hero_sub_color": "#1A538A",
+        "hero_text_color": "#1a538a",
+        "hero_sub_color": "#1a538a",
         "hero_title_size": 36,
         "hero_overlay_color": "#000000",
         "hero_overlay_opacity": 0,
@@ -59,7 +59,7 @@
         "map_center_lng": "-71.5430",
         "items_per_page": 18,
         "columns": "3",
-        "section_bg_color": "#FFFFFF",
+        "section_bg_color": "#ffffff",
         "top_spacing": "none"
       }
     }
