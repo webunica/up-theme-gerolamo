@@ -129,7 +129,7 @@
       "type": "product-recommendations",
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "{{ closest.product }}",
+        "product": "",
         "main_subheading": "Subheading",
         "main_heading": "Productos recomendados",
         "main_desc": "Some descriptive text for your store.",
