@@ -55,6 +55,9 @@
         "gerolamo_b2b_actions_RjHqih": {
           "type": "gerolamo_b2b_actions",
           "settings": {
+            "show_nearest_stores": true,
+            "nearest_title": "Puntos de venta cercanos",
+            "nearest_limit": 5,
             "show_btn1": true,
             "btn1_text": "Encontrar punto de venta más cercano",
             "btn1_url": "shopify://pages/donde-comprar",
@@ -219,7 +222,7 @@
       "settings": {
         "product": "{{ closest.product }}",
         "main_subheading": "",
-        "main_heading": "You Might Also Like",
+        "main_heading": "También te puede gustar",
         "main_desc": "",
         "heading_aligment": "text-center",
         "top_spacing": "normal",
