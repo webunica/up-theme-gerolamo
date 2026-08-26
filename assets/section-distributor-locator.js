@@ -559,10 +559,20 @@
       });
 
       // OpenStreetMap tiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
       }).addTo(mapObj);
+
+      tileLayer.on('load', () => {
+        const mapLoader = section.querySelector('.distributor-locator__map-loader');
+        if (mapLoader) mapLoader.classList.add('is-loaded');
+      });
+
+      setTimeout(() => {
+        const mapLoader = section.querySelector('.distributor-locator__map-loader');
+        if (mapLoader) mapLoader.classList.add('is-loaded');
+      }, 1000);
 
       markersLayer = L.featureGroup().addTo(mapObj);
     }
