@@ -1,0 +1,345 @@
+{% comment %}
+  Gerolamo Nearest Stores Widget
+  Muestra automáticamente los 5 distribuidores más cercanos al cliente usando geolocalización o búsqueda rápida.
+{% endcomment %}
+
+<div class="gerolamo-nearest-stores-widget" id="gerolamo-nearest-stores-{{ section.id }}" data-json-url="{{ 'distribuidores.json' | asset_url }}" data-limit="{{ block.settings.nearest_limit | default: 5 }}">
+  <style>
+    .gerolamo-nearest-stores-widget {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .g-nearest__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .g-nearest__title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .g-nearest__title-icon {
+      width: 20px;
+      height: 20px;
+      color: #0F6445;
+      flex-shrink: 0;
+    }
+    .g-nearest__title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+    .g-nearest__badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0F6445;
+      background: #e6f4ea;
+      padding: 3px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+    .g-nearest__search-box {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .g-nearest__search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 32px 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      font-size: 12px;
+      background: #ffffff;
+      color: #334155;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .g-nearest__search-input:focus {
+      border-color: #0F6445;
+      box-shadow: 0 0 0 2px rgba(15, 100, 69, 0.15);
+    }
+    .g-nearest__search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    .g-nearest__list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .g-nearest__list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .g-nearest__list::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .g-nearest__item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .g-nearest__item:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .g-nearest__item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .g-nearest__name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.25;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .g-nearest__dist {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0F6445;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 2px 6px;
+      border-radius: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .g-nearest__addr {
+      font-size: 11px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.3;
+    }
+    .g-nearest__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #f1f5f9;
+    }
+    .g-nearest__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #1B4B8A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .g-nearest__link:hover {
+      color: #0F6445;
+      text-decoration: underline;
+    }
+    .g-nearest__link svg {
+      width: 12px;
+      height: 12px;
+    }
+    .g-nearest__loading {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      padding: 12px 0;
+    }
+  </style>
+
+  <div class="g-nearest__header">
+    <div class="g-nearest__title-wrap">
+      <svg class="g-nearest__title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <h4 class="g-nearest__title">{{ block.settings.nearest_title | default: 'Puntos de venta cercanos' }}</h4>
+    </div>
+    <span class="g-nearest__badge" id="g-nearest-status-{{ section.id }}">📍 Cercanos a ti</span>
+  </div>
+
+  <div class="g-nearest__search-box">
+    <input type="text" class="g-nearest__search-input" id="g-nearest-search-{{ section.id }}" placeholder="Buscar por comuna o ciudad (ej. Las Condes, Viña...)">
+    <svg class="g-nearest__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </div>
+
+  <ul class="g-nearest__list" id="g-nearest-list-{{ section.id }}">
+    <li class="g-nearest__loading">Buscando puntos de venta cercanos...</li>
+  </ul>
+</div>
+
+<script>
+(function() {
+  const containerId = 'gerolamo-nearest-stores-{{ section.id }}';
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const jsonUrl = container.getAttribute('data-json-url');
+  const limit = parseInt(container.getAttribute('data-limit'), 10) || 5;
+  const listEl = document.getElementById('g-nearest-list-{{ section.id }}');
+  const statusEl = document.getElementById('g-nearest-status-{{ section.id }}');
+  const searchInput = document.getElementById('g-nearest-search-{{ section.id }}');
+
+  let allStores = [];
+  let userCoords = null;
+
+  function haversine(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(lat1 * Math.PI / 180) *
+              Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.asin(Math.sqrt(a));
+  }
+
+  function renderStores(stores, coords) {
+    if (!listEl) return;
+    if (!stores || stores.length === 0) {
+      listEl.innerHTML = '<li class="g-nearest__loading">No se encontraron tiendas en esta zona.</li>';
+      return;
+    }
+
+    let items = stores.slice(0, limit);
+    listEl.innerHTML = items.map(store => {
+      let distTag = '';
+      if (coords && typeof store._dist === 'number') {
+        const d = store._dist < 1 ? `${Math.round(store._dist * 1000)} m` : `${store._dist.toFixed(1)} km`;
+        distTag = `<span class="g-nearest__dist">📍 a ${d}</span>`;
+      }
+
+      const phoneLink = store.telefono ? `
+        <a href="tel:${store.telefono.replace(/[^0-9+]/g, '')}" class="g-nearest__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          ${store.telefono}
+        </a>` : '';
+
+      const queryMap = encodeURIComponent(`${store.nombre}, ${store.direccion}, ${store.comuna || store.ciudad}`);
+      const mapUrl = store.lat && store.lng ? `https://www.google.com/maps/search/?api=1&query=${store.lat},${store.lng}` : `https://www.google.com/maps/search/?api=1&query=${queryMap}`;
+
+      return `
+        <li class="g-nearest__item">
+          <div class="g-nearest__item-top">
+            <h5 class="g-nearest__name">${store.nombre}</h5>
+            ${distTag}
+          </div>
+          <p class="g-nearest__addr">${store.direccion}${store.comuna ? ', ' + store.comuna : ''}${store.ciudad && store.ciudad !== store.comuna ? ' (' + store.ciudad + ')' : ''}</p>
+          <div class="g-nearest__actions">
+            <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="g-nearest__link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              Cómo llegar
+            </a>
+            ${phoneLink}
+          </div>
+        </li>
+      `;
+    }).join('');
+  }
+
+  function sortAndDisplayByLocation(coords) {
+    userCoords = coords;
+    const sorted = allStores.map(s => {
+      let d = Infinity;
+      if (s.lat && s.lng) {
+        d = haversine(coords.lat, coords.lng, parseFloat(s.lat), parseFloat(s.lng));
+      }
+      return { ...s, _dist: d };
+    }).sort((a, b) => a._dist - b._dist);
+
+    if (statusEl) statusEl.textContent = '📍 Ubicación detectada';
+    renderStores(sorted, coords);
+  }
+
+  function filterBySearch(term) {
+    if (!term || term.trim() === '') {
+      if (userCoords) {
+        sortAndDisplayByLocation(userCoords);
+      } else {
+        renderStores(allStores, null);
+      }
+      return;
+    }
+    const cleanTerm = term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const filtered = allStores.filter(s => {
+      const target = `${s.nombre || ''} ${s.direccion || ''} ${s.comuna || ''} ${s.ciudad || ''} ${s.region || ''}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return target.includes(cleanTerm);
+    });
+
+    if (userCoords) {
+      filtered.forEach(s => {
+        if (s.lat && s.lng) {
+          s._dist = haversine(userCoords.lat, userCoords.lng, parseFloat(s.lat), parseFloat(s.lng));
+        }
+      });
+      filtered.sort((a, b) => (a._dist || Infinity) - (b._dist || Infinity));
+    }
+    renderStores(filtered, userCoords);
+  }
+
+  // Load Data & Init
+  fetch(jsonUrl)
+    .then(r => r.json())
+    .then(data => {
+      allStores = data;
+      // Try Geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            sortAndDisplayByLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          },
+          err => {
+            // Default: Santiago / RM coords fallback (-33.4489, -70.6693)
+            sortAndDisplayByLocation({ lat: -33.4489, lng: -70.6693 });
+            if (statusEl) statusEl.textContent = '📍 Región Metropolitana';
+          },
+          { timeout: 5000, maximumAge: 300000 }
+        );
+      } else {
+        sortAndDisplayByLocation({ lat: -33.4489, lng: -70.6693 });
+      }
+    })
+    .catch(err => {
+      console.error('Error loading distribuidores.json:', err);
+      if (listEl) listEl.innerHTML = '<li class="g-nearest__loading">No se pudieron cargar los puntos de venta.</li>';
+    });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      filterBySearch(e.target.value);
+    });
+  }
+})();
+</script>
