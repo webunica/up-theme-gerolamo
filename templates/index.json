@@ -215,7 +215,7 @@
             "desc": "Nutrición completa y balanceada para cada etapa de vida.",
             "image": "shopify://shop_images/mantencion-01.png",
             "button_text": "Ver productos",
-            "button_link": "",
+            "button_link": "shopify://collections/prescripcion-perros-o-gatos-1",
             "bg_color": "#f0f7f4",
             "accent_color": "#0f6445",
             "desc_color": "#475569",
