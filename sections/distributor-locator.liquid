@@ -95,6 +95,11 @@
     #theme-section-{{ section.id }} .distributor-locator__hero-title {
       font-size: clamp(20px, 6vw, 28px) !important;
     }
+    {% if section.settings.hide_description_mobile %}
+    #theme-section-{{ section.id }} .distributor-locator__hero-desc {
+      display: none !important;
+    }
+    {% endif %}
   }
 </style>
 
@@ -384,6 +389,12 @@
       "id": "description",
       "label": "Descripcion",
       "default": "Encuentra el punto de venta mas cercano a tu ubicacion."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_description_mobile",
+      "label": "Ocultar descripción en móvil",
+      "default": false
     },
     {
       "type": "header",
