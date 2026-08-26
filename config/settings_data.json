@@ -331,7 +331,7 @@
     "page_wishlist": "wishlist",
     "enable_compare": false,
     "page_compare": "compare",
-    "favicon": "shopify://shop_images/fav.png",
+    "favicon": "shopify://shop_images/favicon.png",
     "show_number_rating": false,
     "enable_breadcrumb": true,
     "background_width_breadcrumb": "fullwidth",
