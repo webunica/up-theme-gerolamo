@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -10,6 +19,7 @@
         "mobile_grid": "page-grid-sp-2",
         "products_per_page": 16,
         "enable_filtering": "horizontal",
+        "filters_padding": 20,
         "enable_products_count": true,
         "enable_products_count_main": true,
         "enable_sticky_filter_button": true,
@@ -34,6 +44,7 @@
         "show_quantity": false,
         "button_type_product": "show",
         "button_type_product_mobile": true,
+        "enable_rating_product_card": true,
         "show_wishlist": true,
         "show_compare": true,
         "show_quick_view": true,
@@ -132,6 +143,7 @@
         "item_yfHWhV",
         "item_wKrHJ4"
       ],
+      "disabled": true,
       "name": "t:names.collection_list_type_2",
       "settings": {
         "main_subheading": "",
@@ -146,11 +158,13 @@
         "image_hover": "default",
         "image_ratio": "auto",
         "position": "align-items-end justify-content-center",
+        "heading_tag": "h3",
         "heading_size": "h5",
         "hover_underline": true,
         "show_products_count": true,
         "box_opacity": 90,
         "swipe": false,
+        "swipe_edges": false,
         "desktop_navigation": "dots_arrows",
         "mobile_navigation": "dots",
         "autoplay_enabled": false,
