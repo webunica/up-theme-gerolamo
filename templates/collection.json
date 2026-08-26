@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "heading": {
@@ -70,13 +79,14 @@
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
-        "top_spacing": "normal",
+        "top_spacing": "small",
         "width": "default",
-        "grid": "page-grid-3",
+        "grid": "page-grid-5",
         "grid_tablet": "page-grid-st-3",
         "mobile_grid": "page-grid-sp-2",
         "products_per_page": 9,
         "enable_filtering": "enable_closed",
+        "filters_padding": 20,
         "enable_products_count": true,
         "enable_products_count_main": true,
         "enable_dynamic_grid": true,
