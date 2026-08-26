@@ -369,7 +369,7 @@ component-swiper-slider.css
 </section>
 
 {% schema %}
-  {
+{
     "name": "Product information",
     "class": "product-page-template shopify-section-clip",
     "settings": [
@@ -813,7 +813,7 @@ component-swiper-slider.css
               }
             ],
             "default": "auto",
-            "label": "Buttons in row desktop",
+            "label": "Buttons in row desktop"
           },
           {
             "type": "select",
@@ -837,7 +837,7 @@ component-swiper-slider.css
               }
             ],
             "default": "2",
-            "label": "Buttons in row mobile",
+            "label": "Buttons in row mobile"
           },
           {
             "type": "select",
@@ -917,7 +917,7 @@ component-swiper-slider.css
               }
             ],
             "default": "auto",
-            "label": "Colors in row",
+            "label": "Colors in row"
           },
           {
             "type": "select",
@@ -965,7 +965,7 @@ component-swiper-slider.css
               }
             ],
             "default": "auto",
-            "label": "Images in row",
+            "label": "Images in row"
           },
           {
             "type": "header",
@@ -1183,6 +1183,123 @@ component-swiper-slider.css
             "id": "show_pickup_availability",
             "default": true,
             "label": "Show pickup availability"
+          }
+        ]
+      },
+      {
+        "type": "gerolamo_b2b_actions",
+        "name": "Puntos de venta (B2B)",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "header",
+            "content": "Botón 1: Puntos de Venta"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_btn1",
+            "default": true,
+            "label": "Mostrar Botón 1"
+          },
+          {
+            "type": "text",
+            "id": "btn1_text",
+            "default": "Encontrar punto de venta más cercano",
+            "label": "Texto del Botón 1"
+          },
+          {
+            "type": "url",
+            "id": "btn1_url",
+            "label": "Enlace del Botón 1",
+            "info": "Si se deja vacío, enlaza a /pages/distribuidores"
+          },
+          {
+            "type": "color",
+            "id": "btn1_bg",
+            "default": "#0F6445",
+            "label": "Color de fondo Botón 1"
+          },
+          {
+            "type": "color",
+            "id": "btn1_color",
+            "default": "#ffffff",
+            "label": "Color de texto Botón 1"
+          },
+          {
+            "type": "header",
+            "content": "Botón 2: Ser Distribuidor / Contacto B2B"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_btn2",
+            "default": true,
+            "label": "Mostrar Botón 2"
+          },
+          {
+            "type": "text",
+            "id": "btn2_text",
+            "default": "Quiero ser distribuidor / Punto de venta",
+            "label": "Texto del Botón 2"
+          },
+          {
+            "type": "url",
+            "id": "btn2_url",
+            "label": "Enlace del Botón 2",
+            "info": "Si se deja vacío, enlaza a /pages/contacto"
+          },
+          {
+            "type": "select",
+            "id": "btn2_style",
+            "options": [
+              {
+                "value": "solid",
+                "label": "Relleno (Sólido)"
+              },
+              {
+                "value": "outline",
+                "label": "Borde (Outline)"
+              }
+            ],
+            "default": "outline",
+            "label": "Estilo del Botón 2"
+          },
+          {
+            "type": "color",
+            "id": "btn2_bg",
+            "default": "#1B4B8A",
+            "label": "Color Botón 2 (Fondo o Borde)"
+          },
+          {
+            "type": "color",
+            "id": "btn2_color",
+            "default": "#ffffff",
+            "label": "Color de texto Botón 2 (solo en estilo sólido)"
+          },
+          {
+            "type": "header",
+            "content": "Mensaje informativo inferior"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_badge_info",
+            "default": true,
+            "label": "Mostrar mensaje informativo"
+          },
+          {
+            "type": "text",
+            "id": "badge_info_text",
+            "default": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
+            "label": "Texto informativo"
+          },
+          {
+            "type": "range",
+            "id": "btn_radius",
+            "min": 0,
+            "max": 40,
+            "step": 2,
+            "unit": "px",
+            "label": "Redondeo de esquinas de botones",
+            "default": 30
           }
         ]
       },
@@ -1422,7 +1539,7 @@ component-swiper-slider.css
           {
             "type": "text",
             "id": "icon_name_5",
-            "label": "Icon",
+            "label": "Icon"
           },
           {
             "type": "richtext",
