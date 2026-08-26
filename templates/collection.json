@@ -26,7 +26,7 @@
         "background": "image",
         "color_background": "rgba(0,0,0,0)",
         "gradient": "",
-        "background_image": "{{ collection.image }}",
+        "background_image": "shopify://shop_images/banner-desk.png",
         "image_overlay_opacity": 0,
         "image_overlay_color": "rgba(0,0,0,0)",
         "image_size": "fixed",
