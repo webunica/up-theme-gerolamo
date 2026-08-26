@@ -645,16 +645,107 @@
 }
 
 .distributor-locator__skeleton-card {
-  height: 180px;
+  background: #ffffff;
+  border: 1.5px solid rgba(0,0,0,.06);
   border-radius: 12px;
-  background: linear-gradient(90deg, rgba(0,0,0,.04) 25%, rgba(0,0,0,.08) 50%, rgba(0,0,0,.04) 75%);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.dloc-skel-line {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
   background-size: 200% 100%;
-  animation: dloc-shimmer 1.4s infinite;
+  animation: dloc-shimmer 1.5s infinite;
+}
+
+.dloc-skel-line--badge {
+  width: 100px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.dloc-skel-line--title {
+  width: 70%;
+  height: 16px;
+  margin-top: 4px;
+}
+
+.dloc-skel-line--text {
+  width: 90%;
+  height: 12px;
+}
+
+.dloc-skel-line--text-sm {
+  width: 60%;
+  height: 12px;
+}
+
+.dloc-skel-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #f1f5f9;
+}
+
+.dloc-skel-line--btn {
+  width: 70px;
+  height: 26px;
+  border-radius: 6px;
 }
 
 @keyframes dloc-shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes dlocCardFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dlocSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Map Loader Overlay ── */
+.distributor-locator__map-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #eef2f6;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 5;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.distributor-locator__map-loader.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.dloc-map-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3.5px solid rgba(15, 100, 69, 0.15);
+  border-top-color: #0F6445;
+  border-radius: 50%;
+  animation: dlocSpin 0.8s linear infinite;
 }
 
 /* ── Empty state ── */
