@@ -226,7 +226,7 @@
         "main_desc": "",
         "heading_aligment": "text-center",
         "top_spacing": "normal",
-        "width": "default",
+        "width": "page-width",
         "grid": "page-grid-md-4 page-grid-lg-4 page-grid-4",
         "grid_tablet": "page-grid-st-2",
         "mobile_grid": "2",
