@@ -212,7 +212,7 @@
         "enable_sticky_info": true,
         "media_type": "thumbnails_vertical",
         "media_type_mobile": "thumbnails_horizontal",
-        "image_zoom": "lightbox",
+        "image_zoom": "hover",
         "image_ratio": "auto"
       }
     },
@@ -226,6 +226,10 @@
         "main_desc": "",
         "heading_aligment": "text-center",
         "top_spacing": "normal",
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 30,
         "width": "page-width",
         "grid": "page-grid-md-4 page-grid-lg-4 page-grid-4",
         "grid_tablet": "page-grid-st-2",
