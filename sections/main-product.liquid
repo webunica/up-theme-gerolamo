@@ -1193,6 +1193,31 @@ component-swiper-slider.css
         "settings": [
           {
             "type": "header",
+            "content": "Puntos de venta cercanos"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_nearest_stores",
+            "default": true,
+            "label": "Mostrar tiendas más cercanas"
+          },
+          {
+            "type": "text",
+            "id": "nearest_title",
+            "default": "Puntos de venta cercanos",
+            "label": "Título de tiendas cercanas"
+          },
+          {
+            "type": "range",
+            "id": "nearest_limit",
+            "min": 3,
+            "max": 10,
+            "step": 1,
+            "default": 5,
+            "label": "Cantidad de tiendas a listar"
+          },
+          {
+            "type": "header",
             "content": "Botón 1: Puntos de Venta"
           },
           {
