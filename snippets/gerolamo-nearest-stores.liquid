@@ -1,6 +1,6 @@
 {% comment %}
   Gerolamo Nearest Stores Widget
-  Muestra automáticamente los 5 distribuidores más cercanos al cliente usando geolocalización o búsqueda rápida.
+  Muestra automáticamente los 5 distribuidores más cercanos al cliente usando geolocalización o búsqueda rápida con animación de carga.
 {% endcomment %}
 
 <div class="gerolamo-nearest-stores-widget" id="gerolamo-nearest-stores-{{ section.id }}" data-json-url="{{ 'distribuidores.json' | asset_url }}" data-limit="{{ block.settings.nearest_limit | default: 5 }}">
@@ -41,13 +41,41 @@
       margin: 0;
     }
     .g-nearest__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
       font-weight: 600;
       color: #0F6445;
       background: #e6f4ea;
-      padding: 3px 8px;
+      padding: 4px 9px;
       border-radius: 12px;
       white-space: nowrap;
+    }
+    .g-pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #0F6445;
+      border-radius: 50%;
+      display: inline-block;
+      animation: gNearestPulse 1.4s infinite ease-in-out;
+    }
+    @keyframes gNearestPulse {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+        box-shadow: 0 0 0 0 rgba(15, 100, 69, 0.6);
+      }
+      70% {
+        transform: scale(1.2);
+        opacity: 1;
+        box-shadow: 0 0 0 5px rgba(15, 100, 69, 0);
+      }
+      100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+        box-shadow: 0 0 0 0 rgba(15, 100, 69, 0);
+      }
     }
     .g-nearest__search-box {
       position: relative;
@@ -86,7 +114,7 @@
       margin: 0;
       padding: 0;
       list-style: none;
-      max-height: 260px;
+      max-height: 270px;
       overflow-y: auto;
       scrollbar-width: thin;
     }
@@ -105,7 +133,12 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      animation: gNearestFadeIn 0.3s ease-out;
+    }
+    @keyframes gNearestFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .g-nearest__item:hover {
       border-color: #cbd5e1;
@@ -168,11 +201,49 @@
       width: 12px;
       height: 12px;
     }
-    .g-nearest__loading {
+
+    /* Skeleton Loading Cards */
+    .g-nearest__skeleton-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .g-skeleton-line {
+      height: 10px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: gNearestShimmer 1.5s infinite;
+    }
+    .g-skeleton-line--title {
+      width: 65%;
+      height: 12px;
+    }
+    .g-skeleton-line--badge {
+      width: 25%;
+      height: 12px;
+    }
+    .g-skeleton-line--addr {
+      width: 85%;
+    }
+    .g-skeleton-line--btn {
+      width: 40%;
+      height: 10px;
+      margin-top: 2px;
+    }
+    @keyframes gNearestShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .g-nearest__empty {
       font-size: 12px;
       color: #64748b;
       text-align: center;
-      padding: 12px 0;
+      padding: 16px 8px;
     }
   </style>
 
@@ -184,7 +255,10 @@
       </svg>
       <h4 class="g-nearest__title">{{ block.settings.nearest_title | default: 'Puntos de venta cercanos' }}</h4>
     </div>
-    <span class="g-nearest__badge" id="g-nearest-status-{{ section.id }}">📍 Cercanos a ti</span>
+    <span class="g-nearest__badge" id="g-nearest-status-{{ section.id }}">
+      <span class="g-pulse-dot"></span>
+      <span id="g-nearest-badge-txt-{{ section.id }}">Buscando...</span>
+    </span>
   </div>
 
   <div class="g-nearest__search-box">
@@ -196,7 +270,31 @@
   </div>
 
   <ul class="g-nearest__list" id="g-nearest-list-{{ section.id }}">
-    <li class="g-nearest__loading">Buscando puntos de venta cercanos...</li>
+    <!-- Skeleton Loaders -->
+    <li class="g-nearest__skeleton-card">
+      <div style="display:flex;justify-content:space-between;gap:8px;">
+        <div class="g-skeleton-line g-skeleton-line--title"></div>
+        <div class="g-skeleton-line g-skeleton-line--badge"></div>
+      </div>
+      <div class="g-skeleton-line g-skeleton-line--addr"></div>
+      <div class="g-skeleton-line g-skeleton-line--btn"></div>
+    </li>
+    <li class="g-nearest__skeleton-card">
+      <div style="display:flex;justify-content:space-between;gap:8px;">
+        <div class="g-skeleton-line g-skeleton-line--title" style="width:55%;"></div>
+        <div class="g-skeleton-line g-skeleton-line--badge"></div>
+      </div>
+      <div class="g-skeleton-line g-skeleton-line--addr" style="width:75%;"></div>
+      <div class="g-skeleton-line g-skeleton-line--btn"></div>
+    </li>
+    <li class="g-nearest__skeleton-card">
+      <div style="display:flex;justify-content:space-between;gap:8px;">
+        <div class="g-skeleton-line g-skeleton-line--title" style="width:70%;"></div>
+        <div class="g-skeleton-line g-skeleton-line--badge"></div>
+      </div>
+      <div class="g-skeleton-line g-skeleton-line--addr" style="width:80%;"></div>
+      <div class="g-skeleton-line g-skeleton-line--btn"></div>
+    </li>
   </ul>
 </div>
 
@@ -209,7 +307,7 @@
   const jsonUrl = container.getAttribute('data-json-url');
   const limit = parseInt(container.getAttribute('data-limit'), 10) || 5;
   const listEl = document.getElementById('g-nearest-list-{{ section.id }}');
-  const statusEl = document.getElementById('g-nearest-status-{{ section.id }}');
+  const badgeTxtEl = document.getElementById('g-nearest-badge-txt-{{ section.id }}');
   const searchInput = document.getElementById('g-nearest-search-{{ section.id }}');
 
   let allStores = [];
@@ -229,7 +327,7 @@
   function renderStores(stores, coords) {
     if (!listEl) return;
     if (!stores || stores.length === 0) {
-      listEl.innerHTML = '<li class="g-nearest__loading">No se encontraron tiendas en esta zona.</li>';
+      listEl.innerHTML = '<li class="g-nearest__empty">No se encontraron puntos de venta para esta búsqueda.</li>';
       return;
     }
 
@@ -279,7 +377,7 @@
       return { ...s, _dist: d };
     }).sort((a, b) => a._dist - b._dist);
 
-    if (statusEl) statusEl.textContent = '📍 Ubicación detectada';
+    if (badgeTxtEl) badgeTxtEl.textContent = 'Cercanos a ti';
     renderStores(sorted, coords);
   }
 
@@ -306,6 +404,7 @@
       });
       filtered.sort((a, b) => (a._dist || Infinity) - (b._dist || Infinity));
     }
+    if (badgeTxtEl) badgeTxtEl.textContent = 'Resultados';
     renderStores(filtered, userCoords);
   }
 
@@ -323,17 +422,18 @@
           err => {
             // Default: Santiago / RM coords fallback (-33.4489, -70.6693)
             sortAndDisplayByLocation({ lat: -33.4489, lng: -70.6693 });
-            if (statusEl) statusEl.textContent = '📍 Región Metropolitana';
+            if (badgeTxtEl) badgeTxtEl.textContent = 'Región Metropolitana';
           },
-          { timeout: 5000, maximumAge: 300000 }
+          { timeout: 6000, maximumAge: 300000 }
         );
       } else {
         sortAndDisplayByLocation({ lat: -33.4489, lng: -70.6693 });
+        if (badgeTxtEl) badgeTxtEl.textContent = 'Región Metropolitana';
       }
     })
     .catch(err => {
       console.error('Error loading distribuidores.json:', err);
-      if (listEl) listEl.innerHTML = '<li class="g-nearest__loading">No se pudieron cargar los puntos de venta.</li>';
+      if (listEl) listEl.innerHTML = '<li class="g-nearest__empty">No se pudieron cargar los puntos de venta.</li>';
     });
 
   if (searchInput) {
