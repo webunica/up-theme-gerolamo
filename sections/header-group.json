@@ -87,10 +87,10 @@
             "url": "shopify://collections/perro",
             "icon_image": "shopify://shop_images/iconperro.svg",
             "icon_svg": "",
-            "sub_menu": "",
+            "sub_menu": "main-menu",
             "enable_rich_dropdown": true,
-            "url_mantencion": "shopify://collections/mantencion",
-            "url_prescripcion": "",
+            "url_mantencion": "shopify://collections/premium-perro",
+            "url_prescripcion": "shopify://collections/prescripcion-perro",
             "url_snacks": ""
           }
         },
