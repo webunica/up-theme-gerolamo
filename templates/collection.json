@@ -125,13 +125,12 @@
         "show_quick_view_mobile": false
       }
     },
-    "product_recommendations_EzEUtP": {
-      "type": "product-recommendations",
-      "name": "t:names.product_recommendations",
+    "product_recently_viewed_dCaqKA": {
+      "type": "product-recently-viewed",
+      "name": "t:names.product_recently_viewed",
       "settings": {
-        "product": "",
         "main_subheading": "Subheading",
-        "main_heading": "Productos recomendados",
+        "main_heading": "Recently Viewed",
         "main_desc": "Some descriptive text for your store.",
         "heading_aligment": "text-center",
         "top_spacing": "normal",
@@ -139,7 +138,6 @@
         "grid": "page-grid-md-6 page-grid-lg-6 page-grid-6",
         "grid_tablet": "page-grid-st-3",
         "mobile_grid": "2",
-        "recommendation_type": "related",
         "swipe": true,
         "desktop_navigation": "dots_arrows",
         "mobile_navigation": "dots",
@@ -147,7 +145,6 @@
         "autoplay_time": 5,
         "image_hover": "default",
         "image_ratio": "auto",
-        "product_limit": 12,
         "image_action": "show_secondary_image",
         "customize": false,
         "text_align": "text-center",
@@ -246,6 +243,19 @@
         "show_shadow_button": true,
         "color_shadow_button": "rgba(0,0,0,0)",
         "color_shadow_hover_button": "rgba(0,0,0,0)",
+        "show_button_bg2": true,
+        "color_button2": "rgba(0,0,0,0)",
+        "color_button_gradient2": "",
+        "color_button_border2": "rgba(0,0,0,0)",
+        "color_button_text2": "rgba(0,0,0,0)",
+        "show_button_bg_hover2": true,
+        "color_button_hover2": "rgba(0,0,0,0)",
+        "color_button_gradient_hover2": "",
+        "color_button_border_hover2": "rgba(0,0,0,0)",
+        "color_button_text_hover2": "rgba(0,0,0,0)",
+        "show_shadow_button2": true,
+        "color_shadow_button2": "rgba(0,0,0,0)",
+        "color_shadow_hover_button2": "rgba(0,0,0,0)",
         "color_media_arrows": "rgba(0,0,0,0)",
         "color_media_dots": "rgba(0,0,0,0)",
         "color_active_rating": "rgba(0,0,0,0)",
@@ -257,6 +267,6 @@
     "heading",
     "description",
     "product-grid",
-    "product_recommendations_EzEUtP"
+    "product_recently_viewed_dCaqKA"
   ]
 }
