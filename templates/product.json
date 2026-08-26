@@ -42,6 +42,7 @@
         },
         "price_XHwahC": {
           "type": "price",
+          "disabled": true,
           "settings": {
             "prices_in_one_line": false,
             "show_badge_on_sale": true,
@@ -49,6 +50,25 @@
             "show_shipping": true,
             "show_installments": false,
             "price_size": "h2"
+          }
+        },
+        "gerolamo_b2b_actions_RjHqih": {
+          "type": "gerolamo_b2b_actions",
+          "settings": {
+            "show_btn1": true,
+            "btn1_text": "Encontrar punto de venta más cercano",
+            "btn1_url": "",
+            "btn1_bg": "#0f6445",
+            "btn1_color": "#ffffff",
+            "show_btn2": true,
+            "btn2_text": "Quiero ser distribuidor / Punto de venta",
+            "btn2_url": "",
+            "btn2_style": "outline",
+            "btn2_bg": "#1b4b8a",
+            "btn2_color": "#ffffff",
+            "show_badge_info": true,
+            "badge_info_text": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
+            "btn_radius": 30
           }
         },
         "text_jqkd4C": {
@@ -115,25 +135,6 @@
             "page_6": ""
           }
         },
-        "gerolamo_b2b_actions_RjHqih": {
-          "type": "gerolamo_b2b_actions",
-          "settings": {
-            "show_btn1": true,
-            "btn1_text": "Encontrar punto de venta más cercano",
-            "btn1_url": "",
-            "btn1_bg": "#0f6445",
-            "btn1_color": "#ffffff",
-            "show_btn2": true,
-            "btn2_text": "Quiero ser distribuidor / Punto de venta",
-            "btn2_url": "",
-            "btn2_style": "outline",
-            "btn2_bg": "#1b4b8a",
-            "btn2_color": "#ffffff",
-            "show_badge_info": true,
-            "badge_info_text": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
-            "btn_radius": 30
-          }
-        },
         "buy_buttons_exgEyk": {
           "type": "buy_buttons",
           "disabled": true,
@@ -189,10 +190,10 @@
         "information_DQTzTU",
         "title_GLajYQ",
         "price_XHwahC",
+        "gerolamo_b2b_actions_RjHqih",
         "text_jqkd4C",
         "description_j6ANqd",
         "variant_picker_zYJKhL",
-        "gerolamo_b2b_actions_RjHqih",
         "buy_buttons_exgEyk",
         "message_c3GPR3",
         "complementary_3PEJ3Q"
