@@ -15,6 +15,7 @@
         "top_spacing": "small",
         "width": "default",
         "text_align": "text-center",
+        "show_title": false,
         "show_text_description": false,
         "description_width": 100,
         "description_width_mobile": 100,
