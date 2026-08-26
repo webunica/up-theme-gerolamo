@@ -293,9 +293,13 @@
         assign col1_coll2 = collections[section.settings.col1_tab2_collection]
         assign col1_coll3 = collections[section.settings.col1_tab3_collection]
 
-        assign col1_tab1_title = section.settings.col1_tab1_name | default: col1_coll1.title | default: 'Mantención'
+        assign col1_tab1_title = section.settings.col1_tab1_name | default: col1_coll1.title | default: 'Premium'
         assign col1_tab2_title = section.settings.col1_tab2_name | default: col1_coll2.title | default: 'Prescripción'
         assign col1_tab3_title = section.settings.col1_tab3_name | default: col1_coll3.title | default: 'Snacks'
+
+        assign col1_tab1_url = section.settings.col1_tab1_url | default: col1_coll1.url | default: '#'
+        assign col1_tab2_url = section.settings.col1_tab2_url | default: col1_coll2.url | default: '#'
+        assign col1_tab3_url = section.settings.col1_tab3_url | default: col1_coll3.url | default: '#'
       -%}
       <div class="gerolamo-species-box" style="--tab-accent: {{ section.settings.col1_accent | default: '#0F6445' }};">
         
@@ -340,12 +344,17 @@
                 </a>
               {%- endfor -%}
             {%- else -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Adulto', sub: 'Todas las razas' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Cachorro', sub: 'Todas las razas' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Senior', sub: 'Todas las razas' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Razas grandes', sub: 'Adulto' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Adulto', sub: 'Todas las razas', link: col1_tab1_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Cachorro', sub: 'Todas las razas', link: col1_tab1_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Senior', sub: 'Todas las razas', link: col1_tab1_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Razas grandes', sub: 'Adulto', link: col1_tab1_url -%}
             {%- endif -%}
           </div>
+          {%- if col1_tab1_url != '#' -%}
+            <div style="text-align:center;padding:10px 0 4px;">
+              <a href="{{ col1_tab1_url }}" class="gerolamo-species-box__link" style="font-size:12px;">Ver colección →</a>
+            </div>
+          {%- endif -%}
         </div>
 
         <!-- Tab 2 Products (Colección 2) -->
@@ -364,12 +373,17 @@
                 </a>
               {%- endfor -%}
             {%- else -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Renal', sub: 'Cuidado renal' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Gastro', sub: 'Digestivo' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Skin Care', sub: 'Dermatológico' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Obesity', sub: 'Control peso' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Renal', sub: 'Cuidado renal', link: col1_tab2_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Gastro', sub: 'Digestivo', link: col1_tab2_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Skin Care', sub: 'Dermatológico', link: col1_tab2_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Obesity', sub: 'Control peso', link: col1_tab2_url -%}
             {%- endif -%}
           </div>
+          {%- if col1_tab2_url != '#' -%}
+            <div style="text-align:center;padding:10px 0 4px;">
+              <a href="{{ col1_tab2_url }}" class="gerolamo-species-box__link" style="font-size:12px;">Ver colección →</a>
+            </div>
+          {%- endif -%}
         </div>
 
         <!-- Tab 3 Products (Colección 3) -->
@@ -388,12 +402,17 @@
                 </a>
               {%- endfor -%}
             {%- else -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Dental', sub: 'Salud bucal' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Sticks', sub: 'Premios carne' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Bites', sub: 'Entrenamiento' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Crunchy', sub: 'Galletas' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Dental', sub: 'Salud bucal', link: col1_tab3_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Sticks', sub: 'Premios carne', link: col1_tab3_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Bites', sub: 'Entrenamiento', link: col1_tab3_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Crunchy', sub: 'Galletas', link: col1_tab3_url -%}
             {%- endif -%}
           </div>
+          {%- if col1_tab3_url != '#' -%}
+            <div style="text-align:center;padding:10px 0 4px;">
+              <a href="{{ col1_tab3_url }}" class="gerolamo-species-box__link" style="font-size:12px;">Ver colección →</a>
+            </div>
+          {%- endif -%}
         </div>
 
         <!-- Footer Link -->
@@ -414,9 +433,13 @@
         assign col2_coll2 = collections[section.settings.col2_tab2_collection]
         assign col2_coll3 = collections[section.settings.col2_tab3_collection]
 
-        assign col2_tab1_title = section.settings.col2_tab1_name | default: col2_coll1.title | default: 'Mantención'
+        assign col2_tab1_title = section.settings.col2_tab1_name | default: col2_coll1.title | default: 'Premium'
         assign col2_tab2_title = section.settings.col2_tab2_name | default: col2_coll2.title | default: 'Prescripción'
         assign col2_tab3_title = section.settings.col2_tab3_name | default: col2_coll3.title | default: 'Snacks'
+
+        assign col2_tab1_url = section.settings.col2_tab1_url | default: col2_coll1.url | default: '#'
+        assign col2_tab2_url = section.settings.col2_tab2_url | default: col2_coll2.url | default: '#'
+        assign col2_tab3_url = section.settings.col2_tab3_url | default: col2_coll3.url | default: '#'
       -%}
       <div class="gerolamo-species-box" style="--tab-accent: {{ section.settings.col2_accent | default: '#3B702A' }};">
         
@@ -461,12 +484,17 @@
                 </a>
               {%- endfor -%}
             {%- else -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Adulto', sub: 'Indoor' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Castrado', sub: 'Control de peso' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Senior', sub: '+7 años' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Cachorro', sub: 'Hasta 12 meses' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Adulto', sub: 'Indoor', link: col2_tab1_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Castrado', sub: 'Control de peso', link: col2_tab1_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Senior', sub: '+7 años', link: col2_tab1_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Cachorro', sub: 'Hasta 12 meses', link: col2_tab1_url -%}
             {%- endif -%}
           </div>
+          {%- if col2_tab1_url != '#' -%}
+            <div style="text-align:center;padding:10px 0 4px;">
+              <a href="{{ col2_tab1_url }}" class="gerolamo-species-box__link" style="font-size:12px;">Ver colección →</a>
+            </div>
+          {%- endif -%}
         </div>
 
         <!-- Tab 2 Products (Colección 2) -->
@@ -485,12 +513,17 @@
                 </a>
               {%- endfor -%}
             {%- else -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Urinary', sub: 'Tracto urinario' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Renal', sub: 'Salud renal' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Gastro', sub: 'Fácil digestión' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Hypo', sub: 'Hipoalergénico' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Urinary', sub: 'Tracto urinario', link: col2_tab2_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Renal', sub: 'Salud renal', link: col2_tab2_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Gastro', sub: 'Fácil digestión', link: col2_tab2_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Hypo', sub: 'Hipoalergénico', link: col2_tab2_url -%}
             {%- endif -%}
           </div>
+          {%- if col2_tab2_url != '#' -%}
+            <div style="text-align:center;padding:10px 0 4px;">
+              <a href="{{ col2_tab2_url }}" class="gerolamo-species-box__link" style="font-size:12px;">Ver colección →</a>
+            </div>
+          {%- endif -%}
         </div>
 
         <!-- Tab 3 Products (Colección 3) -->
@@ -509,12 +542,17 @@
                 </a>
               {%- endfor -%}
             {%- else -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Creamy', sub: 'Puré snack' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Crunchy', sub: 'Bocados crujientes' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Hairball', sub: 'Control bolas pelo' -%}
-              {%- render 'gerolamo-mini-product-item', title: 'Dental Cat', sub: 'Cuidado dental' -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Creamy', sub: 'Puré snack', link: col2_tab3_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Crunchy', sub: 'Bocados crujientes', link: col2_tab3_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Hairball', sub: 'Control bolas pelo', link: col2_tab3_url -%}
+              {%- render 'gerolamo-mini-product-item', title: 'Dental Cat', sub: 'Cuidado dental', link: col2_tab3_url -%}
             {%- endif -%}
           </div>
+          {%- if col2_tab3_url != '#' -%}
+            <div style="text-align:center;padding:10px 0 4px;">
+              <a href="{{ col2_tab3_url }}" class="gerolamo-species-box__link" style="font-size:12px;">Ver colección →</a>
+            </div>
+          {%- endif -%}
         </div>
 
         <!-- Footer Link -->
@@ -620,7 +658,7 @@
     },
     {
       "type": "paragraph",
-      "content": "--- Pestaña 1 ---"
+      "content": "--- Pestaña 1 (Premium / Mantención) ---"
     },
     {
       "type": "collection",
@@ -630,12 +668,17 @@
     {
       "type": "text",
       "id": "col1_tab1_name",
-      "default": "Mantención",
-      "label": "Nombre Pestaña 1 (Opcional, usa título de colección si está vacío)"
+      "default": "Premium",
+      "label": "Nombre Pestaña 1"
+    },
+    {
+      "type": "url",
+      "id": "col1_tab1_url",
+      "label": "Enlace Pestaña 1 — Perros (Opcional, usa la colección si está vacío)"
     },
     {
       "type": "paragraph",
-      "content": "--- Pestaña 2 ---"
+      "content": "--- Pestaña 2 (Prescripción) ---"
     },
     {
       "type": "collection",
@@ -646,11 +689,16 @@
       "type": "text",
       "id": "col1_tab2_name",
       "default": "Prescripción",
-      "label": "Nombre Pestaña 2 (Opcional)"
+      "label": "Nombre Pestaña 2"
+    },
+    {
+      "type": "url",
+      "id": "col1_tab2_url",
+      "label": "Enlace Pestaña 2 — Perros (Opcional)"
     },
     {
       "type": "paragraph",
-      "content": "--- Pestaña 3 ---"
+      "content": "--- Pestaña 3 (Snacks) ---"
     },
     {
       "type": "collection",
@@ -661,7 +709,12 @@
       "type": "text",
       "id": "col1_tab3_name",
       "default": "Snacks",
-      "label": "Nombre Pestaña 3 (Opcional)"
+      "label": "Nombre Pestaña 3"
+    },
+    {
+      "type": "url",
+      "id": "col1_tab3_url",
+      "label": "Enlace Pestaña 3 — Perros (Opcional)"
     },
     {
       "type": "text",
@@ -714,7 +767,7 @@
     },
     {
       "type": "paragraph",
-      "content": "--- Pestaña 1 ---"
+      "content": "--- Pestaña 1 (Premium / Mantención) ---"
     },
     {
       "type": "collection",
@@ -724,12 +777,17 @@
     {
       "type": "text",
       "id": "col2_tab1_name",
-      "default": "Mantención",
-      "label": "Nombre Pestaña 1 (Opcional, usa título de colección si está vacío)"
+      "default": "Premium",
+      "label": "Nombre Pestaña 1"
+    },
+    {
+      "type": "url",
+      "id": "col2_tab1_url",
+      "label": "Enlace Pestaña 1 — Gatos (Opcional, usa la colección si está vacío)"
     },
     {
       "type": "paragraph",
-      "content": "--- Pestaña 2 ---"
+      "content": "--- Pestaña 2 (Prescripción) ---"
     },
     {
       "type": "collection",
@@ -740,11 +798,16 @@
       "type": "text",
       "id": "col2_tab2_name",
       "default": "Prescripción",
-      "label": "Nombre Pestaña 2 (Opcional)"
+      "label": "Nombre Pestaña 2"
+    },
+    {
+      "type": "url",
+      "id": "col2_tab2_url",
+      "label": "Enlace Pestaña 2 — Gatos (Opcional)"
     },
     {
       "type": "paragraph",
-      "content": "--- Pestaña 3 ---"
+      "content": "--- Pestaña 3 (Snacks) ---"
     },
     {
       "type": "collection",
@@ -755,7 +818,12 @@
       "type": "text",
       "id": "col2_tab3_name",
       "default": "Snacks",
-      "label": "Nombre Pestaña 3 (Opcional)"
+      "label": "Nombre Pestaña 3"
+    },
+    {
+      "type": "url",
+      "id": "col2_tab3_url",
+      "label": "Enlace Pestaña 3 — Gatos (Opcional)"
     },
     {
       "type": "text",
