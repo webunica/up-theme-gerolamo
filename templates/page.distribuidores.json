@@ -58,7 +58,7 @@
         "map_center_lng": "-71.5430",
         "items_per_page": 18,
         "columns": "3",
-        "section_bg_color": "#ecf4f5",
+        "section_bg_color": "#FFFFFF",
         "top_spacing": "none"
       }
     }
