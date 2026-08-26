@@ -36,7 +36,7 @@
         "image_overlay_opacity_mobile": 0,
         "image_overlay_color_mobile": "rgba(0,0,0,0)",
         "image_size_mobile": "fixed",
-        "mobile_image_height": 200,
+        "mobile_image_height": 300,
         "imagealign": "top",
         "imagesize": "cover",
         "background_width": "fullwidth",
