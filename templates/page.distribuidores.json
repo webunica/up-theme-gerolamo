@@ -34,15 +34,15 @@
     "distributor_locator": {
       "type": "distributor-locator",
       "settings": {
-        "hero_image": "shopify://shop_images/horizonte-hero.jpg",
+        "hero_image": "shopify://shop_images/banner-desk-02.png",
         "hero_height_desktop": 360,
         "hero_height_mobile": 220,
         "hero_text_align": "left",
-        "hero_text_color": "#ffffff",
-        "hero_sub_color": "#f5fdfe",
+        "hero_text_color": "#1A538A",
+        "hero_sub_color": "#1A538A",
         "hero_title_size": 36,
         "hero_overlay_color": "#000000",
-        "hero_overlay_opacity": 25,
+        "hero_overlay_opacity": 0,
         "subheading": "Red de distribuidores",
         "heading": "¿Dónde comprar?",
         "description": "Encuentra el punto de venta más cercano a tu ubicación. Tenemos distribuidores en todo Chile.",
@@ -56,8 +56,9 @@
         "map_zoom": 5,
         "map_center_lat": "-35.6751",
         "map_center_lng": "-71.5430",
+        "items_per_page": 18,
         "columns": "3",
-        "section_bg_color": "#ECF4F5",
+        "section_bg_color": "#ecf4f5",
         "top_spacing": "none"
       }
     }
