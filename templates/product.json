@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -34,14 +43,17 @@
         "price_XHwahC": {
           "type": "price",
           "settings": {
+            "prices_in_one_line": false,
             "show_badge_on_sale": true,
             "show_tax": true,
             "show_shipping": true,
+            "show_installments": false,
             "price_size": "h2"
           }
         },
         "text_jqkd4C": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "icon_width": 30,
             "align_content": "align-items-center",
@@ -69,10 +81,13 @@
         },
         "variant_picker_zYJKhL": {
           "type": "variant_picker",
+          "disabled": true,
           "settings": {
+            "hide_soldout_variants": false,
             "picker_type": "button",
             "heading_size": "h6",
             "buttons_count": "auto",
+            "buttons_count_mobile": "2",
             "color_count": "12",
             "images_count": "6",
             "variant_name_1": "Size",
@@ -100,8 +115,28 @@
             "page_6": ""
           }
         },
+        "gerolamo_b2b_actions_RjHqih": {
+          "type": "gerolamo_b2b_actions",
+          "settings": {
+            "show_btn1": true,
+            "btn1_text": "Encontrar punto de venta más cercano",
+            "btn1_url": "",
+            "btn1_bg": "#0f6445",
+            "btn1_color": "#ffffff",
+            "show_btn2": true,
+            "btn2_text": "Quiero ser distribuidor / Punto de venta",
+            "btn2_url": "",
+            "btn2_style": "outline",
+            "btn2_bg": "#1b4b8a",
+            "btn2_color": "#ffffff",
+            "show_badge_info": true,
+            "badge_info_text": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
+            "btn_radius": 30
+          }
+        },
         "buy_buttons_exgEyk": {
           "type": "buy_buttons",
+          "disabled": true,
           "settings": {
             "show_quantity": true,
             "button_type_product": "show",
@@ -109,7 +144,8 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
             "show_wishlist": true,
-            "show_compare": true
+            "show_compare": true,
+            "show_pickup_availability": true
           }
         },
         "message_c3GPR3": {
@@ -139,6 +175,8 @@
             "show_price": true,
             "enable_rating_product_card": true,
             "truncate_product_name": true,
+            "button_type_product": "hide",
+            "button_type_product_mobile": true,
             "hover_underline": true,
             "show_badge_on_sale": true,
             "show_badge_sold_out": true,
@@ -154,6 +192,7 @@
         "text_jqkd4C",
         "description_j6ANqd",
         "variant_picker_zYJKhL",
+        "gerolamo_b2b_actions_RjHqih",
         "buy_buttons_exgEyk",
         "message_c3GPR3",
         "complementary_3PEJ3Q"
@@ -164,6 +203,8 @@
         "page_width": 50,
         "gallery_position": "to left",
         "default_variant": "select_variant",
+        "top_spacing_blocks": 40,
+        "top_spacing_blocks_mobile": 40,
         "enable_sticky_info": true,
         "media_type": "thumbnails_vertical",
         "media_type_mobile": "thumbnails_horizontal",
