@@ -12,7 +12,7 @@
     "heading": {
       "type": "main-collection-banner",
       "settings": {
-        "top_spacing": "normal",
+        "top_spacing": "small",
         "width": "default",
         "text_align": "text-center",
         "show_text_description": false,
@@ -30,7 +30,7 @@
         "image_overlay_opacity": 0,
         "image_overlay_color": "rgba(0,0,0,0)",
         "image_size": "fixed",
-        "desktop_image_height": 300,
+        "desktop_image_height": 400,
         "image_overlay_opacity_mobile": 0,
         "image_overlay_color_mobile": "rgba(0,0,0,0)",
         "image_size_mobile": "fixed",
