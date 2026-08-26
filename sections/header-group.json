@@ -91,7 +91,7 @@
             "enable_rich_dropdown": true,
             "url_mantencion": "shopify://collections/premium-perro",
             "url_prescripcion": "shopify://collections/prescripcion-perro",
-            "url_snacks": ""
+            "url_snacks": "shopify://collections/snaks-perro"
           }
         },
         "menu_item_Qy7aaf": {
