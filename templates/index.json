@@ -232,7 +232,7 @@
             "image": "shopify://shop_images/prescripcion-02.png",
             "badge_image": "shopify://shop_images/iconpre2.png",
             "button_text": "Ver productos",
-            "button_link": "",
+            "button_link": "shopify://collections/prescripcion-perros-o-gatos",
             "bg_color": "#f0f4f9",
             "accent_color": "#1b4b8a",
             "desc_color": "#475569",
