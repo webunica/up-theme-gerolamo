@@ -57,7 +57,7 @@
           "settings": {
             "show_btn1": true,
             "btn1_text": "Encontrar punto de venta más cercano",
-            "btn1_url": "",
+            "btn1_url": "shopify://pages/donde-comprar",
             "btn1_bg": "#0f6445",
             "btn1_color": "#ffffff",
             "show_btn2": true,
