@@ -58,10 +58,10 @@
         "truncate_post_heading_b": false,
         "hover_underline_b": false,
         "showtags_b": true,
-        "show_date_b": true,
-        "show_author_b": true,
-        "show_button_b": true,
-        "show_comment_count_b": true,
+        "show_date_b": false,
+        "show_author_b": false,
+        "show_button_b": false,
+        "show_comment_count_b": false,
         "excerpt_b": "show_truncated"
       }
     },
