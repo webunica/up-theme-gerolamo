@@ -325,6 +325,7 @@
     },
     "gerolamo_species_featured_QVqkcU": {
       "type": "gerolamo-species-featured",
+      "disabled": true,
       "name": "Destacados por Especie (Perros / Gatos)",
       "settings": {
         "main_title": "PRODUCTOS DESTACADOS",
