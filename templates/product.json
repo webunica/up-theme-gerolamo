@@ -212,7 +212,7 @@
         "enable_sticky_info": true,
         "media_type": "thumbnails_vertical",
         "media_type_mobile": "thumbnails_horizontal",
-        "image_zoom": "hover",
+        "image_zoom": "none",
         "image_ratio": "auto"
       }
     },
