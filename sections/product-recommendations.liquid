@@ -155,12 +155,20 @@
     {%- render "section-heading" section:section -%}
 
     {%- assign f_collection = section.settings.collection -%}
+    {%- liquid
+      assign card_customize = section.settings.customize
+      assign card_btn_type = section.settings.button_type_product
+      if section.settings.show_add_to_cart == false
+        assign card_customize = true
+        assign card_btn_type = 'hide'
+      endif
+    -%}
     {%- capture content -%}
       {%- if products != blank and products.size > 0 -%}
       {%- for product in products limit: section.settings.product_limit -%}
       {%- if section.settings.swipe -%}<div class="swiper-slide" lazy="true">{%- endif -%}
       {%- render 'product-card',
-          customize: section.settings.customize,
+          customize: card_customize,
           product_card_product: product,
           product_collection:f_collection,
           image_ratio_value: section.settings.image_ratio,
@@ -170,7 +178,7 @@
           show_vendor:section.settings.show_vendor,
           show_type:section.settings.show_type,
           hover_underline:section.settings.hover_underline,
-          button_type_product: section.settings.button_type_product,
+          button_type_product: card_btn_type,
           button_type_product_mobile: section.settings.button_type_product_mobile,
           show_quantity: section.settings.show_quantity,
           show_badge_sold_out:section.settings.show_badge_sold_out,
@@ -199,7 +207,7 @@
       {%- cycle 'product-apparel-1', 'product-apparel-2', 'product-apparel-3', 'product-apparel-4' -%}
       {%- endcapture -%}
       {%- render 'product-card-placeholder',
-          customize: section.settings.customize,
+          customize: card_customize,
           image_ratio_value: section.settings.image_ratio,
           image_hover_type: section.settings.image_hover,
           show_secondary_image: section.settings.image_action,
@@ -207,7 +215,7 @@
           show_vendor:section.settings.show_vendor,
           show_type:section.settings.show_type,
           hover_underline:section.settings.hover_underline,
-          button_type_product: section.settings.button_type_product,
+          button_type_product: card_btn_type,
           button_type_product_mobile: section.settings.button_type_product_mobile,
           show_quantity: section.settings.show_quantity,
           show_badge_sold_out:section.settings.show_badge_sold_out,
@@ -657,6 +665,12 @@
       ],
       "default": "show_secondary_image",
       "label": "Image action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "default": false,
+      "label": "Show 'Add to cart' button"
     },
     {
       "type": "checkbox",
