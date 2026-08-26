@@ -127,7 +127,23 @@
 }
 {%- endif -%}
 {%- endcapture -%}
-<style>{{ section_styles }}</style>
+<style>
+  {{ section_styles }}
+  {%- if section.settings.padding_top_desktop != blank or section.settings.padding_bottom_desktop != blank -%}
+  #theme-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top_desktop | default: 40 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 60 }}px;
+  }
+  {%- endif -%}
+  {%- if section.settings.padding_top_mobile != blank or section.settings.padding_bottom_mobile != blank -%}
+  @media (max-width: 576px) {
+    #theme-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile | default: 20 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 30 }}px;
+    }
+  }
+  {%- endif -%}
+</style>
 {%- render "section-css-background", section:section -%}
 {%- render "section-component-top-line", section:section -%}
 {%- capture page_width -%}{%- if section.settings.width != "default" %}{{ section.settings.width }}{%- else -%}{{ settings.page_width_main }}{%- endif -%}{%- endcapture -%}
@@ -364,6 +380,46 @@
       ],
       "default": "normal",
       "label": "Top spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Móvil)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Móvil)",
+      "default": 30
     },
     {
       "type": "select",
