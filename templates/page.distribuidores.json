@@ -37,7 +37,7 @@
         "hero_image": "shopify://shop_images/banner-desk-02.png",
         "hero_image_mobile": "shopify://shop_images/banner-mobile.02.png",
         "hero_height_desktop": 360,
-        "hero_height_mobile": 360,
+        "hero_height_mobile": 300,
         "hero_text_align": "left",
         "hero_text_color": "#1A538A",
         "hero_sub_color": "#1A538A",
