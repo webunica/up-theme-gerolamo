@@ -487,6 +487,25 @@
     background-color: var(--gerolamo-main-bg);
   }
 
+  /* Mobile Menu Drawer Solid Background & Overlay */
+  .menu-drawer .popup-modal__content,
+  .menu-drawer .popup-modal__content__data,
+  .menu-drawer__submenu,
+  .header__mobile .popup-modal__content,
+  .header__mobile .menu-drawer .popup-modal__content {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: var(--gerolamo-main-color, #1e293b);
+  }
+
+  details.menu-opening .popup-modal__overlay,
+  .popup-modal.active .popup-modal__overlay,
+  .menu-drawer details[open] .popup-modal__overlay {
+    background-color: rgba(0, 0, 0, 0.45) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
   @media (max-width: 1024px) {
     .header-gerolamo__topbar,
     .header-gerolamo__desktop-nav {
