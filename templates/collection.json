@@ -83,7 +83,7 @@
       "type": "main-collection-product-grid",
       "settings": {
         "top_spacing": "small",
-        "width": "default",
+        "width": "page-width",
         "grid": "page-grid-5",
         "grid_tablet": "page-grid-st-3",
         "mobile_grid": "page-grid-sp-2",
