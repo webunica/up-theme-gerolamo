@@ -125,7 +125,7 @@
           "type": "menu_item",
           "settings": {
             "title": "Contacto",
-            "url": "",
+            "url": "shopify://pages/contact",
             "icon_svg": "",
             "sub_menu": "",
             "enable_rich_dropdown": true,
