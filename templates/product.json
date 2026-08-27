@@ -80,6 +80,32 @@
             "btn_radius": 30
           }
         },
+        "horizontal_tabs_mcgXQb": {
+          "type": "horizontal_tabs",
+          "settings": {
+            "show_line": true,
+            "heading_text_1": "Tab name",
+            "icon_name_1": "",
+            "content_1": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page_1": "",
+            "heading_text_2": "Tab name",
+            "icon_name_2": "",
+            "content_2": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page_2": "",
+            "heading_text_3": "Tab name",
+            "icon_name_3": "",
+            "content_3": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page_3": "",
+            "heading_text_4": "",
+            "icon_name_4": "",
+            "content_4": "",
+            "page_4": "",
+            "heading_text_5": "",
+            "icon_name_5": "",
+            "content_5": "",
+            "page_5": ""
+          }
+        },
         "share_jbceFy": {
           "type": "share",
           "settings": {
@@ -208,6 +234,7 @@
         "title_GLajYQ",
         "price_XHwahC",
         "gerolamo_b2b_actions_RjHqih",
+        "horizontal_tabs_mcgXQb",
         "share_jbceFy",
         "text_jqkd4C",
         "description_j6ANqd",
