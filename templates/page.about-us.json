@@ -11,10 +11,9 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "disabled": true,
       "settings": {
         "show_heading": true,
-        "heading_aligment": "text-center",
+        "heading_aligment": "text-left",
         "top_spacing": "small",
         "width": "default",
         "background": "image",
