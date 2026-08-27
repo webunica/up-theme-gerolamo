@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -6,7 +15,7 @@
       "settings": {
         "show_heading": true,
         "heading_aligment": "text-center",
-        "top_spacing": "normal",
+        "top_spacing": "small",
         "width": "default",
         "background": "hide",
         "color_background": "rgba(0,0,0,0)",
@@ -28,27 +37,19 @@
       "blocks": {
         "item_7HPL3H": {
           "type": "item",
-          "settings": {
-            "image": ""
-          }
+          "settings": {}
         },
         "item_zAqidK": {
           "type": "item",
-          "settings": {
-            "image": ""
-          }
+          "settings": {}
         },
         "item_aLq3KD": {
           "type": "item",
-          "settings": {
-            "image": ""
-          }
+          "settings": {}
         },
         "item_68WRzp": {
           "type": "item",
-          "settings": {
-            "image": ""
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -122,7 +123,11 @@
           "type": "heading",
           "settings": {
             "main_subheading": "A Versatile and Multifunctional Shopify Theme",
-            "main_heading": "Build Your Perfect Store with Wokiee!"
+            "main_heading": "Build Your Perfect Store with Wokiee!",
+            "heading_scale": true,
+            "heading_size_px": 40,
+            "heading_size_px_tablet": 40,
+            "heading_size_px_mobile": 32
           }
         },
         "richtext_BhbRXe": {
@@ -134,7 +139,12 @@
         "button_XQUEXc": {
           "type": "button",
           "settings": {
-            "button_name": "Buy Theme"
+            "button_name": "Buy Theme",
+            "customize_button_size": "default",
+            "btn_min_height": 40,
+            "btn_min_height_mobile": 40,
+            "btn_wide_width": 300,
+            "roundness_button": 20
           }
         }
       },
