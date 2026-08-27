@@ -18,13 +18,6 @@
             "inventory": 8
           }
         },
-        "share_jbceFy": {
-          "type": "share",
-          "settings": {
-            "show_icon": true,
-            "share_label": "Compartir"
-          }
-        },
         "countdown_raHXfb": {
           "type": "countdown",
           "settings": {
@@ -85,6 +78,13 @@
             "show_badge_info": true,
             "badge_info_text": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
             "btn_radius": 30
+          }
+        },
+        "share_jbceFy": {
+          "type": "share",
+          "settings": {
+            "show_icon": true,
+            "share_label": "Compartir"
           }
         },
         "text_jqkd4C": {
@@ -203,12 +203,12 @@
       },
       "block_order": [
         "inventory_rmwqN8",
-        "share_jbceFy",
         "countdown_raHXfb",
         "information_DQTzTU",
         "title_GLajYQ",
         "price_XHwahC",
         "gerolamo_b2b_actions_RjHqih",
+        "share_jbceFy",
         "text_jqkd4C",
         "description_j6ANqd",
         "variant_picker_zYJKhL",
