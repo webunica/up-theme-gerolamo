@@ -18,6 +18,13 @@
             "inventory": 8
           }
         },
+        "share_jbceFy": {
+          "type": "share",
+          "settings": {
+            "show_icon": true,
+            "share_label": "Compartir"
+          }
+        },
         "countdown_raHXfb": {
           "type": "countdown",
           "settings": {
@@ -196,6 +203,7 @@
       },
       "block_order": [
         "inventory_rmwqN8",
+        "share_jbceFy",
         "countdown_raHXfb",
         "information_DQTzTU",
         "title_GLajYQ",
