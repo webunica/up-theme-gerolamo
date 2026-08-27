@@ -12,6 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "inventory_rmwqN8": {
+          "type": "inventory",
+          "settings": {
+            "inventory": 8
+          }
+        },
         "countdown_raHXfb": {
           "type": "countdown",
           "settings": {
@@ -189,6 +195,7 @@
         }
       },
       "block_order": [
+        "inventory_rmwqN8",
         "countdown_raHXfb",
         "information_DQTzTU",
         "title_GLajYQ",
