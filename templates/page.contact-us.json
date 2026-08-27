@@ -52,7 +52,7 @@
             "show_icon": "svg",
             "icon_name": "Clock",
             "block_heading": "",
-            "block_text": "<h5>Pickup Hours: </h5><p>Open daily from 9:00 AM – 7:00 PM</p><p>Please bring your order confirmation email and ID for pickup.</p><p>For more information, contact: <a href=\"/pages/contacts-us\" title=\"Contacts Us\">support@yourstore.com</a></p>",
+            "block_text": "<p>Abierto de Lunes a Viernes de 9:00 a 19:00.  Para más información, contactenos al mail <a href=\"mailto:info@gerolamo.cl\">info@gerolamo.cl</a></p>",
             "button_name": "",
             "url": ""
           }
