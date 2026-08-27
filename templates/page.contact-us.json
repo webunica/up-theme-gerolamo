@@ -15,7 +15,7 @@
         "show_heading": true,
         "heading_aligment": "text-left",
         "top_spacing": "small",
-        "width": "default",
+        "width": "page-width",
         "background": "image",
         "color_background": "rgba(0,0,0,0)",
         "gradient": "",
