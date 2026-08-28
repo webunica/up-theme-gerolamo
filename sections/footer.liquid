@@ -428,7 +428,7 @@
     <!-- Bottom Copyright & Legal Links -->
     <div class="gerolamo-footer__bottom">
       <div class="gerolamo-footer__copyright">
-        © {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.
+        {{ section.settings.copyright_text | default: '© 2026 gerolamocl. Todos los derechos reservados.' }}
       </div>
       
       <div class="gerolamo-footer__bottom-links">
@@ -574,6 +574,12 @@
     {
       "type": "header",
       "content": "Barra Inferior y Legales"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "default": "© 2026 gerolamocl. Todos los derechos reservados.",
+      "label": "Texto de derechos (Copyright)"
     },
     {
       "type": "text",
