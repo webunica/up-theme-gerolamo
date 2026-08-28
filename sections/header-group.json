@@ -189,6 +189,7 @@
         "logo": "shopify://shop_images/logo-final.png",
         "logo_svg": "",
         "logo_max_width": 250,
+        "show_search_pill": false,
         "search_placeholder": "¿Qué productos estás buscando?",
         "search_bg": "#ffffff",
         "search_border_color": "#e2e8f0",
