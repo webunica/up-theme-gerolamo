@@ -88,7 +88,7 @@
         "grid_tablet": "page-grid-st-3",
         "mobile_grid": "page-grid-sp-2",
         "products_per_page": 12,
-        "enable_filtering": "enable_closed",
+        "enable_filtering": "disable",
         "filters_padding": 20,
         "enable_products_count": true,
         "enable_products_count_main": true,
