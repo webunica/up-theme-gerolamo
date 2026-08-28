@@ -80,6 +80,19 @@
     "header_9GztDw": {
       "type": "header-gerolamo",
       "blocks": {
+        "menu_item_LGhJpb": {
+          "type": "menu_item",
+          "settings": {
+            "title": "Inicio",
+            "url": "/",
+            "icon_svg": "",
+            "sub_menu": "",
+            "enable_rich_dropdown": false,
+            "url_mantencion": "",
+            "url_prescripcion": "",
+            "url_snacks": ""
+          }
+        },
         "menu_item_j6m8CH": {
           "type": "menu_item",
           "settings": {
@@ -155,6 +168,7 @@
         }
       },
       "block_order": [
+        "menu_item_LGhJpb",
         "menu_item_j6m8CH",
         "menu_item_Qy7aaf",
         "menu_item_VAhhVd",
