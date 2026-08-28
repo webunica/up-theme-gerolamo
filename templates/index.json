@@ -27,7 +27,7 @@
             "desc": "<p><br/>Mantención, Prescripción Veterinaria y Snacks para perros y gatos.<br/><br/></p>",
             "heading_after_description": false,
             "button_name": "Ver productos",
-            "button_link_1": "shopify://collections",
+            "button_link_1": "shopify://collections/all",
             "button_name_2": "Conoce más",
             "button_link_2": "shopify://pages/nosotros",
             "customize_button_size": "custom",
