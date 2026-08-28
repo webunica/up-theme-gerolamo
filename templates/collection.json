@@ -14,7 +14,7 @@
       "settings": {
         "top_spacing": "small",
         "width": "default",
-        "text_align": "text-center",
+        "text_align": "text-left",
         "show_title": false,
         "show_text_description": false,
         "description_width": 100,
