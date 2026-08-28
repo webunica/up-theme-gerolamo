@@ -104,10 +104,14 @@
     padding: {{ section.settings.main_padding_top | default: 16 }}px 20px {{ section.settings.main_padding_bottom | default: 16 }}px 20px;
   }
   .header-gerolamo__main-grid {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 36px;
+  }
+  .header-gerolamo__main-grid.has-search {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
   }
 
   /* Logo */
@@ -599,13 +603,14 @@
     <!-- 2. Main Header Bar (Logo + Search Pill + Right Organized Actions) -->
     <div class="header-gerolamo__main{% if is_boxed_bg %} header-boxed-bg{% endif %}">
       <div class="{{ page_width }}">
-        <div class="header-gerolamo__main-grid">
+        <div class="header-gerolamo__main-grid{% if section.settings.show_search_pill %} has-search{% else %} no-search{% endif %}">
           
           <!-- Logo (Left) -->
           <div class="header-gerolamo__logo">
             {%- render "header-logo-desktop", section: section -%}
           </div>
 
+          {%- if section.settings.show_search_pill -%}
           <!-- Search Bar (Center Pill Shape with clean Outline Magnifying Glass) -->
           <div class="header-gerolamo__search">
             {%- if settings.predictive_search_enabled -%}
@@ -641,6 +646,7 @@
             </predictive-search>
             {%- endif -%}
           </div>
+          {%- endif -%}
 
           <!-- Right Actions (Comunidad Gerolamo + Iniciar Sesión/Mi Cuenta + Cart Badge) -->
           <div class="header-gerolamo__actions">
@@ -916,6 +922,12 @@
     {
       "type": "header",
       "content": "Buscador (Estilo Píldora)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_pill",
+      "label": "Mostrar buscador (Estilo Píldora)",
+      "default": true
     },
     {
       "type": "text",
@@ -1639,6 +1651,7 @@
         "menu": "main-menu",
         "main_bg": "#ffffff",
         "main_color": "#1e293b",
+        "show_search_pill": true,
         "search_placeholder": "¿Qué producto estás buscando?",
         "search_bg": "#ffffff",
         "search_border_color": "#e2e8f0",
