@@ -217,12 +217,12 @@
     assign weight_parts = weight_raw | split: ' '
     assign weight_num = weight_parts[0]
     assign weight_unit = weight_parts[1] | default: 'KG' | upcase
+  elsif current_variant.weight_in_unit != blank and current_variant.weight_in_unit > 0
+    assign weight_num = current_variant.weight_in_unit
+    assign weight_unit = current_variant.weight_unit | default: 'KG' | upcase
   elsif current_variant.weight > 0
-    if current_variant.weight_unit == 'kg'
-      assign weight_num = current_variant.weight
-      assign weight_unit = 'KG'
-    elsif current_variant.weight >= 1000
-      assign weight_kg = current_variant.weight | divided_by: 1000.0 | round: 1
+    if current_variant.weight >= 1000
+      assign weight_kg = current_variant.weight | times: 1.0 | divided_by: 1000.0 | round: 1
       assign weight_str = weight_kg | append: ''
       if weight_str contains '.0'
         assign weight_num = current_variant.weight | divided_by: 1000
@@ -236,18 +236,30 @@
     endif
   endif
 
-  if weight_num == blank
+  # Failsafe: Si el peso está en KG pero viene en gramos (> 99)
+  assign weight_num_check = weight_num | plus: 0
+  if weight_unit == 'KG' and weight_num_check >= 100
+    assign weight_kg = weight_num_check | times: 1.0 | divided_by: 1000.0 | round: 1
+    assign weight_str = weight_kg | append: ''
+    if weight_str contains '.0'
+      assign weight_num = weight_num_check | divided_by: 1000
+    else
+      assign weight_num = weight_kg
+    endif
+  endif
+
+  if weight_num == blank or weight_num == 0 or weight_num == '0'
     assign combined_text = product_card_product.title | append: ' ' | append: current_variant.title
     for tag in product_card_product.tags
       assign combined_text = combined_text | append: ' ' | append: tag
     endfor
-    assign test_weights = "15kg,15 kg,15 k,12kg,12 kg,10kg,10 kg,8kg,8 kg,7.5kg,7.5 kg,3kg,3 kg,2kg,2 kg,1.5kg,1.5 kg,1kg,1 kg,500g,500 g,400g,400 g,100g,100 g,85g,85 g,80g,80 g" | split: ','
+    assign test_weights = "15kg,15 kg,15 k,12kg,12 kg,10kg,10 kg,8kg,8 kg,7.5kg,7.5 kg,3kg,3 kg,2.7kg,2.7 kg,2,7kg,2,7 kg,2kg,2 kg,1.5kg,1.5 kg,1kg,1 kg,800g,800 g,500g,500 g,400g,400 g,100g,100 g,85g,85 g,80g,80 g" | split: ','
     for tw in test_weights
       assign tw_down = tw | downcase
       assign comb_down = combined_text | downcase
       if comb_down contains tw_down
         if tw_down contains 'kg' or tw_down contains 'k'
-          assign weight_num = tw_down | replace: 'kg', '' | replace: 'k', '' | replace: ' ', ''
+          assign weight_num = tw_down | replace: 'kg', '' | replace: 'k', '' | replace: ' ', '' | replace: ',', '.'
           assign weight_unit = 'KG'
         elsif tw_down contains 'g'
           assign weight_num = tw_down | replace: 'g', '' | replace: ' ', ''
