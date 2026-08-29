@@ -97,7 +97,7 @@
         "show_description": false,
         "truncate_product_name": false,
         "show_quantity": false,
-        "button_type_product": "show",
+        "button_type_product": "hide",
         "button_type_product_mobile": false,
         "enable_rating_product_card": false,
         "show_wishlist": false,
