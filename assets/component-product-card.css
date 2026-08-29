@@ -523,3 +523,176 @@
 .product-card .section__video-media__box.video-contain video{
   object-fit: contain;
 }
+
+/* ── Gerolamo Premium Card Design ── */
+.product-card.gerolamo-product-card,
+.product-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-card.gerolamo-product-card:hover,
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.09);
+  border-color: #cbd5e1;
+}
+
+.product-card__image__container {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+/* Top Badges (Stage Left & Weight Right) */
+.gerolamo-card__top-badges {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.gerolamo-card__top-badges-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gerolamo-card__badge-stage {
+  background: #C91C28;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 6px rgba(201, 28, 40, 0.25);
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.gerolamo-card__top-badges-right {
+  display: flex;
+  align-items: center;
+}
+
+.gerolamo-card__badge-weight {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  padding: 4px 8px;
+  text-align: center;
+  min-width: 42px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.05;
+}
+
+.gerolamo-card__weight-num {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1B4B8A;
+}
+
+.gerolamo-card__weight-unit {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #1B4B8A;
+  letter-spacing: 0.04em;
+}
+
+/* Vendor · Type */
+.gerolamo-card__vendor-type {
+  font-size: 11px;
+  font-weight: 700;
+  color: #5b7b9f;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+/* Heading / Title */
+.product-card .product-card-small__heading {
+  color: #0f2b48 !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  line-height: 1.3 !important;
+  text-align: left;
+  display: block;
+}
+
+.product-card .product-card-small__heading:hover {
+  color: #0F6445 !important;
+}
+
+/* Sub-tags / Chips */
+.gerolamo-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  justify-content: flex-start;
+}
+
+.gerolamo-card__chip {
+  background: #f0f4f9;
+  color: #475569;
+  border-radius: 12px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Ver producto Button */
+.gerolamo-card__btn-wrap {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.gerolamo-card__btn-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 16px;
+  border: 1.5px solid #8ba4c7;
+  border-radius: 8px;
+  color: #1B4B8A;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.gerolamo-card__btn-view:hover {
+  background: #1B4B8A;
+  color: #ffffff;
+  border-color: #1B4B8A;
+  box-shadow: 0 4px 14px rgba(27, 75, 138, 0.25);
+  transform: translateY(-1px);
+}
