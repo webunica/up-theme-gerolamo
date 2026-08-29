@@ -69,7 +69,7 @@
         "width": "page-width",
         "grid": "page-grid-3",
         "grid_tablet": "page-grid-st-3",
-        "mobile_grid": "page-grid-sp-2",
+        "mobile_grid": "page-grid-sp-1-list",
         "products_per_page": 9,
         "enable_filtering": "enable_closed",
         "filters_padding": 20,
