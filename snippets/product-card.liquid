@@ -208,46 +208,7 @@
   
 {%- endcapture -%}
 {%- liquid
-  # 1. Badge Stage / Category (Top Left)
-  assign badge_label = ''
-  if product_card_product.metafields.wokiee.featured_badge != blank
-    assign badge_label = product_card_product.metafields.wokiee.featured_badge
-  elsif product_card_product.metafields.custom.badge != blank
-    assign badge_label = product_card_product.metafields.custom.badge
-  endif
-
-  assign title_down = product_card_product.title | downcase
-  assign tags_down = product_card_product.tags | join: ' ' | downcase
-
-  if badge_label == blank
-    if title_down contains 'senior' or tags_down contains 'senior'
-      assign badge_label = 'SENIOR'
-    elsif title_down contains 'cachorro' or title_down contains 'puppy' or tags_down contains 'cachorro'
-      assign badge_label = 'CACHORRO'
-    elsif title_down contains 'gatito' or title_down contains 'kitten' or tags_down contains 'gatito'
-      assign badge_label = 'GATITO'
-    elsif title_down contains 'adulto' or tags_down contains 'adulto'
-      assign badge_label = 'ADULTO'
-    elsif title_down contains 'esterilizado' or title_down contains 'sterilised' or tags_down contains 'esterilizado'
-      assign badge_label = 'ESTERILIZADO'
-    elsif title_down contains 'urinary' or tags_down contains 'urinary'
-      assign badge_label = 'URINARY'
-    elsif title_down contains 'gastrointestinal' or tags_down contains 'gastrointestinal'
-      assign badge_label = 'GASTROINTESTINAL'
-    elsif title_down contains 'renal' or tags_down contains 'renal'
-      assign badge_label = 'RENAL'
-    elsif title_down contains 'hipoalergenico' or title_down contains 'hipoalergénico' or tags_down contains 'hipoalergenico'
-      assign badge_label = 'HIPOALERGÉNICO'
-    elsif title_down contains 'snack' or tags_down contains 'snack'
-      assign badge_label = 'SNACKS'
-    elsif title_down contains 'light' or tags_down contains 'control de peso'
-      assign badge_label = 'CONTROL DE PESO'
-    elsif title_down contains 'premium' or tags_down contains 'premium'
-      assign badge_label = 'PREMIUM'
-    endif
-  endif
-
-  # 2. Weight Badge (Top Right)
+  # 1. Weight Badge (Top Right)
   assign weight_num = ''
   assign weight_unit = ''
   
@@ -352,14 +313,9 @@
   {%- if product_card_product.featured_media != blank -%}
   <div class="product-card__image__container image-hover-personal-element">
     
-    <!-- Gerolamo Top Badges (Stage Left & Weight Right) -->
+    <!-- Gerolamo Top Badges (Weight Right) -->
     <div class="gerolamo-card__top-badges">
       <div class="gerolamo-card__top-badges-left">
-        {%- if badge_label != blank -%}
-          <span class="gerolamo-card__badge-stage">{{ badge_label }}</span>
-        {%- elsif badges != blank -%}
-          {{- badges -}}
-        {%- endif -%}
       </div>
       {%- if weight_num != blank -%}
       <div class="gerolamo-card__top-badges-right">
