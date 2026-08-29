@@ -42,9 +42,23 @@
 -%}
 {%- assign pr_name_size = pr_name_size | default: 'product-card-name-size' -%}
 
-<div class="product-card {{ text_aligment }} {%- if show_secondary_image != "gallery" -%}{% if image_hover_type == "default" %}{{ settings.image_hover }}{% else %}{{ image_hover_type }}{% endif %}-personal{% endif %}{% if button_type_product != "hide" %} {{ settings.product_card_button_type }}{% endif %}{% if settings.product_card_image_resize == "contain" %} product-card-image--contain{% endif %}{% if settings.product_card_button_type == "product_card__button_hover" and show_quantity %} product-card__quantity-form{% endif %}">
+<div class="product-card gerolamo-product-card {{ text_aligment }} {%- if show_secondary_image != "gallery" -%}{% if image_hover_type == "default" %}{{ settings.image_hover }}{% else %}{{ image_hover_type }}{% endif %}-personal{% endif %}{% if button_type_product != "hide" %} {{ settings.product_card_button_type }}{% endif %}{% if settings.product_card_image_resize == "contain" %} product-card-image--contain{% endif %}{% if settings.product_card_button_type == "product_card__button_hover" and show_quantity %} product-card__quantity-form{% endif %}">
   
   <div class="product-card__image__container image-hover-personal-element">
+    
+    <!-- Gerolamo Placeholder Top Badges -->
+    <div class="gerolamo-card__top-badges">
+      <div class="gerolamo-card__top-badges-left">
+        <span class="gerolamo-card__badge-stage">SENIOR</span>
+      </div>
+      <div class="gerolamo-card__top-badges-right">
+        <div class="gerolamo-card__badge-weight">
+          <span class="gerolamo-card__weight-num">15</span>
+          <span class="gerolamo-card__weight-unit">KG</span>
+        </div>
+      </div>
+    </div>
+
     <div class="product-card__image">
       <div class="product-card__image__url{% if show_secondary_image == "gallery" %} product-card__image__url__slider-mask{% endif %}">
         {%- if show_secondary_image != "gallery" -%}
@@ -100,21 +114,23 @@
   <product-form class="product-card__content">
     <div class="form">
     <div class="product-card__content__main">
-      {%- if show_vendor -%}
-      <div class="body3">
-        <div class="mt0 product-card-small__meta link link__base-to_accent-color text-uppercase a--no-hover-color native-hover{% if hover_underline == false %} link--no-underline{% endif %}">VENDOR</div>
+      
+      <!-- Gerolamo Vendor · Type -->
+      <div class="gerolamo-card__vendor-type">
+        GEROLAMO · PERRO
       </div>
-      {%- endif -%}
-      {%- if show_type -%}
-      <div class="body3 mt3">
-        <div class="mt0 product-card-small__meta link link__base-to_accent-color text-uppercase a--no-hover-color native-hover{% if hover_underline == false %} link--no-underline{% endif %}">TYPE</div>
-      </div>
-      {%- endif -%}
 
-      <div class="body2 mt3 product-card__heading">
+      <!-- Gerolamo Title -->
+      <div class="product-card__heading">
         <div class="{{ pr_name_size }} product-card-small__heading heading-color-block-hover a--no-hover-color clear-underline{% if hover_underline %} animation-underline{% endif %} native-hover">
-          <{{ settings.product_name_tag }}>Product name</{{ settings.product_name_tag }}>
+          <{{ settings.product_name_tag }}>Perro Senior Razas Medianas y Grandes</{{ settings.product_name_tag }}>
         </div>
+      </div>
+
+      <!-- Gerolamo Sub-tags / Meta Chips -->
+      <div class="gerolamo-card__chips">
+        <span class="gerolamo-card__chip">Senior</span>
+        <span class="gerolamo-card__chip">Razas medianas/grandes</span>
       </div>
 
       {%- if show_price and settings.cart_type != "catalog_mode" -%}
@@ -135,6 +151,19 @@
       {%- endif -%}
 
     </div>
+
+    <!-- Ver producto CTA button -->
+    {%- if button_type_product == "hide" or settings.cart_type == "catalog_mode" -%}
+    <div class="gerolamo-card__btn-wrap">
+      <a href="#" class="gerolamo-card__btn-view">
+        <span>Ver producto</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+    {%- endif -%}
 
     {%- if button_type_product != "hide" and settings.cart_type != "catalog_mode" -%}
     <div class="product-card__interface{% if show_quantity %} product-card__interface--small{% endif %}{% if show_quantity and button_type_product == 'only_icon' %} product-card__interface--quantity{% endif %}">
@@ -188,9 +217,6 @@
           </div>
         </button>
       </div>
-    </div>
-    {%- else -%}
-    <div class="product-card__interface product-card__interface__icons">
     </div>
     {%- endif -%}
     </div>
