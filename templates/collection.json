@@ -112,7 +112,7 @@
       "type": "product-recommendations",
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "{{ closest.product }}",
+        "product": "",
         "main_subheading": "Subheading",
         "main_heading": "También puede interesarte",
         "main_desc": "Otros productos seleccionados para el bienestar de tu Perro o Gato",
