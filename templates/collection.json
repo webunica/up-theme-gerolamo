@@ -108,21 +108,21 @@
         "show_quick_view_mobile": false
       }
     },
-    "product_recommendations_T6Bxhm": {
+    "product_recommendations_jxgYVN": {
       "type": "product-recommendations",
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "",
+        "product": "galleta-geroramo-huesito-cachorro",
         "main_subheading": "Subheading",
-        "main_heading": "También puede interesarte",
-        "main_desc": "Otros productos seleccionados para el bienestar de tu Perro o Gato",
+        "main_heading": "Product Recommendations",
+        "main_desc": "Some descriptive text for your store.",
         "heading_aligment": "text-center",
         "top_spacing": "normal",
         "padding_top_desktop": 40,
         "padding_bottom_desktop": 60,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 30,
-        "width": "page-width",
+        "width": "default",
         "grid": "page-grid-md-6 page-grid-lg-6 page-grid-6",
         "grid_tablet": "page-grid-st-3",
         "mobile_grid": "2",
@@ -130,7 +130,7 @@
         "swipe": true,
         "desktop_navigation": "dots_arrows",
         "mobile_navigation": "dots",
-        "autoplay_enabled": true,
+        "autoplay_enabled": false,
         "autoplay_time": 5,
         "image_hover": "default",
         "image_ratio": "auto",
@@ -245,6 +245,6 @@
     "heading",
     "description",
     "product-grid",
-    "product_recommendations_T6Bxhm"
+    "product_recommendations_jxgYVN"
   ]
 }
