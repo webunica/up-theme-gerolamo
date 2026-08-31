@@ -64,14 +64,74 @@
         "color_lines": "rgba(0,0,0,0)"
       }
     },
+    "gerolamo_curved_features_habYeQ": {
+      "type": "gerolamo-curved-features",
+      "blocks": {
+        "feature_eKkUKp": {
+          "type": "feature",
+          "settings": {
+            "icon_preset": "leaf",
+            "custom_svg": "",
+            "title": "Ingredientes de calidad seleccionados y naturales",
+            "desc": ""
+          }
+        },
+        "feature_YakXGq": {
+          "type": "feature",
+          "settings": {
+            "icon_preset": "shield",
+            "custom_svg": "",
+            "title": "Nutrición científica y balanceada",
+            "desc": ""
+          }
+        },
+        "feature_RT3UXE": {
+          "type": "feature",
+          "settings": {
+            "icon_preset": "paw",
+            "custom_svg": "",
+            "title": "Bienestar para hoy y para siempre",
+            "desc": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature_eKkUKp",
+        "feature_YakXGq",
+        "feature_RT3UXE"
+      ],
+      "name": "Barra curva beneficios",
+      "settings": {
+        "show_curve": true,
+        "overlap_desktop": 100,
+        "overlap_tablet": 70,
+        "overlap_mobile": 50,
+        "curve_height_desktop": 120,
+        "curve_height_tablet": 80,
+        "curve_height_mobile": 55,
+        "bg_color": "#ffffff",
+        "icon_color": "#0F6445",
+        "title_color": "#1e293b",
+        "desc_color": "#64748b",
+        "icon_size": 46,
+        "title_size": 15,
+        "desc_size": 13,
+        "gap_desktop": 40,
+        "padding_top_desktop": 10,
+        "padding_bottom_desktop": 35,
+        "padding_top_mobile": 15,
+        "padding_bottom_mobile": 25,
+        "mobile_alignment": "flex-start"
+      }
+    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
         "top_spacing": "small",
         "width": "page-width",
-        "grid": "page-grid-3",
+        "grid": "page-grid-4",
         "grid_tablet": "page-grid-st-3",
-        "mobile_grid": "page-grid-sp-1-list",
+        "mobile_grid": "page-grid-sp-1",
         "products_per_page": 20,
         "enable_filtering": "disable",
         "filters_padding": 20,
@@ -240,66 +300,6 @@
         "color_media_dots": "rgba(0,0,0,0)",
         "color_active_rating": "rgba(0,0,0,0)",
         "color_base_rating": "rgba(0,0,0,0)"
-      }
-    },
-    "gerolamo_curved_features_habYeQ": {
-      "type": "gerolamo-curved-features",
-      "blocks": {
-        "feature_eKkUKp": {
-          "type": "feature",
-          "settings": {
-            "icon_preset": "leaf",
-            "custom_svg": "",
-            "title": "Ingredientes de calidad seleccionados y naturales",
-            "desc": ""
-          }
-        },
-        "feature_YakXGq": {
-          "type": "feature",
-          "settings": {
-            "icon_preset": "shield",
-            "custom_svg": "",
-            "title": "Nutrición científica y balanceada",
-            "desc": ""
-          }
-        },
-        "feature_RT3UXE": {
-          "type": "feature",
-          "settings": {
-            "icon_preset": "paw",
-            "custom_svg": "",
-            "title": "Bienestar para hoy y para siempre",
-            "desc": ""
-          }
-        }
-      },
-      "block_order": [
-        "feature_eKkUKp",
-        "feature_YakXGq",
-        "feature_RT3UXE"
-      ],
-      "name": "Barra curva beneficios",
-      "settings": {
-        "show_curve": true,
-        "overlap_desktop": 100,
-        "overlap_tablet": 70,
-        "overlap_mobile": 50,
-        "curve_height_desktop": 120,
-        "curve_height_tablet": 80,
-        "curve_height_mobile": 55,
-        "bg_color": "#ffffff",
-        "icon_color": "#0F6445",
-        "title_color": "#1e293b",
-        "desc_color": "#64748b",
-        "icon_size": 46,
-        "title_size": 15,
-        "desc_size": 13,
-        "gap_desktop": 40,
-        "padding_top_desktop": 10,
-        "padding_bottom_desktop": 35,
-        "padding_top_mobile": 15,
-        "padding_bottom_mobile": 25,
-        "mobile_alignment": "flex-start"
       }
     }
   },
