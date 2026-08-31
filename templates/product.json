@@ -83,6 +83,33 @@
             "content_5": ""
           }
         },
+        "horizontal_tabs_zYiUCa": {
+          "type": "horizontal_tabs",
+          "disabled": true,
+          "settings": {
+            "show_line": true,
+            "heading_text_1": "Descripción",
+            "icon_name_1": "",
+            "content_1": "{{ product.description }}",
+            "page_1": "",
+            "heading_text_2": "Tab name",
+            "icon_name_2": "",
+            "content_2": "",
+            "page_2": "nosotros",
+            "heading_text_3": "Tab name",
+            "icon_name_3": "",
+            "content_3": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page_3": "",
+            "heading_text_4": "",
+            "icon_name_4": "",
+            "content_4": "",
+            "page_4": "",
+            "heading_text_5": "",
+            "icon_name_5": "",
+            "content_5": "",
+            "page_5": ""
+          }
+        },
         "description_j6ANqd": {
           "type": "description",
           "settings": {
@@ -174,6 +201,7 @@
         },
         "complementary_3PEJ3Q": {
           "type": "complementary",
+          "disabled": true,
           "settings": {
             "heading_size": "h5",
             "heading_text": "Complementary Products",
@@ -209,6 +237,7 @@
         "price_XHwahC",
         "share_jbceFy",
         "text_jqkd4C",
+        "horizontal_tabs_zYiUCa",
         "description_j6ANqd",
         "gerolamo_b2b_actions_RjHqih",
         "variant_picker_zYJKhL",
@@ -229,6 +258,93 @@
         "media_type_mobile": "thumbnails_horizontal",
         "image_zoom": "none",
         "image_ratio": "auto"
+      }
+    },
+    "text_awRLHC": {
+      "type": "text",
+      "blocks": {
+        "heading_jpHqyW": {
+          "type": "heading",
+          "settings": {
+            "main_subheading": "Subheading",
+            "main_heading": "Text",
+            "heading_scale": true,
+            "heading_size_px": 40,
+            "heading_size_px_tablet": 40,
+            "heading_size_px_mobile": 32
+          }
+        },
+        "richtext_TTkNip": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p>Some descriptive text for your store.</p>"
+          }
+        },
+        "button_DLKp3j": {
+          "type": "button",
+          "settings": {
+            "button_name": "Button",
+            "customize_button_size": "default",
+            "btn_min_height": 40,
+            "btn_min_height_mobile": 40,
+            "btn_wide_width": 300,
+            "roundness_button": 20
+          }
+        }
+      },
+      "block_order": [
+        "heading_jpHqyW",
+        "richtext_TTkNip",
+        "button_DLKp3j"
+      ],
+      "name": "t:names.text",
+      "settings": {
+        "heading_position": "normal",
+        "heading_aligment": "text-center",
+        "top_spacing": "normal",
+        "width": "default",
+        "grid": "page-width-half",
+        "height": "auto",
+        "height_value": 600,
+        "height_mobile": "auto",
+        "height_mobile_value": 600,
+        "text_align": "text-center",
+        "hover_underline": true,
+        "url": "",
+        "show_lines": false,
+        "lines_width": "fullwidth",
+        "background": "hide",
+        "color_background": "rgba(0,0,0,0)",
+        "gradient": "",
+        "image_overlay_opacity": 0,
+        "image_overlay_color": "rgba(0,0,0,0)",
+        "image_overlay_opacity_mobile": 0,
+        "image_overlay_color_mobile": "rgba(0,0,0,0)",
+        "show_parallax": false,
+        "imagealign": "center",
+        "imagesize": "cover",
+        "background_width": "fullwidth",
+        "background_spacing": "normal",
+        "remove_bottom_spacing": false,
+        "color_base": "rgba(0,0,0,0)",
+        "color_accent": "rgba(0,0,0,0)",
+        "color_lines": "rgba(0,0,0,0)",
+        "color_text_link": "rgba(0,0,0,0)",
+        "color_text_link_hover": "rgba(0,0,0,0)",
+        "color_desc": "rgba(0,0,0,0)",
+        "show_button_bg": true,
+        "color_button": "rgba(0,0,0,0)",
+        "color_button_gradient": "",
+        "color_button_border": "rgba(0,0,0,0)",
+        "color_button_text": "rgba(0,0,0,0)",
+        "show_button_bg_hover": true,
+        "color_button_hover": "rgba(0,0,0,0)",
+        "color_button_gradient_hover": "",
+        "color_button_border_hover": "rgba(0,0,0,0)",
+        "color_button_text_hover": "rgba(0,0,0,0)",
+        "show_shadow_button": true,
+        "color_shadow_button": "rgba(0,0,0,0)",
+        "color_shadow_hover_button": "rgba(0,0,0,0)"
       }
     },
     "product_recommendations_gFKKqN": {
@@ -366,6 +482,7 @@
   },
   "order": [
     "main",
+    "text_awRLHC",
     "product_recommendations_gFKKqN"
   ]
 }
