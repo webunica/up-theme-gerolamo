@@ -195,7 +195,7 @@
         "width": "page-width",
         "background_width": "fullwidth",
         "show_shadow": true,
-        "main_bg": "#FFFFFF",
+        "main_bg": "#ffffff",
         "main_color": "#1a538a",
         "main_padding_top": 16,
         "main_padding_bottom": 16,
@@ -246,7 +246,7 @@
         "menu_gap": 150,
         "menu_item_padding_x": 4,
         "nav_padding_vertical": 14,
-        "nav_bg": "#F1F1F1",
+        "nav_bg": "#f1f1f1",
         "nav_bg_gradient": "linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(236, 243, 255, 1) 100%, rgba(215, 204, 250, 1) 100%, rgba(207, 232, 252, 1) 100%)",
         "nav_border_bottom_width": 1,
         "nav_border_color": "#00000014",
@@ -518,12 +518,40 @@
       "settings": {
         "image_hover": "image-hover01"
       }
+    },
+    "gerolamo_page_banner_pULfqQ": {
+      "type": "gerolamo-page-banner",
+      "name": "Banner de Página",
+      "settings": {
+        "background_image": "shopify://shop_images/banner-desk-02.png",
+        "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
+        "imagealign": "center right",
+        "desktop_image_height": 380,
+        "mobile_image_height": 280,
+        "show_breadcrumbs": true,
+        "breadcrumb_parent_label": "",
+        "breadcrumb_parent_url": "",
+        "show_eyebrow": true,
+        "eyebrow_text": "GEROLAMO",
+        "show_title": true,
+        "hero_title": "",
+        "show_description": false,
+        "hero_description": "",
+        "text_align": "text-left",
+        "title_size": 40,
+        "title_size_mobile": 28,
+        "color_title": "#0f2b48",
+        "color_eyebrow": "#1B4B8A",
+        "color_description": "#334155",
+        "color_background": "#f8fafc"
+      }
     }
   },
   "order": [
     "announcement_bar_header_wj7iJY",
     "header_9GztDw",
     "promo_header_AqWtBf",
-    "megamenu_modules_YkjRpU"
+    "megamenu_modules_YkjRpU",
+    "gerolamo_page_banner_pULfqQ"
   ]
 }
