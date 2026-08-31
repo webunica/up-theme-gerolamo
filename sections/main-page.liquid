@@ -1,4 +1,7 @@
-{%- render "section-css-background", section:section -%}
+{%- capture block_css -%}
+{%- if section.settings.color_heading != blank and section.settings.color_heading != "rgba(0,0,0,0)" -%}--color-heading-block:{{ section.settings.color_heading }};{%- endif -%}
+{%- endcapture -%}
+{%- render "section-css-background", section:section, block_css:block_css -%}
 {%- capture page_width -%}{%- if section.settings.width != "default" %}{{ section.settings.width }}{%- else -%}{{ settings.page_width_main }}{%- endif -%}{%- endcapture -%}
 {%- assign section_settings_background = false -%}{%- if section.settings.background != 'hide' and section.settings.background_width == "content_width" -%}{%- assign section_settings_background = true -%}{%- endif -%}
 <div id="theme-section-{{ section.id }}"
@@ -45,6 +48,13 @@
       ],
       "default": "text-center",
       "label": "Heading alignment"
+    },
+    {
+      "visible_if": "{{ section.settings.show_heading == true }}",
+      "type": "color",
+      "id": "color_heading",
+      "default": "rgba(0,0,0,0)",
+      "label": "Heading color"
     },
     {
       "type": "header",
