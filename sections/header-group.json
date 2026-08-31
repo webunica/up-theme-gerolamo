@@ -247,7 +247,7 @@
         "menu_item_padding_x": 4,
         "nav_padding_vertical": 14,
         "nav_bg": "#F1F1F1",
-        "nav_bg_gradient": "",
+        "nav_bg_gradient": "linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(236, 243, 255, 1) 100%, rgba(215, 204, 250, 1) 100%, rgba(207, 232, 252, 1) 100%)",
         "nav_border_bottom_width": 1,
         "nav_border_color": "#00000014",
         "nav_color": "#1a538a",
