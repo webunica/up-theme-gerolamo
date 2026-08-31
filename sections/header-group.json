@@ -521,6 +521,7 @@
     },
     "gerolamo_page_banner_pULfqQ": {
       "type": "gerolamo-page-banner",
+      "disabled": true,
       "name": "Banner de Página",
       "settings": {
         "background_image": "shopify://shop_images/banner-desk-02.png",
