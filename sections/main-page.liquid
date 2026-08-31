@@ -1,294 +1,472 @@
-{%- capture block_css -%}
-{%- if section.settings.color_heading != blank and section.settings.color_heading != "rgba(0,0,0,0)" -%}--color-heading-block:{{ section.settings.color_heading }};{%- endif -%}
-{%- endcapture -%}
-{%- render "section-css-background", section:section, block_css:block_css -%}
-{%- capture page_width -%}{%- if section.settings.width != "default" %}{{ section.settings.width }}{%- else -%}{{ settings.page_width_main }}{%- endif -%}{%- endcapture -%}
-{%- assign section_settings_background = false -%}{%- if section.settings.background != 'hide' and section.settings.background_width == "content_width" -%}{%- assign section_settings_background = true -%}{%- endif -%}
-<div id="theme-section-{{ section.id }}"
-     class="top-spacing-{{ section.settings.top_spacing }}{% if section.settings.background != 'hide' and section.settings.background_width == "fullwidth" %} section-background section-background--{{ section.settings.background_spacing }}{% endif %}"
-     data-section-name="main-page">
-  <div class="{{ page_width }}{% if section_settings_background %} section-background--mobile-width{% endif %}">
-    {%- if section_settings_background -%}<div class="section-background section-background--{{ section.settings.background_spacing }} border__radius">{%- endif -%}
-    {%- if section.settings.background != 'show' and section.settings.show_parallax -%}<div class="section-background__elements"><div class="section-background__elements__item"></div></div>{%- endif -%}
-    <div class="page-width-eight">
-      <div class="page-grid-1">
-        <div class="page-content__mockup">
-          {%- if section.settings.show_heading -%}<h1 class="mt0 {% if page.content == blank %}mb0{% endif %} section-heading-container {{ section.settings.heading_aligment }}">{{ page.title | escape }}</h1>{%- endif -%}
-          {{ page.content }}
+{%- liquid
+  assign bg_image = section.settings.background_image
+  assign bg_image_mobile = section.settings.background_image_mobile
+  if bg_image_mobile == blank
+    assign bg_image_mobile = bg_image
+  endif
+
+  assign show_breadcrumbs = section.settings.show_breadcrumbs
+  assign show_eyebrow = section.settings.show_eyebrow
+  assign eyebrow = section.settings.eyebrow_text | default: 'GEROLAMO'
+
+  assign page_title_display = page.title
+  if section.settings.custom_title != blank
+    assign page_title_display = section.settings.custom_title
+  endif
+
+  capture page_width
+    if section.settings.width != "default"
+      echo section.settings.width
+    else
+      echo settings.page_width_main
+    endif
+  endcapture
+-%}
+
+<style>
+  #theme-section-{{ section.id }}.gerolamo-page-hero,
+  #theme-section-{{ section.id }} .gerolamo-page-hero,
+  .gerolamo-page-hero {
+    position: relative;
+    width: 100%;
+    min-height: {{ section.settings.desktop_image_height | default: 350 }}px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: {{ section.settings.color_background | default: '#f8fafc' }};
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }}.gerolamo-page-hero,
+    #theme-section-{{ section.id }} .gerolamo-page-hero,
+    .gerolamo-page-hero {
+      min-height: {{ section.settings.mobile_image_height | default: 240 }}px;
+    }
+  }
+
+  .gerolamo-page-hero__bg-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-size: cover;
+    background-position: {{ section.settings.imagealign | default: 'center right' }};
+    background-repeat: no-repeat;
+  }
+
+  .gerolamo-page-hero__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.imagealign | default: 'center right' }};
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .gerolamo-page-hero__gradient-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0.94) 30%, rgba(255, 255, 255, 0.72) 48%, rgba(255, 255, 255, 0.2) 68%, rgba(255, 255, 255, 0) 85%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-page-hero__gradient-mask {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.35) 100%);
+    }
+  }
+
+  .gerolamo-page-hero__inner {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin: 0 auto;
+    padding: 36px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+    box-sizing: border-box;
+  }
+
+  .gerolamo-page-hero__breadcrumbs {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 16px;
+  }
+
+  .gerolamo-page-hero__breadcrumbs a {
+    color: #1B4B8A;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .gerolamo-page-hero__breadcrumbs a:hover {
+    text-decoration: underline;
+    color: #0F6445;
+  }
+
+  .gerolamo-page-hero__bc-sep {
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .gerolamo-page-hero__bc-home {
+    display: inline-flex;
+    align-items: center;
+    color: #1B4B8A !important;
+  }
+
+  .gerolamo-page-hero__bc-current {
+    color: #1e293b;
+    font-weight: 600;
+  }
+
+  .gerolamo-page-hero__text-box {
+    max-width: 620px;
+    {% if section.settings.text_align == 'text-center' %}
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    {% else %}
+    text-align: left;
+    {% endif %}
+  }
+
+  .gerolamo-page-hero__eyebrow {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: {{ section.settings.color_eyebrow | default: '#1B4B8A' }};
+    margin-bottom: 8px;
+  }
+
+  .gerolamo-page-hero__title {
+    margin: 0 0 12px 0;
+    font-size: 40px;
+    font-weight: 800;
+    color: {{ section.settings.color_title | default: '#0f2b48' }};
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-page-hero__title {
+      font-size: 28px;
+    }
+  }
+
+  .gerolamo-page-hero__desc {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: {{ section.settings.color_description | default: '#334155' }};
+    font-weight: 400;
+  }
+
+  .gerolamo-page-hero__desc p {
+    margin: 0 0 8px 0;
+  }
+
+  .gerolamo-page-hero__desc p:last-child {
+    margin-bottom: 0;
+  }
+
+  .gerolamo-page-content-wrapper {
+    padding-top: {{ section.settings.content_padding_top | default: 40 }}px;
+    padding-bottom: {{ section.settings.content_padding_bottom | default: 40 }}px;
+  }
+</style>
+
+<div id="theme-section-{{ section.id }}" data-section-name="main-page">
+
+  {%- if section.settings.show_banner -%}
+  <!-- Gerolamo Page Hero Banner -->
+  <div class="gerolamo-page-hero">
+    {%- if bg_image != blank -%}
+      <div class="gerolamo-page-hero__bg-wrap" style="background-image: url('{{ bg_image | image_url: width: 2400 }}');">
+        <img src="{{ bg_image | image_url: width: 2400 }}"
+             alt="{{ page_title_display | escape }}"
+             class="gerolamo-page-hero__bg-img{% if bg_image_mobile != blank and bg_image_mobile != bg_image %} hide-sp{% endif %}"
+             loading="eager"
+             width="{{ bg_image.width }}"
+             height="{{ bg_image.height }}">
+        {%- if bg_image_mobile != blank and bg_image_mobile != bg_image -%}
+        <img src="{{ bg_image_mobile | image_url: width: 1200 }}"
+             alt="{{ page_title_display | escape }}"
+             class="gerolamo-page-hero__bg-img hide-desktop"
+             loading="eager"
+             width="{{ bg_image_mobile.width }}"
+             height="{{ bg_image_mobile.height }}">
+        {%- endif -%}
+        {%- if section.settings.show_gradient_mask -%}
+          <div class="gerolamo-page-hero__gradient-mask"></div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="gerolamo-page-hero__inner">
+      {%- if show_breadcrumbs -%}
+      <nav class="gerolamo-page-hero__breadcrumbs" aria-label="Navegación">
+        <a href="{{ routes.root_url }}" class="gerolamo-page-hero__bc-home" aria-label="Inicio">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+          </svg>
+        </a>
+        <span class="gerolamo-page-hero__bc-sep">›</span>
+        <a href="{{ routes.root_url }}">Inicio</a>
+        <span class="gerolamo-page-hero__bc-sep">›</span>
+        <span class="gerolamo-page-hero__bc-current">{{ page.title }}</span>
+      </nav>
+      {%- endif -%}
+
+      <div class="gerolamo-page-hero__text-box">
+        {%- if show_eyebrow and eyebrow != blank -%}
+        <div class="gerolamo-page-hero__eyebrow">
+          {{ eyebrow }}
+        </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_title -%}
+        <h1 class="gerolamo-page-hero__title">
+          {{ page_title_display }}
+        </h1>
+        {%- endif -%}
+
+        {%- if section.settings.show_text_description and section.settings.description_text != blank -%}
+        <div class="gerolamo-page-hero__desc">
+          {{ section.settings.description_text }}
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- if page.content != blank -%}
+  <div class="gerolamo-page-content-wrapper">
+    <div class="{{ page_width }}">
+      <div class="page-width-eight">
+        <div class="page-grid-1">
+          <div class="page-content__mockup">
+            {{ page.content }}
+          </div>
         </div>
       </div>
     </div>
-    {% if section_settings_background %}</div>{%- endif -%}
   </div>
+  {%- endif -%}
+
 </div>
 
 {% schema %}
 {
-  "name": "Page",
+  "name": "Página",
   "tag": "section",
   "settings": [
     {
+      "type": "header",
+      "content": "Banner Hero de la Página"
+    },
+    {
       "type": "checkbox",
-      "id": "show_heading",
+      "id": "show_banner",
       "default": true,
-      "label": "Show page heading"
+      "label": "Mostrar banner hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Imagen de fondo (Escritorio)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Imagen de fondo (Móvil)"
     },
     {
       "type": "select",
-      "id": "heading_aligment",
+      "id": "imagealign",
+      "label": "Posición de la imagen",
+      "default": "center right",
       "options": [
-        {
-          "value": "text-left",
-          "label": "Left"
-        },
-        {
-          "value": "text-center",
-          "label": "Center"
-        }
-      ],
-      "default": "text-center",
-      "label": "Heading alignment"
+        { "value": "center right", "label": "Centro Derecha" },
+        { "value": "center center", "label": "Centro" },
+        { "value": "top right", "label": "Superior Derecha" },
+        { "value": "bottom right", "label": "Inferior Derecha" },
+        { "value": "top center", "label": "Superior Centro" },
+        { "value": "bottom center", "label": "Inferior Centro" }
+      ]
     },
     {
-      "visible_if": "{{ section.settings.show_heading == true }}",
-      "type": "color",
-      "id": "color_heading",
-      "default": "rgba(0,0,0,0)",
-      "label": "Heading color"
+      "type": "checkbox",
+      "id": "show_gradient_mask",
+      "default": true,
+      "label": "Activar máscara de degradado suave (Mejora la legibilidad del texto)"
     },
     {
       "type": "header",
-      "content": "Layout"
+      "content": "Dimensiones del Banner"
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "min": 150,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura en escritorio",
+      "default": 350
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 120,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura en móvil",
+      "default": 240
+    },
+    {
+      "type": "header",
+      "content": "Contenido del Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "default": true,
+      "label": "Mostrar migas de pan (Breadcrumbs)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "default": true,
+      "label": "Mostrar antetítulo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "default": "GEROLAMO",
+      "label": "Texto del antetítulo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Mostrar título"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Título personalizado",
+      "info": "Si se deja en blanco, se utilizará el título original de la página."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_description",
+      "default": false,
+      "label": "Mostrar subtítulo o descripción en el banner"
+    },
+    {
+      "type": "richtext",
+      "id": "description_text",
+      "label": "Texto del subtítulo o descripción"
     },
     {
       "type": "select",
-      "id": "top_spacing",
+      "id": "text_align",
       "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "small",
-          "label": "Small"
-        },
-        {
-          "value": "medium",
-          "label": "Medium"
-        },
-        {
-          "value": "normal",
-          "label": "Normal"
-        }
+        { "value": "text-left", "label": "Izquierda" },
+        { "value": "text-center", "label": "Centro" }
       ],
-      "default": "normal",
-      "label": "Top spacing"
+      "default": "text-left",
+      "label": "Alineación del texto"
+    },
+    {
+      "type": "header",
+      "content": "Colores del Banner"
+    },
+    {
+      "type": "color",
+      "id": "color_title",
+      "default": "#0f2b48",
+      "label": "Color del título"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "default": "#1B4B8A",
+      "label": "Color del antetítulo"
+    },
+    {
+      "type": "color",
+      "id": "color_description",
+      "default": "#334155",
+      "label": "Color de la descripción"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "default": "#f8fafc",
+      "label": "Color de fondo fallback"
+    },
+    {
+      "type": "header",
+      "content": "Diseño del Contenido Inferior"
     },
     {
       "type": "select",
       "id": "width",
       "options": [
-        {
-          "value": "default",
-          "label": "Default"
-        },
-        {
-          "value": "page-width",
-          "label": "Boxed"
-        },
-        {
-          "value": "page-wide",
-          "label": "Wide"
-        }
+        { "value": "default", "label": "Por defecto" },
+        { "value": "page-width", "label": "En caja (Boxed)" },
+        { "value": "page-wide", "label": "Ancho (Wide)" }
       ],
       "default": "default",
-      "label": "Width",
-      "info": "The Wide option works for screens with 1440px width and more."
+      "label": "Ancho del contenido de la página"
     },
     {
-      "type": "header",
-      "content": "Background"
-    },
-    {
-      "type": "select",
-      "id": "background",
-      "options": [
-        {
-          "value": "hide",
-          "label": "Hide"
-        },
-        {
-          "value": "color",
-          "label": "Color"
-        },
-        {
-          "value": "gradient",
-          "label": "Gradient"
-        },
-        {
-          "value": "image",
-          "label": "Image"
-        }
-      ],
-      "default": "hide",
-      "label": "Background"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'color' }}",
-      "type": "color",
-      "id": "color_background",
-      "default": "rgba(0,0,0,0)",
-      "label": "Color"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'gradient' }}",
-      "type": "color_background",
-      "id": "gradient",
-      "label": "Gradient"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' }}",
-      "type": "image_picker",
-      "id": "background_image",
-      "label": "Image"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' and section.settings.background_image != blank }}",
       "type": "range",
-      "id": "image_overlay_opacity",
+      "id": "content_padding_top",
       "min": 0,
       "max": 100,
-      "step": 10,
-      "unit": "%",
-      "label": "Image overlay opacity",
-      "default": 0
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado superior del contenido",
+      "default": 40
     },
     {
-      "visible_if": "{{ section.settings.background == 'image' and section.settings.background_image != blank and section.settings.image_overlay_opacity > 0 }}",
-      "type": "color",
-      "id": "image_overlay_color",
-      "default":"rgba(0,0,0,0)",
-      "label": "Image overlay color"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' }}",
-      "type": "image_picker",
-      "id": "background_image_mobile",
-      "label": "Image mobile"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' and section.settings.background_image_mobile != blank }}",
       "type": "range",
-      "id": "image_overlay_opacity_mobile",
+      "id": "content_padding_bottom",
       "min": 0,
       "max": 100,
-      "step": 10,
-      "unit": "%",
-      "label": "Image overlay opacity. Mobile",
-      "default": 0
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' and section.settings.background_image_mobile != blank and section.settings.image_overlay_opacity_mobile > 0 }}",
-      "type": "color",
-      "id": "image_overlay_color_mobile",
-      "default":"rgba(0,0,0,0)",
-      "label": "Image overlay color. Mobile"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' }}",
-      "type": "checkbox",
-      "id": "show_parallax",
-      "default": false,
-      "label": "Enable parallax effect"
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' }}",
-      "type": "select",
-      "id": "imagealign",
-      "label": "Image position",
-      "info": "Works for all screens",
-      "default": "center",
-      "options": [
-        {
-          "value": "top",
-          "label": "Top"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "bottom",
-          "label": "Bottom"
-        }
-      ]
-    },
-    {
-      "visible_if": "{{ section.settings.background == 'image' }}",
-      "type": "select",
-      "id": "imagesize",
-      "label": "Image size",
-      "info": "Works for all screens",
-      "default": "cover",
-      "options": [
-        {
-          "value": "cover",
-          "label": "Full background size"
-        },
-        {
-          "value": "contain",
-          "label": "Contain"
-        }
-      ]
-    },
-    {
-      "visible_if": "{{ section.settings.background != 'hide' }}",
-      "type": "select",
-      "id": "background_width",
-      "options": [
-        {
-          "value": "fullwidth",
-          "label": "Fullwidth"
-        },
-        {
-          "value": "content_width",
-          "label": "Content width"
-        }
-      ],
-      "default": "fullwidth",
-      "label": "Width"
-    },
-    {
-      "visible_if": "{{ section.settings.background != 'hide' }}",
-      "type": "select",
-      "id": "background_spacing",
-      "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "small",
-          "label": "Small"
-        },
-        {
-          "value": "medium",
-          "label": "Medium"
-        },
-        {
-          "value": "normal",
-          "label": "Normal"
-        }
-      ],
-      "default": "normal",
-      "label": "Top, bottom spacing"
-    },
-    {
-      "visible_if": "{{ section.settings.background != 'hide' }}",
-      "type": "checkbox",
-      "id": "remove_bottom_spacing",
-      "default": false,
-      "label": "Remove bottom spacing"
+      "step": 5,
+      "unit": "px",
+      "label": "Espaciado inferior del contenido",
+      "default": 40
     }
   ]
 }
