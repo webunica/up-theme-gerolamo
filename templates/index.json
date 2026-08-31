@@ -606,7 +606,7 @@
         "col2_title": "¿TIENES DUDAS?",
         "col2_desc": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
         "col2_link_text": "Contáctanos",
-        "col2_url": "",
+        "col2_url": "shopify://pages/contact",
         "mascot_image": "shopify://shop_images/perrogato-footer_6a0add0a-6806-47a2-8cca-1f397be85378.png",
         "box_bg": "#f0f4f9",
         "icon_bg_color": "#1b4b8a",
