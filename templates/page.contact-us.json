@@ -48,7 +48,6 @@
         "show_image": "show",
         "image_hover": "default",
         "image_ratio": "auto",
-        "image": "shopify://shop_images/banner-mobile.02.png",
         "align_content": "center",
         "row_reverse": true,
         "text_content_width": 50,
