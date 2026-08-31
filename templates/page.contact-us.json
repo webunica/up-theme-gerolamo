@@ -117,7 +117,7 @@
         "btn_min_height_mobile": 40,
         "btn_wide_width": 300,
         "roundness_button": 20,
-        "show_lines": true,
+        "show_lines": false,
         "lines_width": "fullwidth",
         "background": "hide",
         "color_background": "rgba(0,0,0,0)",
