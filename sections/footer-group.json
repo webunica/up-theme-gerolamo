@@ -26,7 +26,7 @@
         "col3_title": "NOSOTROS",
         "col3_menu": "",
         "col4_title": "AYUDA",
-        "col4_menu": "",
+        "col4_menu": "footer-ayuda",
         "col5_title": "CONTACTO",
         "phone": "",
         "email": "info@gerolamo.cl",
