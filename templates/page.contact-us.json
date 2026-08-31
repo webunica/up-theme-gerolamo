@@ -14,6 +14,7 @@
       "settings": {
         "show_heading": true,
         "heading_aligment": "text-left",
+        "color_heading": "#FFFFFF",
         "top_spacing": "small",
         "width": "page-width",
         "background": "image",
