@@ -90,7 +90,9 @@
             "enable_rich_dropdown": false,
             "url_mantencion": "",
             "url_prescripcion": "",
-            "url_snacks": ""
+            "url_snacks": "",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
           }
         },
         "menu_item_j6m8CH": {
@@ -104,7 +106,9 @@
             "enable_rich_dropdown": true,
             "url_mantencion": "shopify://collections/premium-perro",
             "url_prescripcion": "shopify://collections/prescripcion-perro",
-            "url_snacks": "shopify://collections/snaks-perro"
+            "url_snacks": "shopify://collections/snaks-perro",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
           }
         },
         "menu_item_Qy7aaf": {
@@ -118,7 +122,9 @@
             "enable_rich_dropdown": true,
             "url_mantencion": "shopify://collections/premium-gatos",
             "url_prescripcion": "shopify://collections/prescripcion-gato",
-            "url_snacks": "shopify://collections/snaks-gatos"
+            "url_snacks": "shopify://collections/snaks-gatos",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
           }
         },
         "menu_item_VAhhVd": {
@@ -132,7 +138,9 @@
             "enable_rich_dropdown": true,
             "url_mantencion": "",
             "url_prescripcion": "",
-            "url_snacks": ""
+            "url_snacks": "",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
           }
         },
         "menu_item_dhq4RP": {
@@ -145,7 +153,9 @@
             "enable_rich_dropdown": true,
             "url_mantencion": "",
             "url_prescripcion": "",
-            "url_snacks": ""
+            "url_snacks": "",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
           }
         },
         "menu_item_MRz7Xg": {
@@ -158,7 +168,9 @@
             "enable_rich_dropdown": true,
             "url_mantencion": "",
             "url_prescripcion": "",
-            "url_snacks": ""
+            "url_snacks": "",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
           }
         },
         "mega_menu_7hAtMx": {
@@ -183,7 +195,7 @@
         "width": "page-width",
         "background_width": "fullwidth",
         "show_shadow": true,
-        "main_bg": "#ffffff",
+        "main_bg": "#F7FFFE",
         "main_color": "#1a538a",
         "main_padding_top": 16,
         "main_padding_bottom": 16,
@@ -237,6 +249,9 @@
         "nav_bg": "#ffffff",
         "nav_color": "#1a538a",
         "nav_hover": "#007665",
+        "nav_link_bg": "rgba(0,0,0,0)",
+        "nav_link_bg_hover": "rgba(0,0,0,0)",
+        "nav_link_border_radius": 0,
         "nav_font_size": 16,
         "nav_font_weight": "600",
         "nav_letter_spacing": 0,
