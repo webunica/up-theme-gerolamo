@@ -56,23 +56,11 @@
             "button_name": "",
             "url": ""
           }
-        },
-        "item_npJajD": {
-          "type": "item",
-          "settings": {
-            "show_icon": "svg",
-            "icon_name": "Phone",
-            "block_heading": "",
-            "block_text": "<h5>Pickup Phone: </h5><h4>(555) 555-1002</h4><p>9:00 AM – 7:00 PM</p>",
-            "button_name": "",
-            "url": ""
-          }
         }
       },
       "block_order": [
         "item_bwgFx4",
-        "item_wPP87U",
-        "item_npJajD"
+        "item_wPP87U"
       ],
       "name": "t:names.text_with_icons_type_1",
       "settings": {
