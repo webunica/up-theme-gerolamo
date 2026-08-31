@@ -50,7 +50,7 @@
         "image_ratio": "auto",
         "align_content": "center",
         "row_reverse": true,
-        "text_content_width": 50,
+        "text_content_width": 60,
         "customize_button_size": "default",
         "btn_min_height": 40,
         "btn_min_height_mobile": 40,
