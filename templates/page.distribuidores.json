@@ -151,7 +151,7 @@
         "items_per_page": 18,
         "columns": "3",
         "section_bg_color": "#ffffff",
-        "top_spacing": "none"
+        "top_spacing": "small"
       }
     }
   },
