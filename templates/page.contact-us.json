@@ -22,6 +22,7 @@
         "background_image": "shopify://shop_images/banner-desk-02.png",
         "image_overlay_opacity": 20,
         "image_overlay_color": "rgba(0,0,0,0)",
+        "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
         "image_overlay_opacity_mobile": 0,
         "image_overlay_color_mobile": "rgba(0,0,0,0)",
         "show_parallax": false,
