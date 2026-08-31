@@ -45,7 +45,8 @@
     --gerolamo-cart-badge-color: {{ section.settings.cart_badge_color | default: '#ffffff' }};
     
     /* Navigation Bar Colors */
-    --gerolamo-nav-bg: {{ section.settings.nav_bg | default: '#ffffff' }};
+    --gerolamo-nav-bg: {%- if section.settings.nav_bg_gradient != blank -%}{{ section.settings.nav_bg_gradient }}{%- else -%}{{ section.settings.nav_bg | default: '#ffffff' }}{%- endif -%};
+    --gerolamo-nav-border-color: {{ section.settings.nav_border_color | default: 'rgba(0, 0, 0, 0.08)' }};
     --gerolamo-nav-color: {{ section.settings.nav_color | default: '#1e293b' }};
     --gerolamo-nav-hover: {{ section.settings.nav_hover | default: '#0c4ca3' }};
     --gerolamo-nav-link-bg: {{ section.settings.nav_link_bg | default: 'transparent' }};
@@ -298,18 +299,18 @@
 
   /* 3. Bottom Navigation Bar */
   .header-gerolamo__nav {
-    background-color: var(--gerolamo-nav-bg);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: var(--gerolamo-nav-bg);
+    border-bottom: {{ section.settings.nav_border_bottom_width | default: 1 }}px solid var(--gerolamo-nav-border-color);
     width: 100%;
     font-family: var(--gerolamo-font-family);
     padding: 0;
   }
   .header-gerolamo__nav.header-boxed-bg {
-    background-color: transparent;
+    background: transparent;
     border: none;
   }
   .header-gerolamo__nav.header-boxed-bg > div > nav {
-    background-color: var(--gerolamo-nav-bg);
+    background: var(--gerolamo-nav-bg);
     border-radius: var(--radius, 8px);
     padding: 0 20px;
   }
@@ -1302,31 +1303,52 @@
       "type": "color",
       "id": "nav_bg",
       "default": "#ffffff",
-      "label": "Color de fondo de la barra de menú"
+      "label": "Color de fondo de la barra de enlaces"
+    },
+    {
+      "type": "color_background",
+      "id": "nav_bg_gradient",
+      "label": "Fondo degradado de la barra de enlaces (Opcional)"
+    },
+    {
+      "type": "range",
+      "id": "nav_border_bottom_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Grosor del borde inferior (0 para quitar borde)",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "nav_border_color",
+      "default": "rgba(0,0,0,0.08)",
+      "label": "Color del borde inferior de la barra"
     },
     {
       "type": "color",
       "id": "nav_color",
       "default": "#1e293b",
-      "label": "Color de los enlaces del menú"
+      "label": "Color de texto de los enlaces"
     },
     {
       "type": "color",
       "id": "nav_hover",
       "default": "#0c4ca3",
-      "label": "Color de los enlaces al pasar el cursor (Hover)"
+      "label": "Color de texto al pasar el cursor (Hover)"
     },
     {
       "type": "color",
       "id": "nav_link_bg",
       "default": "rgba(0,0,0,0)",
-      "label": "Color de fondo de los enlaces (Normal)"
+      "label": "Color de fondo de cada enlace (Normal)"
     },
     {
       "type": "color",
       "id": "nav_link_bg_hover",
       "default": "rgba(0,0,0,0)",
-      "label": "Color de fondo de los enlaces al pasar el cursor (Hover)"
+      "label": "Color de fondo de cada enlace al pasar el cursor (Hover)"
     },
     {
       "type": "range",
@@ -1335,7 +1357,7 @@
       "max": 50,
       "step": 1,
       "unit": "px",
-      "label": "Redondeo del fondo de los enlaces (Border radius)",
+      "label": "Redondeo del fondo de cada enlace (Border radius)",
       "default": 0
     },
     {
