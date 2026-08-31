@@ -1,11 +1,21 @@
 {%- liquid
   assign bg_image = section.settings.background_image
-  if section.settings.use_collection_image and collection.image != blank
-    assign bg_image = collection.image
-  elsif bg_image == blank and collection.image != blank
-    assign bg_image = collection.image
+  if section.settings.use_collection_image
+    if collection.image != blank
+      assign bg_image = collection.image
+    elsif collection.featured_image != blank
+      assign bg_image = collection.featured_image
+    endif
   endif
   
+  if bg_image == blank
+    if collection.image != blank
+      assign bg_image = collection.image
+    elsif collection.featured_image != blank
+      assign bg_image = collection.featured_image
+    endif
+  endif
+
   assign bg_image_mobile = section.settings.background_image_mobile
   if bg_image_mobile == blank
     assign bg_image_mobile = bg_image
@@ -17,10 +27,11 @@
 -%}
 
 <style>
-  #theme-section-{{ section.id }}.gerolamo-col-hero {
+  #theme-section-{{ section.id }}.gerolamo-col-hero,
+  .gerolamo-col-hero {
     position: relative;
     width: 100%;
-    min-height: {{ section.settings.desktop_image_height | default: 380 }}px;
+    min-height: {{ section.settings.desktop_image_height | default: 400 }}px;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -28,47 +39,59 @@
   }
 
   @media (max-width: 768px) {
-    #theme-section-{{ section.id }}.gerolamo-col-hero {
+    #theme-section-{{ section.id }}.gerolamo-col-hero,
+    .gerolamo-col-hero {
       min-height: {{ section.settings.mobile_image_height | default: 280 }}px;
     }
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__bg-wrap {
+  .gerolamo-col-hero__bg-wrap {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
+    background-size: cover;
+    background-position: {{ section.settings.imagealign | default: 'center right' }};
+    background-repeat: no-repeat;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__bg-img {
+  .gerolamo-col-hero__bg-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: {{ section.settings.imagealign | default: 'center right' }};
     display: block;
-  }
-
-  #theme-section-{{ section.id }} .gerolamo-col-hero__gradient-mask {
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  .gerolamo-col-hero__gradient-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 38%, rgba(255, 255, 255, 0.4) 65%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0.94) 30%, rgba(255, 255, 255, 0.72) 48%, rgba(255, 255, 255, 0.2) 68%, rgba(255, 255, 255, 0) 85%);
     pointer-events: none;
+    z-index: 2;
   }
 
   @media (max-width: 768px) {
-    #theme-section-{{ section.id }} .gerolamo-col-hero__gradient-mask {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.4) 100%);
+    .gerolamo-col-hero__gradient-mask {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.35) 100%);
     }
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__inner {
+  .gerolamo-col-hero__inner {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     max-width: var(--page-width, 1320px);
     margin: 0 auto;
@@ -80,7 +103,7 @@
     box-sizing: border-box;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__breadcrumbs {
+  .gerolamo-col-hero__breadcrumbs {
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
@@ -91,7 +114,7 @@
     margin-bottom: 20px;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__breadcrumbs a {
+  .gerolamo-col-hero__breadcrumbs a {
     color: #1B4B8A;
     text-decoration: none;
     transition: color 0.2s ease;
@@ -99,29 +122,29 @@
     align-items: center;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__breadcrumbs a:hover {
+  .gerolamo-col-hero__breadcrumbs a:hover {
     text-decoration: underline;
     color: #0F6445;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__bc-sep {
+  .gerolamo-col-hero__bc-sep {
     color: #94a3b8;
     font-size: 13px;
     font-weight: 400;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__bc-home {
+  .gerolamo-col-hero__bc-home {
     display: inline-flex;
     align-items: center;
     color: #1B4B8A !important;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__bc-current {
+  .gerolamo-col-hero__bc-current {
     color: #1e293b;
     font-weight: 600;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__text-box {
+  .gerolamo-col-hero__text-box {
     max-width: 580px;
     {% if section.settings.text_align == 'text-center' %}
     text-align: center;
@@ -132,7 +155,7 @@
     {% endif %}
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__eyebrow {
+  .gerolamo-col-hero__eyebrow {
     font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
@@ -141,7 +164,7 @@
     margin-bottom: 8px;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__title {
+  .gerolamo-col-hero__title {
     margin: 0 0 12px 0;
     font-size: 40px;
     font-weight: 800;
@@ -151,12 +174,12 @@
   }
 
   @media (max-width: 768px) {
-    #theme-section-{{ section.id }} .gerolamo-col-hero__title {
+    .gerolamo-col-hero__title {
       font-size: 28px;
     }
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__desc {
+  .gerolamo-col-hero__desc {
     margin: 0;
     font-size: 15px;
     line-height: 1.55;
@@ -164,11 +187,11 @@
     font-weight: 400;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__desc p {
+  .gerolamo-col-hero__desc p {
     margin: 0 0 8px 0;
   }
 
-  #theme-section-{{ section.id }} .gerolamo-col-hero__desc p:last-child {
+  .gerolamo-col-hero__desc p:last-child {
     margin-bottom: 0;
   }
 </style>
@@ -176,15 +199,15 @@
 <div id="theme-section-{{ section.id }}" class="gerolamo-col-hero" data-section-name="main-collection-banner">
   <!-- Background Image with Soft Gradient Mask -->
   {%- if bg_image != blank -%}
-    <div class="gerolamo-col-hero__bg-wrap">
-      <img src="{{ bg_image | image_url: width: 2000 }}"
+    <div class="gerolamo-col-hero__bg-wrap" style="background-image: url('{{ bg_image | image_url: width: 2400 }}');">
+      <img src="{{ bg_image | image_url: width: 2400 }}"
            alt="{{ collection.title | escape }}"
            class="gerolamo-col-hero__bg-img{% if bg_image_mobile != blank and bg_image_mobile != bg_image %} hide-sp{% endif %}"
            loading="eager"
            width="{{ bg_image.width }}"
            height="{{ bg_image.height }}">
       {%- if bg_image_mobile != blank and bg_image_mobile != bg_image -%}
-      <img src="{{ bg_image_mobile | image_url: width: 1000 }}"
+      <img src="{{ bg_image_mobile | image_url: width: 1200 }}"
            alt="{{ collection.title | escape }}"
            class="gerolamo-col-hero__bg-img hide-desktop"
            loading="eager"
