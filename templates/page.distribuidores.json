@@ -57,7 +57,7 @@
         "title_size": 40,
         "title_size_mobile": 28,
         "color_title": "#0f2b48",
-        "color_eyebrow": "#1B4B8A",
+        "color_eyebrow": "#1b4b8a",
         "color_description": "#334155",
         "color_background": "#f8fafc"
       }
@@ -65,8 +65,7 @@
     "distributor_locator": {
       "type": "distributor-locator",
       "settings": {
-        "hero_image": "shopify://shop_images/banner-desk-02.png",
-        "hero_image_mobile": "shopify://shop_images/banner-mobile.02.png",
+        "hide_hero": true,
         "hero_height_desktop": 360,
         "hero_height_mobile": 250,
         "hero_text_align": "left",
