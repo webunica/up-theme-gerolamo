@@ -113,6 +113,7 @@
 >
 
   <!-- Hero Header -->
+  {%- unless section.settings.hide_hero -%}
   <div class="distributor-locator__hero{% if section.settings.hero_image != blank %} distributor-locator__hero--has-bg{% endif %}">
     {% if section.settings.hero_image != blank %}
       <div class="distributor-locator__hero-bg">
@@ -145,6 +146,7 @@
       {% endif %}
     </div>
   </div>
+  {%- endunless -%}
 
   <!-- Search & Filter Controls -->
   <div class="distributor-locator__controls">
@@ -292,6 +294,12 @@
     {
       "type": "header",
       "content": "Encabezado"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_hero",
+      "label": "Ocultar banner interno (usar Banner de Página separado)",
+      "default": false
     },
     {
       "type": "image_picker",
