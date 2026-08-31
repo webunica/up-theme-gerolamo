@@ -96,7 +96,7 @@
         "gerolamo_b2b_actions_RjHqih": {
           "type": "gerolamo_b2b_actions",
           "settings": {
-            "show_nearest_stores": true,
+            "show_nearest_stores": false,
             "nearest_title": "Puntos de venta cercanos",
             "nearest_limit": 5,
             "show_btn1": true,
