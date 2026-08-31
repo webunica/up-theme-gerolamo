@@ -602,7 +602,7 @@
         "col1_title": "¿DÓNDE COMPRAR?",
         "col1_desc": "Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.",
         "col1_link_text": "Ver puntos de venta",
-        "col1_url": "",
+        "col1_url": "shopify://pages/donde-comprar",
         "col2_title": "¿TIENES DUDAS?",
         "col2_desc": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
         "col2_link_text": "Contáctanos",
