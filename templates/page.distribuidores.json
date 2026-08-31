@@ -14,6 +14,7 @@
       "settings": {
         "show_heading": false,
         "heading_aligment": "text-center",
+        "color_heading": "rgba(0,0,0,0)",
         "top_spacing": "none",
         "width": "default",
         "background": "hide",
@@ -43,7 +44,7 @@
         "hero_sub_color": "#ffffff",
         "hero_title_size": 36,
         "hero_overlay_color": "#000000",
-        "hero_overlay_opacity": 25,
+        "hero_overlay_opacity": 20,
         "subheading": "Red de distribuidores",
         "heading": "¿Dónde comprar?",
         "description": "Encuentra el punto de venta más cercano a tu ubicación. Tenemos distribuidores en todo Chile.",

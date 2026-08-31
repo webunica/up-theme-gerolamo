@@ -123,6 +123,7 @@
         },
         "menu_item_VAhhVd": {
           "type": "menu_item",
+          "disabled": true,
           "settings": {
             "title": "Noticias",
             "url": "",
