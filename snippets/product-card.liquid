@@ -270,6 +270,24 @@
     endfor
   endif
 
+  # Limpiar decimales .0 o ,0 innecesarios (ej: 315.0 -> 315, 2.0 -> 2, 2.00 -> 2)
+  assign weight_str = weight_num | append: ''
+  if weight_str contains '.'
+    assign w_parts = weight_str | split: '.'
+    if w_parts.size == 2
+      if w_parts[1] == '0' or w_parts[1] == '00' or w_parts[1] == '000'
+        assign weight_num = w_parts[0]
+      endif
+    endif
+  elsif weight_str contains ','
+    assign w_parts = weight_str | split: ','
+    if w_parts.size == 2
+      if w_parts[1] == '0' or w_parts[1] == '00' or w_parts[1] == '000'
+        assign weight_num = w_parts[0]
+      endif
+    endif
+  endif
+
   # 3. Vendor & Type
   assign card_vendor = product_card_product.vendor | default: 'GEROLAMO' | upcase
   assign card_type = product_card_product.type
