@@ -1,13 +1,35 @@
 {%- liquid
+  assign show_banner = true
+  if section.settings.show_banner == false
+    assign show_banner = false
+  endif
+
+  assign show_breadcrumbs = true
+  if section.settings.show_breadcrumbs == false
+    assign show_breadcrumbs = false
+  endif
+
+  assign show_eyebrow = true
+  if section.settings.show_eyebrow == false
+    assign show_eyebrow = false
+  endif
+  assign eyebrow = section.settings.eyebrow_text | default: 'GEROLAMO'
+
+  assign show_title = true
+  if section.settings.show_title == false
+    assign show_title = false
+  endif
+
+  assign show_gradient_mask = true
+  if section.settings.show_gradient_mask == false
+    assign show_gradient_mask = false
+  endif
+
   assign bg_image = section.settings.background_image
   assign bg_image_mobile = section.settings.background_image_mobile
   if bg_image_mobile == blank
     assign bg_image_mobile = bg_image
   endif
-
-  assign show_breadcrumbs = section.settings.show_breadcrumbs
-  assign show_eyebrow = section.settings.show_eyebrow
-  assign eyebrow = section.settings.eyebrow_text | default: 'GEROLAMO'
 
   assign page_title_display = page.title
   if section.settings.custom_title != blank
@@ -67,6 +89,23 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  @media (max-width: 768px) {
+    .gerolamo-page-hero__bg-img--desktop {
+      display: none !important;
+    }
+    .gerolamo-page-hero__bg-img--mobile {
+      display: block !important;
+    }
+  }
+  @media (min-width: 769px) {
+    .gerolamo-page-hero__bg-img--mobile {
+      display: none !important;
+    }
+    .gerolamo-page-hero__bg-img--desktop {
+      display: block !important;
+    }
   }
 
   .gerolamo-page-hero__gradient-mask {
@@ -202,26 +241,26 @@
 
 <div id="theme-section-{{ section.id }}" data-section-name="main-page">
 
-  {%- if section.settings.show_banner -%}
+  {%- if show_banner -%}
   <!-- Gerolamo Page Hero Banner -->
   <div class="gerolamo-page-hero">
     {%- if bg_image != blank -%}
       <div class="gerolamo-page-hero__bg-wrap" style="background-image: url('{{ bg_image | image_url: width: 2400 }}');">
         <img src="{{ bg_image | image_url: width: 2400 }}"
              alt="{{ page_title_display | escape }}"
-             class="gerolamo-page-hero__bg-img{% if bg_image_mobile != blank and bg_image_mobile != bg_image %} hide-sp{% endif %}"
+             class="gerolamo-page-hero__bg-img{% if bg_image_mobile != blank and bg_image_mobile != bg_image %} gerolamo-page-hero__bg-img--desktop{% endif %}"
              loading="eager"
              width="{{ bg_image.width }}"
              height="{{ bg_image.height }}">
         {%- if bg_image_mobile != blank and bg_image_mobile != bg_image -%}
         <img src="{{ bg_image_mobile | image_url: width: 1200 }}"
              alt="{{ page_title_display | escape }}"
-             class="gerolamo-page-hero__bg-img hide-desktop"
+             class="gerolamo-page-hero__bg-img gerolamo-page-hero__bg-img--mobile"
              loading="eager"
              width="{{ bg_image_mobile.width }}"
              height="{{ bg_image_mobile.height }}">
         {%- endif -%}
-        {%- if section.settings.show_gradient_mask -%}
+        {%- if show_gradient_mask -%}
           <div class="gerolamo-page-hero__gradient-mask"></div>
         {%- endif -%}
       </div>
@@ -238,7 +277,7 @@
         <span class="gerolamo-page-hero__bc-sep">›</span>
         <a href="{{ routes.root_url }}">Inicio</a>
         <span class="gerolamo-page-hero__bc-sep">›</span>
-        <span class="gerolamo-page-hero__bc-current">{{ page.title }}</span>
+        <span class="gerolamo-page-hero__bc-current">{{ page_title_display }}</span>
       </nav>
       {%- endif -%}
 
@@ -249,7 +288,7 @@
         </div>
         {%- endif -%}
 
-        {%- if section.settings.show_title -%}
+        {%- if show_title -%}
         <h1 class="gerolamo-page-hero__title">
           {{ page_title_display }}
         </h1>
