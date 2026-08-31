@@ -37,6 +37,7 @@
     },
     "gerolamo_page_banner_nMzLqR": {
       "type": "gerolamo-page-banner",
+      "disabled": true,
       "name": "Banner de Página",
       "settings": {
         "imagealign": "center right",
