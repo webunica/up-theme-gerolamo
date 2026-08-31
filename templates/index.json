@@ -284,7 +284,7 @@
             "title": "SECOS",
             "desc": "Nutrición completa y especializada en formato seco.",
             "image": "shopify://shop_images/secos-gerolamo-001.png",
-            "card_link": "shopify://collections/secos-perro"
+            "card_link": ""
           }
         },
         "subcard_dr8DCX": {
@@ -293,7 +293,7 @@
             "title": "HÚMEDOS",
             "desc": "Alimentación húmeda altamente palatable y de fácil digestión.",
             "image": "shopify://shop_images/humedos_ffc1d421-0ffc-48da-b3eb-896ade2e1745.png",
-            "card_link": "shopify://collections/humedo-perro"
+            "card_link": ""
           }
         }
       },
