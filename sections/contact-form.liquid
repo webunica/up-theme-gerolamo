@@ -6,7 +6,11 @@
 {%- capture section_styles -%}
 {%- capture block_css -%}
 {%- if section.settings.color_input_background   != "rgba(0,0,0,0)" -%}--color-input-background-block:{{ section.settings.color_input_background }};{%- endif -%}
-{%- if section.settings.color_input_border       != "rgba(0,0,0,0)" -%}--color-input-border:{{ section.settings.color_input_border }};{%- endif -%}
+{%- if section.settings.color_input_border != "rgba(0,0,0,0)" and section.settings.color_input_border != blank -%}
+  --color-input-border:{{ section.settings.color_input_border }};
+{%- else -%}
+  --color-input-border:#cbd5e1;
+{%- endif -%}
 {%- if section.settings.color_input_text         != "rgba(0,0,0,0)" -%}--color-input-text-block:{{ section.settings.color_input_text }};{%- endif -%}
 {%- if section.settings.color_input_background_hover != "rgba(0,0,0,0)" -%}--color-input-background-active:{{ section.settings.color_input_background_hover }};{%- endif -%}
 {%- if section.settings.color_input_border_hover != "rgba(0,0,0,0)" -%}--color-input-border-active-block:{{ section.settings.color_input_border_hover }};{%- endif -%}
@@ -63,6 +67,16 @@
 #theme-section-{{ section.id }}{
   --text-content-width:{{ section.settings.text_content_width }}%;
   {{ block_css }}
+}
+#theme-section-{{ section.id }} .field__input {
+  border: 1.5px solid var(--color-input-border, #cbd5e1);
+  background-color: var(--color-input-background-block, var(--color-input-background-main, #ffffff));
+}
+#theme-section-{{ section.id }} .field__icon svg path {
+  fill: var(--color-input-icon-main, #64748b);
+}
+#theme-section-{{ section.id }} .field__label {
+  color: var(--color-input-text-main, #64748b);
 }
 {%- endcapture -%}
 {%- if section_styles != blank -%}
