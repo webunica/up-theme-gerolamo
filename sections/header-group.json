@@ -518,40 +518,12 @@
       "settings": {
         "image_hover": "image-hover01"
       }
-    },
-    "gerolamo_page_banner_pULfqQ": {
-      "type": "gerolamo-page-banner",
-      "name": "Banner de Página",
-      "settings": {
-        "background_image": "shopify://shop_images/banner-desk-02.png",
-        "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
-        "imagealign": "center right",
-        "desktop_image_height": 380,
-        "mobile_image_height": 280,
-        "show_breadcrumbs": true,
-        "breadcrumb_parent_label": "",
-        "breadcrumb_parent_url": "",
-        "show_eyebrow": true,
-        "eyebrow_text": "GEROLAMO",
-        "show_title": true,
-        "hero_title": "",
-        "show_description": false,
-        "hero_description": "",
-        "text_align": "text-left",
-        "title_size": 40,
-        "title_size_mobile": 28,
-        "color_title": "#0f2b48",
-        "color_eyebrow": "#1B4B8A",
-        "color_description": "#334155",
-        "color_background": "#f8fafc"
-      }
     }
   },
   "order": [
     "announcement_bar_header_wj7iJY",
     "header_9GztDw",
     "promo_header_AqWtBf",
-    "megamenu_modules_YkjRpU",
-    "gerolamo_page_banner_pULfqQ"
+    "megamenu_modules_YkjRpU"
   ]
 }

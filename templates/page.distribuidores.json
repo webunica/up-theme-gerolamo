@@ -37,9 +37,10 @@
     },
     "gerolamo_page_banner_nMzLqR": {
       "type": "gerolamo-page-banner",
-      "disabled": true,
       "name": "Banner de Página",
       "settings": {
+        "background_image": "shopify://shop_images/banner-desk-02.png",
+        "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
         "imagealign": "center right",
         "desktop_image_height": 380,
         "mobile_image_height": 280,
