@@ -48,6 +48,8 @@
     --gerolamo-nav-bg: {{ section.settings.nav_bg | default: '#ffffff' }};
     --gerolamo-nav-color: {{ section.settings.nav_color | default: '#1e293b' }};
     --gerolamo-nav-hover: {{ section.settings.nav_hover | default: '#0c4ca3' }};
+    --gerolamo-nav-link-bg: {{ section.settings.nav_link_bg | default: 'transparent' }};
+    --gerolamo-nav-link-bg-hover: {{ section.settings.nav_link_bg_hover | default: 'transparent' }};
   }
 
   .header-gerolamo-wrapper {
@@ -338,17 +340,20 @@
     gap: 8px;
     padding: {{ section.settings.nav_padding_vertical | default: 14 }}px {{ section.settings.menu_item_padding_x | default: 4 }}px;
     text-decoration: none;
+    background-color: var(--gerolamo-nav-link-bg);
+    border-radius: {{ section.settings.nav_link_border_radius | default: 0 }}px;
     color: var(--gerolamo-nav-color);
     font-family: var(--gerolamo-font-family);
     font-size: {{ section.settings.nav_font_size | default: 16 }}px;
     font-weight: {{ section.settings.nav_font_weight | default: '600' }};
     letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
     white-space: nowrap;
   }
   .header-gerolamo__nav-link:hover,
   .header-gerolamo__nav-item:hover > .header-gerolamo__nav-link {
     color: var(--gerolamo-nav-hover);
+    background-color: var(--gerolamo-nav-link-bg-hover);
   }
   .header-gerolamo__nav-link svg.arrow-icon {
     width: 11px;
@@ -728,7 +733,7 @@
                   endif
                 -%}
                 <li class="header-gerolamo__nav-item list-menu--hover" {{ block.shopify_attributes }}>
-                  <a href="{{ block.settings.url | default: '#' }}" class="header-gerolamo__nav-link">
+                  <a href="{{ block.settings.url | default: '#' }}" class="header-gerolamo__nav-link"{% if block.settings.link_bg != blank and block.settings.link_bg != 'rgba(0,0,0,0)' or block.settings.link_color != blank and block.settings.link_color != 'rgba(0,0,0,0)' %} style="{% if block.settings.link_bg != blank and block.settings.link_bg != 'rgba(0,0,0,0)' %}background-color: {{ block.settings.link_bg }};{% endif %}{% if block.settings.link_color != blank and block.settings.link_color != 'rgba(0,0,0,0)' %}color: {{ block.settings.link_color }};{% endif %}"{% endif %}>
                     {%- if block.settings.icon_image != blank -%}
                       <span class="header-gerolamo__nav-icon">
                         <img src="{{ block.settings.icon_image | image_url: width: 44 }}"
@@ -1312,6 +1317,28 @@
       "label": "Color de los enlaces al pasar el cursor (Hover)"
     },
     {
+      "type": "color",
+      "id": "nav_link_bg",
+      "default": "rgba(0,0,0,0)",
+      "label": "Color de fondo de los enlaces (Normal)"
+    },
+    {
+      "type": "color",
+      "id": "nav_link_bg_hover",
+      "default": "rgba(0,0,0,0)",
+      "label": "Color de fondo de los enlaces al pasar el cursor (Hover)"
+    },
+    {
+      "type": "range",
+      "id": "nav_link_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Redondeo del fondo de los enlaces (Border radius)",
+      "default": 0
+    },
+    {
       "type": "range",
       "id": "nav_font_size",
       "min": 12,
@@ -1533,6 +1560,18 @@
           "type": "url",
           "id": "url_snacks",
           "label": "Enlace a Snacks (Opcional)"
+        },
+        {
+          "type": "color",
+          "id": "link_bg",
+          "default": "rgba(0,0,0,0)",
+          "label": "Color de fondo individual (Opcional)"
+        },
+        {
+          "type": "color",
+          "id": "link_color",
+          "default": "rgba(0,0,0,0)",
+          "label": "Color de texto individual (Opcional)"
         }
       ]
     },
