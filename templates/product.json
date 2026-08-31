@@ -116,7 +116,7 @@
             "btn1_color": "#ffffff",
             "show_btn2": true,
             "btn2_text": "Quiero ser distribuidor / Punto de venta",
-            "btn2_url": "",
+            "btn2_url": "shopify://pages/contact",
             "btn2_style": "outline",
             "btn2_bg": "#1b4b8a",
             "btn2_color": "#ffffff",
