@@ -1,0 +1,438 @@
+{%- liquid
+  assign bg_image        = section.settings.background_image
+  assign bg_image_mobile = section.settings.background_image_mobile
+  if bg_image_mobile == blank
+    assign bg_image_mobile = bg_image
+  endif
+
+  assign show_breadcrumbs    = section.settings.show_breadcrumbs
+  assign show_eyebrow        = section.settings.show_eyebrow
+  assign eyebrow             = section.settings.eyebrow_text | default: 'GEROLAMO'
+  assign hero_title          = section.settings.hero_title | default: page.title
+  assign hero_description    = section.settings.hero_description
+
+  assign bc_parent_label     = section.settings.breadcrumb_parent_label
+  assign bc_parent_url       = section.settings.breadcrumb_parent_url
+-%}
+
+<style>
+  #theme-section-{{ section.id }}.gerolamo-page-banner {
+    position: relative;
+    width: 100%;
+    min-height: {{ section.settings.desktop_image_height | default: 380 }}px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: {{ section.settings.color_background | default: '#f8fafc' }};
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }}.gerolamo-page-banner {
+      min-height: {{ section.settings.mobile_image_height | default: 280 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__bg-wrap {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    background-size: cover;
+    background-position: {{ section.settings.imagealign | default: 'center right' }};
+    background-repeat: no-repeat;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.imagealign | default: 'center right' }};
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--desktop { display: none !important; }
+    #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--mobile  { display: block !important; }
+  }
+  @media (min-width: 769px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--mobile  { display: none !important; }
+    #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--desktop { display: block !important; }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__gradient-mask {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg,
+      #ffffff 0%,
+      rgba(255,255,255,0.94) 30%,
+      rgba(255,255,255,0.72) 48%,
+      rgba(255,255,255,0.20) 68%,
+      rgba(255,255,255,0)    85%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__gradient-mask {
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.96) 0%,
+        rgba(255,255,255,0.88) 55%,
+        rgba(255,255,255,0.35) 100%);
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__inner {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--page-width, 1320px);
+    margin: 0 auto;
+    padding: 36px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+    box-sizing: border-box;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 20px;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs a {
+    color: #1B4B8A;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs a:hover {
+    text-decoration: underline;
+    color: #0F6445;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__bc-sep {
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__bc-home {
+    display: inline-flex;
+    align-items: center;
+    color: #1B4B8A !important;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__bc-current {
+    color: #1e293b;
+    font-weight: 600;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
+    max-width: 580px;
+    {% if section.settings.text_align == 'text-center' %}
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    {% else %}
+    text-align: left;
+    {% endif %}
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: {{ section.settings.color_eyebrow | default: '#1B4B8A' }};
+    margin-bottom: 8px;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__title {
+    margin: 0 0 12px 0;
+    font-size: {{ section.settings.title_size | default: 40 }}px;
+    font-weight: 800;
+    color: {{ section.settings.color_title | default: '#0f2b48' }};
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__title {
+      font-size: {{ section.settings.title_size_mobile | default: 28 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__desc {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: {{ section.settings.color_description | default: '#334155' }};
+    font-weight: 400;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__desc p { margin: 0 0 8px 0; }
+  #theme-section-{{ section.id }} .gerolamo-page-banner__desc p:last-child { margin-bottom: 0; }
+</style>
+
+<div id="theme-section-{{ section.id }}" class="gerolamo-page-banner" data-section-name="gerolamo-page-banner">
+
+  <!-- Fondo con imagen -->
+  {%- if bg_image != blank -%}
+  <div class="gerolamo-page-banner__bg-wrap"
+       style="background-image: url('{{ bg_image | image_url: width: 2400 }}');">
+    <img src="{{ bg_image | image_url: width: 2400 }}"
+         alt="{{ hero_title | escape }}"
+         class="gerolamo-page-banner__bg-img{% if bg_image_mobile != blank and bg_image_mobile != bg_image %} gerolamo-page-banner__bg-img--desktop{% endif %}"
+         loading="eager"
+         width="{{ bg_image.width }}"
+         height="{{ bg_image.height }}">
+    {%- if bg_image_mobile != blank and bg_image_mobile != bg_image -%}
+    <img src="{{ bg_image_mobile | image_url: width: 1200 }}"
+         alt="{{ hero_title | escape }}"
+         class="gerolamo-page-banner__bg-img gerolamo-page-banner__bg-img--mobile"
+         loading="eager"
+         width="{{ bg_image_mobile.width }}"
+         height="{{ bg_image_mobile.height }}">
+    {%- endif -%}
+    <div class="gerolamo-page-banner__gradient-mask"></div>
+  </div>
+  {%- endif -%}
+
+  <!-- Contenido -->
+  <div class="gerolamo-page-banner__inner">
+
+    <!-- Migas de pan -->
+    {%- if show_breadcrumbs -%}
+    <nav class="gerolamo-page-banner__breadcrumbs" aria-label="Navegación">
+      <a href="{{ routes.root_url }}" class="gerolamo-page-banner__bc-home" aria-label="Inicio">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </a>
+      <span class="gerolamo-page-banner__bc-sep">›</span>
+      <a href="{{ routes.root_url }}">Inicio</a>
+      {%- if bc_parent_label != blank -%}
+        <span class="gerolamo-page-banner__bc-sep">›</span>
+        {%- if bc_parent_url != blank -%}
+          <a href="{{ bc_parent_url }}">{{ bc_parent_label }}</a>
+        {%- else -%}
+          <span class="gerolamo-page-banner__bc-current">{{ bc_parent_label }}</span>
+        {%- endif -%}
+      {%- endif -%}
+      <span class="gerolamo-page-banner__bc-sep">›</span>
+      <span class="gerolamo-page-banner__bc-current">{{ hero_title }}</span>
+    </nav>
+    {%- endif -%}
+
+    <div class="gerolamo-page-banner__text-box">
+
+      <!-- Antetítulo -->
+      {%- if show_eyebrow and eyebrow != blank -%}
+      <div class="gerolamo-page-banner__eyebrow">{{ eyebrow }}</div>
+      {%- endif -%}
+
+      <!-- Título -->
+      {%- if section.settings.show_title -%}
+      <h1 class="gerolamo-page-banner__title">{{ hero_title }}</h1>
+      {%- endif -%}
+
+      <!-- Descripción -->
+      {%- if section.settings.show_description and hero_description != blank -%}
+      <div class="gerolamo-page-banner__desc">{{ hero_description }}</div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner de Página",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Imagen de Fondo"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Imagen de fondo (Escritorio)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Imagen de fondo (Móvil)",
+      "info": "Si se deja en blanco, se usa la imagen de escritorio."
+    },
+    {
+      "type": "select",
+      "id": "imagealign",
+      "label": "Posición de la imagen",
+      "default": "center right",
+      "options": [
+        { "value": "center right",  "label": "Centro Derecha" },
+        { "value": "center center", "label": "Centro" },
+        { "value": "center left",   "label": "Centro Izquierda" },
+        { "value": "top center",    "label": "Superior Centro" },
+        { "value": "top right",     "label": "Superior Derecha" },
+        { "value": "bottom center", "label": "Inferior Centro" },
+        { "value": "bottom right",  "label": "Inferior Derecha" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Dimensiones"
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "min": 150,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura en escritorio",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 120,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura en móvil",
+      "default": 280
+    },
+    {
+      "type": "header",
+      "content": "Contenido del Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "default": true,
+      "label": "Mostrar migas de pan"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_parent_label",
+      "label": "Nivel padre en migas (Opcional)",
+      "info": "Ejemplo: Nosotros, Distribuidores. Deja en blanco para omitir."
+    },
+    {
+      "type": "url",
+      "id": "breadcrumb_parent_url",
+      "label": "URL del nivel padre (Opcional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "default": true,
+      "label": "Mostrar antetítulo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "default": "GEROLAMO",
+      "label": "Texto del antetítulo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Mostrar título"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Título del banner",
+      "info": "Si se deja en blanco, se usa el título de la página."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": false,
+      "label": "Mostrar descripción"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_description",
+      "label": "Descripción del banner"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "options": [
+        { "value": "text-left",   "label": "Izquierda" },
+        { "value": "text-center", "label": "Centro" }
+      ],
+      "default": "text-left",
+      "label": "Alineación del texto"
+    },
+    {
+      "type": "header",
+      "content": "Tamaño del Título"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título (Escritorio)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 16,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título (Móvil)",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "color_title",
+      "default": "#0f2b48",
+      "label": "Color del título"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "default": "#1B4B8A",
+      "label": "Color del antetítulo"
+    },
+    {
+      "type": "color",
+      "id": "color_description",
+      "default": "#334155",
+      "label": "Color de la descripción"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "default": "#f8fafc",
+      "label": "Color de fondo (cuando no hay imagen)"
+    }
+  ]
+}
+{% endschema %}
