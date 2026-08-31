@@ -62,38 +62,6 @@
         "color_background": "#f8fafc"
       }
     },
-    "distributor_locator": {
-      "type": "distributor-locator",
-      "settings": {
-        "hide_hero": true,
-        "hero_height_desktop": 360,
-        "hero_height_mobile": 250,
-        "hero_text_align": "left",
-        "hero_text_color": "#ffffff",
-        "hero_sub_color": "#ffffff",
-        "hero_title_size": 36,
-        "hero_overlay_color": "#000000",
-        "hero_overlay_opacity": 20,
-        "subheading": "Red de distribuidores",
-        "heading": "¿Dónde comprar?",
-        "description": "Encuentra el punto de venta más cercano a tu ubicación. Tenemos distribuidores en todo Chile.",
-        "hide_description_mobile": true,
-        "show_search": true,
-        "search_placeholder": "Buscar por nombre o ciudad…",
-        "show_region_filter": true,
-        "region_all_label": "Todas las regiones",
-        "nearby_radius": 100,
-        "empty_message": "No se encontraron distribuidores para tu búsqueda. Intenta con otro término.",
-        "show_map": true,
-        "map_zoom": 5,
-        "map_center_lat": "-35.6751",
-        "map_center_lng": "-71.5430",
-        "items_per_page": 18,
-        "columns": "3",
-        "section_bg_color": "#ffffff",
-        "top_spacing": "none"
-      }
-    },
     "gerolamo_curved_features_zEBmMn": {
       "type": "gerolamo-curved-features",
       "blocks": {
@@ -140,7 +108,7 @@
         "curve_height_tablet": 80,
         "curve_height_mobile": 55,
         "bg_color": "#ffffff",
-        "icon_color": "#0F6445",
+        "icon_color": "#0f6445",
         "title_color": "#1e293b",
         "desc_color": "#64748b",
         "icon_size": 46,
@@ -152,6 +120,38 @@
         "padding_top_mobile": 15,
         "padding_bottom_mobile": 25,
         "mobile_alignment": "flex-start"
+      }
+    },
+    "distributor_locator": {
+      "type": "distributor-locator",
+      "settings": {
+        "hide_hero": true,
+        "hero_height_desktop": 360,
+        "hero_height_mobile": 250,
+        "hero_text_align": "left",
+        "hero_text_color": "#ffffff",
+        "hero_sub_color": "#ffffff",
+        "hero_title_size": 36,
+        "hero_overlay_color": "#000000",
+        "hero_overlay_opacity": 20,
+        "subheading": "Red de distribuidores",
+        "heading": "¿Dónde comprar?",
+        "description": "Encuentra el punto de venta más cercano a tu ubicación. Tenemos distribuidores en todo Chile.",
+        "hide_description_mobile": true,
+        "show_search": true,
+        "search_placeholder": "Buscar por nombre o ciudad…",
+        "show_region_filter": true,
+        "region_all_label": "Todas las regiones",
+        "nearby_radius": 100,
+        "empty_message": "No se encontraron distribuidores para tu búsqueda. Intenta con otro término.",
+        "show_map": true,
+        "map_zoom": 5,
+        "map_center_lat": "-35.6751",
+        "map_center_lng": "-71.5430",
+        "items_per_page": 18,
+        "columns": "3",
+        "section_bg_color": "#ffffff",
+        "top_spacing": "none"
       }
     }
   },
