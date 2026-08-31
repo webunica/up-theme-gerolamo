@@ -248,7 +248,7 @@
             "desc": "Premios saludables que complementan su bienestar.",
             "image": "shopify://shop_images/snack-02.png",
             "button_text": "Ver productos",
-            "button_link": "shopify://collections/snaks-perros-o-gatos",
+            "button_link": "shopify://collections/snaks",
             "bg_color": "#fcf6f0",
             "accent_color": "#d97706",
             "desc_color": "#475569",
