@@ -58,13 +58,6 @@
             "price_size": "h2"
           }
         },
-        "share_jbceFy": {
-          "type": "share",
-          "settings": {
-            "show_icon": true,
-            "share_label": "Compartir"
-          }
-        },
         "text_jqkd4C": {
           "type": "text",
           "disabled": true,
@@ -110,16 +103,6 @@
             "page_5": ""
           }
         },
-        "description_j6ANqd": {
-          "type": "description",
-          "settings": {
-            "heading_text": "Descripción",
-            "icon_name": "",
-            "heading_size": "h5",
-            "description_property": "simple",
-            "show_all_text_in_admin": false
-          }
-        },
         "gerolamo_b2b_actions_RjHqih": {
           "type": "gerolamo_b2b_actions",
           "settings": {
@@ -140,6 +123,23 @@
             "show_badge_info": true,
             "badge_info_text": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
             "btn_radius": 30
+          }
+        },
+        "description_j6ANqd": {
+          "type": "description",
+          "settings": {
+            "heading_text": "Descripción",
+            "icon_name": "",
+            "heading_size": "h5",
+            "description_property": "simple",
+            "show_all_text_in_admin": false
+          }
+        },
+        "share_jbceFy": {
+          "type": "share",
+          "settings": {
+            "show_icon": true,
+            "share_label": "Compartir"
           }
         },
         "variant_picker_zYJKhL": {
@@ -235,11 +235,11 @@
         "information_DQTzTU",
         "title_GLajYQ",
         "price_XHwahC",
-        "share_jbceFy",
         "text_jqkd4C",
         "horizontal_tabs_zYiUCa",
-        "description_j6ANqd",
         "gerolamo_b2b_actions_RjHqih",
+        "description_j6ANqd",
+        "share_jbceFy",
         "variant_picker_zYJKhL",
         "buy_buttons_exgEyk",
         "message_c3GPR3",
@@ -297,6 +297,7 @@
         "richtext_TTkNip",
         "button_DLKp3j"
       ],
+      "disabled": true,
       "name": "t:names.text",
       "settings": {
         "heading_position": "normal",
