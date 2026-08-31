@@ -110,7 +110,7 @@
         "curve_height_tablet": 80,
         "curve_height_mobile": 55,
         "bg_color": "#ffffff",
-        "icon_color": "#0F6445",
+        "icon_color": "#0f6445",
         "title_color": "#1e293b",
         "desc_color": "#64748b",
         "icon_size": 46,
@@ -175,7 +175,7 @@
       "name": "t:names.product_recommendations",
       "settings": {
         "product": "galleta-geroramo-huesito-cachorro",
-        "main_subheading": "Subheading",
+        "main_subheading": "",
         "main_heading": "También puede interesarte",
         "main_desc": "Otros productos seleccionados para el bienestar de tu perro o gato",
         "heading_aligment": "text-center",
