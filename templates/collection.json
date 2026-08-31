@@ -12,7 +12,7 @@
     "heading": {
       "type": "main-collection-banner",
       "settings": {
-        "use_collection_image": true,
+        "use_collection_image": false,
         "background_image": "shopify://shop_images/banner-desk-02.png",
         "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
         "imagealign": "center right",
