@@ -232,36 +232,12 @@
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 45
       }
-    },
-    "contact_bar": {
-      "type": "gerolamo-contact-bar",
-      "settings": {
-        "col1_title": "¿DÓNDE COMPRAR?",
-        "col1_desc": "Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.",
-        "col1_link_text": "Ver puntos de venta",
-        "col1_url": "",
-        "col2_title": "¿TIENES DUDAS?",
-        "col2_desc": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
-        "col2_link_text": "Contáctanos",
-        "col2_url": "",
-        "box_bg": "#f0f4f9",
-        "icon_bg_color": "#1b4b8a",
-        "title_color": "#1b4b8a",
-        "text_color": "#475569",
-        "link_color": "#0f6445",
-        "box_radius": 22,
-        "padding_top_desktop": 40,
-        "padding_bottom_desktop": 60,
-        "padding_top_mobile": 25,
-        "padding_bottom_mobile": 35
-      }
     }
   },
   "order": [
     "page_banner",
     "paper_statement",
     "story_timeline",
-    "story_legacy",
-    "contact_bar"
+    "story_legacy"
   ]
 }
