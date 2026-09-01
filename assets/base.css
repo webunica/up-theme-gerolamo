@@ -1538,7 +1538,10 @@ shopify-accelerated-checkout-cart {
 .shopify-section-clip{
   overflow-x:clip;
 }
-/* Beneficios y características Gerolamo */
+/* ==================================================
+   BENEFICIOS Y CARACTERÍSTICAS
+   ================================================== */
+
 .gerolamo-benefits {
   margin: 30px 0;
 }
@@ -1570,10 +1573,15 @@ shopify-accelerated-checkout-cart {
   border-radius: 12px;
   background-color: #fafafa;
   color: #333333;
+  box-sizing: border-box;
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease;
+}
+
+.gerolamo-benefits__item::marker {
+  content: "";
 }
 
 .gerolamo-benefits__item:hover {
@@ -1597,7 +1605,6 @@ shopify-accelerated-checkout-cart {
   font-weight: 700;
 }
 
-/* Color diferenciado para productos de prescripción */
 .gerolamo-benefits--features .gerolamo-benefits__icon {
   background-color: #eaf5f7;
   color: #27728a;
@@ -1608,97 +1615,190 @@ shopify-accelerated-checkout-cart {
   line-height: 1.55;
 }
 
-/* Vista móvil */
-@media screen and (max-width: 749px) {
-  .gerolamo-benefits {
-    margin: 24px 0;
-  }
 
-  .gerolamo-benefits__title {
-    font-size: 19px;
-  }
+/* ==================================================
+   ACORDEONES DE INFORMACIÓN
+   ================================================== */
 
-  .gerolamo-benefits__grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .gerolamo-benefits__item {
-    min-height: auto;
-    padding: 14px;
-  }
-}
-/* Beneficios y características Gerolamo */
-.gerolamo-benefits {
-  margin: 30px 0;
-}
-
-.gerolamo-benefits__title {
-  margin: 0 0 16px;
-  color: #222222;
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.gerolamo-benefits__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.gerolamo-benefits__item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  min-height: 76px;
-  padding: 16px;
-  border: 1px solid #e7e7e7;
+.gerolamo-accordion {
+  --accordion-color: #008577;
+  display: block;
+  margin: 12px 0 !important;
+  overflow: hidden;
+  border: 1px solid #dddddd !important;
+  border-left: 4px solid var(--accordion-color) !important;
   border-radius: 12px;
-  background-color: #fafafa;
-  color: #333333;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Colores por sección */
+
+.gerolamo-accordion--ingredients {
+  --accordion-color: #e85d04;
+}
+
+.gerolamo-accordion--analysis {
+  --accordion-color: #16859b;
+}
+
+.gerolamo-accordion--recommendations {
+  --accordion-color: #6f52a3;
+}
+
+/* Encabezado presionable */
+
+.gerolamo-accordion > .gerolamo-accordion__summary {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin: 0 !important;
+  padding: 17px 18px !important;
+  color: #252525 !important;
+  background-color: #ffffff;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.3;
+  text-decoration: none !important;
+  list-style: none !important;
+  box-sizing: border-box;
+  cursor: pointer;
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.gerolamo-benefits__item:hover {
-  transform: translateY(-2px);
-  border-color: #d2d2d2;
-  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.07);
+.gerolamo-accordion > .gerolamo-accordion__summary::-webkit-details-marker {
+  display: none !important;
 }
 
-.gerolamo-benefits__icon {
+.gerolamo-accordion > .gerolamo-accordion__summary::marker {
+  content: "";
+}
+
+/* Ícono abrir/cerrar */
+
+.gerolamo-accordion > .gerolamo-accordion__summary::after {
+  content: "+" !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  margin-top: 1px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  margin-left: auto;
   border-radius: 50%;
-  background-color: #fff0e6;
-  color: #e85d04;
-  font-size: 16px;
+  background-color: var(--accordion-color);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.gerolamo-accordion[open] > .gerolamo-accordion__summary::after {
+  content: "−" !important;
+  transform: rotate(180deg);
+}
+
+/* Estados abiertos y hover */
+
+.gerolamo-accordion[open] > .gerolamo-accordion__summary {
+  color: var(--accordion-color) !important;
+  background-color: #fafafa;
+}
+
+.gerolamo-accordion > .gerolamo-accordion__summary:hover {
+  color: var(--accordion-color) !important;
+  background-color: #f8f8f8;
+}
+
+.gerolamo-accordion > .gerolamo-accordion__summary:focus-visible {
+  outline: 2px solid var(--accordion-color);
+  outline-offset: -3px;
+}
+
+/* Contenido desplegado */
+
+.gerolamo-accordion__content {
+  padding: 4px 18px 22px !important;
+  color: #444444;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.gerolamo-accordion[open] .gerolamo-accordion__content {
+  animation: gerolamo-open 0.25s ease;
+}
+
+.gerolamo-accordion__content p:first-child,
+.gerolamo-accordion__content h4:first-child {
+  margin-top: 0;
+}
+
+
+/* ==================================================
+   TABLAS DE ANÁLISIS Y RECOMENDACIONES
+   ================================================== */
+
+.gerolamo-product-table-wrap {
+  width: 100%;
+  margin-top: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gerolamo-product-table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.gerolamo-product-table th,
+.gerolamo-product-table td {
+  padding: 11px 13px;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.gerolamo-product-table th {
+  background-color: #f5f5f5;
+  color: #222222;
   font-weight: 700;
 }
 
-/* Color diferenciado para productos de prescripción */
-.gerolamo-benefits--features .gerolamo-benefits__icon {
-  background-color: #eaf5f7;
-  color: #27728a;
+.gerolamo-product-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
 }
 
-.gerolamo-benefits__text {
-  font-size: 14px;
-  line-height: 1.55;
+
+/* ==================================================
+   ANIMACIÓN
+   ================================================== */
+
+@keyframes gerolamo-open {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Vista móvil */
+
+/* ==================================================
+   VERSIÓN MÓVIL
+   ================================================== */
+
 @media screen and (max-width: 749px) {
   .gerolamo-benefits {
     margin: 24px 0;
@@ -1716,5 +1816,32 @@ shopify-accelerated-checkout-cart {
   .gerolamo-benefits__item {
     min-height: auto;
     padding: 14px;
+  }
+
+  .gerolamo-accordion {
+    margin: 10px 0 !important;
+    border-radius: 10px;
+  }
+
+  .gerolamo-accordion > .gerolamo-accordion__summary {
+    padding: 15px 14px !important;
+    font-size: 15px !important;
+  }
+
+  .gerolamo-accordion > .gerolamo-accordion__summary::after {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+  }
+
+  .gerolamo-accordion__content {
+    padding: 2px 14px 18px !important;
+  }
+
+  .gerolamo-product-table th,
+  .gerolamo-product-table td {
+    padding: 9px 10px;
+    font-size: 13px;
   }
 }
