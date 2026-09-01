@@ -306,6 +306,7 @@
         "tab_iq8PQP",
         "tab_KWbb64"
       ],
+      "disabled": true,
       "name": "Horizontal tabs",
       "settings": {
         "heading_aligment": "text-center",
