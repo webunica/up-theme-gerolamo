@@ -1,0 +1,456 @@
+{%- liquid
+  assign bg_color       = section.settings.bg_color | default: '#FAF7F2'
+  assign title_color    = section.settings.title_color | default: '#1B4B8A'
+  assign text_color     = section.settings.text_color | default: '#1e293b'
+  assign logo_img       = section.settings.logo_image
+  assign max_w          = section.settings.content_max_width | default: 1120
+-%}
+
+<style>
+  #theme-section-{{ section.id }}.gerolamo-legacy-section {
+    background-color: {{ bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop | default: 50 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 70 }}px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }}.gerolamo-legacy-section {
+      padding-top: {{ section.settings.padding_top_mobile | default: 35 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 45 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__container {
+    max-width: {{ max_w }}px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-legacy__container {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+
+  /* Título Superior */
+  #theme-section-{{ section.id }} .gerolamo-legacy__header {
+    margin-bottom: {{ section.settings.title_margin_bottom | default: 35 }}px;
+    text-align: {{ section.settings.title_align | default: 'left' }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__title {
+    font-size: {{ section.settings.title_size_desktop | default: 36 }}px;
+    font-weight: 700;
+    color: {{ title_color }};
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-legacy__title {
+      font-size: {{ section.settings.title_size_mobile | default: 26 }}px;
+      text-align: {{ section.settings.title_align_mobile | default: 'left' }};
+    }
+  }
+
+  /* Grid Principal: Logo a la Izquierda + 2 Columnas de Texto */
+  #theme-section-{{ section.id }} .gerolamo-legacy__grid {
+    display: grid;
+    grid-template-columns: auto 1fr 1.15fr;
+    gap: {{ section.settings.columns_gap_desktop | default: 40 }}px;
+    align-items: start;
+  }
+
+  @media (max-width: 991px) {
+    #theme-section-{{ section.id }} .gerolamo-legacy__grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  /* Columna del Logo / Emblema */
+  #theme-section-{{ section.id }} .gerolamo-legacy__logo-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__badge {
+    width: {{ section.settings.logo_size_desktop | default: 190 }}px;
+    height: {{ section.settings.logo_size_desktop | default: 190 }}px;
+    border-radius: 50%;
+    background-color: {{ section.settings.badge_bg_color | default: '#EDE8DF' }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    padding: 16px;
+    {% if section.settings.show_double_border %}
+      border: 1.5px solid {{ section.settings.border_color | default: 'rgba(27, 75, 138, 0.35)' }};
+      box-shadow: 0 0 0 6px {{ bg_color }}, 0 0 0 7.5px {{ section.settings.border_color | default: 'rgba(27, 75, 138, 0.35)' }};
+    {% endif %}
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-legacy__badge {
+      width: {{ section.settings.logo_size_mobile | default: 140 }}px;
+      height: {{ section.settings.logo_size_mobile | default: 140 }}px;
+      padding: 12px;
+      margin: 0 auto;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__logo-placeholder {
+    width: 70%;
+    height: 70%;
+    color: {{ title_color }};
+  }
+
+  /* Columnas de Texto */
+  #theme-section-{{ section.id }} .gerolamo-legacy__text-col {
+    font-size: {{ section.settings.font_size_desktop | default: 17 }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.line_height | default: 1.6 }};
+    color: {{ text_color }};
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-legacy__text-col {
+      font-size: {{ section.settings.font_size_mobile | default: 15 }}px;
+      line-height: 1.55;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__text-col p {
+    margin: 0 0 18px 0;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__text-col p:last-child {
+    margin-bottom: 0;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-legacy__text-col strong,
+  #theme-section-{{ section.id }} .gerolamo-legacy__text-col b {
+    font-weight: 700;
+    color: {{ title_color }};
+  }
+</style>
+
+<div id="theme-section-{{ section.id }}" class="gerolamo-legacy-section" data-section-name="gerolamo-story-legacy">
+  <div class="gerolamo-legacy__container">
+
+    <!-- Título Principal -->
+    {%- if section.settings.title != blank -%}
+    <div class="gerolamo-legacy__header">
+      <h2 class="gerolamo-legacy__title">{{ section.settings.title }}</h2>
+    </div>
+    {%- endif -%}
+
+    <!-- Grid: Logo + Columna 1 + Columna 2 -->
+    <div class="gerolamo-legacy__grid">
+
+      <!-- Columna 1: Logo / Medallón -->
+      <div class="gerolamo-legacy__logo-col">
+        <div class="gerolamo-legacy__badge">
+          {%- if logo_img != blank -%}
+            <img src="{{ logo_img | image_url: width: 400 }}"
+                 alt="{{ section.settings.title | default: 'Logo Gerolamo' | escape }}"
+                 class="gerolamo-legacy__logo-img"
+                 loading="lazy"
+                 width="220"
+                 height="220">
+          {%- else -%}
+            <svg class="gerolamo-legacy__logo-placeholder" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Columna 2: Texto 1 -->
+      <div class="gerolamo-legacy__text-col">
+        {{ section.settings.text_col_1 }}
+      </div>
+
+      <!-- Columna 3: Texto 2 -->
+      <div class="gerolamo-legacy__text-col">
+        {{ section.settings.text_col_2 }}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Legado de Historia",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🏷️ Título de la Sección"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Un legado que atraviesa generaciones"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#1B4B8A",
+      "label": "Color del título"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 22,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño de título (Escritorio)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño de título (Móvil)",
+      "default": 26
+    },
+    {
+      "type": "select",
+      "id": "title_align",
+      "label": "Alineación del título (Escritorio)",
+      "default": "left",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right",  "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "title_align_mobile",
+      "label": "Alineación del título (Móvil)",
+      "default": "left",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom",
+      "min": 15,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Separación inferior del título",
+      "default": 35
+    },
+    {
+      "type": "header",
+      "content": "🖼️ Logo / Medallón"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Imagen del logo / emblema"
+    },
+    {
+      "type": "range",
+      "id": "logo_size_desktop",
+      "min": 120,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamaño del medallón (Escritorio)",
+      "default": 190
+    },
+    {
+      "type": "range",
+      "id": "logo_size_mobile",
+      "min": 90,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamaño del medallón (Móvil)",
+      "default": 140
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "default": "#EDE8DF",
+      "label": "Color de fondo del medallón"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_double_border",
+      "default": true,
+      "label": "Mostrar doble borde decorativo"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "default": "rgba(27, 75, 138, 0.35)",
+      "label": "Color del borde decorativo"
+    },
+    {
+      "type": "header",
+      "content": "📝 Textos de las Columnas"
+    },
+    {
+      "type": "richtext",
+      "id": "text_col_1",
+      "label": "Texto Columna 1 (Centro)",
+      "default": "<p>La conciencia, el respeto y el amor de Gerolamo por los animales fueron transmitiéndose de generación en generación entre sus descendientes.</p><p>Muchos años después, ese legado familiar encontró una nueva manera de continuar: la creación de una línea de alimentos premium para perros y gatos que lleva su nombre.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text_col_2",
+      "label": "Texto Columna 2 (Derecha)",
+      "default": "<p>Así nace Gerolamo, como una forma de mantener viva aquella historia y transformar sus valores en una filosofía de alimentación basada en el cuidado, la calidad y el respeto por la naturaleza de nuestros animales de compañía.</p><p>Desarrollamos alimentos premium para perros y gatos, pensados para acompañarlos durante las distintas etapas de su vida y entregarles una nutrición de calidad, porque creemos que una buena alimentación es una de las expresiones más importantes de cuidado que podemos brindarles: <strong>Volver al origen.</strong></p>"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Escritorio)",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Móvil)",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#1e293b",
+      "label": "Color de los textos"
+    },
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "Interlineado",
+      "default": "1.6",
+      "options": [
+        { "value": "1.4",  "label": "Compacto (1.4)" },
+        { "value": "1.6",  "label": "Estándar (1.6)" },
+        { "value": "1.8",  "label": "Amplio (1.8)" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "🎨 Fondo y Espaciado"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#FAF7F2",
+      "label": "Color de fondo de la sección"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_desktop",
+      "min": 20,
+      "max": 70,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacio entre columnas (Escritorio)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 800,
+      "max": 1300,
+      "step": 20,
+      "unit": "px",
+      "label": "Ancho máximo del contenedor",
+      "default": 1120
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Escritorio)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Escritorio)",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Móvil)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Móvil)",
+      "default": 45
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legado de Historia",
+      "settings": {
+        "title": "Un legado que atraviesa generaciones",
+        "bg_color": "#FAF7F2",
+        "title_color": "#1B4B8A",
+        "text_color": "#1e293b",
+        "show_double_border": true
+      }
+    }
+  ]
+}
+{% endschema %}
