@@ -621,16 +621,28 @@
 
         const pinHtml = `
           <div class="dloc-map-pin">
-            <img src="https://cdn.shopify.com/s/files/1/0674/2130/7088/files/posicion-local.png?v=1788274819" alt="Local" width="28" height="36" style="display:block;image-rendering:-webkit-optimize-contrast;" loading="lazy">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 52" width="38" height="48" aria-hidden="true">
+              <!-- Sombra base -->
+              <ellipse cx="20" cy="50" rx="7" ry="3" fill="rgba(0,0,0,0.20)"/>
+              <!-- Cuerpo del pin -->
+              <path d="M20 2C11.16 2 4 9.16 4 18c0 10.5 14 32 16 32s16-21.5 16-32C36 9.16 28.84 2 20 2z"
+                fill="#cc1f1f" stroke="#7a0000" stroke-width="1.5"/>
+              <!-- Brillo superior -->
+              <ellipse cx="15" cy="13" rx="4" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-20 15 13)"/>
+              <!-- Círculo interior verde oscuro -->
+              <circle cx="20" cy="18" r="7.5" fill="#1a4d3a" stroke="#0d2b20" stroke-width="1"/>
+              <!-- Punto blanco interior -->
+              <circle cx="20" cy="18" r="3" fill="#ffffff" opacity="0.9"/>
+            </svg>
           </div>
         `;
 
         const markerIcon = L.divIcon({
           className: 'dloc-leaflet-pin-icon',
           html: pinHtml,
-          iconSize: [28, 36],
-          iconAnchor: [14, 36],
-          popupAnchor: [0, -38]
+          iconSize: [38, 48],
+          iconAnchor: [19, 48],
+          popupAnchor: [0, -50]
         });
 
         const marker = L.marker([d.lat, d.lng], { icon: markerIcon });
