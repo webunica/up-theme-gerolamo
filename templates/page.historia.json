@@ -14,6 +14,10 @@
       "settings": {
         "background_image": "shopify://shop_images/bg-historia.png",
         "imagealign": "center center",
+        "show_torn_edge": true,
+        "torn_edge_color": "#f5f1e9",
+        "torn_edge_height_desktop": 55,
+        "torn_edge_height_mobile": 35,
         "show_box_bg": true,
         "box_bg_color": "#294eb3",
         "box_bg_opacity": 85,
@@ -95,7 +99,7 @@
       "settings": {
         "edge_style": "torn_fibers",
         "show_fiber_highlight": true,
-        "shadow_strength": "medium",
+        "shadow_strength": "none",
         "overlap_desktop": 60,
         "overlap_mobile": 35,
         "edge_height_desktop": 48,
