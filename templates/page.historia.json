@@ -13,8 +13,9 @@
       "type": "main-page",
       "settings": {
         "show_banner": true,
+        "background_image": "shopify://shop_images/bg-historia.png",
         "imagealign": "center",
-        "show_gradient_mask": true,
+        "show_gradient_mask": false,
         "desktop_image_height": 350,
         "mobile_image_height": 240,
         "show_breadcrumbs": true,
