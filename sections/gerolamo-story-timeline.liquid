@@ -1,0 +1,577 @@
+{%- liquid
+  assign bg_color       = section.settings.bg_color | default: '#FAF7F2'
+  assign text_color     = section.settings.text_color | default: '#1e293b'
+  assign line_color     = section.settings.line_color | default: '#1B4B8A'
+  assign circle_bg      = section.settings.circle_bg | default: '#EDE8DF'
+  assign max_w          = section.settings.content_max_width | default: 980
+-%}
+
+<style>
+  #theme-section-{{ section.id }}.gerolamo-timeline-section {
+    background-color: {{ bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop | default: 50 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 60 }}px;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }}.gerolamo-timeline-section {
+      padding-top: {{ section.settings.padding_top_mobile | default: 30 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__container {
+    max-width: {{ max_w }}px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  /* Encabezado Opcional de la Sección */
+  #theme-section-{{ section.id }} .gerolamo-timeline__header {
+    text-align: center;
+    margin-bottom: 45px;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__header-eyebrow {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: {{ line_color }};
+    margin-bottom: 8px;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__header-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: {{ text_color }};
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__header-title {
+      font-size: 28px;
+    }
+  }
+
+  /* Lista de Hitos */
+  #theme-section-{{ section.id }} .gerolamo-timeline__list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Fila / Elemento Individual */
+  #theme-section-{{ section.id }} .gerolamo-timeline__item {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.gap_desktop | default: 36 }}px;
+    position: relative;
+    padding-bottom: {{ section.settings.item_spacing_desktop | default: 44 }}px;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__item:last-child {
+    padding-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__item {
+      gap: {{ section.settings.gap_mobile | default: 20 }}px;
+      padding-bottom: {{ section.settings.item_spacing_mobile | default: 32 }}px;
+    }
+  }
+
+  /* Columna Izquierda: Icono y Línea Conectora */
+  #theme-section-{{ section.id }} .gerolamo-timeline__icon-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Círculo contenedor del icono */
+  #theme-section-{{ section.id }} .gerolamo-timeline__circle {
+    width: {{ section.settings.circle_size_desktop | default: 105 }}px;
+    height: {{ section.settings.circle_size_desktop | default: 105 }}px;
+    border-radius: 50%;
+    background-color: {{ circle_bg }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    padding: 18px;
+    box-sizing: border-box;
+    transition: transform 0.25s ease;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__item:hover .gerolamo-timeline__circle {
+    transform: scale(1.04);
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__circle {
+      width: {{ section.settings.circle_size_mobile | default: 75 }}px;
+      height: {{ section.settings.circle_size_mobile | default: 75 }}px;
+      padding: 12px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__icon-placeholder {
+    width: 60%;
+    height: 60%;
+    color: {{ line_color }};
+  }
+
+  /* Línea vertical punteada entre círculos */
+  #theme-section-{{ section.id }} .gerolamo-timeline__line {
+    position: absolute;
+    top: {{ section.settings.circle_size_desktop | default: 105 }}px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0px;
+    border-left: {{ section.settings.line_width | default: 2.5 }}px {{ section.settings.line_style | default: 'dotted' }} {{ line_color }};
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__line {
+      top: {{ section.settings.circle_size_mobile | default: 75 }}px;
+    }
+  }
+
+  /* Columna Derecha: Contenido y Texto */
+  #theme-section-{{ section.id }} .gerolamo-timeline__content-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__item-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: {{ line_color }};
+    margin: 0 0 6px 0;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__item-text {
+    font-size: {{ section.settings.font_size_desktop | default: 18 }}px;
+    font-weight: {{ section.settings.font_weight | default: 400 }};
+    line-height: {{ section.settings.line_height | default: 1.65 }};
+    color: {{ text_color }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__item-text {
+      font-size: {{ section.settings.font_size_mobile | default: 15 }}px;
+      line-height: 1.55;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__item-text p {
+    margin: 0 0 10px 0;
+  }
+  #theme-section-{{ section.id }} .gerolamo-timeline__item-text p:last-child {
+    margin-bottom: 0;
+  }
+</style>
+
+<div id="theme-section-{{ section.id }}" class="gerolamo-timeline-section" data-section-name="gerolamo-story-timeline">
+  <div class="gerolamo-timeline__container">
+
+    <!-- Encabezado Opcional -->
+    {%- if section.settings.show_header -%}
+    <div class="gerolamo-timeline__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="gerolamo-timeline__header-eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="gerolamo-timeline__header-title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+
+    <!-- Lista de Hitos con Icono a la Izquierda y Texto a la Derecha -->
+    <div class="gerolamo-timeline__list">
+      {%- for block in section.blocks -%}
+        <div class="gerolamo-timeline__item" {{ block.shopify_attributes }}>
+
+          <!-- Columna Izquierda: Icono Circular -->
+          <div class="gerolamo-timeline__icon-col">
+            <div class="gerolamo-timeline__circle"
+                 {% if block.settings.custom_circle_bg != blank and block.settings.custom_circle_bg != 'rgba(0,0,0,0)' %}
+                   style="background-color: {{ block.settings.custom_circle_bg }};"
+                 {% endif %}>
+              {%- if block.settings.icon_image != blank -%}
+                <img src="{{ block.settings.icon_image | image_url: width: 300 }}"
+                     alt="{{ block.settings.title | default: 'Hito historia Gerolamo' | escape }}"
+                     class="gerolamo-timeline__icon-img"
+                     loading="lazy"
+                     width="120"
+                     height="120">
+              {%- else -%}
+                <!-- Icono representativo si aún no se ha subido la imagen -->
+                <svg class="gerolamo-timeline__icon-placeholder" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              {%- endif -%}
+            </div>
+
+            <!-- Línea vertical conectora -->
+            {%- unless forloop.last -%}
+              <div class="gerolamo-timeline__line" aria-hidden="true"></div>
+            {%- endunless -%}
+          </div>
+
+          <!-- Columna Derecha: Texto del Hito -->
+          <div class="gerolamo-timeline__content-col">
+            {%- if block.settings.title != blank -%}
+              <h3 class="gerolamo-timeline__item-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            <div class="gerolamo-timeline__item-text">
+              {{ block.settings.text }}
+            </div>
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hitos de Historia",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎨 Colores y Estilo"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#FAF7F2",
+      "label": "Color de fondo de la sección"
+    },
+    {
+      "type": "color",
+      "id": "circle_bg",
+      "default": "#EDE8DF",
+      "label": "Color de fondo de los círculos"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "default": "#1B4B8A",
+      "label": "Color de la línea conectora"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#1e293b",
+      "label": "Color del texto"
+    },
+    {
+      "type": "header",
+      "content": "⭕ Círculos e Iconos"
+    },
+    {
+      "type": "range",
+      "id": "circle_size_desktop",
+      "min": 60,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Tamaño del círculo (Escritorio)",
+      "default": 105
+    },
+    {
+      "type": "range",
+      "id": "circle_size_mobile",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Tamaño del círculo (Móvil)",
+      "default": 75
+    },
+    {
+      "type": "header",
+      "content": "🔗 Línea Conectora"
+    },
+    {
+      "type": "select",
+      "id": "line_style",
+      "label": "Estilo de la línea",
+      "default": "dotted",
+      "options": [
+        { "value": "dotted", "label": "Punteada (Dotted)" },
+        { "value": "dashed", "label": "Discontinua (Dashed)" },
+        { "value": "solid",  "label": "Sólida (Solid)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "line_width",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Grosor de la línea",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "📐 Tipografía y Espaciados"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Escritorio)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Móvil)",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Grosor de la letra",
+      "default": "400",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "Interlineado del texto",
+      "default": "1.65",
+      "options": [
+        { "value": "1.4",  "label": "Compacto (1.4)" },
+        { "value": "1.65", "label": "Estándar (1.65)" },
+        { "value": "1.85", "label": "Amplio (1.85)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "min": 15,
+      "max": 70,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacio entre icono y texto (Escritorio)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Espacio entre icono y texto (Móvil)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "item_spacing_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Separación entre filas (Escritorio)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "item_spacing_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Separación entre filas (Móvil)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 600,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Ancho máximo del contenedor",
+      "default": 980
+    },
+    {
+      "type": "header",
+      "content": "🏷️ Encabezado Opcional"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "default": false,
+      "label": "Mostrar encabezado de sección"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "NUESTRA TRAYECTORIA"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "El viaje de Gerolamo"
+    },
+    {
+      "type": "header",
+      "content": "📏 Espaciado de Sección"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Escritorio)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Escritorio)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Móvil)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Móvil)",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Hito de Historia",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icono (PNG/SVG/JPG)",
+          "info": "Selecciona el icono para el círculo de este hito."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título opcional del hito"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto del hito",
+          "default": "<p>Escribe aquí el párrafo de la historia.</p>"
+        },
+        {
+          "type": "color",
+          "id": "custom_circle_bg",
+          "label": "Color de fondo personalizado para este círculo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Historia: Hitos con Iconos",
+      "blocks": [
+        {
+          "type": "milestone",
+          "settings": {
+            "text": "<p>Gerolamo fue un hombre de espíritu emprendedor y aventurero que dejó Italia para comenzar una nueva vida en Argentina. Desde allí emprendió una travesía aún mayor: cruzar la cordillera de los Andes rumbo a Chile, acompañado por su fiel perro.</p>"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "text": "<p>Juntos enfrentaron las difíciles condiciones del viaje, atravesando la cordillera hasta finalmente llegar a nuestro país y establecerse en la ciudad de Los Andes.</p>"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "text": "<p>Allí, Gerolamo formó su familia y, con el paso de los años, relató a sus descendientes las aventuras de aquella gran travesía. Entre sus recuerdos, la compañía de su perro ocupaba un lugar especial. Su fiel amigo fue fundamental para sobrellevar las crudas condiciones del clima, la inmensidad de la cordillera y la soledad del camino.</p>"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "text": "<p>Durante las frías noches compartieron el calor de una fogata y los alimentos que la caza del día les permitía obtener. Aquella cercanía construida durante el viaje nunca desapareció. Hasta sus últimos años, Gerolamo mantuvo una especial preocupación por entregarle a su compañero una alimentación de calidad, como parte del cuidado y afecto que siempre los unió.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
