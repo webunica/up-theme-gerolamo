@@ -433,11 +433,11 @@
   transition: transform 0.2s ease;
 }
 
-.dloc-map-pin img {
+.dloc-map-pin svg {
   display: block;
-  width: 28px;
-  height: 36px;
-  object-fit: contain;
+  width: 38px;
+  height: 48px;
+  overflow: visible;
 }
 
 .dloc-leaflet-pin-icon:hover .dloc-map-pin,
