@@ -703,14 +703,45 @@ variant-selects{
   --self-border-width:var(--border-button-width_swatches);
   --height:100%;
   --radius-button:var(--radius-button-swatches);
-  padding: 0 10px;
-  min-height:40px;
+  padding: 0 16px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 2px solid #d0d0d0;
+  border-radius: 8px;
+  color: #033097;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.btn--variant:hover {
+  background-color: #033097;
+  border-color: #033097;
+  color: #ffffff;
 }
 .btn--variant .variant__btn__text,
 .btn--variant .btn__texts>*{
-  padding-top:10px;
-  padding-bottom:11px!important;
-  z-index:1;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  z-index: 1;
+}
+/* Variante seleccionada */
+.product-form__input input[type=radio]:checked + .btn--variant {
+  background-color: #033097 !important;
+  border-color: #033097 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+/* Variante agotada */
+.product-form__input input.disabled + .btn--variant {
+  opacity: 0.45;
+  text-decoration: line-through;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .product-form__input input[type=radio]:checked+label {
   --color: var(--color-hover);
