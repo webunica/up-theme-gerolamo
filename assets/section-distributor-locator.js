@@ -621,16 +621,16 @@
 
         const pinHtml = `
           <div class="dloc-map-pin">
-            <img src="https://cdn.shopify.com/s/files/1/0674/2130/7088/files/posicion-local.png?v=1788274819" alt="Local" width="40" height="52" style="display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.35));" loading="lazy">
+            <img src="https://cdn.shopify.com/s/files/1/0674/2130/7088/files/posicion-local.png?v=1788274819" alt="Local" width="28" height="36" style="display:block;image-rendering:-webkit-optimize-contrast;" loading="lazy">
           </div>
         `;
 
         const markerIcon = L.divIcon({
           className: 'dloc-leaflet-pin-icon',
           html: pinHtml,
-          iconSize: [40, 52],
-          iconAnchor: [20, 52],
-          popupAnchor: [0, -54]
+          iconSize: [28, 36],
+          iconAnchor: [14, 36],
+          popupAnchor: [0, -38]
         });
 
         const marker = L.marker([d.lat, d.lng], { icon: markerIcon });
