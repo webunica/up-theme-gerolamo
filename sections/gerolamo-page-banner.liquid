@@ -16,14 +16,14 @@
   assign bc_parent_url       = section.settings.breadcrumb_parent_url
   assign bc_inside_box       = section.settings.bc_inside_box
 
-  assign overlay_mode        = section.settings.overlay_mode | default: 'gradient_left'
-  assign overlay_color       = section.settings.overlay_color | default: '#ffffff'
-  assign overlay_alpha       = section.settings.overlay_opacity | divided_by: 100.0
+  assign overlay_mode        = section.settings.overlay_mode | default: 'none'
+  assign overlay_color       = section.settings.overlay_color | default: '#000000'
+  assign overlay_alpha       = section.settings.overlay_opacity | default: 30 | divided_by: 100.0
   assign overlay_color_rgba  = overlay_color | color_modify: 'alpha', overlay_alpha
 
   assign show_box_bg         = section.settings.show_box_bg
-  assign box_bg_color        = section.settings.box_bg_color | default: '#ffffff'
-  assign box_bg_alpha        = section.settings.box_bg_opacity | divided_by: 100.0
+  assign box_bg_color        = section.settings.box_bg_color | default: '#000000'
+  assign box_bg_alpha        = section.settings.box_bg_opacity | default: 45 | divided_by: 100.0
   assign box_bg_rgba         = box_bg_color | color_modify: 'alpha', box_bg_alpha
 
   assign show_button         = section.settings.show_button
@@ -39,9 +39,9 @@
     display: flex;
     align-items: {{ section.settings.content_position_v | default: 'center' }};
     overflow: hidden;
-    background-color: {{ section.settings.color_background | default: '#f8fafc' }};
-    padding-top: {{ section.settings.padding_top_desktop | default: 30 }}px;
-    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 30 }}px;
+    background-color: {{ section.settings.color_background | default: '#0f172a' }};
+    padding-top: {{ section.settings.padding_top_desktop | default: 35 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 35 }}px;
     box-sizing: border-box;
   }
 
@@ -164,7 +164,7 @@
     gap: 6px;
     font-size: 13px;
     font-weight: 500;
-    color: {{ section.settings.bc_color_sep | default: '#475569' }};
+    color: {{ section.settings.bc_color_sep | default: '#cbd5e1' }};
     margin-bottom: {{ section.settings.bc_margin_bottom | default: 16 }}px;
     {% if section.settings.text_align == 'text-center' %}
       justify-content: center;
@@ -188,7 +188,7 @@
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs a {
-    color: {{ section.settings.bc_color_link | default: '#1B4B8A' }};
+    color: {{ section.settings.bc_color_link | default: '#38bdf8' }};
     text-decoration: none;
     transition: color 0.2s ease, opacity 0.2s ease;
     display: inline-flex;
@@ -197,7 +197,7 @@
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs a:hover {
     text-decoration: underline;
-    color: {{ section.settings.bc_color_hover | default: '#0F6445' }};
+    color: {{ section.settings.bc_color_hover | default: '#4ade80' }};
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__bc-sep {
@@ -209,15 +209,15 @@
   #theme-section-{{ section.id }} .gerolamo-page-banner__bc-home {
     display: inline-flex;
     align-items: center;
-    color: {{ section.settings.bc_color_link | default: '#1B4B8A' }} !important;
+    color: {{ section.settings.bc_color_link | default: '#38bdf8' }} !important;
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__bc-current {
-    color: {{ section.settings.bc_color_current | default: '#1e293b' }};
+    color: {{ section.settings.bc_color_current | default: '#ffffff' }};
     font-weight: 600;
   }
 
-  /* Caja / Tarjeta de Texto y Títulos */
+  /* Caja / Tarjeta de Fondo con Opacidad para Textos */
   #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
     width: 100%;
     max-width: {{ section.settings.box_max_width | default: 580 }}px;
@@ -231,12 +231,12 @@
       {% endif %}
       border-radius: {{ section.settings.box_border_radius | default: 16 }}px;
       {% if section.settings.box_border_width > 0 %}
-        border: {{ section.settings.box_border_width }}px solid {{ section.settings.box_border_color | default: 'rgba(255,255,255,0.4)' }};
+        border: {{ section.settings.box_border_width }}px solid {{ section.settings.box_border_color | default: 'rgba(255,255,255,0.2)' }};
       {% else %}
         border: none;
       {% endif %}
       {% if section.settings.show_box_shadow %}
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15);
       {% endif %}
       padding: {{ section.settings.box_padding_desktop_v | default: 28 }}px {{ section.settings.box_padding_desktop_h | default: 32 }}px;
     {% else %}
@@ -274,13 +274,22 @@
     }
   }
 
+  /* Sombra de texto opcional para máxima legibilidad */
+  {% if section.settings.show_text_shadow %}
+    #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow,
+    #theme-section-{{ section.id }} .gerolamo-page-banner__title,
+    #theme-section-{{ section.id }} .gerolamo-page-banner__desc {
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+  {% endif %}
+
   /* Antetítulo / Eyebrow */
   #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow {
     font-size: {{ section.settings.eyebrow_size | default: 13 }}px;
     font-weight: {{ section.settings.eyebrow_weight | default: 800 }};
     text-transform: {{ section.settings.eyebrow_transform | default: 'uppercase' }};
     letter-spacing: {{ section.settings.eyebrow_letter_spacing | default: 2 }}px;
-    color: {{ section.settings.color_eyebrow | default: '#1B4B8A' }};
+    color: {{ section.settings.color_eyebrow | default: '#ffffff' }};
     margin-bottom: {{ section.settings.eyebrow_margin_bottom | default: 8 }}px;
     line-height: 1.3;
   }
@@ -294,16 +303,16 @@
   /* Título */
   #theme-section-{{ section.id }} .gerolamo-page-banner__title {
     margin: 0 0 {{ section.settings.title_margin_bottom | default: 12 }}px 0;
-    font-size: {{ section.settings.title_size | default: 42 }}px;
+    font-size: {{ section.settings.title_size | default: 46 }}px;
     font-weight: {{ section.settings.title_weight | default: 800 }};
-    color: {{ section.settings.color_title | default: '#0f2b48' }};
+    color: {{ section.settings.color_title | default: '#ffffff' }};
     line-height: {{ section.settings.title_line_height | default: 1.15 }};
     letter-spacing: -0.01em;
   }
 
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-page-banner__title {
-      font-size: {{ section.settings.title_size_mobile | default: 28 }}px;
+      font-size: {{ section.settings.title_size_mobile | default: 30 }}px;
     }
   }
 
@@ -313,7 +322,7 @@
     font-size: {{ section.settings.desc_size | default: 16 }}px;
     font-weight: {{ section.settings.desc_weight | default: 400 }};
     line-height: {{ section.settings.desc_line_height | default: 1.55 }};
-    color: {{ section.settings.color_description | default: '#334155' }};
+    color: {{ section.settings.color_description | default: '#f1f5f9' }};
   }
 
   @media (max-width: 768px) {
@@ -424,7 +433,7 @@
     </nav>
     {%- endif -%}
 
-    <!-- Caja / Tarjeta de Contenido de Textos -->
+    <!-- Caja / Tarjeta con Fondo Opaco para Textos -->
     <div class="gerolamo-page-banner__text-box">
 
       <!-- Migas de pan dentro de la caja si se desea -->
@@ -517,37 +526,142 @@
     },
     {
       "type": "header",
-      "content": "🎭 Máscara y Overlay"
+      "content": "🎨 Fondo con Opacidad para los Textos"
     },
     {
-      "type": "select",
-      "id": "overlay_mode",
-      "label": "Tipo de máscara",
-      "default": "gradient_left",
-      "options": [
-        { "value": "none",            "label": "Sin máscara" },
-        { "value": "gradient_left",   "label": "Gradiente desde Izquierda" },
-        { "value": "gradient_right",  "label": "Gradiente desde Derecha" },
-        { "value": "gradient_bottom", "label": "Gradiente desde Abajo" },
-        { "value": "gradient_top",    "label": "Gradiente desde Arriba" },
-        { "value": "solid",           "label": "Superposición Uniforme" }
-      ]
+      "type": "checkbox",
+      "id": "show_box_bg",
+      "default": true,
+      "label": "Habilitar fondo con opacidad",
+      "info": "Crea una caja semitransparente con desenfoque detrás del texto para máxima legibilidad."
     },
     {
       "type": "color",
-      "id": "overlay_color",
-      "default": "#ffffff",
-      "label": "Color de la máscara"
+      "id": "box_bg_color",
+      "default": "#000000",
+      "label": "Color de fondo de la caja"
     },
     {
       "type": "range",
-      "id": "overlay_opacity",
+      "id": "box_bg_opacity",
       "min": 0,
       "max": 100,
       "step": 5,
       "unit": "%",
-      "label": "Opacidad de la máscara",
-      "default": 100
+      "label": "Opacidad del fondo (0% a 100%)",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "box_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Desenfoque cristal (Blur)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de caja (Escritorio)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de caja (Móvil)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "box_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Grosor del borde de la caja",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "default": "rgba(255,255,255,0.15)",
+      "label": "Color del borde de la caja"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_box_shadow",
+      "default": true,
+      "label": "Mostrar sombra en la caja"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_shadow",
+      "default": false,
+      "label": "Sombra en las letras del texto"
+    },
+    {
+      "type": "header",
+      "content": "📦 Padding de la Caja de Textos"
+    },
+    {
+      "type": "range",
+      "id": "box_padding_desktop_v",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding vertical caja (Escritorio)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "box_padding_desktop_h",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding horizontal caja (Escritorio)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "box_padding_mobile_v",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding vertical caja (Móvil)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "box_padding_mobile_h",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding horizontal caja (Móvil)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "box_max_width",
+      "min": 300,
+      "max": 1100,
+      "step": 20,
+      "unit": "px",
+      "label": "Ancho máximo de la caja",
+      "default": 540
     },
     {
       "type": "header",
@@ -557,7 +671,7 @@
       "type": "select",
       "id": "content_position_h_desktop",
       "label": "Posición horizontal (Escritorio)",
-      "default": "flex-start",
+      "default": "flex-end",
       "options": [
         { "value": "flex-start", "label": "Izquierda" },
         { "value": "center",     "label": "Centro" },
@@ -590,7 +704,7 @@
       "type": "select",
       "id": "text_align",
       "label": "Alineación del texto (Escritorio)",
-      "default": "text-left",
+      "default": "text-center",
       "options": [
         { "value": "text-left",   "label": "Izquierda" },
         { "value": "text-center", "label": "Centro" },
@@ -601,7 +715,7 @@
       "type": "select",
       "id": "text_align_mobile",
       "label": "Alineación del texto (Móvil)",
-      "default": "text-left",
+      "default": "text-center",
       "options": [
         { "value": "text-left",   "label": "Izquierda" },
         { "value": "text-center", "label": "Centro" },
@@ -609,137 +723,38 @@
       ]
     },
     {
-      "type": "range",
-      "id": "box_max_width",
-      "min": 300,
-      "max": 1100,
-      "step": 20,
-      "unit": "px",
-      "label": "Ancho máximo de la caja",
-      "default": 580
-    },
-    {
       "type": "header",
-      "content": "🎨 Fondo de Caja de Textos"
+      "content": "🎭 Máscara General de Imagen"
     },
     {
-      "type": "checkbox",
-      "id": "show_box_bg",
-      "default": false,
-      "label": "Habilitar fondo de caja",
-      "info": "Crea una tarjeta o recuadro detrás del texto para mejorar la legibilidad."
+      "type": "select",
+      "id": "overlay_mode",
+      "label": "Tipo de máscara",
+      "default": "none",
+      "options": [
+        { "value": "none",            "label": "Sin máscara" },
+        { "value": "gradient_left",   "label": "Gradiente desde Izquierda" },
+        { "value": "gradient_right",  "label": "Gradiente desde Derecha" },
+        { "value": "gradient_bottom", "label": "Gradiente desde Abajo" },
+        { "value": "gradient_top",    "label": "Gradiente desde Arriba" },
+        { "value": "solid",           "label": "Superposición Uniforme" }
+      ]
     },
     {
       "type": "color",
-      "id": "box_bg_color",
-      "default": "#ffffff",
-      "label": "Color de fondo de la caja"
+      "id": "overlay_color",
+      "default": "#000000",
+      "label": "Color de la máscara"
     },
     {
       "type": "range",
-      "id": "box_bg_opacity",
+      "id": "overlay_opacity",
       "min": 0,
       "max": 100,
       "step": 5,
       "unit": "%",
-      "label": "Opacidad del fondo de caja",
-      "default": 90
-    },
-    {
-      "type": "range",
-      "id": "box_blur",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "unit": "px",
-      "label": "Desenfoque de fondo (Blur)",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "box_border_radius",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Redondeo de caja (Escritorio)",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "box_border_radius_mobile",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "unit": "px",
-      "label": "Redondeo de caja (Móvil)",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "box_border_width",
-      "min": 0,
-      "max": 5,
-      "step": 1,
-      "unit": "px",
-      "label": "Grosor del borde de la caja",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "box_border_color",
-      "default": "rgba(255,255,255,0.4)",
-      "label": "Color del borde de la caja"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_box_shadow",
-      "default": false,
-      "label": "Mostrar sombra en la caja"
-    },
-    {
-      "type": "header",
-      "content": "📦 Padding de la Caja de Textos"
-    },
-    {
-      "type": "range",
-      "id": "box_padding_desktop_v",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding vertical caja (Escritorio)",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "box_padding_desktop_h",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding horizontal caja (Escritorio)",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "box_padding_mobile_v",
-      "min": 0,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding vertical caja (Móvil)",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "box_padding_mobile_h",
-      "min": 0,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding horizontal caja (Móvil)",
-      "default": 20
+      "label": "Opacidad de la máscara",
+      "default": 30
     },
     {
       "type": "header",
@@ -754,7 +769,7 @@
     {
       "type": "text",
       "id": "eyebrow_text",
-      "default": "GEROLAMO",
+      "default": "NUESTRA HISTORIA",
       "label": "Texto del antetítulo"
     },
     {
@@ -765,7 +780,7 @@
       "step": 1,
       "unit": "px",
       "label": "Tamaño de fuente (Escritorio)",
-      "default": 13
+      "default": 14
     },
     {
       "type": "range",
@@ -775,7 +790,7 @@
       "step": 1,
       "unit": "px",
       "label": "Tamaño de fuente (Móvil)",
-      "default": 11
+      "default": 12
     },
     {
       "type": "select",
@@ -817,13 +832,13 @@
       "max": 30,
       "step": 2,
       "unit": "px",
-      "label": "Espaciado inferior hacia el título",
+      "label": "Espaciado hacia el título",
       "default": 8
     },
     {
       "type": "color",
       "id": "color_eyebrow",
-      "default": "#1B4B8A",
+      "default": "#ffffff",
       "label": "Color del antetítulo"
     },
     {
@@ -840,6 +855,7 @@
       "type": "text",
       "id": "hero_title",
       "label": "Texto del título",
+      "default": "Historia",
       "info": "Si se deja en blanco, se usa el título de la página actual."
     },
     {
@@ -862,7 +878,7 @@
       "step": 2,
       "unit": "px",
       "label": "Tamaño del título (Escritorio)",
-      "default": 42
+      "default": 52
     },
     {
       "type": "range",
@@ -872,7 +888,7 @@
       "step": 2,
       "unit": "px",
       "label": "Tamaño del título (Móvil)",
-      "default": 28
+      "default": 32
     },
     {
       "type": "select",
@@ -905,13 +921,13 @@
       "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Espaciado inferior hacia subtítulo",
+      "label": "Espaciado hacia subtítulo",
       "default": 12
     },
     {
       "type": "color",
       "id": "color_title",
-      "default": "#0f2b48",
+      "default": "#ffffff",
       "label": "Color del título"
     },
     {
@@ -921,7 +937,7 @@
     {
       "type": "checkbox",
       "id": "show_description",
-      "default": false,
+      "default": true,
       "label": "Mostrar subtítulo"
     },
     {
@@ -938,7 +954,7 @@
       "step": 1,
       "unit": "px",
       "label": "Tamaño de fuente (Escritorio)",
-      "default": 16
+      "default": 17
     },
     {
       "type": "range",
@@ -976,7 +992,7 @@
     {
       "type": "color",
       "id": "color_description",
-      "default": "#334155",
+      "default": "#f1f5f9",
       "label": "Color del subtítulo"
     },
     {
@@ -1051,7 +1067,7 @@
     {
       "type": "checkbox",
       "id": "show_breadcrumbs",
-      "default": true,
+      "default": false,
       "label": "Mostrar migas de pan"
     },
     {
@@ -1085,19 +1101,19 @@
     {
       "type": "color",
       "id": "bc_color_link",
-      "default": "#1B4B8A",
+      "default": "#38bdf8",
       "label": "Color enlaces de migas"
     },
     {
       "type": "color",
       "id": "bc_color_hover",
-      "default": "#0F6445",
+      "default": "#4ade80",
       "label": "Color enlaces en Hover"
     },
     {
       "type": "color",
       "id": "bc_color_current",
-      "default": "#1e293b",
+      "default": "#ffffff",
       "label": "Color texto actual activo"
     },
     {
@@ -1118,7 +1134,7 @@
       "step": 10,
       "unit": "px",
       "label": "Altura mínima (Escritorio)",
-      "default": 380
+      "default": 420
     },
     {
       "type": "range",
@@ -1128,7 +1144,7 @@
       "step": 10,
       "unit": "px",
       "label": "Altura mínima (Móvil)",
-      "default": 280
+      "default": 300
     },
     {
       "type": "range",
@@ -1138,7 +1154,7 @@
       "step": 5,
       "unit": "px",
       "label": "Padding superior (Escritorio)",
-      "default": 35
+      "default": 40
     },
     {
       "type": "range",
@@ -1148,7 +1164,7 @@
       "step": 5,
       "unit": "px",
       "label": "Padding inferior (Escritorio)",
-      "default": 35
+      "default": 40
     },
     {
       "type": "range",
@@ -1173,7 +1189,7 @@
     {
       "type": "color",
       "id": "color_background",
-      "default": "#f8fafc",
+      "default": "#0f172a",
       "label": "Color de fondo base"
     }
   ],
@@ -1185,9 +1201,17 @@
         "hero_title": "Historia",
         "show_description": true,
         "hero_description": "<p>Gerolamo: un nombre con historia</p>",
+        "show_box_bg": true,
+        "box_bg_color": "#000000",
+        "box_bg_opacity": 45,
+        "box_blur": 8,
+        "box_border_radius": 18,
+        "color_eyebrow": "#ffffff",
+        "color_title": "#ffffff",
+        "color_description": "#f1f5f9",
         "content_position_h_desktop": "flex-end",
-        "text_align": "text-left",
-        "overlay_mode": "gradient_right"
+        "text_align": "text-center",
+        "overlay_mode": "none"
       }
     }
   ]
