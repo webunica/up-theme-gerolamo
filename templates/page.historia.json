@@ -15,7 +15,7 @@
         "background_image": "shopify://shop_images/bg-historia.png",
         "imagealign": "center center",
         "show_box_bg": true,
-        "box_bg_color": "#294EB3",
+        "box_bg_color": "#294eb3",
         "box_bg_opacity": 85,
         "box_blur": 10,
         "box_border_radius": 16,
@@ -88,9 +88,46 @@
         "padding_bottom_mobile": 20,
         "color_background": "#ffffff"
       }
+    },
+    "gerolamo_paper_text_zTNdMR": {
+      "type": "gerolamo-paper-text",
+      "name": "Texto con Borde de Papel",
+      "settings": {
+        "edge_style": "torn_1",
+        "shadow_strength": "medium",
+        "overlap_desktop": 60,
+        "overlap_mobile": 35,
+        "edge_height_desktop": 48,
+        "edge_height_mobile": 32,
+        "bg_color": "#faf7f2",
+        "text_color": "#1e293b",
+        "eyebrow_color": "#1B4B8A",
+        "show_eyebrow": false,
+        "eyebrow_text": "NUESTRA HISTORIA",
+        "eyebrow_size": 13,
+        "statement_text": "<p>Gerolamo no es solo el nombre de nuestra marca. Es el nombre de uno de nuestros antepasados y el origen de una historia familiar real que, generaciones más tarde, inspiraría la creación de nuestros alimentos para perros y gatos.</p>",
+        "font_size_desktop": 21,
+        "font_size_mobile": 17,
+        "font_weight": "500",
+        "line_height": "1.65",
+        "text_align": "center",
+        "text_align_mobile": "center",
+        "content_max_width": 940,
+        "show_btn": false,
+        "btn_text": "Conoce más",
+        "btn_url": "",
+        "btn_bg_color": "#1B4B8A",
+        "btn_text_color": "#ffffff",
+        "btn_bg_hover": "#0F6445",
+        "padding_top_desktop": 35,
+        "padding_bottom_desktop": 55,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 35
+      }
     }
   },
   "order": [
-    "page_banner"
+    "page_banner",
+    "gerolamo_paper_text_zTNdMR"
   ]
 }
