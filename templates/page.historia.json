@@ -32,7 +32,7 @@
         "box_padding_desktop_h": 32,
         "box_padding_mobile_v": 16,
         "box_padding_mobile_h": 20,
-        "box_max_width": 500,
+        "box_max_width": 400,
         "content_position_h_desktop": "flex-end",
         "content_position_h_mobile": "center",
         "content_position_v": "center",
