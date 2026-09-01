@@ -1,6 +1,6 @@
 /**
- * section-distributor-locator.js  v4 – OpenStreetMap (Leaflet) & Pagination Edition
- * Wokiee Theme – Distributor Locator
+ * section-distributor-locator.js - OpenStreetMap (Leaflet) & Pagination Edition
+ * Wokiee Theme - Distributor Locator
  *
  * - Free, no API Key needed (OpenStreetMap tiles + Leaflet.js)
  * - Split Desktop Layout: 2 Columns of Cards + Right Sticky Interactive Map
@@ -15,7 +15,7 @@
   const DEFAULT_RADIUS_KM = 100;
   const DEFAULT_PER_PAGE = 18;
 
-  // ── Icon helpers ─────────────────────────────────────────────
+  // -- Icon helpers ---------------------------------------------
   const ICON = {
     pin:          `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
     clock:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
@@ -30,19 +30,19 @@
     chevronRight: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`,
   };
 
-  // ── Region colour palette ─────────────────────────────────────
+  // -- Region colour palette -------------------------------------
   const REGION_COLORS = [
-    '#2d6a4f','#1d3557','#9b2226','#6d3b47',
+    '#033097','#1d3557','#9b2226','#6d3b47',
     '#583101','#3d405b','#4a4e69','#22577a',
     '#344e41','#7b2d8b','#c05c2e','#2b6cb0',
   ];
 
   function getRegionColor(region, regionList) {
     const idx = regionList.indexOf(region);
-    return REGION_COLORS[idx % REGION_COLORS.length] || '#006654';
+    return REGION_COLORS[idx % REGION_COLORS.length] || '#033097';
   }
 
-  // ── Haversine distance (km) ───────────────────────────────────
+  // -- Haversine distance (km) -----------------------------------
   function haversine(lat1, lng1, lat2, lng2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -54,7 +54,7 @@
     return R * 2 * Math.asin(Math.sqrt(a));
   }
 
-  // ── Geolocation helpers ───────────────────────────────────────
+  // -- Geolocation helpers ---------------------------------------
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) return reject(new Error('no-geolocation'));
@@ -89,7 +89,7 @@
     }
   }
 
-  // ── URL helpers ───────────────────────────────────────────────
+  // -- URL helpers -----------------------------------------------
   function ensureUrl(url) {
     if (!url || url === '*') return null;
     return url.startsWith('http') ? url : 'https://' + url;
@@ -104,7 +104,7 @@
     return 'https://www.instagram.com/' + clean + '/';
   }
 
-  // ── Escape helpers ────────────────────────────────────────────
+  // -- Escape helpers --------------------------------------------
   function esc(str) {
     return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
@@ -112,7 +112,7 @@
     return String(str || '').replace(/"/g,'&quot;');
   }
 
-  // ── Build distributor card ────────────────────────────────────
+  // -- Build distributor card ------------------------------------
   function buildCard(d, regionList, userLat, userLng, globalIndex) {
     const color  = getRegionColor(d.region, regionList);
     const mapQ   = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
@@ -170,7 +170,7 @@
 </article>`;
   }
 
-  // ── Build Popup Content for Leaflet Map ───────────────────────
+  // -- Build Popup Content for Leaflet Map -----------------------
   function buildPopupContent(d) {
     const mapQ = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
     const ig   = ensureInstagram(d.instagram);
@@ -204,7 +204,7 @@
     `;
   }
 
-  // ── Generate Pagination Page Numbers ─────────────────────────
+  // -- Generate Pagination Page Numbers -------------------------
   function getPaginationRange(current, total) {
     if (total <= 7) {
       return Array.from({ length: total }, (_, i) => i + 1);
@@ -218,7 +218,7 @@
     return [1, '...', current - 1, current, current + 1, '...', total];
   }
 
-  // ── Main initialiser ──────────────────────────────────────────
+  // -- Main initialiser ------------------------------------------
   function init(section) {
     const sectionId    = section.dataset.sectionId;
     const jsonUrl      = section.dataset.jsonUrl;
@@ -258,7 +258,7 @@
     let filteredData    = [];
     let currentPage     = 1;
 
-    // ─── Load JSON ────────────────────────────────────────────
+    // --- Load JSON --------------------------------------------
     fetch(jsonUrl)
       .then(r => r.json())
       .then(async data => {
@@ -276,12 +276,12 @@
 
         if (skeleton) skeleton.remove();
 
-        // ── Init OpenStreetMap if available ──
+        // -- Init OpenStreetMap if available --
         if (mapEl && typeof window.L !== 'undefined') {
           initLeafletMap(mapEl);
         }
 
-        // ── Try geolocation ──
+        // -- Try geolocation --
         showGeoStatus('loading');
         userLocation = await detectLocation();
 
@@ -308,7 +308,7 @@
         showEmpty();
       });
 
-    // ─── Filter by radius ─────────────────────────────────────
+    // --- Filter by radius -------------------------------------
     function filterByRadius(data, lat, lng, km) {
       return data
         .filter(d => d.lat != null && d.lng != null)
@@ -317,7 +317,7 @@
         .sort((a, b) => a._distance - b._distance);
     }
 
-    // ─── Geo banner state machine ─────────────────────────────
+    // --- Geo banner state machine -----------------------------
     function showGeoStatus(state, loc, count, km) {
       if (!geoBanner) return;
 
@@ -325,7 +325,7 @@
       geoBanner.className = 'distributor-locator__geo-banner distributor-locator__geo-banner--' + state;
 
       const messages = {
-        loading:    `${ICON.locme} Detectando tu ubicación…`,
+        loading:    `${ICON.locme} Detectando tu ubicación...`,
         found:      `${ICON.locme} Mostrando <strong>${count}</strong> distribuidores dentro de <strong>${km} km</strong>${loc && loc.city ? ' de <strong>' + esc(loc.city) + '</strong>' : ' de tu ubicación'}.`,
         noneNearby: `${ICON.warning} No hay distribuidores dentro de ${km} km de tu ubicación. Mostrando todos.`,
         denied:     `${ICON.locme} No se pudo detectar tu ubicación. Mostrando todos los distribuidores.`,
@@ -338,7 +338,7 @@
       if (geoLocate)  geoLocate.hidden   = state === 'loading' || state === 'found' || state === 'noneNearby';
     }
 
-    // ─── Render cards with pagination ─────────────────────────
+    // --- Render cards with pagination -------------------------
     function renderCards(data, resetPage = false) {
       filteredData = data;
       if (resetPage) {
@@ -415,7 +415,7 @@
       if (mapObj) updateMapMarkers(filteredData);
     }
 
-    // ─── Render Pagination HTML & Event Listeners ─────────────
+    // --- Render Pagination HTML & Event Listeners -------------
     function renderPagination(totalItems, totalPages, startIndex, endIndex) {
       if (!paginationEl) return;
 
@@ -436,7 +436,7 @@
 
       pageRange.forEach(p => {
         if (p === '...') {
-          pageButtonsHtml += `<span class="dloc-page-ellipsis">…</span>`;
+          pageButtonsHtml += `<span class="dloc-page-ellipsis">...</span>`;
         } else {
           const isActive = p === currentPage;
           pageButtonsHtml += `
@@ -453,7 +453,7 @@
 
       paginationEl.innerHTML = `
         <div class="dloc-pagination-summary">
-          Mostrando <strong>${startIndex + 1}–${endIndex}</strong> de <strong>${totalItems}</strong> distribuidores
+          Mostrando <strong>${startIndex + 1}-${endIndex}</strong> de <strong>${totalItems}</strong> distribuidores
         </div>
         <div class="dloc-pagination-nav">
           <button
@@ -518,7 +518,7 @@
       }
     }
 
-    // ─── Apply all active filters ─────────────────────────────
+    // --- Apply all active filters -----------------------------
     function applyFilters() {
       const term   = searchTerm.toLowerCase();
       const region = activeRegion;
@@ -545,7 +545,7 @@
       renderTimer = setTimeout(applyFilters, 160);
     }
 
-    // ─── OpenStreetMap (Leaflet) Implementation ──────────────
+    // --- OpenStreetMap (Leaflet) Implementation ---------------
     function initLeafletMap(el) {
       const zoom = parseInt(el.dataset.zoom, 10) || 6;
       const lat  = parseFloat(el.dataset.lat) || -35.6751;
@@ -599,8 +599,8 @@
       if (isNearbyMode) {
         radiusCircle = L.circle([loc.lat, loc.lng], {
           radius: km * 1000,
-          color: '#006654',
-          fillColor: '#006654',
+          color: '#033097',
+          fillColor: '#033097',
           fillOpacity: 0.07,
           weight: 1.5,
           dashArray: '5, 5'
@@ -619,30 +619,28 @@
       data.forEach((d, globalIdx) => {
         if (d.lat == null || d.lng == null) return;
 
-        const pinHtml = `
-          <div class="dloc-map-pin">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 52" width="38" height="48" aria-hidden="true">
-              <!-- Sombra base -->
-              <ellipse cx="20" cy="50" rx="7" ry="3" fill="rgba(0,0,0,0.20)"/>
-              <!-- Cuerpo del pin -->
-              <path d="M20 2C11.16 2 4 9.16 4 18c0 10.5 14 32 16 32s16-21.5 16-32C36 9.16 28.84 2 20 2z"
-                fill="#cc1f1f" stroke="#7a0000" stroke-width="1.5"/>
-              <!-- Brillo superior -->
-              <ellipse cx="15" cy="13" rx="4" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-20 15 13)"/>
-              <!-- Círculo interior verde oscuro -->
-              <circle cx="20" cy="18" r="7.5" fill="#1a4d3a" stroke="#0d2b20" stroke-width="1"/>
-              <!-- Punto blanco interior -->
-              <circle cx="20" cy="18" r="3" fill="#ffffff" opacity="0.9"/>
-            </svg>
-          </div>
-        `;
+        const pinHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42" style="overflow:visible;display:block;">
+            <defs>
+              <filter id="pin-shadow-${globalIdx}" x="-30%" y="-10%" width="160%" height="140%">
+                <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="rgba(0,0,0,0.4)"/>
+              </filter>
+            </defs>
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M15 1C7.27 1 1 7.27 1 15c0 9.5 14 26 14 26S29 24.5 29 15C29 7.27 22.73 1 15 1z M15 9.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z"
+              fill="#d42b2b"
+              stroke="#8b0000"
+              stroke-width="1"
+              stroke-linejoin="round"
+              filter="url(#pin-shadow-${globalIdx})"
+            />
+          </svg>`;
 
         const markerIcon = L.divIcon({
           className: 'dloc-leaflet-pin-icon',
           html: pinHtml,
-          iconSize: [38, 48],
-          iconAnchor: [19, 48],
-          popupAnchor: [0, -50]
+          iconSize: [30, 42],
+          iconAnchor: [15, 42],
+          popupAnchor: [0, -44]
         });
 
         const marker = L.marker([d.lat, d.lng], { icon: markerIcon });
@@ -704,7 +702,7 @@
       card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // ─── Tab Switching on Mobile ──────────────────────────────
+    // --- Tab Switching on Mobile ------------------------------
     function activateTab(tab) {
       tabButtons.forEach(btn => {
         const isActive = btn.dataset.tab === tab;
@@ -731,7 +729,7 @@
       });
     });
 
-    // ─── Event listeners ──────────────────────────────────────
+    // --- Event listeners --------------------------------------
     if (searchInput) {
       searchInput.addEventListener('input', () => {
         searchTerm = searchInput.value.trim();
@@ -756,7 +754,7 @@
       });
     }
 
-    // "Ver todos" — exit nearby mode
+    // "Ver todos" - exit nearby mode
     if (geoShowAll) {
       geoShowAll.addEventListener('click', () => {
         isNearbyMode = false;
@@ -769,7 +767,7 @@
       });
     }
 
-    // "Detectar ubicación" — re-trigger geolocation
+    // "Detectar ubicación" - re-trigger geolocation
     if (geoLocate) {
       geoLocate.addEventListener('click', async () => {
         showGeoStatus('loading');
@@ -815,7 +813,7 @@
     }
   }
 
-  // ─── Bootstrap on DOMReady & Shopify Section Events ────────
+  // --- Bootstrap on DOMReady & Shopify Section Events -------
   function bootstrap() {
     document.querySelectorAll('.distributor-locator').forEach(init);
   }
