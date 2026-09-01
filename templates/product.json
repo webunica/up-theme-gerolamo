@@ -248,11 +248,11 @@
       "settings": {
         "top_spacing": "small",
         "width": "default",
-        "page_width": 50,
+        "page_width": 60,
         "gallery_position": "to left",
         "default_variant": "select_variant",
         "top_spacing_blocks": 40,
-        "top_spacing_blocks_mobile": 40,
+        "top_spacing_blocks_mobile": 30,
         "enable_sticky_info": true,
         "media_type": "thumbnails_vertical",
         "media_type_mobile": "thumbnails_horizontal",
