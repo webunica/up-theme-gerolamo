@@ -423,32 +423,26 @@
 }
 
 .dloc-map-pin {
-  width: 30px;
-  height: 30px;
-  background: #006654;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.28);
-  border: 2px solid #ffffff;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
-.dloc-map-pin svg {
-  transform: rotate(45deg);
-  width: 14px;
-  height: 14px;
-  color: #ffffff;
+.dloc-map-pin img {
+  display: block;
+  width: 28px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .dloc-leaflet-pin-icon:hover .dloc-map-pin,
 .dloc-leaflet-pin-icon.is-active .dloc-map-pin {
-  background: #702283;
-  transform: rotate(-45deg) scale(1.2);
-  box-shadow: 0 5px 15px rgba(112, 34, 131, 0.4);
+  transform: scale(1.2);
 }
 
 /* User Location Marker */
