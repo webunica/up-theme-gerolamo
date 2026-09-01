@@ -30,7 +30,7 @@
         "box_border_radius": 16,
         "box_border_radius_mobile": 12,
         "box_border_width": 0,
-        "box_border_color": "#F7FFFE",
+        "box_border_color": "#f7fffe",
         "show_box_shadow": false,
         "box_padding_desktop_v": 24,
         "box_padding_desktop_h": 32,
@@ -44,7 +44,7 @@
         "eyebrow_transform": "uppercase",
         "eyebrow_letter_spacing": 2,
         "eyebrow_margin_bottom": 8,
-        "color_eyebrow": "#F7FFFE",
+        "color_eyebrow": "#f7fffe",
         "show_title": true,
         "hero_title": "Historia",
         "title_tag": "h1",
@@ -53,14 +53,14 @@
         "title_weight": "800",
         "title_line_height": "1.15",
         "title_margin_bottom": 12,
-        "color_title": "#F7FFFE",
+        "color_title": "#f7fffe",
         "show_description": true,
         "hero_description": "<p>Gerolamo: un nombre con historia</p>",
         "desc_size": 16,
         "desc_size_mobile": 14,
         "desc_weight": "400",
         "desc_line_height": "1.55",
-        "color_description": "#334155",
+        "color_description": "#FFFFFF",
         "show_button": false,
         "button_text": "Descubrir más",
         "button_url": "",
@@ -85,7 +85,7 @@
         "padding_bottom_desktop": 35,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 20,
-        "color_background": "#FFFFFF"
+        "color_background": "#ffffff"
       }
     }
   },
