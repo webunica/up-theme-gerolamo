@@ -25,7 +25,7 @@
         "custom_title": "Historia",
         "show_text_description": true,
         "description_text": "<p>Gerlamo: un nombre con historia</p>",
-        "text_align": "text-left",
+        "text_align": "text-center",
         "color_title": "#FDFDFD",
         "color_eyebrow": "#FDFDFD",
         "color_description": "#F7FFFE",
