@@ -336,10 +336,10 @@ terms-and-condition-checkbox~.shopify-payment-button{
   flex:0 0 auto;
 }
 .inventory-block__normal{
-  color:#388E3C;
+  color:#007665;
 }
 .inventory-block__hot{
-  color:#FF5722;
+  color:#033097;
 }
 
 .product__countdown__box{
@@ -359,7 +359,7 @@ terms-and-condition-checkbox~.shopify-payment-button{
   gap:10px;
 }
 .product__countdown__box .icon-inventory path{
-  fill:var(--color-icon, #FF5722);
+  fill:var(--color-icon, #033097);
 }
 @media (max-width:1024px){
   .product__countdown__box{
@@ -764,7 +764,7 @@ variant-selects{
   transform: none !important;
   line-height: 56px !important;
 }
-/* Sobreescribir la animación de base.css con mayor especificidad */
+/* Sobreescribir la animaciÃ³n de base.css con mayor especificidad */
 .main-product__container .btn--variant.btn__transition-text .btn__top-text.is-visible,
 .product__column .btn--variant.btn__transition-text .btn__top-text.is-visible {
   position: static !important;
@@ -916,10 +916,10 @@ random-counter{
   gap: 8px;
 }
 .cart-counter svg path{
-  fill:#FF5722;
+  fill:#033097;
 }
 .fake_cart_counter__color{
-  color:#FF5722;
+  color:#033097;
 }
 .complementary-products--border{
   border:1px solid var(--color-lines);
@@ -1086,3 +1086,74 @@ animated-badge svg{
 .product__price-container:has(>:nth-child(2)) .prices-in-one-line{
   padding-bottom:10px;
 }
+
+/* ═══════════════════════════════════════════════════════
+   GEROLAMO BRAND — Unificación de colores en página de producto
+   Base: #033097  |  Accent: #007665  |  Lines: #D0D0D0
+   ═══════════════════════════════════════════════════════ */
+
+/* Forzar variables de color en toda la página de producto */
+.shopify-section-clip .product__column,
+.shopify-section-clip .main-product__container,
+.product-page-template {
+  --color-accent-section: #007665;
+  --color-base-section: #033097;
+  --color-lines: #D0D0D0;
+}
+
+/* Acordeones — borde izquierdo y botón + */
+.shopify-section-clip .accordion__container [style*="--color-accent-section"],
+.shopify-section-clip [class*="toggle"] {
+  --color-accent-section: #007665 !important;
+}
+
+/* Botón + de acordeón */
+.shopify-section-clip section-accordion .accordion__button,
+.shopify-section-clip .toggle__button {
+  background-color: #007665 !important;
+  border-color: #007665 !important;
+  color: #ffffff !important;
+}
+
+/* Borde izquierdo de acordeones */
+.shopify-section-clip .accordion__container {
+  border-left-color: #007665 !important;
+}
+.shopify-section-clip .accordion__container:nth-child(odd) {
+  border-left-color: #033097 !important;
+}
+
+/* Checkmarks en características */
+.shopify-section-clip .icon-check path,
+.shopify-section-clip .check-icon path,
+.shopify-section-clip svg.icon-checkmark path {
+  fill: #007665 !important;
+}
+.shopify-section-clip .color_text_icons {
+  color: #007665 !important;
+  fill: #007665 !important;
+}
+
+/* Título Descripción y textos de acento */
+.shopify-section-clip .color-accent,
+.shopify-section-clip [class*="heading-accent"] {
+  color: #033097 !important;
+}
+
+/* Badges dinámicos */
+.shopify-section-clip .animated-badge,
+.shopify-section-clip .product-badge {
+  background-color: #033097 !important;
+}
+
+/* Inventario */
+.inventory-block__normal { color: #007665 !important; }
+.inventory-block__hot    { color: #033097 !important; }
+
+/* Cart counter icon */
+.cart-counter svg path,
+.fake_cart_counter__color { 
+  fill: #033097 !important;
+  color: #033097 !important;
+}
+
