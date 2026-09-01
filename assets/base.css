@@ -1538,3 +1538,142 @@ shopify-accelerated-checkout-cart {
 .shopify-section-clip{
   overflow-x:clip;
 }
+/* Acordeones de descripción Gerolamo */
+.gerolamo-accordion {
+  margin: 0;
+  border-top: 1px solid #dedede;
+}
+
+.gerolamo-accordion:last-of-type {
+  border-bottom: 1px solid #dedede;
+}
+
+.gerolamo-accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 4px;
+  color: #222222;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.gerolamo-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.gerolamo-accordion__summary::after {
+  content: "+";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #f3f3f3;
+  color: #222222;
+  font-size: 22px;
+  font-weight: 400;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.gerolamo-accordion[open] > .gerolamo-accordion__summary::after {
+  content: "−";
+  background-color: #eeeeee;
+}
+
+.gerolamo-accordion__summary:hover {
+  color: #e85d04;
+}
+
+.gerolamo-accordion__summary:focus-visible {
+  outline: 2px solid #e85d04;
+  outline-offset: 3px;
+}
+
+.gerolamo-accordion__content {
+  padding: 0 4px 22px;
+  color: #444444;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.gerolamo-accordion[open] .gerolamo-accordion__content {
+  animation: gerolamo-accordion-open 0.25s ease;
+}
+
+.gerolamo-accordion__content p:first-child,
+.gerolamo-accordion__content h4:first-child {
+  margin-top: 0;
+}
+
+/* Tablas de análisis y recomendaciones */
+.gerolamo-product-table-wrap {
+  width: 100%;
+  margin-top: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gerolamo-product-table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.gerolamo-product-table th,
+.gerolamo-product-table td {
+  padding: 11px 13px;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.gerolamo-product-table th {
+  background-color: #f6f6f6;
+  color: #222222;
+  font-weight: 700;
+}
+
+.gerolamo-product-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+@keyframes gerolamo-accordion-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .gerolamo-accordion__summary {
+    padding: 16px 2px;
+    font-size: 15px;
+  }
+
+  .gerolamo-accordion__content {
+    padding-bottom: 18px;
+    font-size: 14px;
+  }
+
+  .gerolamo-product-table th,
+  .gerolamo-product-table td {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+}
