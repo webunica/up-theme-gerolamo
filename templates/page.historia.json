@@ -25,7 +25,7 @@
         "box_border_radius": 18,
         "box_border_radius_mobile": 14,
         "box_border_width": 1,
-        "box_border_color": "#ffffff26",
+        "box_border_color": "#294EB3",
         "show_box_shadow": true,
         "show_text_shadow": false,
         "box_padding_desktop_v": 28,
@@ -96,9 +96,9 @@
     "paper_statement": {
       "type": "gerolamo-paper-text",
       "settings": {
-        "edge_style": "torn_exact",
+        "edge_style": "torn_fibers",
         "show_fiber_highlight": true,
-        "shadow_strength": "medium",
+        "shadow_strength": "none",
         "overlap_desktop": 75,
         "overlap_mobile": 40,
         "edge_height_desktop": 56,
