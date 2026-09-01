@@ -251,6 +251,7 @@
         "text_3": "<p>Porque de nuestro nombre existe una historia real. Una historia de un hombre, su perro y un vínculo capaz de atravesar generaciones.</p>",
         "show_bottom_bar": true,
         "signature_text": "Gerolamo. Volver al origen, volver a lo natural.",
+        "bottom_icon_image": "shopify://shop_images/historia-huella.png",
         "bottom_slogan_text": "<p>Alimentarlos bien<br/>es la mejor forma de amarlos.</p>",
         "bg_color": "#faf7f2",
         "card_bg": "#f6f2ea",
