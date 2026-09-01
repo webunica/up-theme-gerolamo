@@ -740,6 +740,10 @@ variant-selects{
   text-align: center;
   width: 100%;
   z-index: 1;
+  /* Neutralizar posicionamiento de la animación btn__transition-text */
+  position: static !important;
+  top: auto !important;
+  transform: none !important;
 }
 .btn--variant .btn__texts {
   display: flex;
@@ -747,9 +751,15 @@ variant-selects{
   justify-content: center;
   width: 100%;
   text-align: center;
+  overflow: hidden;
+  position: static !important;
+}
+/* Ocultar el span bottom-text duplicado */
+.btn--variant .btn__bottom-text {
+  display: none !important;
 }
 .btn--variant .variant__btn__text {
-  display: none; /* evitar duplicado — el texto lo muestra btn__texts */
+  display: none; /* evitar duplicado — el texto lo muestra btn__top-text */
 }
 /* Variante seleccionada */
 .product-form__input input[type=radio]:checked + .btn--variant {
