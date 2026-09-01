@@ -232,12 +232,42 @@
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 45
       }
+    },
+    "gerolamo_story_values_FBJneR": {
+      "type": "gerolamo-story-values",
+      "name": "Valores de Historia",
+      "settings": {
+        "card_title": "La historia de Gerolamo comienza entre naturaleza, aventura y compañerismo.",
+        "title_size_desktop": 26,
+        "title_size_mobile": 20,
+        "title_align": "left",
+        "title_align_mobile": "left",
+        "text_1": "<p>Hoy, esos mismos valores siguen presentes en nuestra forma de entender la alimentación: volver a lo esencial, reconocer las necesidades de perros y gatos y preocuparnos por aquello que les entregamos cada día.</p>",
+        "text_2": "<p>Porque detrás de nuestro nombre existe una historia real. Una historia de un hombre, su perro y un vínculo capaz de atravesar generaciones.</p>",
+        "text_3": "<p>Porque de nuestro nombre existe una historia real. Una historia de un hombre, su perro y un vínculo capaz de atravesar generaciones.</p>",
+        "show_bottom_bar": true,
+        "signature_text": "Gerolamo. Volver al origen, volver a lo natural.",
+        "bottom_slogan_text": "<p>Alimentarlos bien<br>es la mejor forma de amarlos.</p>",
+        "bg_color": "#faf7f2",
+        "card_bg": "#f6f2ea",
+        "title_color": "#1b4b8a",
+        "text_color": "#1e293b",
+        "font_size_desktop": 14,
+        "font_size_mobile": 13,
+        "card_radius": 22,
+        "content_max_width": 1160,
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 40
+      }
     }
   },
   "order": [
     "page_banner",
     "paper_statement",
     "story_timeline",
-    "story_legacy"
+    "story_legacy",
+    "gerolamo_story_values_FBJneR"
   ]
 }
