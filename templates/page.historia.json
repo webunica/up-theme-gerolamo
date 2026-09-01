@@ -84,7 +84,7 @@
         "bc_color_hover": "#0f6445",
         "bc_color_current": "#1e293b",
         "bc_color_sep": "#94a3b8",
-        "desktop_image_height": 480,
+        "desktop_image_height": 600,
         "mobile_image_height": 280,
         "padding_top_desktop": 35,
         "padding_bottom_desktop": 35,
