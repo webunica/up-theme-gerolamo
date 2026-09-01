@@ -131,6 +131,33 @@
     }
   }
 
+  /* Borde inferior con efecto de papel rasgado usando máscara SVG */
+  {% if section.settings.show_torn_edge %}
+  #theme-section-{{ section.id }}.gerolamo-page-banner::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: {{ section.settings.torn_edge_height_desktop | default: 55 }}px;
+    background-color: {{ section.settings.torn_edge_color | default: '#f5f1e9' }};
+    -webkit-mask-image: url("{{ 'torn-paper-edge.svg' | asset_url }}");
+    mask-image: url("{{ 'torn-paper-edge.svg' | asset_url }}");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  @media screen and (max-width: 749px) {
+    #theme-section-{{ section.id }}.gerolamo-page-banner::after {
+      height: {{ section.settings.torn_edge_height_mobile | default: 35 }}px;
+    }
+  }
+  {% endif %}
+
   /* Contenedor principal interior */
   #theme-section-{{ section.id }} .gerolamo-page-banner__inner {
     position: relative;
@@ -523,6 +550,42 @@
         { "value": "bottom left",   "label": "Inferior Izquierda" },
         { "value": "bottom right",  "label": "Inferior Derecha" }
       ]
+    },
+    {
+      "type": "header",
+      "content": "📜 Borde de Papel Rasgado"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_torn_edge",
+      "default": true,
+      "label": "Mostrar papel rasgado inferior"
+    },
+    {
+      "type": "color",
+      "id": "torn_edge_color",
+      "default": "#f5f1e9",
+      "label": "Color del papel rasgado"
+    },
+    {
+      "type": "range",
+      "id": "torn_edge_height_desktop",
+      "min": 20,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "label": "Altura del borde (Escritorio)",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "torn_edge_height_mobile",
+      "min": 15,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Altura del borde (Móvil)",
+      "default": 35
     },
     {
       "type": "header",
@@ -1201,6 +1264,10 @@
         "hero_title": "Historia",
         "show_description": true,
         "hero_description": "<p>Gerolamo: un nombre con historia</p>",
+        "show_torn_edge": true,
+        "torn_edge_color": "#f5f1e9",
+        "torn_edge_height_desktop": 55,
+        "torn_edge_height_mobile": 35,
         "show_box_bg": true,
         "box_bg_color": "#000000",
         "box_bg_opacity": 45,
