@@ -252,7 +252,7 @@
         "gallery_position": "to left",
         "default_variant": "select_variant",
         "top_spacing_blocks": 50,
-        "top_spacing_blocks_mobile": 30,
+        "top_spacing_blocks_mobile": 50,
         "enable_sticky_info": true,
         "media_type": "thumbnails_vertical",
         "media_type_mobile": "thumbnails_horizontal",
