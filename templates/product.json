@@ -103,6 +103,16 @@
             "page_5": ""
           }
         },
+        "description_j6ANqd": {
+          "type": "description",
+          "settings": {
+            "heading_text": "Descripción",
+            "icon_name": "",
+            "heading_size": "h5",
+            "description_property": "simple",
+            "show_all_text_in_admin": false
+          }
+        },
         "gerolamo_b2b_actions_RjHqih": {
           "type": "gerolamo_b2b_actions",
           "settings": {
@@ -123,16 +133,6 @@
             "show_badge_info": true,
             "badge_info_text": "Disponible exclusivamente en clínicas veterinarias, pet shops y distribuidores autorizados.",
             "btn_radius": 30
-          }
-        },
-        "description_j6ANqd": {
-          "type": "description",
-          "settings": {
-            "heading_text": "Descripción",
-            "icon_name": "",
-            "heading_size": "h5",
-            "description_property": "simple",
-            "show_all_text_in_admin": false
           }
         },
         "share_jbceFy": {
@@ -237,8 +237,8 @@
         "price_XHwahC",
         "text_jqkd4C",
         "horizontal_tabs_zYiUCa",
-        "gerolamo_b2b_actions_RjHqih",
         "description_j6ANqd",
+        "gerolamo_b2b_actions_RjHqih",
         "share_jbceFy",
         "variant_picker_zYJKhL",
         "buy_buttons_exgEyk",
