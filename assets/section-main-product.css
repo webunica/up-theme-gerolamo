@@ -740,26 +740,41 @@ variant-selects{
   text-align: center;
   width: 100%;
   z-index: 1;
-  /* Neutralizar posicionamiento de la animación btn__transition-text */
   position: static !important;
   top: auto !important;
   transform: none !important;
+  line-height: 56px !important;
 }
 .btn--variant .btn__texts {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   text-align: center;
-  overflow: hidden;
   position: static !important;
+  display: block !important;
+  height: 56px;
+  overflow: hidden;
 }
 /* Ocultar el span bottom-text duplicado */
 .btn--variant .btn__bottom-text {
   display: none !important;
 }
+.btn--variant .btn__top-text {
+  display: block !important;
+  position: static !important;
+  top: auto !important;
+  transform: none !important;
+  line-height: 56px !important;
+}
+/* Sobreescribir la animación de base.css con mayor especificidad */
+.main-product__container .btn--variant.btn__transition-text .btn__top-text.is-visible,
+.product__column .btn--variant.btn__transition-text .btn__top-text.is-visible {
+  position: static !important;
+  top: auto !important;
+  padding-bottom: 0 !important;
+  transform: none !important;
+  line-height: 56px !important;
+}
 .btn--variant .variant__btn__text {
-  display: none; /* evitar duplicado — el texto lo muestra btn__top-text */
+  display: none !important;
 }
 /* Variante seleccionada */
 .product-form__input input[type=radio]:checked + .btn--variant {
