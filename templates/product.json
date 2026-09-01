@@ -260,6 +260,50 @@
         "image_ratio": "auto"
       }
     },
+    "main_product_horizontal_tabs_cFWtTB": {
+      "type": "main-product-horizontal-tabs",
+      "blocks": {
+        "tab_9LdyPK": {
+          "type": "tab",
+          "settings": {
+            "heading_text": "Descripción",
+            "icon_name": "",
+            "content": "{{ product.description }}",
+            "page": ""
+          }
+        },
+        "tab_Np7Q76": {
+          "type": "tab",
+          "settings": {
+            "heading_text": "Tab name",
+            "icon_name": "",
+            "content": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page": ""
+          }
+        },
+        "tab_iq8PQP": {
+          "type": "tab",
+          "settings": {
+            "heading_text": "Tab name",
+            "icon_name": "",
+            "content": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_9LdyPK",
+        "tab_Np7Q76",
+        "tab_iq8PQP"
+      ],
+      "name": "Horizontal tabs",
+      "settings": {
+        "heading_aligment": "text-center",
+        "top_spacing": "normal",
+        "width": "default",
+        "show_line": true
+      }
+    },
     "product_recommendations_gFKKqN": {
       "type": "product-recommendations",
       "name": "t:names.product_recommendations",
@@ -390,50 +434,6 @@
         "color_media_dots": "rgba(0,0,0,0)",
         "color_active_rating": "rgba(0,0,0,0)",
         "color_base_rating": "rgba(0,0,0,0)"
-      }
-    },
-    "main_product_horizontal_tabs_cFWtTB": {
-      "type": "main-product-horizontal-tabs",
-      "blocks": {
-        "tab_9LdyPK": {
-          "type": "tab",
-          "settings": {
-            "heading_text": "Description",
-            "icon_name": "",
-            "content": "{{ product.description }}",
-            "page": ""
-          }
-        },
-        "tab_Np7Q76": {
-          "type": "tab",
-          "settings": {
-            "heading_text": "Tab name",
-            "icon_name": "",
-            "content": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
-            "page": ""
-          }
-        },
-        "tab_iq8PQP": {
-          "type": "tab",
-          "settings": {
-            "heading_text": "Tab name",
-            "icon_name": "",
-            "content": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_9LdyPK",
-        "tab_Np7Q76",
-        "tab_iq8PQP"
-      ],
-      "name": "Horizontal tabs",
-      "settings": {
-        "heading_aligment": "text-center",
-        "top_spacing": "normal",
-        "width": "default",
-        "show_line": true
       }
     }
   },
