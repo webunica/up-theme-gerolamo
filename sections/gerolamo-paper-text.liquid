@@ -1,0 +1,532 @@
+{%- liquid
+  assign bg_color         = section.settings.bg_color | default: '#FAF7F2'
+  assign text_color       = section.settings.text_color | default: '#1e293b'
+  assign eyebrow_color    = section.settings.eyebrow_color | default: '#1B4B8A'
+  assign edge_style       = section.settings.edge_style | default: 'torn_1'
+  assign shadow_strength  = section.settings.shadow_strength | default: 'medium'
+  assign overlap_desktop  = section.settings.overlap_desktop | default: 60
+  assign overlap_mobile   = section.settings.overlap_mobile | default: 35
+  assign max_w            = section.settings.content_max_width | default: 920
+-%}
+
+<style>
+  #theme-section-{{ section.id }}.gerolamo-paper-section {
+    position: relative;
+    z-index: 10;
+    margin-top: -{{ overlap_desktop }}px;
+    width: 100%;
+    background-color: transparent;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }}.gerolamo-paper-section {
+      margin-top: -{{ overlap_mobile }}px;
+    }
+  }
+
+  /* Divisor de Borde de Papel Rasgado */
+  #theme-section-{{ section.id }} .gerolamo-paper__edge-wrap {
+    display: block;
+    width: 100%;
+    height: {{ section.settings.edge_height_desktop | default: 48 }}px;
+    line-height: 0;
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    {% if shadow_strength == 'subtle' %}
+      filter: drop-shadow(0 -3px 4px rgba(0, 0, 0, 0.08));
+    {% elsif shadow_strength == 'medium' %}
+      filter: drop-shadow(0 -5px 8px rgba(0, 0, 0, 0.14));
+    {% elsif shadow_strength == 'strong' %}
+      filter: drop-shadow(0 -8px 14px rgba(0, 0, 0, 0.22));
+    {% endif %}
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-paper__edge-wrap {
+      height: {{ section.settings.edge_height_mobile | default: 32 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-paper__edge-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: {{ bg_color }};
+  }
+
+  /* Cuerpo de la Sección de Texto */
+  #theme-section-{{ section.id }} .gerolamo-paper__body {
+    background-color: {{ bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop | default: 35 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 55 }}px;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-paper__body {
+      padding-top: {{ section.settings.padding_top_mobile | default: 25 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 35 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-paper__inner {
+    max-width: {{ max_w }}px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+    text-align: {{ section.settings.text_align | default: 'center' }};
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-paper__inner {
+      padding-left: 18px;
+      padding-right: 18px;
+      text-align: {{ section.settings.text_align_mobile | default: 'center' }};
+    }
+  }
+
+  /* Antetítulo Opcional */
+  #theme-section-{{ section.id }} .gerolamo-paper__eyebrow {
+    font-size: {{ section.settings.eyebrow_size | default: 13 }}px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: {{ eyebrow_color }};
+    margin-bottom: 14px;
+  }
+
+  /* Párrafo / Declaración Principal */
+  #theme-section-{{ section.id }} .gerolamo-paper__statement {
+    font-size: {{ section.settings.font_size_desktop | default: 22 }}px;
+    font-weight: {{ section.settings.font_weight | default: 500 }};
+    line-height: {{ section.settings.line_height | default: 1.65 }};
+    color: {{ text_color }};
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-paper__statement {
+      font-size: {{ section.settings.font_size_mobile | default: 17 }}px;
+      line-height: 1.55;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-paper__statement p {
+    margin: 0 0 16px 0;
+  }
+  #theme-section-{{ section.id }} .gerolamo-paper__statement p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Botón opcional */
+  #theme-section-{{ section.id }} .gerolamo-paper__btn-wrap {
+    margin-top: 28px;
+    display: flex;
+    justify-content: {{ section.settings.btn_align | default: 'center' }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-paper__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 30px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    background-color: {{ section.settings.btn_bg_color | default: '#1B4B8A' }};
+    color: {{ section.settings.btn_text_color | default: '#ffffff' }};
+    transition: all 0.25s ease;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-paper__btn:hover {
+    background-color: {{ section.settings.btn_bg_hover | default: '#0F6445' }};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+</style>
+
+<div id="theme-section-{{ section.id }}" class="gerolamo-paper-section" data-section-name="gerolamo-paper-text">
+
+  <!-- Borde Superior de Papel Rasgado / Curvo -->
+  <div class="gerolamo-paper__edge-wrap" aria-hidden="true">
+    {%- if edge_style == 'torn_1' -%}
+      <!-- Papel Rasgado Orgánico y Detallado -->
+      <svg class="gerolamo-paper__edge-svg" viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,32 
+                 C 25,31 45,34 70,30 
+                 C 95,26 115,35 140,29 
+                 C 165,24 185,33 210,31 
+                 C 235,28 255,22 280,26 
+                 C 305,30 325,36 350,32 
+                 C 375,28 395,23 420,27 
+                 C 445,31 465,37 490,33 
+                 C 515,29 535,22 560,25 
+                 C 585,28 605,35 630,31 
+                 C 655,27 675,24 700,28 
+                 C 725,32 745,38 770,34 
+                 C 795,30 815,23 840,26 
+                 C 865,29 885,36 910,32 
+                 C 935,28 955,22 980,25 
+                 C 1005,28 1025,35 1050,30 
+                 C 1075,25 1095,33 1120,31 
+                 C 1145,28 1165,23 1190,27 
+                 C 1215,31 1235,37 1260,33 
+                 C 1285,29 1305,24 1330,28 
+                 C 1355,32 1375,37 1400,33 
+                 C 1420,29 1435,32 1440,31 
+                 L 1440,60 L 0,60 Z"></path>
+      </svg>
+    {%- elsif edge_style == 'torn_2' -%}
+      <!-- Papel Rasgado Rústico con Micro-Ondas -->
+      <svg class="gerolamo-paper__edge-svg" viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,28 
+                 L 40,25 L 80,31 L 120,24 L 160,29 L 200,23 L 240,30 L 280,26 L 320,32 L 360,25 L 400,31 L 440,24 L 480,28 L 520,22 L 560,30 L 600,26 L 640,33 L 680,25 L 720,29 L 760,22 L 800,30 L 840,25 L 880,32 L 920,26 L 960,30 L 1000,23 L 1040,29 L 1080,24 L 1120,31 L 1160,26 L 1200,32 L 1240,25 L 1280,30 L 1320,23 L 1360,29 L 1400,25 L 1440,28 
+                 L 1440,60 L 0,60 Z"></path>
+      </svg>
+    {%- elsif edge_style == 'curve' -%}
+      <!-- Curva Suave Elegante -->
+      <svg class="gerolamo-paper__edge-svg" viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,45 Q720,0 1440,45 L1440,60 L0,60 Z"></path>
+      </svg>
+    {%- elsif edge_style == 'wave' -%}
+      <!-- Onda Suave -->
+      <svg class="gerolamo-paper__edge-svg" viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,35 Q360,10 720,35 T1440,35 L1440,60 L0,60 Z"></path>
+      </svg>
+    {%- endif -%}
+  </div>
+
+  <!-- Contenido de Texto -->
+  <div class="gerolamo-paper__body">
+    <div class="gerolamo-paper__inner">
+
+      {%- if section.settings.show_eyebrow and section.settings.eyebrow_text != blank -%}
+      <div class="gerolamo-paper__eyebrow">{{ section.settings.eyebrow_text }}</div>
+      {%- endif -%}
+
+      <div class="gerolamo-paper__statement">
+        {{ section.settings.statement_text }}
+      </div>
+
+      {%- if section.settings.show_btn and section.settings.btn_text != blank -%}
+      <div class="gerolamo-paper__btn-wrap">
+        <a href="{{ section.settings.btn_url | default: '#' }}" class="gerolamo-paper__btn">
+          {{ section.settings.btn_text }}
+        </a>
+      </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Texto con Borde de Papel",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📜 Borde de Papel Rasgado"
+    },
+    {
+      "type": "select",
+      "id": "edge_style",
+      "label": "Estilo del borde superior",
+      "default": "torn_1",
+      "options": [
+        { "value": "torn_1",  "label": "Papel rasgado orgánico" },
+        { "value": "torn_2",  "label": "Papel rasgado rústico" },
+        { "value": "curve",   "label": "Curva suave" },
+        { "value": "wave",    "label": "Onda" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "shadow_strength",
+      "label": "Sombra en el borde",
+      "default": "medium",
+      "options": [
+        { "value": "none",    "label": "Sin sombra" },
+        { "value": "subtle",  "label": "Sombra suave" },
+        { "value": "medium",  "label": "Sombra media" },
+        { "value": "strong",  "label": "Sombra pronunciada" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlap_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Superposición sobre banner (Escritorio)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "overlap_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Superposición sobre banner (Móvil)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "edge_height_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Altura del borde (Escritorio)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "edge_height_mobile",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Altura del borde (Móvil)",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "🎨 Colores y Fondo"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#FAF7F2",
+      "label": "Color de fondo (Papel/Sección)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#1e293b",
+      "label": "Color del texto"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "default": "#1B4B8A",
+      "label": "Color del antetítulo"
+    },
+    {
+      "type": "header",
+      "content": "📝 Contenido del Texto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "default": false,
+      "label": "Mostrar antetítulo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Texto del antetítulo",
+      "default": "NUESTRA HISTORIA"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño del antetítulo",
+      "default": 13
+    },
+    {
+      "type": "richtext",
+      "id": "statement_text",
+      "label": "Texto principal / Declaración",
+      "default": "<p>Gerolamo no es solo el nombre de nuestra marca. Es el nombre de uno de nuestros antepasados y el origen de una historia familiar real que, generaciones más tarde, inspiraría la creación de nuestros alimentos para perros y gatos.</p>"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 15,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Escritorio)",
+      "default": 21
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 14,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Móvil)",
+      "default": 17
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Grosor del texto",
+      "default": "500",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "Interlineado del texto",
+      "default": "1.65",
+      "options": [
+        { "value": "1.4",  "label": "Compacto (1.4)" },
+        { "value": "1.65", "label": "Estándar (1.65)" },
+        { "value": "1.85", "label": "Amplio (1.85)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alineación (Escritorio)",
+      "default": "center",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right",  "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align_mobile",
+      "label": "Alineación (Móvil)",
+      "default": "center",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right",  "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 500,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Ancho máximo del texto",
+      "default": 940
+    },
+    {
+      "type": "header",
+      "content": "🔘 Botón Opcional"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_btn",
+      "default": false,
+      "label": "Mostrar botón"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Texto del botón",
+      "default": "Conoce más"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "default": "#1B4B8A",
+      "label": "Color de fondo del botón"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "default": "#ffffff",
+      "label": "Color de texto del botón"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_hover",
+      "default": "#0F6445",
+      "label": "Color de fondo en Hover"
+    },
+    {
+      "type": "header",
+      "content": "📏 Espaciado de Sección"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Escritorio)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 15,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Escritorio)",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 15,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Móvil)",
+      "default": 35
+    }
+  ],
+  "presets": [
+    {
+      "name": "Texto con Borde de Papel",
+      "settings": {
+        "statement_text": "<p>Gerolamo no es solo el nombre de nuestra marca. Es el nombre de uno de nuestros antepasados y el origen de una historia familiar real que, generaciones más tarde, inspiraría la creación de nuestros alimentos para perros y gatos.</p>",
+        "bg_color": "#FAF7F2",
+        "text_color": "#1e293b",
+        "edge_style": "torn_1",
+        "shadow_strength": "medium",
+        "overlap_desktop": 60,
+        "overlap_mobile": 35,
+        "text_align": "center"
+      }
+    }
+  ]
+}
+{% endschema %}
