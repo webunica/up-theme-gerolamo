@@ -709,6 +709,7 @@ variant-selects{
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   background-color: #ffffff;
   border: 2.5px solid #033097;
   border-radius: 10px;
@@ -736,7 +737,19 @@ variant-selects{
   font-weight: 800 !important;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  text-align: center;
+  width: 100%;
   z-index: 1;
+}
+.btn--variant .btn__texts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+.btn--variant .variant__btn__text {
+  display: none; /* evitar duplicado — el texto lo muestra btn__texts */
 }
 /* Variante seleccionada */
 .product-form__input input[type=radio]:checked + .btn--variant {
