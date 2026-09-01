@@ -641,8 +641,18 @@ variant-selects{
   clip: rect(0, 0, 0, 0);
   overflow: hidden;
   position: absolute;
+  top: 0;
+  left: 0;
   height: 1px;
   width: 1px;
+  appearance: none;
+  -webkit-appearance: none;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+}
+.product-form__item {
+  position: relative;
 }
 .product-form__input select{
   font-weight: var(--font-body-weight);
