@@ -1,0 +1,750 @@
+{%- liquid
+  assign bg_color         = section.settings.bg_color | default: '#FAF7F2'
+  assign card_bg          = section.settings.card_bg | default: '#F6F2EA'
+  assign title_color      = section.settings.title_color | default: '#1B4B8A'
+  assign text_color       = section.settings.text_color | default: '#1e293b'
+  assign max_w            = section.settings.content_max_width | default: 1160
+  assign illustration     = section.settings.illustration_image
+  assign signature_img    = section.settings.signature_image
+  assign bottom_icon      = section.settings.bottom_icon_image
+-%}
+
+<style>
+  #theme-section-{{ section.id }}.gerolamo-values-section {
+    background-color: {{ bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop | default: 40 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 60 }}px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }}.gerolamo-values-section {
+      padding-top: {{ section.settings.padding_top_mobile | default: 25 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__container {
+    max-width: {{ max_w }}px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-values__container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  /* Tarjeta Principal Superior */
+  #theme-section-{{ section.id }} .gerolamo-values__card {
+    background-color: {{ card_bg }};
+    border-radius: {{ section.settings.card_radius | default: 22 }}px;
+    padding: {{ section.settings.card_padding_desktop | default: 36 }}px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+    margin-bottom: {{ section.settings.card_margin_bottom | default: 36 }}px;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-values__card {
+      padding: {{ section.settings.card_padding_mobile | default: 22 }}px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+  }
+
+  /* Título de la Tarjeta */
+  #theme-section-{{ section.id }} .gerolamo-values__card-title {
+    font-size: {{ section.settings.title_size_desktop | default: 26 }}px;
+    font-weight: 700;
+    color: {{ title_color }};
+    margin: 0 0 32px 0;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-align: {{ section.settings.title_align | default: 'left' }};
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-values__card-title {
+      font-size: {{ section.settings.title_size_mobile | default: 20 }}px;
+      margin-bottom: 24px;
+      text-align: {{ section.settings.title_align_mobile | default: 'left' }};
+    }
+  }
+
+  /* Grid Interior: Columnas de Valores a la Izquierda + Ilustración a la Derecha */
+  #theme-section-{{ section.id }} .gerolamo-values__card-grid {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 36px;
+    align-items: center;
+  }
+
+  @media (max-width: 991px) {
+    #theme-section-{{ section.id }} .gerolamo-values__card-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  /* Sub-Grid de los 3 Valores con divisores verticales */
+  #theme-section-{{ section.id }} .gerolamo-values__columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  @media (max-width: 640px) {
+    #theme-section-{{ section.id }} .gerolamo-values__columns {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* Columna Individual de Valor */
+  #theme-section-{{ section.id }} .gerolamo-value-item {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-value-item:first-child {
+    padding-left: 0;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-value-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    right: 0;
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: 640px) {
+    #theme-section-{{ section.id }} .gerolamo-value-item {
+      padding: 0;
+    }
+    #theme-section-{{ section.id }} .gerolamo-value-item:not(:last-child)::after {
+      display: none;
+    }
+  }
+
+  /* Icono del Valor */
+  #theme-section-{{ section.id }} .gerolamo-value-item__icon-wrap {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: {{ title_color }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-value-item__icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-value-item__icon-svg {
+    width: 40px;
+    height: 40px;
+    stroke: {{ title_color }};
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Texto del Valor */
+  #theme-section-{{ section.id }} .gerolamo-value-item__text {
+    font-size: {{ section.settings.font_size_desktop | default: 14 }}px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: {{ text_color }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-value-item__text {
+      font-size: {{ section.settings.font_size_mobile | default: 13.5 }}px;
+    }
+  }
+
+  /* Columna de la Ilustración */
+  #theme-section-{{ section.id }} .gerolamo-values__illustration-wrap {
+    width: 100%;
+    height: 100%;
+    min-height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__illustration-img {
+    width: 100%;
+    height: auto;
+    max-height: 230px;
+    object-fit: contain;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+
+  /* ------------------------------------------- */
+  /* Barra Inferior: Firma / Lema              */
+  /* ------------------------------------------- */
+  #theme-section-{{ section.id }} .gerolamo-values__bottom-bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  @media (max-width: 850px) {
+    #theme-section-{{ section.id }} .gerolamo-values__bottom-bar {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      text-align: center;
+    }
+  }
+
+  /* Lado Izquierdo: Firma Caligráfica */
+  #theme-section-{{ section.id }} .gerolamo-values__signature-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 850px) {
+    #theme-section-{{ section.id }} .gerolamo-values__signature-wrap {
+      align-items: center;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__signature-img {
+    max-height: 48px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__signature-text {
+    font-family: 'Brush Script MT', 'Lucida Handwriting', cursive, serif;
+    font-size: 27px;
+    color: {{ title_color }};
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__signature-underline {
+    width: 100%;
+    max-width: 480px;
+    height: 2px;
+    background: linear-gradient(90deg, {{ title_color }} 0%, rgba(27, 75, 138, 0.2) 100%);
+    margin-top: 6px;
+    border-radius: 2px;
+  }
+
+  /* Divisor Central */
+  #theme-section-{{ section.id }} .gerolamo-values__bottom-divider {
+    width: 2px;
+    height: 48px;
+    background-color: {{ title_color }};
+    opacity: 0.35;
+  }
+
+  @media (max-width: 850px) {
+    #theme-section-{{ section.id }} .gerolamo-values__bottom-divider {
+      display: none;
+    }
+  }
+
+  /* Lado Derecho: Lema con Icono de Huella */
+  #theme-section-{{ section.id }} .gerolamo-values__slogan-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  @media (max-width: 850px) {
+    #theme-section-{{ section.id }} .gerolamo-values__slogan-wrap {
+      justify-content: center;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__slogan-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    color: {{ title_color }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__slogan-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-values__slogan-text {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: {{ title_color }};
+    line-height: 1.35;
+    margin: 0;
+  }
+</style>
+
+<div id="theme-section-{{ section.id }}" class="gerolamo-values-section" data-section-name="gerolamo-story-values">
+  <div class="gerolamo-values__container">
+
+    <!-- Tarjeta Principal -->
+    <div class="gerolamo-values__card">
+
+      <!-- Título Superior -->
+      {%- if section.settings.card_title != blank -%}
+      <h2 class="gerolamo-values__card-title">
+        {{ section.settings.card_title }}
+      </h2>
+      {%- endif -%}
+
+      <!-- Grid de Contenido -->
+      <div class="gerolamo-values__card-grid">
+
+        <!-- 3 Columnas de Valores -->
+        <div class="gerolamo-values__columns">
+
+          <!-- Valor 1 (Hoja) -->
+          <div class="gerolamo-value-item">
+            <div class="gerolamo-value-item__icon-wrap">
+              {%- if section.settings.icon_1_image != blank -%}
+                <img src="{{ section.settings.icon_1_image | image_url: width: 100 }}"
+                     alt="Icono valor 1"
+                     class="gerolamo-value-item__icon-img"
+                     loading="lazy">
+              {%- else -%}
+                <svg class="gerolamo-value-item__icon-svg" viewBox="0 0 24 24">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                </svg>
+              {%- endif -%}
+            </div>
+            <div class="gerolamo-value-item__text">
+              {{ section.settings.text_1 }}
+            </div>
+          </div>
+
+          <!-- Valor 2 (Corazón) -->
+          <div class="gerolamo-value-item">
+            <div class="gerolamo-value-item__icon-wrap">
+              {%- if section.settings.icon_2_image != blank -%}
+                <img src="{{ section.settings.icon_2_image | image_url: width: 100 }}"
+                     alt="Icono valor 2"
+                     class="gerolamo-value-item__icon-img"
+                     loading="lazy">
+              {%- else -%}
+                <svg class="gerolamo-value-item__icon-svg" viewBox="0 0 24 24">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                </svg>
+              {%- endif -%}
+            </div>
+            <div class="gerolamo-value-item__text">
+              {{ section.settings.text_2 }}
+            </div>
+          </div>
+
+          <!-- Valor 3 (Huella) -->
+          <div class="gerolamo-value-item">
+            <div class="gerolamo-value-item__icon-wrap">
+              {%- if section.settings.icon_3_image != blank -%}
+                <img src="{{ section.settings.icon_3_image | image_url: width: 100 }}"
+                     alt="Icono valor 3"
+                     class="gerolamo-value-item__icon-img"
+                     loading="lazy">
+              {%- else -%}
+                <svg class="gerolamo-value-item__icon-svg" viewBox="0 0 24 24">
+                  <ellipse cx="4.5" cy="9.5" rx="2" ry="3"/>
+                  <ellipse cx="9.5" cy="4.5" rx="2" ry="3"/>
+                  <ellipse cx="14.5" cy="4.5" rx="2" ry="3"/>
+                  <ellipse cx="19.5" cy="9.5" rx="2" ry="3"/>
+                  <path d="M12 11c-3.5 0-6.5 2-6.5 5.5 0 2 1.5 3.5 3.5 3.5 1.5 0 2.5-1 3-1s1.5 1 3 1c2 0 3.5-1.5 3.5-3.5 0-3.5-3-5.5-6.5-5.5Z"/>
+                </svg>
+              {%- endif -%}
+            </div>
+            <div class="gerolamo-value-item__text">
+              {{ section.settings.text_3 }}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Ilustración / Grabado Vintage -->
+        <div class="gerolamo-values__illustration-wrap">
+          {%- if illustration != blank -%}
+            <img src="{{ illustration | image_url: width: 800 }}"
+                 alt="{{ section.settings.card_title | escape }}"
+                 class="gerolamo-values__illustration-img"
+                 loading="lazy"
+                 width="400"
+                 height="230">
+          {%- else -%}
+            <!-- Placeholder ilustrativo de cabaña/montaña si aún no hay imagen -->
+            <svg viewBox="0 0 400 220" class="gerolamo-values__illustration-img" style="opacity: 0.65; fill: none; stroke: {{ title_color }}; stroke-width: 1.5;">
+              <polygon points="260,20 370,170 170,170" fill="none" stroke-linejoin="round"/>
+              <polygon points="320,50 390,170 250,170" fill="none" stroke-linejoin="round"/>
+              <!-- Casa -->
+              <polygon points="70,100 130,60 190,100" fill="none"/>
+              <rect x="80" y="100" width="100" height="70" fill="none"/>
+              <rect x="115" y="125" width="30" height="45" fill="none"/>
+              <rect x="90" y="115" width="20" height="20" fill="none"/>
+              <rect x="150" y="115" width="20" height="20" fill="none"/>
+              <!-- Árboles -->
+              <polygon points="40,90 25,170 55,170" fill="none"/>
+              <polygon points="205,100 195,170 215,170" fill="none"/>
+            </svg>
+          {%- endif -%}
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Barra Inferior: Firma y Lema -->
+    {%- if section.settings.show_bottom_bar -%}
+    <div class="gerolamo-values__bottom-bar">
+
+      <!-- Firma / Lema Caligráfico -->
+      <div class="gerolamo-values__signature-wrap">
+        {%- if signature_img != blank -%}
+          <img src="{{ signature_img | image_url: width: 600 }}"
+               alt="Gerolamo. Volver al origen, volver a lo natural"
+               class="gerolamo-values__signature-img"
+               loading="lazy">
+        {%- else -%}
+          <div class="gerolamo-values__signature-text">
+            {{ section.settings.signature_text | default: 'Gerolamo. Volver al origen, volver a lo natural.' }}
+          </div>
+        {%- endif -%}
+        <div class="gerolamo-values__signature-underline" aria-hidden="true"></div>
+      </div>
+
+      <!-- Divisor Vertical -->
+      <div class="gerolamo-values__bottom-divider" aria-hidden="true"></div>
+
+      <!-- Lema con Huella -->
+      <div class="gerolamo-values__slogan-wrap">
+        <div class="gerolamo-values__slogan-icon">
+          {%- if bottom_icon != blank -%}
+            <img src="{{ bottom_icon | image_url: width: 100 }}"
+                 alt="Icono huella"
+                 class="gerolamo-values__slogan-icon-img"
+                 loading="lazy">
+          {%- else -%}
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:100%; height:100%;">
+              <ellipse cx="4.5" cy="9.5" rx="2" ry="3"/>
+              <ellipse cx="9.5" cy="4.5" rx="2" ry="3"/>
+              <ellipse cx="14.5" cy="4.5" rx="2" ry="3"/>
+              <ellipse cx="19.5" cy="9.5" rx="2" ry="3"/>
+              <path d="M12 11c-3.5 0-6.5 2-6.5 5.5 0 2 1.5 3.5 3.5 3.5 1.5 0 2.5-1 3-1s1.5 1 3 1c2 0 3.5-1.5 3.5-3.5 0-3.5-3-5.5-6.5-5.5Z"/>
+            </svg>
+          {%- endif -%}
+        </div>
+        <div class="gerolamo-values__slogan-text">
+          {{ section.settings.bottom_slogan_text | default: '<p>Alimentarlos bien<br>es la mejor forma de amarlos.</p>' }}
+        </div>
+      </div>
+
+    </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Valores de Historia",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📜 Tarjeta de Historia y Valores"
+    },
+    {
+      "type": "text",
+      "id": "card_title",
+      "label": "Título de la tarjeta",
+      "default": "La historia de Gerolamo comienza entre naturaleza, aventura y compañerismo."
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título (Escritorio)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 16,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título (Móvil)",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "title_align",
+      "label": "Alineación del título (Escritorio)",
+      "default": "left",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "title_align_mobile",
+      "label": "Alineación del título (Móvil)",
+      "default": "left",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "🖼️ Ilustración (Lado Derecho)"
+    },
+    {
+      "type": "image_picker",
+      "id": "illustration_image",
+      "label": "Imagen de ilustración (Montaña / Cabaña)",
+      "info": "Sube el grabado o dibujo vintage para el lado derecho de la tarjeta."
+    },
+    {
+      "type": "header",
+      "content": "🍃 Columna 1 (Hoja / Origen)"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_1_image",
+      "label": "Icono Columna 1 (Opcional)",
+      "info": "Si se deja vacío, usa el icono vectorial por defecto."
+    },
+    {
+      "type": "richtext",
+      "id": "text_1",
+      "label": "Texto Columna 1",
+      "default": "<p>Hoy, esos mismos valores siguen presentes en nuestra forma de entender la alimentación: volver a lo esencial, reconocer las necesidades de perros y gatos y preocuparnos por aquello que les entregamos cada día.</p>"
+    },
+    {
+      "type": "header",
+      "content": "❤️ Columna 2 (Corazón / Vínculo)"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_2_image",
+      "label": "Icono Columna 2 (Opcional)"
+    },
+    {
+      "type": "richtext",
+      "id": "text_2",
+      "label": "Texto Columna 2",
+      "default": "<p>Porque detrás de nuestro nombre existe una historia real. Una historia de un hombre, su perro y un vínculo capaz de atravesar generaciones.</p>"
+    },
+    {
+      "type": "header",
+      "content": "🐾 Columna 3 (Huella / Legado)"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_3_image",
+      "label": "Icono Columna 3 (Opcional)"
+    },
+    {
+      "type": "richtext",
+      "id": "text_3",
+      "label": "Texto Columna 3",
+      "default": "<p>Porque de nuestro nombre existe una historia real. Una historia de un hombre, su perro y un vínculo capaz de atravesar generaciones.</p>"
+    },
+    {
+      "type": "header",
+      "content": "🖋️ Barra Inferior (Firma y Lema)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_bar",
+      "default": true,
+      "label": "Mostrar barra inferior de firma"
+    },
+    {
+      "type": "image_picker",
+      "id": "signature_image",
+      "label": "Imagen de la firma (Opcional)",
+      "info": "Sube el logo manuscrito en PNG/SVG si lo tienes."
+    },
+    {
+      "type": "text",
+      "id": "signature_text",
+      "label": "Texto de la firma",
+      "default": "Gerolamo. Volver al origen, volver a lo natural."
+    },
+    {
+      "type": "image_picker",
+      "id": "bottom_icon_image",
+      "label": "Icono del lema inferior (Opcional)"
+    },
+    {
+      "type": "richtext",
+      "id": "bottom_slogan_text",
+      "label": "Texto del lema inferior",
+      "default": "<p>Alimentarlos bien<br>es la mejor forma de amarlos.</p>"
+    },
+    {
+      "type": "header",
+      "content": "🎨 Colores y Estilos"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "default": "#FAF7F2",
+      "label": "Color de fondo de la sección"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "default": "#F6F2EA",
+      "label": "Color de fondo de la tarjeta"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#1B4B8A",
+      "label": "Color de títulos y firmas"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#1e293b",
+      "label": "Color de los párrafos"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Escritorio)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de texto (Móvil)",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 10,
+      "max": 35,
+      "step": 1,
+      "unit": "px",
+      "label": "Redondeo de la tarjeta",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 800,
+      "max": 1300,
+      "step": 20,
+      "unit": "px",
+      "label": "Ancho máximo del contenedor",
+      "default": 1160
+    },
+    {
+      "type": "header",
+      "content": "📏 Espaciado de Sección"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Escritorio)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Escritorio)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Móvil)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Móvil)",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Valores de Historia",
+      "settings": {
+        "card_title": "La historia de Gerolamo comienza entre naturaleza, aventura y compañerismo.",
+        "bg_color": "#FAF7F2",
+        "card_bg": "#F6F2EA",
+        "title_color": "#1B4B8A",
+        "text_color": "#1e293b",
+        "show_bottom_bar": true
+      }
+    }
+  ]
+}
+{% endschema %}
