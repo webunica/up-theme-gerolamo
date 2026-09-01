@@ -538,5 +538,14 @@
     "header": {
       "icon_compare": "Compare"
     }
+  },
+  "shopify": {
+    "filters": {
+      "availability": {
+        "value": {
+          "in_stock": "Disponible"
+        }
+      }
+    }
   }
 }
