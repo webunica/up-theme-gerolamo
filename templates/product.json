@@ -260,94 +260,6 @@
         "image_ratio": "auto"
       }
     },
-    "text_awRLHC": {
-      "type": "text",
-      "blocks": {
-        "heading_jpHqyW": {
-          "type": "heading",
-          "settings": {
-            "main_subheading": "Subheading",
-            "main_heading": "Text",
-            "heading_scale": true,
-            "heading_size_px": 40,
-            "heading_size_px_tablet": 40,
-            "heading_size_px_mobile": 32
-          }
-        },
-        "richtext_TTkNip": {
-          "type": "richtext",
-          "settings": {
-            "text": "<p>Some descriptive text for your store.</p>"
-          }
-        },
-        "button_DLKp3j": {
-          "type": "button",
-          "settings": {
-            "button_name": "Button",
-            "customize_button_size": "default",
-            "btn_min_height": 40,
-            "btn_min_height_mobile": 40,
-            "btn_wide_width": 300,
-            "roundness_button": 20
-          }
-        }
-      },
-      "block_order": [
-        "heading_jpHqyW",
-        "richtext_TTkNip",
-        "button_DLKp3j"
-      ],
-      "disabled": true,
-      "name": "t:names.text",
-      "settings": {
-        "heading_position": "normal",
-        "heading_aligment": "text-center",
-        "top_spacing": "normal",
-        "width": "default",
-        "grid": "page-width-half",
-        "height": "auto",
-        "height_value": 600,
-        "height_mobile": "auto",
-        "height_mobile_value": 600,
-        "text_align": "text-center",
-        "hover_underline": true,
-        "url": "",
-        "show_lines": false,
-        "lines_width": "fullwidth",
-        "background": "hide",
-        "color_background": "rgba(0,0,0,0)",
-        "gradient": "",
-        "image_overlay_opacity": 0,
-        "image_overlay_color": "rgba(0,0,0,0)",
-        "image_overlay_opacity_mobile": 0,
-        "image_overlay_color_mobile": "rgba(0,0,0,0)",
-        "show_parallax": false,
-        "imagealign": "center",
-        "imagesize": "cover",
-        "background_width": "fullwidth",
-        "background_spacing": "normal",
-        "remove_bottom_spacing": false,
-        "color_base": "rgba(0,0,0,0)",
-        "color_accent": "rgba(0,0,0,0)",
-        "color_lines": "rgba(0,0,0,0)",
-        "color_text_link": "rgba(0,0,0,0)",
-        "color_text_link_hover": "rgba(0,0,0,0)",
-        "color_desc": "rgba(0,0,0,0)",
-        "show_button_bg": true,
-        "color_button": "rgba(0,0,0,0)",
-        "color_button_gradient": "",
-        "color_button_border": "rgba(0,0,0,0)",
-        "color_button_text": "rgba(0,0,0,0)",
-        "show_button_bg_hover": true,
-        "color_button_hover": "rgba(0,0,0,0)",
-        "color_button_gradient_hover": "",
-        "color_button_border_hover": "rgba(0,0,0,0)",
-        "color_button_text_hover": "rgba(0,0,0,0)",
-        "show_shadow_button": true,
-        "color_shadow_button": "rgba(0,0,0,0)",
-        "color_shadow_hover_button": "rgba(0,0,0,0)"
-      }
-    },
     "product_recommendations_gFKKqN": {
       "type": "product-recommendations",
       "name": "t:names.product_recommendations",
@@ -479,11 +391,55 @@
         "color_active_rating": "rgba(0,0,0,0)",
         "color_base_rating": "rgba(0,0,0,0)"
       }
+    },
+    "main_product_horizontal_tabs_cFWtTB": {
+      "type": "main-product-horizontal-tabs",
+      "blocks": {
+        "tab_9LdyPK": {
+          "type": "tab",
+          "settings": {
+            "heading_text": "Description",
+            "icon_name": "",
+            "content": "{{ product.description }}",
+            "page": ""
+          }
+        },
+        "tab_Np7Q76": {
+          "type": "tab",
+          "settings": {
+            "heading_text": "Tab name",
+            "icon_name": "",
+            "content": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page": ""
+          }
+        },
+        "tab_iq8PQP": {
+          "type": "tab",
+          "settings": {
+            "heading_text": "Tab name",
+            "icon_name": "",
+            "content": "<p>Add an additional description to your products. You may set the same content for all products. </p><p>Ex: Shipping and return policies, size guides, and other common questions.</p><p>Or you may link a dynamic source to show product fields like vendor or custom product meta fields.</p><p>Ex: Ingredients, nutritional info, additional features and other unique per-product data.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_9LdyPK",
+        "tab_Np7Q76",
+        "tab_iq8PQP"
+      ],
+      "name": "Horizontal tabs",
+      "settings": {
+        "heading_aligment": "text-center",
+        "top_spacing": "normal",
+        "width": "default",
+        "show_line": true
+      }
     }
   },
   "order": [
     "main",
-    "text_awRLHC",
+    "main_product_horizontal_tabs_cFWtTB",
     "product_recommendations_gFKKqN"
   ]
 }
