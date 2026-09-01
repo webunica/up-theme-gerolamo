@@ -10,9 +10,25 @@
   assign eyebrow             = section.settings.eyebrow_text | default: 'GEROLAMO'
   assign hero_title          = section.settings.hero_title | default: page.title
   assign hero_description    = section.settings.hero_description
+  assign title_tag           = section.settings.title_tag | default: 'h1'
 
   assign bc_parent_label     = section.settings.breadcrumb_parent_label
   assign bc_parent_url       = section.settings.breadcrumb_parent_url
+  assign bc_inside_box       = section.settings.bc_inside_box
+
+  assign overlay_mode        = section.settings.overlay_mode | default: 'gradient_left'
+  assign overlay_color       = section.settings.overlay_color | default: '#ffffff'
+  assign overlay_alpha       = section.settings.overlay_opacity | divided_by: 100.0
+  assign overlay_color_rgba  = overlay_color | color_modify: 'alpha', overlay_alpha
+
+  assign show_box_bg         = section.settings.show_box_bg
+  assign box_bg_color        = section.settings.box_bg_color | default: '#ffffff'
+  assign box_bg_alpha        = section.settings.box_bg_opacity | divided_by: 100.0
+  assign box_bg_rgba         = box_bg_color | color_modify: 'alpha', box_bg_alpha
+
+  assign show_button         = section.settings.show_button
+  assign button_text         = section.settings.button_text
+  assign button_url          = section.settings.button_url
 -%}
 
 <style>
@@ -21,17 +37,23 @@
     width: 100%;
     min-height: {{ section.settings.desktop_image_height | default: 380 }}px;
     display: flex;
-    align-items: center;
+    align-items: {{ section.settings.content_position_v | default: 'center' }};
     overflow: hidden;
     background-color: {{ section.settings.color_background | default: '#f8fafc' }};
+    padding-top: {{ section.settings.padding_top_desktop | default: 30 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop | default: 30 }}px;
+    box-sizing: border-box;
   }
 
   @media (max-width: 768px) {
     #theme-section-{{ section.id }}.gerolamo-page-banner {
       min-height: {{ section.settings.mobile_image_height | default: 280 }}px;
+      padding-top: {{ section.settings.padding_top_mobile | default: 20 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: 20 }}px;
     }
   }
 
+  /* Capa de imagen de fondo */
   #theme-section-{{ section.id }} .gerolamo-page-banner__bg-wrap {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -60,69 +82,126 @@
     #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--desktop { display: block !important; }
   }
 
+  /* Máscaras y Overlays configurables */
   #theme-section-{{ section.id }} .gerolamo-page-banner__gradient-mask {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     width: 100%; height: 100%;
-    background: linear-gradient(90deg,
-      #ffffff 0%,
-      rgba(255,255,255,0.94) 30%,
-      rgba(255,255,255,0.72) 48%,
-      rgba(255,255,255,0.20) 68%,
-      rgba(255,255,255,0)    85%);
     pointer-events: none;
     z-index: 2;
+    {% if overlay_mode == 'none' %}
+      display: none;
+    {% elsif overlay_mode == 'gradient_left' %}
+      background: linear-gradient(90deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.88 }} 32%,
+        {{ overlay_color | color_modify: 'alpha', 0.60 }} 50%,
+        {{ overlay_color | color_modify: 'alpha', 0.15 }} 72%,
+        rgba(0,0,0,0) 88%);
+    {% elsif overlay_mode == 'gradient_right' %}
+      background: linear-gradient(270deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.88 }} 32%,
+        {{ overlay_color | color_modify: 'alpha', 0.60 }} 50%,
+        {{ overlay_color | color_modify: 'alpha', 0.15 }} 72%,
+        rgba(0,0,0,0) 88%);
+    {% elsif overlay_mode == 'gradient_bottom' %}
+      background: linear-gradient(0deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.70 }} 45%,
+        rgba(0,0,0,0) 90%);
+    {% elsif overlay_mode == 'gradient_top' %}
+      background: linear-gradient(180deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.70 }} 45%,
+        rgba(0,0,0,0) 90%);
+    {% elsif overlay_mode == 'solid' %}
+      background-color: {{ overlay_color_rgba }};
+    {% endif %}
   }
 
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-page-banner__gradient-mask {
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.96) 0%,
-        rgba(255,255,255,0.88) 55%,
-        rgba(255,255,255,0.35) 100%);
+      {% if overlay_mode == 'gradient_left' or overlay_mode == 'gradient_right' or overlay_mode == 'gradient_bottom' or overlay_mode == 'gradient_top' %}
+        background: linear-gradient(180deg,
+          {{ overlay_color_rgba }} 0%,
+          {{ overlay_color | color_modify: 'alpha', 0.80 }} 60%,
+          {{ overlay_color | color_modify: 'alpha', 0.35 }} 100%);
+      {% endif %}
     }
   }
 
+  /* Contenedor principal interior */
   #theme-section-{{ section.id }} .gerolamo-page-banner__inner {
     position: relative;
     z-index: 3;
     width: 100%;
     max-width: var(--page-width, 1320px);
     margin: 0 auto;
-    padding: 36px 24px;
+    padding-left: 24px;
+    padding-right: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: {{ section.settings.content_position_v | default: 'center' }};
+    align-items: {{ section.settings.content_position_h_desktop | default: 'flex-start' }};
     min-height: 100%;
     box-sizing: border-box;
   }
 
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__inner {
+      padding-left: 16px;
+      padding-right: 16px;
+      align-items: {{ section.settings.content_position_h_mobile | default: 'center' }};
+    }
+  }
+
+  /* Migas de pan */
   #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs {
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 500;
-    color: #475569;
-    margin-bottom: 20px;
+    color: {{ section.settings.bc_color_sep | default: '#475569' }};
+    margin-bottom: {{ section.settings.bc_margin_bottom | default: 16 }}px;
+    {% if section.settings.text_align == 'text-center' %}
+      justify-content: center;
+    {% elsif section.settings.text_align == 'text-right' %}
+      justify-content: flex-end;
+    {% else %}
+      justify-content: flex-start;
+    {% endif %}
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs {
+      {% if section.settings.text_align_mobile == 'text-center' %}
+        justify-content: center;
+      {% elsif section.settings.text_align_mobile == 'text-right' %}
+        justify-content: flex-end;
+      {% else %}
+        justify-content: flex-start;
+      {% endif %}
+    }
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs a {
-    color: #1B4B8A;
+    color: {{ section.settings.bc_color_link | default: '#1B4B8A' }};
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
     display: inline-flex;
     align-items: center;
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__breadcrumbs a:hover {
     text-decoration: underline;
-    color: #0F6445;
+    color: {{ section.settings.bc_color_hover | default: '#0F6445' }};
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__bc-sep {
-    color: #94a3b8;
+    color: {{ section.settings.bc_color_sep | default: '#94a3b8' }};
     font-size: 13px;
     font-weight: 400;
   }
@@ -130,40 +209,95 @@
   #theme-section-{{ section.id }} .gerolamo-page-banner__bc-home {
     display: inline-flex;
     align-items: center;
-    color: #1B4B8A !important;
+    color: {{ section.settings.bc_color_link | default: '#1B4B8A' }} !important;
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__bc-current {
-    color: #1e293b;
+    color: {{ section.settings.bc_color_current | default: '#1e293b' }};
     font-weight: 600;
   }
 
+  /* Caja / Tarjeta de Texto y Títulos */
   #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
-    max-width: 580px;
-    {% if section.settings.text_align == 'text-center' %}
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    max-width: {{ section.settings.box_max_width | default: 580 }}px;
+    box-sizing: border-box;
+
+    {% if show_box_bg %}
+      background-color: {{ box_bg_rgba }};
+      {% if section.settings.box_blur > 0 %}
+        backdrop-filter: blur({{ section.settings.box_blur }}px);
+        -webkit-backdrop-filter: blur({{ section.settings.box_blur }}px);
+      {% endif %}
+      border-radius: {{ section.settings.box_border_radius | default: 16 }}px;
+      {% if section.settings.box_border_width > 0 %}
+        border: {{ section.settings.box_border_width }}px solid {{ section.settings.box_border_color | default: 'rgba(255,255,255,0.4)' }};
+      {% else %}
+        border: none;
+      {% endif %}
+      {% if section.settings.show_box_shadow %}
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+      {% endif %}
+      padding: {{ section.settings.box_padding_desktop_v | default: 28 }}px {{ section.settings.box_padding_desktop_h | default: 32 }}px;
     {% else %}
-    text-align: left;
+      padding: {{ section.settings.box_padding_desktop_v | default: 0 }}px {{ section.settings.box_padding_desktop_h | default: 0 }}px;
+      background: transparent;
+      border: none;
+    {% endif %}
+
+    {% if section.settings.text_align == 'text-center' %}
+      text-align: center;
+    {% elsif section.settings.text_align == 'text-right' %}
+      text-align: right;
+    {% else %}
+      text-align: left;
     {% endif %}
   }
 
-  #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow {
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: {{ section.settings.color_eyebrow | default: '#1B4B8A' }};
-    margin-bottom: 8px;
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
+      max-width: 100%;
+      {% if show_box_bg %}
+        padding: {{ section.settings.box_padding_mobile_v | default: 20 }}px {{ section.settings.box_padding_mobile_h | default: 20 }}px;
+        border-radius: {{ section.settings.box_border_radius_mobile | default: 12 }}px;
+      {% else %}
+        padding: {{ section.settings.box_padding_mobile_v | default: 0 }}px {{ section.settings.box_padding_mobile_h | default: 0 }}px;
+      {% endif %}
+
+      {% if section.settings.text_align_mobile == 'text-center' %}
+        text-align: center;
+      {% elsif section.settings.text_align_mobile == 'text-right' %}
+        text-align: right;
+      {% else %}
+        text-align: left;
+      {% endif %}
+    }
   }
 
+  /* Antetítulo / Eyebrow */
+  #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow {
+    font-size: {{ section.settings.eyebrow_size | default: 13 }}px;
+    font-weight: {{ section.settings.eyebrow_weight | default: 800 }};
+    text-transform: {{ section.settings.eyebrow_transform | default: 'uppercase' }};
+    letter-spacing: {{ section.settings.eyebrow_letter_spacing | default: 2 }}px;
+    color: {{ section.settings.color_eyebrow | default: '#1B4B8A' }};
+    margin-bottom: {{ section.settings.eyebrow_margin_bottom | default: 8 }}px;
+    line-height: 1.3;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow {
+      font-size: {{ section.settings.eyebrow_size_mobile | default: 11 }}px;
+    }
+  }
+
+  /* Título */
   #theme-section-{{ section.id }} .gerolamo-page-banner__title {
-    margin: 0 0 12px 0;
-    font-size: {{ section.settings.title_size | default: 40 }}px;
-    font-weight: 800;
+    margin: 0 0 {{ section.settings.title_margin_bottom | default: 12 }}px 0;
+    font-size: {{ section.settings.title_size | default: 42 }}px;
+    font-weight: {{ section.settings.title_weight | default: 800 }};
     color: {{ section.settings.color_title | default: '#0f2b48' }};
-    line-height: 1.15;
+    line-height: {{ section.settings.title_line_height | default: 1.15 }};
     letter-spacing: -0.01em;
   }
 
@@ -173,16 +307,71 @@
     }
   }
 
+  /* Subtítulo / Descripción */
   #theme-section-{{ section.id }} .gerolamo-page-banner__desc {
     margin: 0;
-    font-size: 15px;
-    line-height: 1.55;
+    font-size: {{ section.settings.desc_size | default: 16 }}px;
+    font-weight: {{ section.settings.desc_weight | default: 400 }};
+    line-height: {{ section.settings.desc_line_height | default: 1.55 }};
     color: {{ section.settings.color_description | default: '#334155' }};
-    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__desc {
+      font-size: {{ section.settings.desc_size_mobile | default: 14 }}px;
+    }
   }
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__desc p { margin: 0 0 8px 0; }
   #theme-section-{{ section.id }} .gerolamo-page-banner__desc p:last-child { margin-bottom: 0; }
+
+  /* Botón de acción opcional */
+  #theme-section-{{ section.id }} .gerolamo-page-banner__btn-wrap {
+    margin-top: {{ section.settings.button_margin_top | default: 18 }}px;
+    display: flex;
+    {% if section.settings.text_align == 'text-center' %}
+      justify-content: center;
+    {% elsif section.settings.text_align == 'text-right' %}
+      justify-content: flex-end;
+    {% else %}
+      justify-content: flex-start;
+    {% endif %}
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-page-banner__btn-wrap {
+      {% if section.settings.text_align_mobile == 'text-center' %}
+        justify-content: center;
+      {% elsif section.settings.text_align_mobile == 'text-right' %}
+        justify-content: flex-end;
+      {% else %}
+        justify-content: flex-start;
+      {% endif %}
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: {{ section.settings.button_radius | default: 8 }}px;
+    background-color: {{ section.settings.color_button_bg | default: '#1B4B8A' }};
+    color: {{ section.settings.color_button_text | default: '#ffffff' }};
+    transition: all 0.25s ease;
+    border: 2px solid {{ section.settings.color_button_bg | default: '#1B4B8A' }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__btn:hover {
+    background-color: {{ section.settings.color_button_bg_hover | default: '#0F6445' }};
+    border-color: {{ section.settings.color_button_bg_hover | default: '#0F6445' }};
+    color: {{ section.settings.color_button_text_hover | default: '#ffffff' }};
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
 </style>
 
 <div id="theme-section-{{ section.id }}" class="gerolamo-page-banner" data-section-name="gerolamo-page-banner">
@@ -209,11 +398,11 @@
   </div>
   {%- endif -%}
 
-  <!-- Contenido -->
+  <!-- Contenedor de contenido -->
   <div class="gerolamo-page-banner__inner">
 
-    <!-- Migas de pan -->
-    {%- if show_breadcrumbs -%}
+    <!-- Migas de pan fuera de la caja si no está configurado para ir dentro -->
+    {%- if show_breadcrumbs and bc_inside_box == false -%}
     <nav class="gerolamo-page-banner__breadcrumbs" aria-label="Navegación">
       <a href="{{ routes.root_url }}" class="gerolamo-page-banner__bc-home" aria-label="Inicio">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
@@ -235,21 +424,54 @@
     </nav>
     {%- endif -%}
 
+    <!-- Caja / Tarjeta de Contenido de Textos -->
     <div class="gerolamo-page-banner__text-box">
+
+      <!-- Migas de pan dentro de la caja si se desea -->
+      {%- if show_breadcrumbs and bc_inside_box -%}
+      <nav class="gerolamo-page-banner__breadcrumbs" aria-label="Navegación">
+        <a href="{{ routes.root_url }}" class="gerolamo-page-banner__bc-home" aria-label="Inicio">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+          </svg>
+        </a>
+        <span class="gerolamo-page-banner__bc-sep">›</span>
+        <a href="{{ routes.root_url }}">Inicio</a>
+        {%- if bc_parent_label != blank -%}
+          <span class="gerolamo-page-banner__bc-sep">›</span>
+          {%- if bc_parent_url != blank -%}
+            <a href="{{ bc_parent_url }}">{{ bc_parent_label }}</a>
+          {%- else -%}
+            <span class="gerolamo-page-banner__bc-current">{{ bc_parent_label }}</span>
+          {%- endif -%}
+        {%- endif -%}
+        <span class="gerolamo-page-banner__bc-sep">›</span>
+        <span class="gerolamo-page-banner__bc-current">{{ hero_title }}</span>
+      </nav>
+      {%- endif -%}
 
       <!-- Antetítulo -->
       {%- if show_eyebrow and eyebrow != blank -%}
       <div class="gerolamo-page-banner__eyebrow">{{ eyebrow }}</div>
       {%- endif -%}
 
-      <!-- Título -->
+      <!-- Título Principal -->
       {%- if section.settings.show_title -%}
-      <h1 class="gerolamo-page-banner__title">{{ hero_title }}</h1>
+        <{{ title_tag }} class="gerolamo-page-banner__title">{{ hero_title }}</{{ title_tag }}>
       {%- endif -%}
 
-      <!-- Descripción -->
+      <!-- Subtítulo / Descripción -->
       {%- if section.settings.show_description and hero_description != blank -%}
       <div class="gerolamo-page-banner__desc">{{ hero_description }}</div>
+      {%- endif -%}
+
+      <!-- Botón CTA opcional -->
+      {%- if show_button and button_text != blank -%}
+      <div class="gerolamo-page-banner__btn-wrap">
+        <a href="{{ button_url | default: '#' }}" class="gerolamo-page-banner__btn">
+          {{ button_text }}
+        </a>
+      </div>
       {%- endif -%}
 
     </div>
@@ -263,7 +485,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Imagen de Fondo"
+      "content": "🖼️ Imagen de Fondo"
     },
     {
       "type": "image_picker",
@@ -279,62 +501,249 @@
     {
       "type": "select",
       "id": "imagealign",
-      "label": "Posición de la imagen",
+      "label": "Foco de la imagen",
       "default": "center right",
       "options": [
         { "value": "center right",  "label": "Centro Derecha" },
         { "value": "center center", "label": "Centro" },
         { "value": "center left",   "label": "Centro Izquierda" },
         { "value": "top center",    "label": "Superior Centro" },
+        { "value": "top left",      "label": "Superior Izquierda" },
         { "value": "top right",     "label": "Superior Derecha" },
         { "value": "bottom center", "label": "Inferior Centro" },
+        { "value": "bottom left",   "label": "Inferior Izquierda" },
         { "value": "bottom right",  "label": "Inferior Derecha" }
       ]
     },
     {
       "type": "header",
-      "content": "Dimensiones"
+      "content": "🎭 Máscara y Overlay"
+    },
+    {
+      "type": "select",
+      "id": "overlay_mode",
+      "label": "Tipo de máscara",
+      "default": "gradient_left",
+      "options": [
+        { "value": "none",            "label": "Sin máscara" },
+        { "value": "gradient_left",   "label": "Gradiente desde Izquierda" },
+        { "value": "gradient_right",  "label": "Gradiente desde Derecha" },
+        { "value": "gradient_bottom", "label": "Gradiente desde Abajo" },
+        { "value": "gradient_top",    "label": "Gradiente desde Arriba" },
+        { "value": "solid",           "label": "Superposición Uniforme" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "default": "#ffffff",
+      "label": "Color de la máscara"
     },
     {
       "type": "range",
-      "id": "desktop_image_height",
-      "min": 150,
-      "max": 700,
-      "step": 10,
-      "unit": "px",
-      "label": "Altura en escritorio",
-      "default": 380
-    },
-    {
-      "type": "range",
-      "id": "mobile_image_height",
-      "min": 120,
-      "max": 500,
-      "step": 10,
-      "unit": "px",
-      "label": "Altura en móvil",
-      "default": 280
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacidad de la máscara",
+      "default": 100
     },
     {
       "type": "header",
-      "content": "Contenido del Banner"
+      "content": "📐 Posición y Alineación"
+    },
+    {
+      "type": "select",
+      "id": "content_position_h_desktop",
+      "label": "Posición horizontal (Escritorio)",
+      "default": "flex-start",
+      "options": [
+        { "value": "flex-start", "label": "Izquierda" },
+        { "value": "center",     "label": "Centro" },
+        { "value": "flex-end",   "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_position_h_mobile",
+      "label": "Posición horizontal (Móvil)",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Izquierda" },
+        { "value": "center",     "label": "Centro" },
+        { "value": "flex-end",   "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_position_v",
+      "label": "Posición vertical",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Arriba" },
+        { "value": "center",     "label": "Centro" },
+        { "value": "flex-end",   "label": "Abajo" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alineación del texto (Escritorio)",
+      "default": "text-left",
+      "options": [
+        { "value": "text-left",   "label": "Izquierda" },
+        { "value": "text-center", "label": "Centro" },
+        { "value": "text-right",  "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align_mobile",
+      "label": "Alineación del texto (Móvil)",
+      "default": "text-left",
+      "options": [
+        { "value": "text-left",   "label": "Izquierda" },
+        { "value": "text-center", "label": "Centro" },
+        { "value": "text-right",  "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "box_max_width",
+      "min": 300,
+      "max": 1100,
+      "step": 20,
+      "unit": "px",
+      "label": "Ancho máximo de la caja",
+      "default": 580
+    },
+    {
+      "type": "header",
+      "content": "🎨 Fondo de Caja de Textos"
     },
     {
       "type": "checkbox",
-      "id": "show_breadcrumbs",
-      "default": true,
-      "label": "Mostrar migas de pan"
+      "id": "show_box_bg",
+      "default": false,
+      "label": "Habilitar fondo de caja",
+      "info": "Crea una tarjeta o recuadro detrás del texto para mejorar la legibilidad."
     },
     {
-      "type": "text",
-      "id": "breadcrumb_parent_label",
-      "label": "Nivel padre en migas (Opcional)",
-      "info": "Ejemplo: Nosotros, Distribuidores. Deja en blanco para omitir."
+      "type": "color",
+      "id": "box_bg_color",
+      "default": "#ffffff",
+      "label": "Color de fondo de la caja"
     },
     {
-      "type": "url",
-      "id": "breadcrumb_parent_url",
-      "label": "URL del nivel padre (Opcional)"
+      "type": "range",
+      "id": "box_bg_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacidad del fondo de caja",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "box_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Desenfoque de fondo (Blur)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de caja (Escritorio)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo de caja (Móvil)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "box_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Grosor del borde de la caja",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "default": "rgba(255,255,255,0.4)",
+      "label": "Color del borde de la caja"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_box_shadow",
+      "default": false,
+      "label": "Mostrar sombra en la caja"
+    },
+    {
+      "type": "header",
+      "content": "📦 Padding de la Caja de Textos"
+    },
+    {
+      "type": "range",
+      "id": "box_padding_desktop_v",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding vertical caja (Escritorio)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "box_padding_desktop_h",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding horizontal caja (Escritorio)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "box_padding_mobile_v",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding vertical caja (Móvil)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "box_padding_mobile_h",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding horizontal caja (Móvil)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "🔤 Antetítulo (Eyebrow)"
     },
     {
       "type": "checkbox",
@@ -349,71 +758,67 @@
       "label": "Texto del antetítulo"
     },
     {
-      "type": "checkbox",
-      "id": "show_title",
-      "default": true,
-      "label": "Mostrar título"
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de fuente (Escritorio)",
+      "default": 13
     },
     {
-      "type": "text",
-      "id": "hero_title",
-      "label": "Título del banner",
-      "info": "Si se deja en blanco, se usa el título de la página."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_description",
-      "default": false,
-      "label": "Mostrar descripción"
-    },
-    {
-      "type": "richtext",
-      "id": "hero_description",
-      "label": "Descripción del banner"
+      "type": "range",
+      "id": "eyebrow_size_mobile",
+      "min": 9,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de fuente (Móvil)",
+      "default": 11
     },
     {
       "type": "select",
-      "id": "text_align",
+      "id": "eyebrow_weight",
+      "label": "Grosor de fuente",
+      "default": "800",
       "options": [
-        { "value": "text-left",   "label": "Izquierda" },
-        { "value": "text-center", "label": "Centro" }
-      ],
-      "default": "text-left",
-      "label": "Alineación del texto"
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" }
+      ]
     },
     {
-      "type": "header",
-      "content": "Tamaño del Título"
-    },
-    {
-      "type": "range",
-      "id": "title_size",
-      "min": 20,
-      "max": 80,
-      "step": 2,
-      "unit": "px",
-      "label": "Tamaño del título (Escritorio)",
-      "default": 40
+      "type": "select",
+      "id": "eyebrow_transform",
+      "label": "Transformación de texto",
+      "default": "uppercase",
+      "options": [
+        { "value": "uppercase",  "label": "MAYÚSCULAS" },
+        { "value": "none",       "label": "Normal" },
+        { "value": "capitalize", "label": "Capitalizado" }
+      ]
     },
     {
       "type": "range",
-      "id": "title_size_mobile",
-      "min": 16,
-      "max": 50,
+      "id": "eyebrow_letter_spacing",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Espaciado entre letras",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_margin_bottom",
+      "min": 0,
+      "max": 30,
       "step": 2,
       "unit": "px",
-      "label": "Tamaño del título (Móvil)",
-      "default": 28
-    },
-    {
-      "type": "header",
-      "content": "Colores"
-    },
-    {
-      "type": "color",
-      "id": "color_title",
-      "default": "#0f2b48",
-      "label": "Color del título"
+      "label": "Espaciado inferior hacia el título",
+      "default": 8
     },
     {
       "type": "color",
@@ -422,19 +827,369 @@
       "label": "Color del antetítulo"
     },
     {
+      "type": "header",
+      "content": "🔤 Título Principal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Mostrar título"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Texto del título",
+      "info": "Si se deja en blanco, se usa el título de la página actual."
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Etiqueta HTML del título",
+      "default": "h1",
+      "options": [
+        { "value": "h1",  "label": "H1" },
+        { "value": "h2",  "label": "H2" },
+        { "value": "h3",  "label": "H3" },
+        { "value": "div", "label": "DIV" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título (Escritorio)",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 16,
+      "max": 54,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamaño del título (Móvil)",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Grosor de fuente del título",
+      "default": "800",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "title_line_height",
+      "label": "Interlineado del título",
+      "default": "1.15",
+      "options": [
+        { "value": "1.05", "label": "Ajustado (1.05)" },
+        { "value": "1.15", "label": "Normal (1.15)" },
+        { "value": "1.3",  "label": "Holgado (1.3)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Espaciado inferior hacia subtítulo",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "color_title",
+      "default": "#0f2b48",
+      "label": "Color del título"
+    },
+    {
+      "type": "header",
+      "content": "🔤 Subtítulo / Descripción"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": false,
+      "label": "Mostrar subtítulo"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_description",
+      "label": "Texto del subtítulo",
+      "default": "<p>Gerolamo: un nombre con historia</p>"
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de fuente (Escritorio)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desc_size_mobile",
+      "min": 11,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamaño de fuente (Móvil)",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "desc_weight",
+      "label": "Grosor de fuente del subtítulo",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Ligera (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desc_line_height",
+      "label": "Interlineado del subtítulo",
+      "default": "1.55",
+      "options": [
+        { "value": "1.3",  "label": "Compacto (1.3)" },
+        { "value": "1.55", "label": "Estándar (1.55)" },
+        { "value": "1.8",  "label": "Amplio (1.8)" }
+      ]
+    },
+    {
       "type": "color",
       "id": "color_description",
       "default": "#334155",
-      "label": "Color de la descripción"
+      "label": "Color del subtítulo"
+    },
+    {
+      "type": "header",
+      "content": "🔘 Botón Opcional"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "default": false,
+      "label": "Mostrar botón CTA"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Descubrir más"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "default": "#1B4B8A",
+      "label": "Color de fondo del botón"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "default": "#ffffff",
+      "label": "Color de texto del botón"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg_hover",
+      "default": "#0F6445",
+      "label": "Color de fondo (Hover)"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text_hover",
+      "default": "#ffffff",
+      "label": "Color de texto (Hover)"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Redondeo del botón",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_margin_top",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Espaciado hacia el botón",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "🧭 Migas de Pan"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "default": true,
+      "label": "Mostrar migas de pan"
+    },
+    {
+      "type": "checkbox",
+      "id": "bc_inside_box",
+      "default": false,
+      "label": "Migas de pan dentro de la caja",
+      "info": "Si está desactivado, se mostrarán arriba de la caja."
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_parent_label",
+      "label": "Nivel padre (Opcional)",
+      "info": "Ejemplo: Nosotros, Distribuidores. Deja en blanco para omitir."
+    },
+    {
+      "type": "url",
+      "id": "breadcrumb_parent_url",
+      "label": "URL del nivel padre (Opcional)"
+    },
+    {
+      "type": "range",
+      "id": "bc_margin_bottom",
+      "min": 4,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Espaciado inferior de migas",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "bc_color_link",
+      "default": "#1B4B8A",
+      "label": "Color enlaces de migas"
+    },
+    {
+      "type": "color",
+      "id": "bc_color_hover",
+      "default": "#0F6445",
+      "label": "Color enlaces en Hover"
+    },
+    {
+      "type": "color",
+      "id": "bc_color_current",
+      "default": "#1e293b",
+      "label": "Color texto actual activo"
+    },
+    {
+      "type": "color",
+      "id": "bc_color_sep",
+      "default": "#94a3b8",
+      "label": "Color de flechas separadoras"
+    },
+    {
+      "type": "header",
+      "content": "📏 Altura y Espaciado de Sección"
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "min": 150,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura mínima (Escritorio)",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 120,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura mínima (Móvil)",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Escritorio)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Escritorio)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding superior (Móvil)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding inferior (Móvil)",
+      "default": 20
     },
     {
       "type": "color",
       "id": "color_background",
       "default": "#f8fafc",
-      "label": "Color de fondo (cuando no hay imagen)"
+      "label": "Color de fondo base"
     }
   ],
-  "presets": [{"name": "Banner de Página"}]
+  "presets": [
+    {
+      "name": "Banner de Página",
+      "settings": {
+        "eyebrow_text": "NUESTRA HISTORIA",
+        "hero_title": "Historia",
+        "show_description": true,
+        "hero_description": "<p>Gerolamo: un nombre con historia</p>",
+        "content_position_h_desktop": "flex-end",
+        "text_align": "text-left",
+        "overlay_mode": "gradient_right"
+      }
+    }
+  ]
 }
 {% endschema %}
-
