@@ -144,7 +144,6 @@
         },
         "variant_picker_zYJKhL": {
           "type": "variant_picker",
-          "disabled": true,
           "settings": {
             "hide_soldout_variants": false,
             "picker_type": "button",
