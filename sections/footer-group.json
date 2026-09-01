@@ -24,7 +24,7 @@
         "col2_title": "PRODUCTOS",
         "col2_menu": "",
         "col3_title": "NOSOTROS",
-        "col3_menu": "",
+        "col3_menu": "footer-nosotros",
         "col4_title": "AYUDA",
         "col4_menu": "footer-ayuda",
         "col5_title": "CONTACTO",
