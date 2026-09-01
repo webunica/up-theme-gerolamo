@@ -703,30 +703,39 @@ variant-selects{
   --self-border-width:var(--border-button-width_swatches);
   --height:100%;
   --radius-button:var(--radius-button-swatches);
-  padding: 0 16px;
-  min-height: 42px;
+  padding: 0 28px;
+  min-height: 56px;
+  min-width: 90px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  border: 2px solid #d0d0d0;
-  border-radius: 8px;
+  border: 2.5px solid #033097;
+  border-radius: 10px;
   color: #033097;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(3, 48, 151, 0.10);
 }
 .btn--variant:hover {
   background-color: #033097;
   border-color: #033097;
   color: #ffffff;
+  box-shadow: 0 4px 14px rgba(3, 48, 151, 0.25);
 }
 .btn--variant .variant__btn__text,
 .btn--variant .btn__texts>*{
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   z-index: 1;
 }
 /* Variante seleccionada */
@@ -734,14 +743,21 @@ variant-selects{
   background-color: #033097 !important;
   border-color: #033097 !important;
   color: #ffffff !important;
-  font-weight: 700;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(3, 48, 151, 0.30) !important;
+}
+.product-form__input input[type=radio]:checked + .btn--variant .variant__btn__text,
+.product-form__input input[type=radio]:checked + .btn--variant .btn__texts>* {
+  color: #ffffff !important;
 }
 /* Variante agotada */
 .product-form__input input.disabled + .btn--variant {
-  opacity: 0.45;
+  opacity: 0.40;
   text-decoration: line-through;
   cursor: not-allowed;
   pointer-events: none;
+  border-color: #aaaaaa;
+  color: #aaaaaa;
 }
 .product-form__input input[type=radio]:checked+label {
   --color: var(--color-hover);
