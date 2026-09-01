@@ -12,66 +12,65 @@
     "page_banner": {
       "type": "gerolamo-page-banner",
       "settings": {
-        "background_image": "shopify://shop_images/bg-historia.png",
-        "imagealign": "center center",
+        "imagealign": "center right",
         "show_torn_edge": true,
-        "torn_edge_color": "#f5f1e9",
+        "torn_edge_color": "#FAF7F2",
         "torn_edge_height_desktop": 55,
         "torn_edge_height_mobile": 35,
-        "show_box_bg": true,
-        "box_bg_color": "#294eb3",
-        "box_bg_opacity": 85,
-        "box_blur": 10,
-        "box_border_radius": 16,
-        "box_border_radius_mobile": 12,
-        "box_border_width": 0,
-        "box_border_color": "#f7fffe",
-        "show_box_shadow": true,
-        "show_text_shadow": true,
-        "box_padding_desktop_v": 24,
-        "box_padding_desktop_h": 32,
-        "box_padding_mobile_v": 16,
-        "box_padding_mobile_h": 20,
-        "box_max_width": 400,
+        "overlay_mode": "none",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30,
         "content_position_h_desktop": "flex-end",
         "content_position_h_mobile": "center",
         "content_position_v": "center",
         "text_align": "text-center",
         "text_align_mobile": "text-center",
-        "overlay_mode": "none",
-        "overlay_color": "#ffffff",
-        "overlay_opacity": 25,
+        "box_max_width": 540,
+        "show_box_bg": true,
+        "box_bg_color": "#000000",
+        "box_bg_opacity": 45,
+        "box_blur": 8,
+        "box_border_radius": 18,
+        "box_border_radius_mobile": 14,
+        "box_border_width": 1,
+        "box_border_color": "rgba(255,255,255,0.15)",
+        "show_box_shadow": true,
+        "show_text_shadow": false,
+        "box_padding_desktop_v": 28,
+        "box_padding_desktop_h": 32,
+        "box_padding_mobile_v": 18,
+        "box_padding_mobile_h": 20,
         "show_eyebrow": true,
         "eyebrow_text": "NUESTRA HISTORIA",
-        "eyebrow_size": 20,
-        "eyebrow_size_mobile": 11,
+        "eyebrow_size": 14,
+        "eyebrow_size_mobile": 12,
         "eyebrow_weight": "800",
         "eyebrow_transform": "uppercase",
         "eyebrow_letter_spacing": 2,
         "eyebrow_margin_bottom": 8,
-        "color_eyebrow": "#f7fffe",
+        "color_eyebrow": "#ffffff",
         "show_title": true,
         "hero_title": "Historia",
         "title_tag": "h1",
-        "title_size": 70,
-        "title_size_mobile": 28,
+        "title_size": 52,
+        "title_size_mobile": 32,
         "title_weight": "800",
         "title_line_height": "1.15",
         "title_margin_bottom": 12,
-        "color_title": "#f7fffe",
+        "color_title": "#ffffff",
         "show_description": true,
         "hero_description": "<p>Gerolamo: un nombre con historia</p>",
-        "desc_size": 16,
+        "desc_size": 17,
         "desc_size_mobile": 14,
         "desc_weight": "400",
         "desc_line_height": "1.55",
-        "color_description": "#ffffff",
+        "color_description": "#f1f5f9",
         "show_button": false,
         "button_text": "Descubrir más",
         "button_url": "",
-        "color_button_bg": "#1b4b8a",
+        "color_button_bg": "#1B4B8A",
         "color_button_text": "#ffffff",
-        "color_button_bg_hover": "#0f6445",
+        "color_button_bg_hover": "#0F6445",
         "color_button_text_hover": "#ffffff",
         "button_radius": 8,
         "button_margin_top": 18,
@@ -80,36 +79,31 @@
         "breadcrumb_parent_label": "Nosotros",
         "breadcrumb_parent_url": "",
         "bc_margin_bottom": 16,
-        "bc_color_link": "#1b4b8a",
-        "bc_color_hover": "#0f6445",
-        "bc_color_current": "#1e293b",
+        "bc_color_link": "#38bdf8",
+        "bc_color_hover": "#4ade80",
+        "bc_color_current": "#ffffff",
         "bc_color_sep": "#94a3b8",
-        "desktop_image_height": 600,
-        "mobile_image_height": 280,
-        "padding_top_desktop": 35,
-        "padding_bottom_desktop": 35,
+        "desktop_image_height": 420,
+        "mobile_image_height": 300,
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 40,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 20,
-        "color_background": "#ffffff"
+        "color_background": "#0f172a"
       }
     },
-    "gerolamo_paper_text_zTNdMR": {
+    "paper_statement": {
       "type": "gerolamo-paper-text",
-      "name": "Texto con Borde de Papel",
       "settings": {
-        "edge_style": "torn_fibers",
-        "show_fiber_highlight": false,
-        "shadow_strength": "none",
-        "overlap_desktop": 60,
-        "overlap_mobile": 35,
-        "edge_height_desktop": 48,
-        "edge_height_mobile": 32,
-        "bg_color": "#faf7f2",
+        "edge_style": "torn_exact",
+        "show_fiber_highlight": true,
+        "shadow_strength": "medium",
+        "overlap_desktop": 75,
+        "overlap_mobile": 40,
+        "edge_height_desktop": 56,
+        "edge_height_mobile": 36,
+        "bg_color": "#FAF7F2",
         "text_color": "#1e293b",
-        "eyebrow_color": "#1b4b8a",
-        "show_eyebrow": false,
-        "eyebrow_text": "NUESTRA HISTORIA",
-        "eyebrow_size": 13,
         "statement_text": "<p>Gerolamo no es solo el nombre de nuestra marca. Es el nombre de uno de nuestros antepasados y el origen de una historia familiar real que, generaciones más tarde, inspiraría la creación de nuestros alimentos para perros y gatos.</p>",
         "font_size_desktop": 21,
         "font_size_mobile": 17,
@@ -118,71 +112,52 @@
         "text_align": "center",
         "text_align_mobile": "center",
         "content_max_width": 940,
-        "show_btn": false,
-        "btn_text": "Conoce más",
-        "btn_url": "",
-        "btn_bg_color": "#1b4b8a",
-        "btn_text_color": "#ffffff",
-        "btn_bg_hover": "#0f6445",
         "padding_top_desktop": 35,
-        "padding_bottom_desktop": 55,
+        "padding_bottom_desktop": 35,
         "padding_top_mobile": 25,
-        "padding_bottom_mobile": 35
+        "padding_bottom_mobile": 25
       }
     },
-    "gerolamo_story_timeline_qePdz3": {
+    "story_timeline": {
       "type": "gerolamo-story-timeline",
       "blocks": {
-        "milestone_LLdN8r": {
+        "milestone_1": {
           "type": "milestone",
           "settings": {
-            "icon_image": "shopify://shop_images/ico-andes-01.png",
-            "title": "",
-            "text": "<p>Gerolamo fue un hombre de espíritu emprendedor y aventurero que dejó Italia para comenzar una nueva vida en Argentina. Desde allí emprendió una travesía aún mayor: cruzar la cordillera de los Andes rumbo a Chile, acompañado por su fiel perro.</p>",
-            "custom_circle_bg": ""
+            "text": "<p>Gerolamo fue un hombre de espíritu emprendedor y aventurero que dejó Italia para comenzar una nueva vida en Argentina. Desde allí emprendió una travesía aún mayor: cruzar la cordillera de los Andes rumbo a Chile, acompañado por su fiel perro.</p>"
           }
         },
-        "milestone_MUTdVU": {
+        "milestone_2": {
           "type": "milestone",
           "settings": {
-            "icon_image": "shopify://shop_images/ico-caminata-01.png",
-            "title": "",
-            "text": "<p>Juntos enfrentaron las difíciles condiciones del viaje, atravesando la cordillera hasta finalmente llegar a nuestro país y establecerse en la ciudad de Los Andes.</p>",
-            "custom_circle_bg": ""
+            "text": "<p>Juntos enfrentaron las difíciles condiciones del viaje, atravesando la cordillera hasta finalmente llegar a nuestro país y establecerse en la ciudad de Los Andes.</p>"
           }
         },
-        "milestone_dUBULB": {
+        "milestone_3": {
           "type": "milestone",
           "settings": {
-            "icon_image": "shopify://shop_images/ico-casa-01.png",
-            "title": "",
-            "text": "<p>Allí, Gerolamo formó su familia y, con el paso de los años, relató a sus descendientes las aventuras de aquella gran travesía. Entre sus recuerdos, la compañía de su perro ocupaba un lugar especial. Su fiel amigo fue fundamental para sobrellevar las crudas condiciones del clima, la inmensidad de la cordillera y la soledad del camino.</p>",
-            "custom_circle_bg": ""
+            "text": "<p>Allí, Gerolamo formó su familia y, con el paso de los años, relató a sus descendientes las aventuras de aquella gran travesía. Entre sus recuerdos, la compañía de su perro ocupaba un lugar especial. Su fiel amigo fue fundamental para sobrellevar las crudas condiciones del clima, la inmensidad de la cordillera y la soledad del camino.</p>"
           }
         },
-        "milestone_7TrmwU": {
+        "milestone_4": {
           "type": "milestone",
           "settings": {
-            "icon_image": "shopify://shop_images/ico-fogata-01.png",
-            "title": "",
-            "text": "<p>Durante las frías noches compartieron el calor de una fogata y los alimentos que la caza del día les permitía obtener. Aquella cercanía construida durante el viaje nunca desapareció. Hasta sus últimos años, Gerolamo mantuvo una especial preocupación por entregarle a su compañero una alimentación de calidad, como parte del cuidado y afecto que siempre los unió.</p>",
-            "custom_circle_bg": ""
+            "text": "<p>Durante las frías noches compartieron el calor de una fogata y los alimentos que la caza del día les permitía obtener. Aquella cercanía construida durante el viaje nunca desapareció. Hasta sus últimos años, Gerolamo mantuvo una especial preocupación por entregarle a su compañero una alimentación de calidad, como parte del cuidado y afecto que siempre los unió.</p>"
           }
         }
       },
       "block_order": [
-        "milestone_LLdN8r",
-        "milestone_MUTdVU",
-        "milestone_dUBULB",
-        "milestone_7TrmwU"
+        "milestone_1",
+        "milestone_2",
+        "milestone_3",
+        "milestone_4"
       ],
-      "name": "Historia: Hitos con Iconos",
       "settings": {
         "bg_color": "#FAF7F2",
-        "circle_bg": "#EBE1D6",
+        "circle_bg": "#EDE8DF",
         "line_color": "#1B4B8A",
         "text_color": "#1e293b",
-        "circle_size_desktop": 125,
+        "circle_size_desktop": 105,
         "circle_size_mobile": 75,
         "line_style": "dotted",
         "line_width": 3,
@@ -196,18 +171,71 @@
         "item_spacing_mobile": 32,
         "content_max_width": 980,
         "show_header": false,
-        "eyebrow": "NUESTRA TRAYECTORIA",
-        "title": "El viaje de Gerolamo",
-        "padding_top_desktop": 50,
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 45,
+        "padding_top_mobile": 15,
+        "padding_bottom_mobile": 30
+      }
+    },
+    "story_legacy": {
+      "type": "gerolamo-story-legacy",
+      "settings": {
+        "title": "Un legado que atraviesa generaciones",
+        "title_color": "#1B4B8A",
+        "title_size_desktop": 36,
+        "title_size_mobile": 26,
+        "title_align": "left",
+        "title_align_mobile": "left",
+        "title_margin_bottom": 35,
+        "logo_size_desktop": 190,
+        "logo_size_mobile": 140,
+        "badge_bg_color": "#EDE8DF",
+        "show_double_border": true,
+        "border_color": "rgba(27, 75, 138, 0.35)",
+        "text_col_1": "<p>La conciencia, el respeto y el amor de Gerolamo por los animales fueron transmitiéndose de generación en generación entre sus descendientes.</p><p>Muchos años después, ese legado familiar encontró una nueva manera de continuar: la creación de una línea de alimentos premium para perros y gatos que lleva su nombre.</p>",
+        "text_col_2": "<p>Así nace Gerolamo, como una forma de mantener viva aquella historia y transformar sus valores en una filosofía de alimentación basada en el cuidado, la calidad y el respeto por la naturaleza de nuestros animales de compañía.</p><p>Desarrollamos alimentos premium para perros y gatos, pensados para acompañarlos durante las distintas etapas de su vida y entregarles una nutrición de calidad, porque creemos que una buena alimentación es una de las expresiones más importantes de cuidado que podemos brindarles: <strong>Volver al origen.</strong></p>",
+        "font_size_desktop": 17,
+        "font_size_mobile": 15,
+        "text_color": "#1e293b",
+        "line_height": "1.6",
+        "bg_color": "#FAF7F2",
+        "columns_gap_desktop": 40,
+        "content_max_width": 1120,
+        "padding_top_desktop": 30,
+        "padding_bottom_desktop": 70,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 45
+      }
+    },
+    "contact_bar": {
+      "type": "gerolamo-contact-bar",
+      "settings": {
+        "col1_title": "¿DÓNDE COMPRAR?",
+        "col1_desc": "Encuentra nuestros productos en tiendas especializadas y distribuidores autorizados.",
+        "col1_link_text": "Ver puntos de venta",
+        "col1_url": "",
+        "col2_title": "¿TIENES DUDAS?",
+        "col2_desc": "Nuestro equipo está listo para ayudarte con lo que tu mascota necesita.",
+        "col2_link_text": "Contáctanos",
+        "col2_url": "",
+        "box_bg": "#f0f4f9",
+        "icon_bg_color": "#1b4b8a",
+        "title_color": "#1b4b8a",
+        "text_color": "#475569",
+        "link_color": "#0f6445",
+        "box_radius": 22,
+        "padding_top_desktop": 40,
         "padding_bottom_desktop": 60,
-        "padding_top_mobile": 30,
-        "padding_bottom_mobile": 40
+        "padding_top_mobile": 25,
+        "padding_bottom_mobile": 35
       }
     }
   },
   "order": [
     "page_banner",
-    "gerolamo_paper_text_zTNdMR",
-    "gerolamo_story_timeline_qePdz3"
+    "paper_statement",
+    "story_timeline",
+    "story_legacy",
+    "contact_bar"
   ]
 }
