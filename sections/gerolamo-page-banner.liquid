@@ -32,6 +32,20 @@
 -%}
 
 <style>
+  /* Importación de fuentes seleccionadas */
+  {% if section.settings.desc_font_family == 'montserrat' or section.settings.title_font_family == 'montserrat' or section.settings.eyebrow_font_family == 'montserrat' %}
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap');
+  {% endif %}
+  {% if section.settings.desc_font_family == 'inter' or section.settings.title_font_family == 'inter' %}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  {% endif %}
+  {% if section.settings.desc_font_family == 'poppins' or section.settings.title_font_family == 'poppins' %}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+  {% endif %}
+  {% if section.settings.title_font_family == 'serif_editorial' or section.settings.desc_font_family == 'playfair' or section.settings.eyebrow_font_family == 'serif_editorial' %}
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&display=swap');
+  {% endif %}
+
   #theme-section-{{ section.id }}.gerolamo-page-banner {
     position: relative;
     width: 100%;
@@ -246,6 +260,7 @@
 
   /* Caja / Tarjeta de Fondo con Opacidad para Textos */
   #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
+    position: relative;
     width: 100%;
     max-width: {{ section.settings.box_max_width | default: 580 }}px;
     box-sizing: border-box;
@@ -281,6 +296,18 @@
     {% endif %}
   }
 
+  {% if section.settings.box_vintage_border %}
+  #theme-section-{{ section.id }} .gerolamo-page-banner__text-box::before {
+    content: "";
+    position: absolute;
+    top: 7px; left: 7px; right: 7px; bottom: 7px;
+    border: 1.5px solid {{ section.settings.box_vintage_border_color | default: 'rgba(255,255,255,0.5)' }};
+    border-radius: calc({{ section.settings.box_border_radius | default: 18 }}px - 5px);
+    pointer-events: none;
+    z-index: 1;
+  }
+  {% endif %}
+
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
       max-width: 100%;
@@ -299,6 +326,13 @@
         text-align: left;
       {% endif %}
     }
+
+    {% if section.settings.box_vintage_border %}
+    #theme-section-{{ section.id }} .gerolamo-page-banner__text-box::before {
+      top: 5px; left: 5px; right: 5px; bottom: 5px;
+      border-radius: calc({{ section.settings.box_border_radius_mobile | default: 12 }}px - 3px);
+    }
+    {% endif %}
   }
 
   /* Sombra de texto opcional para máxima legibilidad */
@@ -312,6 +346,15 @@
 
   /* Antetítulo / Eyebrow */
   #theme-section-{{ section.id }} .gerolamo-page-banner__eyebrow {
+    {% if section.settings.eyebrow_font_family == 'serif_editorial' %}
+      font-family: 'Playfair Display', Georgia, serif;
+    {% elsif section.settings.eyebrow_font_family == 'montserrat' %}
+      font-family: 'Montserrat', sans-serif;
+    {% elsif section.settings.eyebrow_font_family == 'avenir_helvetica' %}
+      font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    {% elsif section.settings.eyebrow_font_family == 'custom' and section.settings.eyebrow_font_custom != blank %}
+      font-family: {{ section.settings.eyebrow_font_custom }};
+    {% endif %}
     font-size: {{ section.settings.eyebrow_size | default: 13 }}px;
     font-weight: {{ section.settings.eyebrow_weight | default: 800 }};
     text-transform: {{ section.settings.eyebrow_transform | default: 'uppercase' }};
@@ -330,6 +373,17 @@
   /* Título */
   #theme-section-{{ section.id }} .gerolamo-page-banner__title {
     margin: 0 0 {{ section.settings.title_margin_bottom | default: 12 }}px 0;
+    {% if section.settings.title_font_family == 'serif_editorial' %}
+      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    {% elsif section.settings.title_font_family == 'montserrat' %}
+      font-family: 'Montserrat', sans-serif;
+    {% elsif section.settings.title_font_family == 'avenir_helvetica' %}
+      font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    {% elsif section.settings.title_font_family == 'georgia' %}
+      font-family: Georgia, serif;
+    {% elsif section.settings.title_font_family == 'custom' and section.settings.title_font_custom != blank %}
+      font-family: {{ section.settings.title_font_custom }};
+    {% endif %}
     font-size: {{ section.settings.title_size | default: 46 }}px;
     font-weight: {{ section.settings.title_weight | default: 800 }};
     color: {{ section.settings.color_title | default: '#ffffff' }};
@@ -346,6 +400,21 @@
   /* Subtítulo / Descripción */
   #theme-section-{{ section.id }} .gerolamo-page-banner__desc {
     margin: 0;
+    {% if section.settings.desc_font_family == 'montserrat' %}
+      font-family: 'Montserrat', sans-serif;
+    {% elsif section.settings.desc_font_family == 'avenir_helvetica' %}
+      font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    {% elsif section.settings.desc_font_family == 'inter' %}
+      font-family: 'Inter', sans-serif;
+    {% elsif section.settings.desc_font_family == 'poppins' %}
+      font-family: 'Poppins', sans-serif;
+    {% elsif section.settings.desc_font_family == 'playfair' %}
+      font-family: 'Playfair Display', Georgia, serif;
+    {% elsif section.settings.desc_font_family == 'georgia' %}
+      font-family: Georgia, serif;
+    {% elsif section.settings.desc_font_family == 'custom' and section.settings.desc_font_custom != blank %}
+      font-family: {{ section.settings.desc_font_custom }};
+    {% endif %}
     font-size: {{ section.settings.desc_size | default: 16 }}px;
     font-weight: {{ section.settings.desc_weight | default: 400 }};
     line-height: {{ section.settings.desc_line_height | default: 1.55 }};
@@ -360,6 +429,39 @@
 
   #theme-section-{{ section.id }} .gerolamo-page-banner__desc p { margin: 0 0 8px 0; }
   #theme-section-{{ section.id }} .gerolamo-page-banner__desc p:last-child { margin-bottom: 0; }
+
+  /* Divisor decorativo con huella */
+  #theme-section-{{ section.id }} .gerolamo-page-banner__paw-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: {{ section.settings.paw_divider_margin_top | default: 14 }}px;
+    width: 100%;
+    max-width: 220px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__paw-line {
+    flex: 1;
+    height: 1px;
+    background-color: {{ section.settings.paw_divider_color | default: 'rgba(255,255,255,0.45)' }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__paw-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ section.settings.paw_divider_color | default: 'rgba(255,255,255,0.75)' }};
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-page-banner__paw-icon svg {
+    width: 18px;
+    height: 18px;
+  }
 
   /* Botón de acción opcional */
   #theme-section-{{ section.id }} .gerolamo-page-banner__btn-wrap {
@@ -499,6 +601,23 @@
       <!-- Subtítulo / Descripción -->
       {%- if section.settings.show_description and hero_description != blank -%}
       <div class="gerolamo-page-banner__desc">{{ hero_description }}</div>
+      {%- endif -%}
+
+      <!-- Divisor con huella estilo placa -->
+      {%- if section.settings.show_paw_divider -%}
+      <div class="gerolamo-page-banner__paw-divider" aria-hidden="true">
+        <span class="gerolamo-page-banner__paw-line"></span>
+        <span class="gerolamo-page-banner__paw-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <ellipse cx="4.5" cy="9.5" rx="2" ry="3"/>
+            <ellipse cx="9.5" cy="4.5" rx="2" ry="3"/>
+            <ellipse cx="14.5" cy="4.5" rx="2" ry="3"/>
+            <ellipse cx="19.5" cy="9.5" rx="2" ry="3"/>
+            <path d="M12 11c-3.5 0-6.5 2-6.5 5.5 0 2 1.5 3.5 3.5 3.5 1.5 0 2.5-1 3-1s1.5 1 3 1c2 0 3.5-1.5 3.5-3.5 0-3.5-3-5.5-6.5-5.5Z"/>
+          </svg>
+        </span>
+        <span class="gerolamo-page-banner__paw-line"></span>
+      </div>
       {%- endif -%}
 
       <!-- Botón CTA opcional -->
@@ -673,6 +792,40 @@
       "label": "Sombra en las letras del texto"
     },
     {
+      "type": "checkbox",
+      "id": "box_vintage_border",
+      "default": false,
+      "label": "Marco interior estilo placa"
+    },
+    {
+      "type": "color",
+      "id": "box_vintage_border_color",
+      "default": "rgba(255,255,255,0.45)",
+      "label": "Color del marco interior"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_paw_divider",
+      "default": false,
+      "label": "Mostrar divisor con huella"
+    },
+    {
+      "type": "color",
+      "id": "paw_divider_color",
+      "default": "#ffffff",
+      "label": "Color del divisor con huella"
+    },
+    {
+      "type": "range",
+      "id": "paw_divider_margin_top",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Espacio superior divisor huella",
+      "default": 14
+    },
+    {
       "type": "header",
       "content": "📦 Padding de la Caja de Textos"
     },
@@ -836,6 +989,24 @@
       "label": "Texto del antetítulo"
     },
     {
+      "type": "select",
+      "id": "eyebrow_font_family",
+      "label": "Tipo de fuente del antetítulo",
+      "default": "serif_editorial",
+      "options": [
+        { "value": "serif_editorial",  "label": "Serif Clásico (Playfair/Georgia)" },
+        { "value": "montserrat",       "label": "Montserrat" },
+        { "value": "avenir_helvetica", "label": "Avenir / Helvetica Neue" },
+        { "value": "inherit",          "label": "Por defecto del tema" },
+        { "value": "custom",           "label": "Personalizada" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_font_custom",
+      "label": "Fuente personalizada antetítulo"
+    },
+    {
       "type": "range",
       "id": "eyebrow_size",
       "min": 10,
@@ -920,6 +1091,25 @@
       "label": "Texto del título",
       "default": "Historia",
       "info": "Si se deja en blanco, se usa el título de la página actual."
+    },
+    {
+      "type": "select",
+      "id": "title_font_family",
+      "label": "Tipo de fuente del título",
+      "default": "serif_editorial",
+      "options": [
+        { "value": "serif_editorial",  "label": "Serif Clásico (Playfair/Georgia)" },
+        { "value": "montserrat",       "label": "Montserrat" },
+        { "value": "avenir_helvetica", "label": "Avenir / Helvetica Neue" },
+        { "value": "inherit",          "label": "Por defecto del tema" },
+        { "value": "georgia",          "label": "Georgia" },
+        { "value": "custom",           "label": "Personalizada" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title_font_custom",
+      "label": "Fuente personalizada del título"
     },
     {
       "type": "select",
@@ -1008,6 +1198,28 @@
       "id": "hero_description",
       "label": "Texto del subtítulo",
       "default": "<p>Gerolamo: un nombre con historia</p>"
+    },
+    {
+      "type": "select",
+      "id": "desc_font_family",
+      "label": "Tipo de fuente del subtítulo",
+      "default": "montserrat",
+      "options": [
+        { "value": "montserrat",       "label": "Montserrat (Recomendado)" },
+        { "value": "avenir_helvetica", "label": "Avenir / Helvetica Neue" },
+        { "value": "inherit",          "label": "Por defecto del tema" },
+        { "value": "inter",            "label": "Inter" },
+        { "value": "poppins",          "label": "Poppins" },
+        { "value": "georgia",          "label": "Georgia (Serif)" },
+        { "value": "playfair",         "label": "Playfair Display (Serif)" },
+        { "value": "custom",           "label": "Personalizada" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "desc_font_custom",
+      "label": "Fuente personalizada subtítulo",
+      "info": "Ej: 'Montserrat', sans-serif"
     },
     {
       "type": "range",
