@@ -218,10 +218,279 @@
     return [1, '...', current - 1, current, current + 1, '...', total];
   }
 
+  // -- Google Sheets and CSV helpers ----------------------------
+  function normalizeGoogleSheetUrl(rawUrl) {
+    if (!rawUrl) return null;
+    let url = rawUrl.trim();
+    if (!url) return null;
+
+    // Already a direct CSV export link
+    if (url.includes('output=csv') || url.includes('format=csv') || url.includes('out:csv')) {
+      return url;
+    }
+
+    // Google Sheets published web link: /pubhtml -> /pub?output=csv
+    if (url.includes('/pubhtml')) {
+      return url.replace(/\/pubhtml(\?.*)?$/, '/pub?output=csv');
+    }
+    if (url.includes('/pub') && !url.includes('output=csv')) {
+      return url.includes('?') ? `${url}&output=csv` : `${url}?output=csv`;
+    }
+
+    // Standard sheet edit or share URL: https://docs.google.com/spreadsheets/d/{ID}/edit#gid={GID}
+    const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+    if (match && match[1]) {
+      const sheetId = match[1];
+      const gidMatch = url.match(/[#&?]gid=([0-9]+)/);
+      const gidParam = gidMatch ? `&gid=${gidMatch[1]}` : '';
+      return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv${gidParam}`;
+    }
+
+    return url;
+  }
+
+  function parseCSV(text) {
+    const lines = [];
+    let row = [];
+    let inQuotes = false;
+    let current = '';
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const next = text[i + 1];
+
+      if (char === '"') {
+        if (inQuotes && next === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if ((char === '\r' || char === '\n') && !inQuotes) {
+        if (char === '\r' && next === '\n') i++;
+        row.push(current.trim());
+        if (row.length > 1 || (row.length === 1 && row[0] !== '')) {
+          lines.push(row);
+        }
+        row = [];
+        current = '';
+      } else if (char === ',' && !inQuotes) {
+        row.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    if (current || row.length > 0) {
+      row.push(current.trim());
+      lines.push(row);
+    }
+    return lines;
+  }
+
+  function normalizeHeaderKey(header) {
+    if (!header) return '';
+    return header.toString().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '_')
+      .replace(/_+/g, '_')
+      .replace(/^_|_$/g, '');
+  }
+
+  const CITY_COORDS = {
+    'temuco': { lat: -38.7359, lng: -72.5904 },
+    'padre las casas': { lat: -38.7619, lng: -72.5978 },
+    'villarrica': { lat: -39.2844, lng: -72.2272 },
+    'pucon': { lat: -39.2789, lng: -71.9753 },
+    'angol': { lat: -37.7981, lng: -72.7161 },
+    'valdivia': { lat: -39.8196, lng: -73.2452 },
+    'la union': { lat: -40.2922, lng: -73.0819 },
+    'osorno': { lat: -40.5739, lng: -73.1335 },
+    'puerto montt': { lat: -41.4693, lng: -72.9424 },
+    'puerto varas': { lat: -41.3195, lng: -72.9854 },
+    'castro': { lat: -42.4722, lng: -73.7731 },
+    'ancud': { lat: -41.8689, lng: -73.8278 },
+    'coyhaique': { lat: -45.5712, lng: -72.0685 },
+    'punta arenas': { lat: -53.1638, lng: -70.9171 },
+    'concepcion': { lat: -36.8270, lng: -73.0503 },
+    'talcahuano': { lat: -36.7249, lng: -73.1168 },
+    'san pedro de la paz': { lat: -36.8406, lng: -73.1044 },
+    'chiguayante': { lat: -36.9178, lng: -73.0239 },
+    'coronel': { lat: -37.0306, lng: -73.1408 },
+    'los angeles': { lat: -37.4697, lng: -72.3537 },
+    'chillan': { lat: -36.6066, lng: -72.1034 },
+    'talca': { lat: -35.4264, lng: -71.6554 },
+    'curico': { lat: -34.9854, lng: -71.2394 },
+    'linares': { lat: -35.8456, lng: -71.5975 },
+    'rancagua': { lat: -34.1708, lng: -70.7444 },
+    'machali': { lat: -34.1800, lng: -70.6500 },
+    'san fernando': { lat: -34.5838, lng: -70.9889 },
+    'santiago': { lat: -33.4489, lng: -70.6693 },
+    'valparaiso': { lat: -33.0472, lng: -71.6127 },
+    'vina del mar': { lat: -33.0245, lng: -71.5518 },
+    'quilpue': { lat: -33.0494, lng: -71.4428 },
+    'villa alemana': { lat: -33.0425, lng: -71.3736 },
+    'quillota': { lat: -32.8808, lng: -71.2483 },
+    'la serena': { lat: -29.9027, lng: -71.2519 },
+    'coquimbo': { lat: -29.9533, lng: -71.3436 },
+    'ovalle': { lat: -30.5983, lng: -71.2003 },
+    'copiapo': { lat: -27.3668, lng: -70.3323 },
+    'antofagasta': { lat: -23.6509, lng: -70.3975 },
+    'calama': { lat: -22.4544, lng: -68.9294 },
+    'iquique': { lat: -20.2167, lng: -70.1444 },
+    'arica': { lat: -18.4783, lng: -70.3126 }
+  };
+
+  function csvToDistributors(csvText) {
+    const rows = parseCSV(csvText);
+    if (rows.length < 2) return [];
+
+    const rawHeaders = rows[0];
+    const headers = rawHeaders.map(normalizeHeaderKey);
+
+    return rows.slice(1).map(row => {
+      const d = {};
+      headers.forEach((h, idx) => {
+        const val = (row[idx] || '').trim();
+        if (!h) return;
+
+        if (h === 'nombre' || h.includes('nombre') || h === 'tienda' || h === 'distribuidor') {
+          d.nombre = val;
+        } else if (h === 'direccion' || h.includes('direccion') || h === 'calle') {
+          d.direccion = val;
+        } else if (h === 'comuna' || h.includes('comuna')) {
+          d.comuna = val;
+        } else if (h === 'ciudad' || h.includes('ciudad')) {
+          d.ciudad = val;
+        } else if (h === 'region' || h.includes('region')) {
+          d.region = val;
+        } else if (h.includes('tel') || h.includes('fono') || h.includes('celular') || h.includes('whatsapp')) {
+          d.telefono = val;
+        } else if (h.includes('web') || h.includes('sitio') || h === 'url') {
+          d.sitio_web = val;
+        } else if (h.includes('insta') || h === 'ig') {
+          d.instagram = val;
+        } else if (h.includes('email') || h.includes('correo')) {
+          d.email = val;
+        } else if (h.includes('hora') || h.includes('atencion')) {
+          d.horario = val;
+        } else if (h === 'lat' || h.includes('latitud')) {
+          const num = parseFloat(val.replace(',', '.'));
+          d.lat = isNaN(num) ? null : num;
+        } else if (h === 'lng' || h === 'lon' || h.includes('longitud')) {
+          const num = parseFloat(val.replace(',', '.'));
+          d.lng = isNaN(num) ? null : num;
+        } else {
+          d[h] = val;
+        }
+      });
+
+      // Normalización inteligente de regiones si fue escrita con abreviaciones o sin tildes
+      if (d.region) {
+        const regClean = d.region.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+        if (regClean.includes('ARAUCA')) {
+          d.region = 'REGIÓN DE LA ARAUCANÍA';
+        } else if (regClean.includes('BIOBIO') || regClean.includes('BIO BIO')) {
+          d.region = 'REGIÓN DEL BIOBÍO';
+        } else if (regClean.includes('NUBLE')) {
+          d.region = 'REGIÓN DE ÑUBLE';
+        } else if (regClean.includes('MAULE')) {
+          d.region = 'REGIÓN DEL MAULE';
+        } else if (regClean.includes('HIGGINS') || regClean.includes('O\'HIGGINS')) {
+          d.region = 'REGIÓN DE O\'HIGGINS';
+        } else if (regClean.includes('METROPOLITANA') || regClean === 'RM') {
+          d.region = 'REGIÓN METROPOLITANA';
+        } else if (regClean.includes('COQUIMBO')) {
+          d.region = 'REGIÓN DE COQUIMBO';
+        } else if (regClean.includes('ATACAMA')) {
+          d.region = 'REGIÓN DE ATACAMA';
+        } else if (regClean.includes('VALPARAISO')) {
+          d.region = 'REGIÓN DE VALPARAÍSO';
+        } else if (regClean.includes('LOS RIOS')) {
+          d.region = 'REGIÓN DE LOS RÍOS';
+        } else if (regClean.includes('LOS LAGOS')) {
+          d.region = 'REGIÓN DE LOS LAGOS';
+        }
+      }
+
+      // Auto-geolocalización de respaldo si no se ingresó latitud o longitud en Google Sheets
+      if (d.lat == null || d.lng == null) {
+        const keyComuna = (d.comuna || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+        const keyCiudad = (d.ciudad || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+        const coords = CITY_COORDS[keyComuna] || CITY_COORDS[keyCiudad];
+        if (coords) {
+          d.lat = coords.lat;
+          d.lng = coords.lng;
+        }
+      }
+
+      return d;
+    }).filter(d => d.nombre && d.nombre.trim());
+  }
+
+  async function fetchDistributorData(jsonUrl, sheetUrl, dataSource, cacheMins) {
+    const normSheetUrl = normalizeGoogleSheetUrl(sheetUrl);
+    const isDesignMode = typeof window.Shopify !== 'undefined' && window.Shopify.designMode;
+    const cacheKey = 'dloc_sheet_cache_' + (normSheetUrl ? btoa(normSheetUrl).slice(0, 32) : 'local');
+
+    // 1. Try Cache if enabled and not in designMode
+    if (!isDesignMode && cacheMins > 0 && normSheetUrl) {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          const ageMinutes = (Date.now() - parsed.timestamp) / (1000 * 60);
+          if (ageMinutes < cacheMins && Array.isArray(parsed.data) && parsed.data.length > 0) {
+            return parsed.data;
+          }
+        }
+      } catch (e) {
+        // Ignore localStorage error
+      }
+    }
+
+    // 2. Fetch from Google Sheets if configured
+    if ((dataSource === 'auto' || dataSource === 'sheets') && normSheetUrl) {
+      try {
+        const res = await fetch(normSheetUrl, { cache: isDesignMode ? 'no-cache' : 'default' });
+        if (res.ok) {
+          const text = await res.text();
+          if (!text.trim().startsWith('<!DOCTYPE') && !text.trim().startsWith('<html')) {
+            const data = csvToDistributors(text);
+            if (data.length > 0) {
+              if (!isDesignMode && cacheMins > 0) {
+                try {
+                  localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
+                } catch (e) {}
+              }
+              return data;
+            }
+          }
+        }
+        console.warn('[DistributorLocator] Google Sheets fetch failed or returned empty. Falling back if allowed.');
+      } catch (sheetErr) {
+        console.warn('[DistributorLocator] Google Sheets network error:', sheetErr);
+      }
+    }
+
+    // 3. Fallback to local JSON if allowed
+    if (dataSource === 'auto' || dataSource === 'json') {
+      const res = await fetch(jsonUrl);
+      if (!res.ok) throw new Error(`HTTP error ${res.status} fetching local JSON`);
+      const data = await res.json();
+      return (data || []).filter(d => d.nombre && d.nombre.trim());
+    }
+
+    return [];
+  }
+
   // -- Main initialiser ------------------------------------------
   function init(section) {
     const sectionId    = section.dataset.sectionId;
     const jsonUrl      = section.dataset.jsonUrl;
+    const sheetUrl     = section.dataset.sheetUrl || '';
+    const dataSource   = section.dataset.dataSource || 'auto';
+    const cacheMins    = parseInt(section.dataset.cacheMins || '15', 10);
     const radiusKm     = parseInt(section.dataset.radius || DEFAULT_RADIUS_KM, 10);
     const itemsPerPage = parseInt(section.dataset.perPage || DEFAULT_PER_PAGE, 10);
 
@@ -258,9 +527,8 @@
     let filteredData    = [];
     let currentPage     = 1;
 
-    // --- Load JSON --------------------------------------------
-    fetch(jsonUrl)
-      .then(r => r.json())
+    // --- Load Data (Google Sheets / JSON) ---------------------
+    fetchDistributorData(jsonUrl, sheetUrl, dataSource, cacheMins)
       .then(async data => {
         allData = data.filter(d => d.nombre && d.nombre.trim());
         regionList = [...new Set(allData.map(d => d.region).filter(Boolean))].sort();
