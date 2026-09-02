@@ -86,7 +86,7 @@
         "bc_color_current": "#ffffff",
         "bc_color_sep": "#94a3b8",
         "desktop_image_height": 600,
-        "mobile_image_height": 300,
+        "mobile_image_height": 500,
         "padding_top_desktop": 40,
         "padding_bottom_desktop": 40,
         "padding_top_mobile": 20,
