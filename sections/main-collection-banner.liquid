@@ -24,6 +24,11 @@
   assign show_breadcrumbs = section.settings.show_breadcrumbs
   assign show_eyebrow = section.settings.show_eyebrow
   assign eyebrow = section.settings.eyebrow_text | default: 'NUTRICIÓN SUPERIOR'
+
+  assign overlay_mode        = section.settings.overlay_mode | default: 'gradient_left'
+  assign overlay_color       = section.settings.overlay_color | default: '#ffffff'
+  assign overlay_alpha       = section.settings.overlay_opacity | default: 90 | divided_by: 100.0
+  assign overlay_color_rgba  = overlay_color | color_modify: 'alpha', overlay_alpha
 -%}
 
 <style>
@@ -70,7 +75,7 @@
     left: 0;
   }
 
-  .gerolamo-col-hero__gradient-mask {
+  #theme-section-{{ section.id }} .gerolamo-col-hero__gradient-mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -78,14 +83,47 @@
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0.94) 30%, rgba(255, 255, 255, 0.72) 48%, rgba(255, 255, 255, 0.2) 68%, rgba(255, 255, 255, 0) 85%);
     pointer-events: none;
     z-index: 2;
+    {% if overlay_mode == 'none' %}
+      display: none;
+    {% elsif overlay_mode == 'gradient_left' %}
+      background: linear-gradient(90deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.88 }} 32%,
+        {{ overlay_color | color_modify: 'alpha', 0.60 }} 50%,
+        {{ overlay_color | color_modify: 'alpha', 0.15 }} 72%,
+        rgba(0,0,0,0) 88%);
+    {% elsif overlay_mode == 'gradient_right' %}
+      background: linear-gradient(270deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.88 }} 32%,
+        {{ overlay_color | color_modify: 'alpha', 0.60 }} 50%,
+        {{ overlay_color | color_modify: 'alpha', 0.15 }} 72%,
+        rgba(0,0,0,0) 88%);
+    {% elsif overlay_mode == 'gradient_bottom' %}
+      background: linear-gradient(0deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.70 }} 45%,
+        rgba(0,0,0,0) 90%);
+    {% elsif overlay_mode == 'gradient_top' %}
+      background: linear-gradient(180deg,
+        {{ overlay_color_rgba }} 0%,
+        {{ overlay_color | color_modify: 'alpha', 0.70 }} 45%,
+        rgba(0,0,0,0) 90%);
+    {% elsif overlay_mode == 'solid' %}
+      background-color: {{ overlay_color_rgba }};
+    {% endif %}
   }
 
   @media (max-width: 768px) {
-    .gerolamo-col-hero__gradient-mask {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.35) 100%);
+    #theme-section-{{ section.id }} .gerolamo-col-hero__gradient-mask {
+      {% if overlay_mode == 'gradient_left' or overlay_mode == 'gradient_right' or overlay_mode == 'gradient_bottom' or overlay_mode == 'gradient_top' %}
+        background: linear-gradient(180deg,
+          {{ overlay_color_rgba }} 0%,
+          {{ overlay_color | color_modify: 'alpha', 0.80 }} 60%,
+          {{ overlay_color | color_modify: 'alpha', 0.35 }} 100%);
+      {% endif %}
     }
   }
 
@@ -314,6 +352,40 @@
           "label": "Inferior Derecha"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "🎭 Máscara y Capa sobre Imagen (Overlay)"
+    },
+    {
+      "type": "select",
+      "id": "overlay_mode",
+      "label": "Tipo de máscara",
+      "default": "gradient_left",
+      "options": [
+        { "value": "none",            "label": "Sin máscara" },
+        { "value": "gradient_left",   "label": "Gradiente desde Izquierda" },
+        { "value": "gradient_right",  "label": "Gradiente desde Derecha" },
+        { "value": "gradient_bottom", "label": "Gradiente desde Abajo" },
+        { "value": "gradient_top",    "label": "Gradiente desde Arriba" },
+        { "value": "solid",           "label": "Color sólido con opacidad" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Color de la máscara",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacidad de la máscara",
+      "default": 90
     },
     {
       "type": "header",
