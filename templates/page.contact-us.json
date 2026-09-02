@@ -66,7 +66,7 @@
         "content_position_h_desktop": "flex-start",
         "content_position_h_mobile": "center",
         "content_position_v": "center",
-        "text_align": "text-center",
+        "text_align": "text-left",
         "text_align_mobile": "text-center",
         "overlay_mode": "gradient_top",
         "overlay_color": "#FFFFFF",
