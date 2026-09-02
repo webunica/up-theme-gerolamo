@@ -265,8 +265,8 @@
         "font_size_mobile": 13,
         "card_radius": 22,
         "content_max_width": 1160,
-        "padding_top_desktop": 40,
-        "padding_bottom_desktop": 60,
+        "padding_top_desktop": 65,
+        "padding_bottom_desktop": 65,
         "padding_top_mobile": 25,
         "padding_bottom_mobile": 40
       }
