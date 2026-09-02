@@ -74,6 +74,15 @@
       <h1 class="mt0 {{ block.settings.heading_size }}">{{ product.title | escape }}</h1>
       {%- endif -%}
     </div>
+    {%- when 'sku' -%}
+    <div id="sku-{{ section.id }}" class="product__sku-block product__sku-block--{{ block.settings.text_size | default: 'small' }}{% if current_variant.sku == blank and block.settings.hide_if_empty %} hide{% endif %}"
+         {% if block.settings.text_color != 'rgba(0,0,0,0)' and block.settings.text_color != blank %}style="color: {{ block.settings.text_color }};"{% endif %}
+         {{ block.shopify_attributes }}>
+      {%- if block.settings.show_label -%}
+        <span class="product__sku-label">{{ block.settings.sku_label | default: 'SKU:' }}</span>
+      {%- endif -%}
+      <span class="product__sku-value">{{ current_variant.sku }}</span>
+    </div>
     {%- when 'price' -%}
     {%- if settings.cart_type != "catalog_mode" -%}
     <div class="product__price-container">
