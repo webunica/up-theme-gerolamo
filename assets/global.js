@@ -1880,6 +1880,7 @@ class VariantSelects extends HTMLElement {
     const section = this.getParent();
     const html = this.new_html;
     this.setHtmlInfo('price-', html);
+    this.setHtmlInfo('sku-', html);
     this.setHtmlInfo('information-', html);
     this.setHtmlInfo('inventory-', html);
     this.setHtmlInfo('badge__container-', html);
@@ -2041,6 +2042,7 @@ class VariantSelects extends HTMLElement {
     });
 
     this.hideUnavailableItem('price-');
+    this.hideUnavailableItem('sku-');
     this.hideUnavailableItem('information-');
     this.hideUnavailableItem('inventory-');
     var _product = this.closest('.product-page-template');
