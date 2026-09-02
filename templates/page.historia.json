@@ -213,7 +213,7 @@
         "title_color": "#1b4b8a",
         "title_size_desktop": 36,
         "title_size_mobile": 26,
-        "title_align": "left",
+        "title_align": "center",
         "title_align_mobile": "left",
         "title_margin_bottom": 35,
         "logo_image": "shopify://shop_images/isotipo.png",
