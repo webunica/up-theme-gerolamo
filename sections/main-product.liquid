@@ -647,6 +647,57 @@ component-swiper-slider.css
         ]
       },
       {
+        "type": "sku",
+        "name": "SKU",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "sku_label",
+            "default": "SKU:",
+            "label": "Etiqueta"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_label",
+            "default": true,
+            "label": "Mostrar etiqueta"
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_if_empty",
+            "default": true,
+            "label": "Ocultar si está vacío"
+          },
+          {
+            "type": "select",
+            "id": "text_size",
+            "options": [
+              {
+                "value": "small",
+                "label": "Pequeño"
+              },
+              {
+                "value": "medium",
+                "label": "Mediano"
+              },
+              {
+                "value": "large",
+                "label": "Destacado"
+              }
+            ],
+            "default": "small",
+            "label": "Tamaño del texto"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "default": "rgba(0,0,0,0)",
+            "label": "Color personalizado"
+          }
+        ]
+      },
+      {
         "type": "price",
         "name": "Price",
         "limit": 1,
