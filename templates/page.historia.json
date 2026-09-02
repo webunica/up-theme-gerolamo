@@ -88,7 +88,7 @@
         "desktop_image_height": 600,
         "mobile_image_height": 500,
         "padding_top_desktop": 40,
-        "padding_bottom_desktop": 40,
+        "padding_bottom_desktop": 10,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 20,
         "color_background": "#0f172a"
