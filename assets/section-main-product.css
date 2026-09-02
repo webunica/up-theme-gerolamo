@@ -1157,3 +1157,34 @@ animated-badge svg{
   color: #033097 !important;
 }
 
+/* Bloque independiente de SKU */
+.product__sku-block {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.4;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.product__sku-block--small {
+  font-size: 13px;
+}
+.product__sku-block--medium {
+  font-size: 15px;
+}
+.product__sku-block--large {
+  font-size: 18px;
+}
+.product__sku-block .product__sku-label {
+  font-weight: 600;
+  opacity: 0.85;
+}
+.product__sku-block .product__sku-value {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.product__sku-block.hide,
+.product__sku-block.hidden {
+  display: none !important;
+}
+
