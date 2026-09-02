@@ -77,30 +77,31 @@
   /* Fila / Elemento Individual */
   #theme-section-{{ section.id }} .gerolamo-timeline__item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: {{ section.settings.gap_desktop | default: 36 }}px;
     position: relative;
-    padding-bottom: {{ section.settings.item_spacing_desktop | default: 44 }}px;
-  }
-
-  #theme-section-{{ section.id }} .gerolamo-timeline__item:last-child {
-    padding-bottom: 0;
   }
 
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-timeline__item {
       gap: {{ section.settings.gap_mobile | default: 20 }}px;
-      padding-bottom: {{ section.settings.item_spacing_mobile | default: 32 }}px;
     }
   }
 
-  /* Columna Izquierda: Icono y Línea Conectora */
+  /* Columna Izquierda: Icono y Conector de Puntos */
   #theme-section-{{ section.id }} .gerolamo-timeline__icon-col {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
+    width: {{ section.settings.circle_size_desktop | default: 105 }}px;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__icon-col {
+      width: {{ section.settings.circle_size_mobile | default: 75 }}px;
+    }
   }
 
   /* Círculo contenedor del icono */
@@ -116,61 +117,94 @@
     position: relative;
     z-index: 2;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-    padding: 18px;
+    padding: {{ section.settings.circle_padding | default: 0 }}px;
     box-sizing: border-box;
     transition: transform 0.25s ease;
   }
 
   #theme-section-{{ section.id }} .gerolamo-timeline__item:hover .gerolamo-timeline__circle {
-    transform: scale(1.04);
+    transform: scale(1.03);
   }
 
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-timeline__circle {
       width: {{ section.settings.circle_size_mobile | default: 75 }}px;
       height: {{ section.settings.circle_size_mobile | default: 75 }}px;
-      padding: 12px;
+      padding: {{ section.settings.circle_padding_mobile | default: 0 }}px;
     }
   }
 
   #theme-section-{{ section.id }} .gerolamo-timeline__icon-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: {{ section.settings.icon_object_fit | default: 'cover' }};
+    border-radius: 50%;
     display: block;
   }
 
   #theme-section-{{ section.id }} .gerolamo-timeline__icon-placeholder {
-    width: 60%;
-    height: 60%;
+    width: 50%;
+    height: 50%;
     color: {{ line_color }};
   }
 
-  /* Línea vertical punteada entre círculos */
-  #theme-section-{{ section.id }} .gerolamo-timeline__line {
-    position: absolute;
-    top: {{ section.settings.circle_size_desktop | default: 105 }}px;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0px;
-    border-left: {{ section.settings.line_width | default: 2.5 }}px {{ section.settings.line_style | default: 'dotted' }} {{ line_color }};
+  /* Conector de puntos entre círculos */
+  #theme-section-{{ section.id }} .gerolamo-timeline__dots-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: {{ section.settings.item_spacing_desktop | default: 44 }}px;
+    width: 20px;
+    margin: 0 auto;
     z-index: 1;
-    pointer-events: none;
+    box-sizing: border-box;
+    padding: 6px 0;
   }
 
   @media (max-width: 768px) {
-    #theme-section-{{ section.id }} .gerolamo-timeline__line {
-      top: {{ section.settings.circle_size_mobile | default: 75 }}px;
+    #theme-section-{{ section.id }} .gerolamo-timeline__dots-connector {
+      height: {{ section.settings.item_spacing_mobile | default: 32 }}px;
+      padding: 4px 0;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__dot {
+    width: {{ section.settings.dot_size | default: 5 }}px;
+    height: {{ section.settings.dot_size | default: 5 }}px;
+    border-radius: 50%;
+    background-color: {{ line_color }};
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__dot {
+      width: calc({{ section.settings.dot_size | default: 5 }}px * 0.85);
+      height: calc({{ section.settings.dot_size | default: 5 }}px * 0.85);
     }
   }
 
   /* Columna Derecha: Contenido y Texto */
   #theme-section-{{ section.id }} .gerolamo-timeline__content-col {
     flex: 1;
+    min-height: {{ section.settings.circle_size_desktop | default: 105 }}px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-sizing: border-box;
+    padding-bottom: 24px;
+  }
+
+  @media (max-width: 768px) {
+    #theme-section-{{ section.id }} .gerolamo-timeline__content-col {
+      min-height: {{ section.settings.circle_size_mobile | default: 75 }}px;
+      padding-bottom: 16px;
+    }
+  }
+
+  #theme-section-{{ section.id }} .gerolamo-timeline__item:last-child .gerolamo-timeline__content-col {
+    padding-bottom: 0;
   }
 
   #theme-section-{{ section.id }} .gerolamo-timeline__item-title {
@@ -244,9 +278,14 @@
               {%- endif -%}
             </div>
 
-            <!-- Línea vertical conectora -->
+            <!-- Conector de puntos entre círculos -->
             {%- unless forloop.last -%}
-              <div class="gerolamo-timeline__line" aria-hidden="true"></div>
+              {%- assign num_dots = section.settings.dot_count | default: 3 | plus: 0 -%}
+              <div class="gerolamo-timeline__dots-connector" aria-hidden="true">
+                {%- for i in (1..num_dots) -%}
+                  <span class="gerolamo-timeline__dot"></span>
+                {%- endfor -%}
+              </div>
             {%- endunless -%}
           </div>
 
@@ -325,29 +364,60 @@
       "default": 75
     },
     {
-      "type": "header",
-      "content": "🔗 Línea Conectora"
-    },
-    {
       "type": "select",
-      "id": "line_style",
-      "label": "Estilo de la línea",
-      "default": "dotted",
+      "id": "icon_object_fit",
+      "label": "Ajuste de la imagen",
+      "default": "cover",
       "options": [
-        { "value": "dotted", "label": "Punteada (Dotted)" },
-        { "value": "dashed", "label": "Discontinua (Dashed)" },
-        { "value": "solid",  "label": "Sólida (Solid)" }
+        { "value": "cover",   "label": "Cubrir todo el círculo (100%)" },
+        { "value": "contain", "label": "Contener dentro con margen" }
       ]
     },
     {
       "type": "range",
-      "id": "line_width",
-      "min": 1,
-      "max": 6,
+      "id": "circle_padding",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Margen interno (Escritorio)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "circle_padding_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Margen interno (Móvil)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "🔗 Puntos Conectores"
+    },
+    {
+      "type": "select",
+      "id": "dot_count",
+      "label": "Cantidad de puntos",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2 puntos" },
+        { "value": "3", "label": "3 puntos (Recomendado)" },
+        { "value": "4", "label": "4 puntos" },
+        { "value": "5", "label": "5 puntos" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "min": 3,
+      "max": 8,
       "step": 1,
       "unit": "px",
-      "label": "Grosor de la línea",
-      "default": 3
+      "label": "Tamaño de los puntos",
+      "default": 5
     },
     {
       "type": "header",
@@ -544,7 +614,7 @@
   ],
   "presets": [
     {
-      "name": "Historia: Hitos con Iconos",
+      "name": "Hitos de Historia",
       "blocks": [
         {
           "type": "milestone",
