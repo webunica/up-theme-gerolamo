@@ -197,7 +197,7 @@
       "settings": {
         "data_source": "auto",
         "google_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQyA--iW8QyNdGIbMw6i00ggZXX6pOMOjcs_CJV4Rnoxem3fy1oMDjwb7WoZoEwULEp1cWHOextieY5/pub?output=csv",
-        "sheet_cache_mins": 0,
+        "sheet_cache_mins": 5,
         "hide_hero": true,
         "hero_height_desktop": 360,
         "hero_height_mobile": 250,
