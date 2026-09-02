@@ -34,7 +34,7 @@
         "information_DQTzTU": {
           "type": "information",
           "settings": {
-            "show_sku": false,
+            "show_sku": true,
             "show_barcode": false,
             "show_vendor": true,
             "show_type": false
