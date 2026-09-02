@@ -21,7 +21,7 @@
         "torn_edge_height_mobile": 35,
         "show_box_bg": true,
         "box_bg_color": "#294eb3",
-        "box_bg_opacity": 80,
+        "box_bg_opacity": 15,
         "box_blur": 8,
         "box_border_radius": 18,
         "box_border_radius_mobile": 14,
