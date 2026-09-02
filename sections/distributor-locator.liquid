@@ -108,6 +108,9 @@
   class="distributor-locator top-spacing-{{ section.settings.top_spacing }}"
   data-section-id="{{ section.id }}"
   data-json-url="{{ 'distribuidores.json' | asset_url }}"
+  data-sheet-url="{{ section.settings.google_sheet_url | escape }}"
+  data-data-source="{{ section.settings.data_source | default: 'auto' }}"
+  data-cache-mins="{{ section.settings.sheet_cache_mins | default: 15 }}"
   data-radius="{{ section.settings.nearby_radius | default: 100 }}"
   data-per-page="{{ section.settings.items_per_page | default: 18 }}"
 >
@@ -293,12 +296,44 @@
   "settings": [
     {
       "type": "header",
+      "content": "📊 Base de Datos y Google Sheets"
+    },
+    {
+      "type": "select",
+      "id": "data_source",
+      "label": "Origen de los distribuidores",
+      "default": "auto",
+      "options": [
+        { "value": "auto",   "label": "Google Sheets (con respaldo local)" },
+        { "value": "sheets", "label": "Solo Google Sheets" },
+        { "value": "json",   "label": "Solo archivo local (JSON)" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "google_sheet_url",
+      "label": "URL de Google Sheets",
+      "info": "Pega el enlace de compartir o de 'Publicar en la web' en CSV."
+    },
+    {
+      "type": "range",
+      "id": "sheet_cache_mins",
+      "label": "Tiempo de caché (minutos)",
+      "info": "Acelera la carga evitando pedir el archivo a Google en cada clic.",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 15,
+      "unit": "min"
+    },
+    {
+      "type": "header",
       "content": "Encabezado"
     },
     {
       "type": "checkbox",
       "id": "hide_hero",
-      "label": "Ocultar banner interno (usar Banner de Página separado)",
+      "label": "Ocultar banner interno",
       "default": false
     },
     {
@@ -309,7 +344,7 @@
     {
       "type": "image_picker",
       "id": "hero_image_mobile",
-      "label": "Imagen de fondo del banner (Mobile - Opcional)"
+      "label": "Imagen de fondo (Móvil - Opcional)"
     },
     {
       "type": "range",
