@@ -34,7 +34,7 @@
         "badge_image": "shopify://shop_images/iconpre2.png",
         "copyright_text": "© 2026 Gerolamo.cl. Todos los derechos reservados.",
         "terms_text": "Términos y condiciones",
-        "terms_url": "",
+        "terms_url": "shopify://pages/termino-y-condiciones",
         "privacy_text": "Política de privacidad",
         "privacy_url": "shopify://pages/politica-de-privacidad",
         "bg_color": "#1a538a",
