@@ -36,7 +36,7 @@
         "terms_text": "Términos y condiciones",
         "terms_url": "",
         "privacy_text": "Política de privacidad",
-        "privacy_url": "",
+        "privacy_url": "shopify://policies/privacy-policy",
         "bg_color": "#1a538a",
         "text_color": "#ffffff",
         "padding_top": 100,
