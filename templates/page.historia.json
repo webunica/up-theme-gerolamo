@@ -103,8 +103,8 @@
         "mobile_image_height": 500,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 200,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 150,
         "color_background": "#0f172a"
       }
     },
