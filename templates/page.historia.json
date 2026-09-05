@@ -14,7 +14,7 @@
       "settings": {
         "background_image": "shopify://shop_images/bg-historia.png",
         "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
-        "imagealign": "top left",
+        "imagealign": "bottom center",
         "imagealign_mobile": "top right",
         "show_torn_edge": true,
         "torn_edge_color": "#faf7f2",
