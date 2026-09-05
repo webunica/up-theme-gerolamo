@@ -89,8 +89,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": false,
             "url_mantencion": "",
-            "url_prescripcion": "",
             "url_snacks": "",
+            "url_prescripcion": "",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
@@ -105,8 +105,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": true,
             "url_mantencion": "shopify://collections/premium-perro",
-            "url_prescripcion": "shopify://collections/snaks-perro",
-            "url_snacks": "shopify://collections/prescripcion-perro",
+            "url_snacks": "shopify://collections/snaks-perro",
+            "url_prescripcion": "shopify://collections/prescripcion-perro",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
@@ -121,8 +121,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": true,
             "url_mantencion": "shopify://collections/premium-gatos",
-            "url_prescripcion": "shopify://collections/snaks-gatos",
             "url_snacks": "shopify://collections/prescripcion-gato",
+            "url_prescripcion": "shopify://collections/snaks-gatos",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
@@ -137,8 +137,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": true,
             "url_mantencion": "",
-            "url_prescripcion": "",
             "url_snacks": "",
+            "url_prescripcion": "",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
@@ -152,8 +152,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": true,
             "url_mantencion": "",
-            "url_prescripcion": "",
             "url_snacks": "",
+            "url_prescripcion": "",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
@@ -167,8 +167,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": true,
             "url_mantencion": "",
-            "url_prescripcion": "",
             "url_snacks": "",
+            "url_prescripcion": "",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
