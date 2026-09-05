@@ -90,6 +90,12 @@
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--desktop { display: none !important; }
     #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--mobile  { display: block !important; }
+    #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img {
+      object-position: {{ section.settings.imagealign_mobile | default: section.settings.imagealign | default: 'center center' }};
+    }
+    #theme-section-{{ section.id }} .gerolamo-page-banner__bg-wrap {
+      background-position: {{ section.settings.imagealign_mobile | default: section.settings.imagealign | default: 'center center' }};
+    }
   }
   @media (min-width: 769px) {
     #theme-section-{{ section.id }} .gerolamo-page-banner__bg-img--mobile  { display: none !important; }
@@ -264,6 +270,7 @@
     width: 100%;
     max-width: {{ section.settings.box_max_width | default: 580 }}px;
     box-sizing: border-box;
+    transform: translateY({{ section.settings.box_offset_y_desktop | default: 0 }}px);
 
     {% if show_box_bg %}
       background-color: {{ box_bg_rgba }};
@@ -311,6 +318,7 @@
   @media (max-width: 768px) {
     #theme-section-{{ section.id }} .gerolamo-page-banner__text-box {
       max-width: 100%;
+      transform: translateY({{ section.settings.box_offset_y_mobile | default: 0 }}px);
       {% if show_box_bg %}
         padding: {{ section.settings.box_padding_mobile_v | default: 20 }}px {{ section.settings.box_padding_mobile_h | default: 20 }}px;
         border-radius: {{ section.settings.box_border_radius_mobile | default: 12 }}px;
@@ -656,7 +664,7 @@
     {
       "type": "select",
       "id": "imagealign",
-      "label": "Foco de la imagen",
+      "label": "Foco de la imagen (Escritorio)",
       "default": "center right",
       "options": [
         { "value": "center right",  "label": "Centro Derecha" },
@@ -666,6 +674,23 @@
         { "value": "top left",      "label": "Superior Izquierda" },
         { "value": "top right",     "label": "Superior Derecha" },
         { "value": "bottom center", "label": "Inferior Centro" },
+        { "value": "bottom left",   "label": "Inferior Izquierda" },
+        { "value": "bottom right",  "label": "Inferior Derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "imagealign_mobile",
+      "label": "Foco de imagen (Móvil)",
+      "default": "center center",
+      "options": [
+        { "value": "center center", "label": "Centro" },
+        { "value": "top center",    "label": "Superior Centro (Arriba)" },
+        { "value": "bottom center", "label": "Inferior Centro (Abajo)" },
+        { "value": "center right",  "label": "Centro Derecha" },
+        { "value": "center left",   "label": "Centro Izquierda" },
+        { "value": "top left",      "label": "Superior Izquierda" },
+        { "value": "top right",     "label": "Superior Derecha" },
         { "value": "bottom left",   "label": "Inferior Izquierda" },
         { "value": "bottom right",  "label": "Inferior Derecha" }
       ]
@@ -915,6 +940,28 @@
         { "value": "center",     "label": "Centro" },
         { "value": "flex-end",   "label": "Abajo" }
       ]
+    },
+    {
+      "type": "range",
+      "id": "box_offset_y_desktop",
+      "min": -150,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Ajuste vertical texto (Desktop)",
+      "default": 0,
+      "info": "Valores negativos suben el texto; positivos lo bajan."
+    },
+    {
+      "type": "range",
+      "id": "box_offset_y_mobile",
+      "min": -100,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Ajuste vertical texto (Móvil)",
+      "default": 0,
+      "info": "Valores negativos suben el texto; positivos lo bajan."
     },
     {
       "type": "select",
@@ -1425,7 +1472,7 @@
       "type": "range",
       "id": "padding_top_desktop",
       "min": 0,
-      "max": 120,
+      "max": 200,
       "step": 5,
       "unit": "px",
       "label": "Padding superior (Escritorio)",
@@ -1435,7 +1482,7 @@
       "type": "range",
       "id": "padding_bottom_desktop",
       "min": 0,
-      "max": 120,
+      "max": 200,
       "step": 5,
       "unit": "px",
       "label": "Padding inferior (Escritorio)",
@@ -1445,7 +1492,7 @@
       "type": "range",
       "id": "padding_top_mobile",
       "min": 0,
-      "max": 80,
+      "max": 150,
       "step": 5,
       "unit": "px",
       "label": "Padding superior (Móvil)",
@@ -1455,7 +1502,7 @@
       "type": "range",
       "id": "padding_bottom_mobile",
       "min": 0,
-      "max": 80,
+      "max": 150,
       "step": 5,
       "unit": "px",
       "label": "Padding inferior (Móvil)",
