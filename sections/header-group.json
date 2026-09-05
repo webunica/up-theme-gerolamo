@@ -121,8 +121,8 @@
             "sub_menu": "",
             "enable_rich_dropdown": true,
             "url_mantencion": "shopify://collections/premium-gatos",
-            "url_snacks": "shopify://collections/prescripcion-gato",
-            "url_prescripcion": "shopify://collections/snaks-gatos",
+            "url_snacks": "shopify://collections/snaks-gatos",
+            "url_prescripcion": "shopify://collections/prescripcion-gato",
             "link_bg": "rgba(0,0,0,0)",
             "link_color": "rgba(0,0,0,0)"
           }
