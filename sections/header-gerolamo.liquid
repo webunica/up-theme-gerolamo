@@ -750,7 +750,7 @@
                     {%- endif -%}
                   </a>
                   {%- if is_rich_target -%}
-                    {%- render "gerolamo-rich-submenu", link: block.settings.sub_menu, category: block.settings.title, url_premium: block.settings.url_mantencion, url_prescripcion: block.settings.url_prescripcion, url_snacks: block.settings.url_snacks -%}
+                    {%- render "gerolamo-rich-submenu", link: block.settings.sub_menu, category: block.settings.title, url_premium: block.settings.url_mantencion, url_snacks: block.settings.url_snacks, url_prescripcion: block.settings.url_prescripcion -%}
                   {%- elsif block.settings.sub_menu != blank and block.settings.sub_menu.links.size > 0 -%}
                     {%- render "menu-submenu", link: block.settings.sub_menu -%}
                   {%- endif -%}
@@ -1308,7 +1308,7 @@
     {
       "type": "color_background",
       "id": "nav_bg_gradient",
-      "label": "Fondo degradado de la barra de enlaces (Opcional)"
+      "label": "Fondo degradado barra de enlaces"
     },
     {
       "type": "range",
@@ -1317,7 +1317,7 @@
       "max": 5,
       "step": 1,
       "unit": "px",
-      "label": "Grosor del borde inferior (0 para quitar borde)",
+      "label": "Grosor del borde inferior",
       "default": 1
     },
     {
@@ -1348,7 +1348,7 @@
       "type": "color",
       "id": "nav_link_bg_hover",
       "default": "rgba(0,0,0,0)",
-      "label": "Color de fondo de cada enlace al pasar el cursor (Hover)"
+      "label": "Color de fondo enlace al pasar cursor"
     },
     {
       "type": "range",
@@ -1357,7 +1357,7 @@
       "max": 50,
       "step": 1,
       "unit": "px",
-      "label": "Redondeo del fondo de cada enlace (Border radius)",
+      "label": "Redondeo del fondo de cada enlace",
       "default": 0
     },
     {
@@ -1566,22 +1566,22 @@
           "type": "checkbox",
           "id": "enable_rich_dropdown",
           "default": false,
-          "label": "Activar tarjeta de submenú (Premium, Prescripción, Snacks)"
+          "label": "Activar submenú (Premium, Snacks, Presc.)"
         },
         {
           "type": "url",
           "id": "url_mantencion",
-          "label": "Enlace a Premium (Opcional)"
-        },
-        {
-          "type": "url",
-          "id": "url_prescripcion",
-          "label": "Enlace a Prescripción (Opcional)"
+          "label": "Enlace a Premium Mantención (Opcional)"
         },
         {
           "type": "url",
           "id": "url_snacks",
           "label": "Enlace a Snacks (Opcional)"
+        },
+        {
+          "type": "url",
+          "id": "url_prescripcion",
+          "label": "Enlace a Prescripción (Opcional)"
         },
         {
           "type": "color",
