@@ -158,6 +158,21 @@
             "link_color": "rgba(0,0,0,0)"
           }
         },
+        "menu_item_GarqgD": {
+          "type": "menu_item",
+          "settings": {
+            "title": "Blog",
+            "url": "shopify://blogs/news",
+            "icon_svg": "",
+            "sub_menu": "",
+            "enable_rich_dropdown": true,
+            "url_mantencion": "",
+            "url_snacks": "",
+            "url_prescripcion": "",
+            "link_bg": "rgba(0,0,0,0)",
+            "link_color": "rgba(0,0,0,0)"
+          }
+        },
         "menu_item_MRz7Xg": {
           "type": "menu_item",
           "settings": {
@@ -186,6 +201,7 @@
         "menu_item_Qy7aaf",
         "menu_item_VAhhVd",
         "menu_item_dhq4RP",
+        "menu_item_GarqgD",
         "menu_item_MRz7Xg",
         "mega_menu_7hAtMx"
       ],
