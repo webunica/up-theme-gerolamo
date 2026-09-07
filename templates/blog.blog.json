@@ -13,7 +13,7 @@
       "type": "main-blog",
       "settings": {
         "blog": "{{ closest.blog }}",
-        "top_spacing": "normal",
+        "top_spacing": "small",
         "width": "default",
         "grid": "page-grid-sp-1 page-grid-3",
         "heading_aligment": "text-left",
