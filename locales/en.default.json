@@ -546,6 +546,20 @@
           "in_stock": "Disponible"
         }
       }
+    },
+    "checkout": {
+      "delivery_options": {
+        "free_total_label": "Por Pagar"
+      },
+      "order_summary": {
+        "free_shipping_discount_label": "Envío por Pagar",
+        "free_total_label": "Por Pagar",
+        "free_shipping_total_label": "Por Pagar"
+      },
+      "shipping": {
+        "free_rate_label": "Por Pagar",
+        "split_shipping_option_free": "Envío por Pagar"
+      }
     }
   }
 }
