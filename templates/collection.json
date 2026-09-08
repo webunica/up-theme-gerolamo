@@ -141,7 +141,7 @@
         "enable_products_count": false,
         "enable_products_count_main": false,
         "enable_dynamic_grid": true,
-        "enable_sorting": true,
+        "enable_sorting": false,
         "enable_sticky_filter_button": false,
         "enable_infinite_scroll": "showmore",
         "pagination_aligment": "text-center",
