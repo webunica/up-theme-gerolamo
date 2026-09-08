@@ -140,7 +140,7 @@
         "filters_padding": 20,
         "enable_products_count": false,
         "enable_products_count_main": false,
-        "enable_dynamic_grid": true,
+        "enable_dynamic_grid": false,
         "enable_sorting": false,
         "enable_sticky_filter_button": false,
         "enable_infinite_scroll": "showmore",
