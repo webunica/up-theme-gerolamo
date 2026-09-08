@@ -278,7 +278,7 @@
         </modal-opener>
       </div>
       {%- endif -%}
-      {%- if settings.cart_type != "catalog_mode" -%}
+      {%- if section.settings.show_cart_mobile and settings.cart_type != "catalog_mode" -%}
       {%- if section.settings.icons_text_mobile == 'show_only_text' -%}
       <a href="{{ routes.cart_url }}" class="header__button" id="cart-icon-bubble--mobile-short" aria-label="{{ 'sections.header.icon_cart' | t }}">
         {%- render 'cart-icon-bubble-short' -%}
