@@ -496,6 +496,7 @@
 
     const searchInput   = section.querySelector('.distributor-locator__search');
     const searchClear   = section.querySelector('.distributor-locator__search-clear');
+    const suggestionsEl = section.querySelector(`#dloc-suggestions-${sectionId}`);
     const regionSelect  = section.querySelector('.distributor-locator__region-select');
     const grid          = section.querySelector(`#dloc-grid-${sectionId}`);
     const paginationEl  = section.querySelector(`#dloc-pagination-${sectionId}`);
@@ -526,6 +527,11 @@
     let renderTimer     = null;
     let filteredData    = [];
     let currentPage     = 1;
+
+    // Helper to normalize strings for search (lowercase and remove accents)
+    function cleanStr(s) {
+      return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+    }
 
     // --- Load Data (Google Sheets / JSON) ---------------------
     fetchDistributorData(jsonUrl, sheetUrl, dataSource, cacheMins)
@@ -786,9 +792,126 @@
       }
     }
 
+    // --- Autocomplete Suggestions Logic -----------------------
+    function renderSuggestions(query) {
+      if (!suggestionsEl) return;
+      const cleanQ = cleanStr(query);
+
+      if (cleanQ.length < 3) {
+        suggestionsEl.hidden = true;
+        suggestionsEl.innerHTML = '';
+        return;
+      }
+
+      // Group matching cities/communes
+      const cityMatches = new Map();
+      const storeMatches = [];
+
+      allData.forEach(d => {
+        const cityClean = cleanStr(d.ciudad);
+        const comunaClean = cleanStr(d.comuna);
+        const nameClean = cleanStr(d.nombre);
+
+        // Check if city or commune matches
+        const matchedCityName = (cityClean.includes(cleanQ) ? d.ciudad : null) ||
+                               (comunaClean.includes(cleanQ) ? d.comuna : null);
+
+        if (matchedCityName) {
+          const key = cleanStr(matchedCityName);
+          if (!cityMatches.has(key)) {
+            cityMatches.set(key, {
+              name: matchedCityName,
+              region: d.region,
+              count: 0,
+              lat: d.lat,
+              lng: d.lng
+            });
+          }
+          const item = cityMatches.get(key);
+          item.count++;
+          if (item.lat == null && d.lat != null) {
+            item.lat = d.lat;
+            item.lng = d.lng;
+          }
+        }
+
+        // Check if store name matches directly
+        if (nameClean.includes(cleanQ) && storeMatches.length < 5) {
+          storeMatches.push(d);
+        }
+      });
+
+      const citiesArray = Array.from(cityMatches.values()).slice(0, 5);
+
+      if (citiesArray.length === 0 && storeMatches.length === 0) {
+        suggestionsEl.hidden = true;
+        suggestionsEl.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+
+      if (citiesArray.length > 0) {
+        html += `<div class="distributor-locator__suggestions-group">Ciudades y Comunas</div>`;
+        citiesArray.forEach(c => {
+          html += `
+            <div class="distributor-locator__suggestion-item" data-type="city" data-value="${escAttr(c.name)}" data-lat="${c.lat ?? ''}" data-lng="${c.lng ?? ''}">
+              <span class="distributor-locator__suggestion-icon">${ICON.pin}</span>
+              <div class="distributor-locator__suggestion-text">
+                <span class="distributor-locator__suggestion-title">${esc(c.name)}</span>
+                <span class="distributor-locator__suggestion-sub">${esc(c.region || 'Chile')}</span>
+              </div>
+              <span class="distributor-locator__suggestion-count">${c.count} ${c.count === 1 ? 'tienda' : 'tiendas'}</span>
+            </div>
+          `;
+        });
+      }
+
+      if (storeMatches.length > 0) {
+        html += `<div class="distributor-locator__suggestions-group">Tiendas y Clínicas</div>`;
+        storeMatches.forEach(s => {
+          html += `
+            <div class="distributor-locator__suggestion-item" data-type="store" data-value="${escAttr(s.nombre)}" data-lat="${s.lat ?? ''}" data-lng="${s.lng ?? ''}">
+              <span class="distributor-locator__suggestion-icon">${ICON.pin}</span>
+              <div class="distributor-locator__suggestion-text">
+                <span class="distributor-locator__suggestion-title">${esc(s.nombre)}</span>
+                <span class="distributor-locator__suggestion-sub">${esc([s.direccion, s.ciudad].filter(Boolean).join(', '))}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      suggestionsEl.innerHTML = html;
+      suggestionsEl.hidden = false;
+
+      // Attach click listeners to suggestions
+      suggestionsEl.querySelectorAll('.distributor-locator__suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const val = item.dataset.value;
+          const lat = parseFloat(item.dataset.lat);
+          const lng = parseFloat(item.dataset.lng);
+
+          if (searchInput) {
+            searchInput.value = val;
+            searchTerm = val;
+          }
+          if (searchClear) searchClear.hidden = false;
+          suggestionsEl.hidden = true;
+
+          applyFilters();
+
+          // Smoothly fly Leaflet map to city/store if coordinates are valid
+          if (mapObj && !isNaN(lat) && !isNaN(lng)) {
+            mapObj.flyTo([lat, lng], 13, { duration: 0.8 });
+          }
+        });
+      });
+    }
+
     // --- Apply all active filters -----------------------------
     function applyFilters() {
-      const term   = searchTerm.toLowerCase();
+      const term   = cleanStr(searchTerm);
       const region = activeRegion;
 
       let base = isNearbyMode && userLocation
@@ -798,10 +921,10 @@
       const filtered = base.filter(d => {
         const matchRegion = !region || d.region === region;
         const matchSearch = !term ||
-          (d.nombre    || '').toLowerCase().includes(term) ||
-          (d.ciudad    || '').toLowerCase().includes(term) ||
-          (d.direccion || '').toLowerCase().includes(term) ||
-          (d.comuna    || '').toLowerCase().includes(term);
+          cleanStr(d.nombre).includes(term) ||
+          cleanStr(d.ciudad).includes(term) ||
+          cleanStr(d.direccion).includes(term) ||
+          cleanStr(d.comuna).includes(term);
         return matchRegion && matchSearch;
       });
 
@@ -884,8 +1007,32 @@
 
       const validCoords = [];
 
+      // Group identical/near-identical coordinates to disperse markers nicely
+      const coordGroups = new Map();
+      data.forEach(d => {
+        if (d.lat == null || d.lng == null) return;
+        const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
+        if (!coordGroups.has(key)) coordGroups.set(key, []);
+        coordGroups.get(key).push(d);
+      });
+
       data.forEach((d, globalIdx) => {
         if (d.lat == null || d.lng == null) return;
+
+        let markerLat = d.lat;
+        let markerLng = d.lng;
+
+        // Disperse overlapping points in a small radius so all markers are visible and clickable
+        const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
+        const group = coordGroups.get(key);
+        if (group && group.length > 1) {
+          const indexInGroup = group.indexOf(d);
+          const totalInGroup = group.length;
+          const angle = (indexInGroup / totalInGroup) * 2 * Math.PI;
+          const radiusOffset = 0.0022; // approx 180-240 meters
+          markerLat = d.lat + Math.sin(angle) * radiusOffset;
+          markerLng = d.lng + Math.cos(angle) * (radiusOffset * 1.25);
+        }
 
         const pinHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42" style="overflow:visible;display:block;">
             <defs>
@@ -911,7 +1058,7 @@
           popupAnchor: [0, -44]
         });
 
-        const marker = L.marker([d.lat, d.lng], { icon: markerIcon });
+        const marker = L.marker([markerLat, markerLng], { icon: markerIcon });
         marker.bindPopup(buildPopupContent(d), { maxWidth: 300, className: 'dloc-custom-leaflet-popup' });
 
         marker.on('click', () => {
@@ -920,7 +1067,7 @@
 
         markersLayer.addLayer(marker);
         markersMap.set(globalIdx, marker);
-        validCoords.push([d.lat, d.lng]);
+        validCoords.push([markerLat, markerLng]);
       });
 
       // Fit map bounds to show markers
@@ -1002,7 +1149,21 @@
       searchInput.addEventListener('input', () => {
         searchTerm = searchInput.value.trim();
         if (searchClear) searchClear.hidden = !searchTerm;
+        renderSuggestions(searchTerm);
         scheduleFilter();
+      });
+
+      // Close suggestions on blur or click outside
+      document.addEventListener('click', (e) => {
+        if (!section.querySelector('.distributor-locator__search-wrap')?.contains(e.target)) {
+          if (suggestionsEl) suggestionsEl.hidden = true;
+        }
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (suggestionsEl) suggestionsEl.hidden = true;
+        }
       });
     }
 
@@ -1011,6 +1172,7 @@
         if (searchInput) searchInput.value = '';
         searchTerm = '';
         searchClear.hidden = true;
+        if (suggestionsEl) suggestionsEl.hidden = true;
         scheduleFilter();
       });
     }
@@ -1072,6 +1234,7 @@
           if (searchInput) searchInput.value = '';
           if (regionSelect) regionSelect.value = '';
           if (searchClear) searchClear.hidden = true;
+          if (suggestionsEl) suggestionsEl.hidden = true;
           searchTerm   = '';
           activeRegion = '';
           isNearbyMode = false;
