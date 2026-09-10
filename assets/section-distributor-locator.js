@@ -998,8 +998,10 @@
     function applyFilters() {
       const term   = cleanStr(searchTerm);
       const region = activeRegion;
+      const isSearchActive = Boolean(term || region);
 
-      let base = isNearbyMode && userLocation
+      // If user typed a search term or selected a region, search globally across all Chilean stores
+      let base = (!isSearchActive && isNearbyMode && userLocation)
         ? filterByRadius(allData, userLocation.lat, userLocation.lng, radiusKm)
         : allData;
 
@@ -1012,6 +1014,15 @@
           cleanStr(d.comuna).includes(term);
         return matchRegion && matchSearch;
       });
+
+      // Update geoBanner visibility based on active search
+      if (geoBanner) {
+        if (isSearchActive) {
+          geoBanner.hidden = true;
+        } else if (isNearbyMode && userLocation) {
+          geoBanner.hidden = false;
+        }
+      }
 
       renderCards(filtered, true);
     }
@@ -1238,8 +1249,9 @@
           validCount++;
         });
 
+        const isSearchActive = Boolean(searchTerm || activeRegion);
         if (validCount > 0) {
-          if (userLocation && isNearbyMode) {
+          if (!isSearchActive && userLocation && isNearbyMode) {
             bounds.extend({ lat: userLocation.lat, lng: userLocation.lng });
           }
           googleMap.fitBounds(bounds);
@@ -1307,7 +1319,8 @@
 
         if (validCoords.length > 0) {
           try {
-            if (userLocation && isNearbyMode) {
+            const isSearchActive = Boolean(searchTerm || activeRegion);
+            if (!isSearchActive && userLocation && isNearbyMode) {
               const bounds = L.latLngBounds(validCoords);
               bounds.extend([userLocation.lat, userLocation.lng]);
               mapObj.fitBounds(bounds, { padding: [40, 40], maxZoom: 13, animate: true });
