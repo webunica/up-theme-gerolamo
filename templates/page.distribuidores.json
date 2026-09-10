@@ -198,7 +198,7 @@
     "distributor_locator": {
       "type": "distributor-locator",
       "settings": {
-        "data_source": "sheets",
+        "data_source": "auto",
         "google_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTNXp78o99c7LZJFm8TF8Ym4cKSJENQ-FV1XJlvHK8JdfGYwmtNairtVt383xa3EMbNPVAkjJ15hffA/pub?gid=1983625008&single=true&output=csv",
         "sheet_cache_mins": 10,
         "hide_hero": true,
