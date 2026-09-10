@@ -1,6 +1,10 @@
 {{ 'section-distributor-locator.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+{% if section.settings.map_provider == 'google' and section.settings.google_maps_api_key != blank %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ section.settings.google_maps_api_key | strip | escape }}&libraries=places,geometry" async defer></script>
+{% else %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+{% endif %}
 <script src="{{ 'section-distributor-locator.js' | asset_url }}" defer="defer"></script>
 
 <style>
@@ -113,6 +117,8 @@
   data-cache-mins="{{ section.settings.sheet_cache_mins | default: 15 }}"
   data-radius="{{ section.settings.nearby_radius | default: 100 }}"
   data-per-page="{{ section.settings.items_per_page | default: 18 }}"
+  data-map-provider="{{ section.settings.map_provider | default: 'google' }}"
+  data-google-api-key="{{ section.settings.google_maps_api_key | strip | escape }}"
 >
 
   <!-- Hero Header -->
@@ -487,13 +493,29 @@
     },
     {
       "type": "header",
-      "content": "Mapa interactivo (OpenStreetMap)"
+      "content": "Mapa interactivo (Google Maps / OpenStreetMap)"
     },
     {
       "type": "checkbox",
       "id": "show_map",
-      "label": "Mostrar mapa interactivo (OpenStreetMap)",
+      "label": "Mostrar mapa interactivo",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "map_provider",
+      "label": "Proveedor del mapa",
+      "options": [
+        { "value": "google", "label": "Google Maps (Recomendado con API Key)" },
+        { "value": "osm", "label": "OpenStreetMap (Sin API Key)" }
+      ],
+      "default": "google"
+    },
+    {
+      "type": "text",
+      "id": "google_maps_api_key",
+      "label": "Google Maps API Key",
+      "info": "Clave API de Google Cloud Console con Maps JavaScript API habilitada."
     },
     {
       "type": "range",
