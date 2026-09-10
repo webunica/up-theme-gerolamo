@@ -10,8 +10,14 @@
   {% render 'snippet-main-product-sidebar' section:section, product:product, current_variant:current_variant, page_width:page_width %}
 {% endcomment %}
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
+{%- assign is_coming_soon = false -%}
+{%- if product.tags contains 'proximamente' or product.tags contains 'Próximamente' or product.tags contains 'proximo' or product.tags contains 'coming-soon' or product.tags contains 'Coming Soon' -%}
+  {%- assign is_coming_soon = true -%}
+{%- endif -%}
 {%- capture badges -%}
-{%- if product.available == false or current_variant.available == false -%}
+{%- if is_coming_soon -%}
+<span class="badges-item__medium" style="background:#033097; color:#ffffff; font-weight:800; border-radius:4px; letter-spacing:0.04em; text-transform:uppercase; padding: 4px 10px;">Próximamente</span>
+{%- elsif product.available == false or current_variant.available == false -%}
 <span class="badges-item__medium badges-item__sold-out">{{ 'products.product.sold_out' | t }}</span>
 {%- endif -%}
 {%- if product.metafields.wokiee.featured_badge != blank and show_badge_feature -%}
