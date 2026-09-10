@@ -42,6 +42,7 @@
         "background_image": "shopify://shop_images/banner-desk-02.png",
         "background_image_mobile": "shopify://shop_images/banner-mobile.02.png",
         "imagealign": "center right",
+        "imagealign_mobile": "center center",
         "show_torn_edge": false,
         "torn_edge_color": "#f5f1e9",
         "torn_edge_height_desktop": 55,
@@ -69,6 +70,8 @@
         "content_position_h_desktop": "flex-start",
         "content_position_h_mobile": "center",
         "content_position_v": "center",
+        "box_offset_y_desktop": 0,
+        "box_offset_y_mobile": 0,
         "text_align": "text-left",
         "text_align_mobile": "text-center",
         "overlay_mode": "solid",
@@ -195,8 +198,8 @@
     "distributor_locator": {
       "type": "distributor-locator",
       "settings": {
-        "data_source": "auto",
-        "google_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQyA--iW8QyNdGIbMw6i00ggZXX6pOMOjcs_CJV4Rnoxem3fy1oMDjwb7WoZoEwULEp1cWHOextieY5/pub?output=csv",
+        "data_source": "sheets",
+        "google_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQGBxdNWTTz5tHNmX0Z-QTrLYMUhwwcV009IJqHlRtADJbf3Ryj_MwAbTJcqzEu_g/pub?gid=1983625008&single=true&output=csv",
         "sheet_cache_mins": 10,
         "hide_hero": true,
         "hero_height_desktop": 360,
