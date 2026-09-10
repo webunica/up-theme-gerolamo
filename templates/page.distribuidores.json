@@ -199,7 +199,7 @@
       "type": "distributor-locator",
       "settings": {
         "data_source": "sheets",
-        "google_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQGBxdNWTTz5tHNmX0Z-QTrLYMUhwwcV009IJqHlRtADJbf3Ryj_MwAbTJcqzEu_g/pub?gid=1983625008&single=true&output=csv",
+        "google_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTNXp78o99c7LZJFm8TF8Ym4cKSJENQ-FV1XJlvHK8JdfGYwmtNairtVt383xa3EMbNPVAkjJ15hffA/pub?gid=1983625008&single=true&output=csv",
         "sheet_cache_mins": 10,
         "hide_hero": true,
         "hero_height_desktop": 360,
