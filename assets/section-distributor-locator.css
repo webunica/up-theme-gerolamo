@@ -976,12 +976,168 @@
   border: 0;
 }
 
+/* ── Google Maps & Leaflet Popup Customization ── */
+.dloc-custom-leaflet-popup .leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.dloc-custom-leaflet-popup .leaflet-popup-content {
+  margin: 0 !important;
+  padding: 16px 18px !important;
+  line-height: 1.4 !important;
+  font-family: inherit !important;
+}
+
+.dloc-custom-leaflet-popup .leaflet-popup-tip {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dloc-leaflet-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 210px;
+}
+
+.dloc-popup__badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: #033097;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.dloc-popup__title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.dloc-popup__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #475569;
+}
+
+.dloc-popup__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.35;
+}
+
+.dloc-popup__row svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #033097;
+}
+
+.dloc-popup__row a {
+  color: #033097;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.dloc-popup__row a:hover {
+  text-decoration: underline;
+}
+
+.dloc-popup__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dloc-popup__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Primary 'Cómo llegar' Action Button */
+.dloc-popup__btn--primary {
+  background: linear-gradient(135deg, #033097 0%, #1e40af 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(3, 48, 151, 0.28);
+}
+
+.dloc-popup__btn--primary svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  transition: transform 0.2s ease;
+}
+
+.dloc-popup__btn--primary:hover {
+  background: linear-gradient(135deg, #022270 0%, #1d4ed8 100%) !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 16px rgba(3, 48, 151, 0.4);
+  color: #ffffff !important;
+}
+
+.dloc-popup__btn--primary:hover svg {
+  transform: translateX(2px) translateY(-1px);
+}
+
+/* Instagram / Web Secondary Buttons */
+.dloc-popup__btn--instagram,
+.dloc-popup__btn--web {
+  background: #ffffff !important;
+  color: #334155 !important;
+  border: 1.5px solid #e2e8f0 !important;
+}
+
+.dloc-popup__btn--instagram:hover {
+  border-color: #e1306c !important;
+  color: #e1306c !important;
+  background: #fff5f8 !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.18);
+}
+
+.dloc-popup__btn--web:hover {
+  border-color: #033097 !important;
+  color: #033097 !important;
+  background: #f0f4ff !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(3, 48, 151, 0.15);
+}
+
 /* ── Google Maps InfoWindow Customization ── */
 .gm-style .gm-style-iw-c {
-  padding: 12px 14px !important;
-  border-radius: 12px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  padding: 14px 16px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   font-family: inherit !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
 }
 
 .gm-style .gm-style-iw-d {
@@ -995,6 +1151,7 @@
 }
 
 .gm-ui-hover-effect {
-  top: 4px !important;
-  right: 4px !important;
+  top: 6px !important;
+  right: 6px !important;
 }
+
