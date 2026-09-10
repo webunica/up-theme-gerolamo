@@ -963,7 +963,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* â”€â”€ Accessibility â”€â”€ */
+/* ── Accessibility ── */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -976,3 +976,25 @@
   border: 0;
 }
 
+/* ── Google Maps InfoWindow Customization ── */
+.gm-style .gm-style-iw-c {
+  padding: 12px 14px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  font-family: inherit !important;
+}
+
+.gm-style .gm-style-iw-d {
+  overflow: auto !important;
+  max-height: 320px !important;
+  padding-right: 4px;
+}
+
+.gm-style .gm-style-iw-t::after {
+  background: #ffffff !important;
+}
+
+.gm-ui-hover-effect {
+  top: 4px !important;
+  right: 4px !important;
+}
