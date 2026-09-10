@@ -344,6 +344,25 @@
     'arica': { lat: -18.4783, lng: -70.3126 }
   };
 
+  function parseCoordinate(val) {
+    if (val == null) return null;
+    let s = String(val).trim();
+    if (!s) return null;
+
+    // Handle formats like -71,041,282 or -70,648,205 (Spanish Google Sheet thousands format for decimals)
+    if (s.includes(',') && !s.includes('.')) {
+      const parts = s.split(',');
+      if (parts.length > 1) {
+        s = parts[0] + '.' + parts.slice(1).join('');
+      }
+    } else if (s.includes(',') && s.includes('.')) {
+      s = s.replace(/,/g, '');
+    }
+
+    const num = parseFloat(s);
+    return isNaN(num) ? null : num;
+  }
+
   function csvToDistributors(csvText) {
     const rows = parseCSV(csvText);
     if (rows.length < 2) return [];
@@ -380,11 +399,11 @@
         } else if (h === 'horario' || h === 'atencion') {
           d.horario = val;
         } else if (h === 'lat' || h === 'latitud') {
-          const num = parseFloat(val.replace(',', '.'));
-          if (!isNaN(num)) d.lat = num;
+          const num = parseCoordinate(val);
+          if (num != null) d.lat = num;
         } else if (h === 'lng' || h === 'lon' || h === 'longitud') {
-          const num = parseFloat(val.replace(',', '.'));
-          if (!isNaN(num)) d.lng = num;
+          const num = parseCoordinate(val);
+          if (num != null) d.lng = num;
         }
       });
 
@@ -414,11 +433,11 @@
         } else if (!d.horario && (h.includes('hora') || h.includes('atencion'))) {
           d.horario = val;
         } else if (d.lat == null && (h.includes('lat') || h.includes('latitud'))) {
-          const num = parseFloat(val.replace(',', '.'));
-          if (!isNaN(num)) d.lat = num;
+          const num = parseCoordinate(val);
+          if (num != null) d.lat = num;
         } else if (d.lng == null && (h.includes('lng') || h.includes('lon') || h.includes('longitud'))) {
-          const num = parseFloat(val.replace(',', '.'));
-          if (!isNaN(num)) d.lng = num;
+          const num = parseCoordinate(val);
+          if (num != null) d.lng = num;
         }
       });
 
