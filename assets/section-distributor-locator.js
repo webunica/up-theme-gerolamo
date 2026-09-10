@@ -119,11 +119,14 @@
     const web    = ensureUrl(d.sitio_web);
     const ig     = ensureInstagram(d.instagram);
 
-    // Distance badge
+    // Distance badge (prevent NaN km)
     let distanceBadge = '';
-    if (userLat != null && d.lat != null) {
-      const km = Math.round(haversine(userLat, userLng, d.lat, d.lng));
-      distanceBadge = `<span class="distributor-card__distance">${km} km</span>`;
+    if (userLat != null && userLng != null && d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng)) {
+      const dist = haversine(userLat, userLng, d.lat, d.lng);
+      if (!isNaN(dist) && isFinite(dist)) {
+        const km = Math.round(dist);
+        distanceBadge = `<span class="distributor-card__distance">${km} km</span>`;
+      }
     }
 
     // Info rows
@@ -142,7 +145,7 @@
 
     // Link buttons
     let links = '';
-    if (d.lat != null && d.lng != null) {
+    if (d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng)) {
       links += `<button type="button" class="distributor-card__link distributor-card__link--primary dloc-focus-map" data-global-index="${globalIndex}">${ICON.pin} Ver en mapa</button>`;
     } else if (mapQ) {
       links += `<a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" class="distributor-card__link distributor-card__link--primary">${ICON.maplink} Ver en mapa</a>`;
@@ -350,66 +353,112 @@
 
     return rows.slice(1).map(row => {
       const d = {};
+
+      // 1. Pass: Exact match on standard headers
       headers.forEach((h, idx) => {
         const val = (row[idx] || '').trim();
-        if (!h) return;
+        if (!h || !val) return;
 
-        if (h === 'nombre' || h.includes('nombre') || h === 'tienda' || h === 'distribuidor') {
-          d.nombre = val;
-        } else if (h === 'direccion' || h.includes('direccion') || h === 'calle') {
+        if (h === 'direccion' || h === 'calle' || h === 'dir') {
           d.direccion = val;
-        } else if (h === 'comuna' || h.includes('comuna')) {
+        } else if (h === 'nombre' || h === 'tienda' || h === 'distribuidor' || h === 'local') {
+          d.nombre = val;
+        } else if (h === 'comuna') {
           d.comuna = val;
-        } else if (h === 'ciudad' || h.includes('ciudad')) {
+        } else if (h === 'ciudad') {
           d.ciudad = val;
-        } else if (h === 'region' || h.includes('region')) {
+        } else if (h === 'region') {
           d.region = val;
-        } else if (h.includes('tel') || h.includes('fono') || h.includes('celular') || h.includes('whatsapp')) {
+        } else if (h === 'telefono' || h === 'fono' || h === 'celular' || h === 'whatsapp' || h === 'tel') {
           d.telefono = val;
-        } else if (h.includes('web') || h.includes('sitio') || h === 'url') {
+        } else if (h === 'sitio_web' || h === 'web' || h === 'url') {
           d.sitio_web = val;
-        } else if (h.includes('insta') || h === 'ig') {
+        } else if (h === 'instagram' || h === 'ig') {
           d.instagram = val;
-        } else if (h.includes('email') || h.includes('correo')) {
+        } else if (h === 'email' || h === 'correo') {
           d.email = val;
-        } else if (h.includes('hora') || h.includes('atencion')) {
+        } else if (h === 'horario' || h === 'atencion') {
           d.horario = val;
-        } else if (h === 'lat' || h.includes('latitud')) {
+        } else if (h === 'lat' || h === 'latitud') {
           const num = parseFloat(val.replace(',', '.'));
-          d.lat = isNaN(num) ? null : num;
-        } else if (h === 'lng' || h === 'lon' || h.includes('longitud')) {
+          if (!isNaN(num)) d.lat = num;
+        } else if (h === 'lng' || h === 'lon' || h === 'longitud') {
           const num = parseFloat(val.replace(',', '.'));
-          d.lng = isNaN(num) ? null : num;
-        } else {
-          d[h] = val;
+          if (!isNaN(num)) d.lng = num;
         }
       });
 
-      // Normalización inteligente de regiones si fue escrita con abreviaciones o sin tildes
+      // 2. Pass: Fallback match ONLY for properties not yet found (and explicitly ignore 'direccion_encontrada')
+      headers.forEach((h, idx) => {
+        const val = (row[idx] || '').trim();
+        if (!h || !val) return;
+
+        if (!d.nombre && (h.includes('nombre') || h.includes('tienda') || h.includes('distribuidor'))) {
+          d.nombre = val;
+        } else if (!d.direccion && h.includes('direccion') && !h.includes('encontrada') && !h.includes('google') && !h.includes('geocode')) {
+          d.direccion = val;
+        } else if (!d.comuna && h.includes('comuna')) {
+          d.comuna = val;
+        } else if (!d.ciudad && h.includes('ciudad')) {
+          d.ciudad = val;
+        } else if (!d.region && h.includes('region')) {
+          d.region = val;
+        } else if (!d.telefono && (h.includes('tel') || h.includes('fono') || h.includes('celular') || h.includes('whatsapp'))) {
+          d.telefono = val;
+        } else if (!d.sitio_web && (h.includes('web') || h.includes('sitio'))) {
+          d.sitio_web = val;
+        } else if (!d.instagram && (h.includes('insta') || h.includes('ig'))) {
+          d.instagram = val;
+        } else if (!d.email && (h.includes('email') || h.includes('correo'))) {
+          d.email = val;
+        } else if (!d.horario && (h.includes('hora') || h.includes('atencion'))) {
+          d.horario = val;
+        } else if (d.lat == null && (h.includes('lat') || h.includes('latitud'))) {
+          const num = parseFloat(val.replace(',', '.'));
+          if (!isNaN(num)) d.lat = num;
+        } else if (d.lng == null && (h.includes('lng') || h.includes('lon') || h.includes('longitud'))) {
+          const num = parseFloat(val.replace(',', '.'));
+          if (!isNaN(num)) d.lng = num;
+        }
+      });
+
+      // Normalización inteligente y exhaustiva de regiones de Chile
       if (d.region) {
         const regClean = d.region.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-        if (regClean.includes('ARAUCA')) {
+        if (regClean.includes('ARAUCA') || regClean === 'IX' || regClean.includes('IX REGION')) {
           d.region = 'REGIÓN DE LA ARAUCANÍA';
-        } else if (regClean.includes('BIOBIO') || regClean.includes('BIO BIO')) {
+        } else if (regClean.includes('BIOBIO') || regClean.includes('BIO BIO') || regClean === 'VIII' || regClean.includes('VIII REGION')) {
           d.region = 'REGIÓN DEL BIOBÍO';
-        } else if (regClean.includes('NUBLE')) {
+        } else if (regClean.includes('NUBLE') || regClean === 'XVI' || regClean.includes('XVI REGION')) {
           d.region = 'REGIÓN DE ÑUBLE';
-        } else if (regClean.includes('MAULE')) {
+        } else if (regClean.includes('MAULE') || regClean === 'VII' || regClean.includes('VII REGION')) {
           d.region = 'REGIÓN DEL MAULE';
-        } else if (regClean.includes('HIGGINS') || regClean.includes('O\'HIGGINS')) {
+        } else if (regClean.includes('HIGGINS') || regClean.includes('O\'HIGGINS') || regClean === 'VI' || regClean.includes('VI REGION')) {
           d.region = 'REGIÓN DE O\'HIGGINS';
-        } else if (regClean.includes('METROPOLITANA') || regClean === 'RM') {
+        } else if (regClean.includes('METROPOLITANA') || regClean === 'RM' || regClean.includes('SANTIAGO')) {
           d.region = 'REGIÓN METROPOLITANA';
-        } else if (regClean.includes('COQUIMBO')) {
+        } else if (regClean.includes('COQUIMBO') || regClean === 'IV' || regClean.includes('IV REGION')) {
           d.region = 'REGIÓN DE COQUIMBO';
-        } else if (regClean.includes('ATACAMA')) {
+        } else if (regClean.includes('ATACAM') || regClean.includes('ATACAN') || regClean === 'III' || regClean.includes('III REGION')) {
           d.region = 'REGIÓN DE ATACAMA';
-        } else if (regClean.includes('VALPARAISO')) {
+        } else if (regClean.includes('VALPARAISO') || regClean.includes('V REGION') || regClean === 'V') {
           d.region = 'REGIÓN DE VALPARAÍSO';
-        } else if (regClean.includes('LOS RIOS')) {
+        } else if (regClean.includes('LOS RIOS') || regClean === 'XIV' || regClean.includes('XIV REGION')) {
           d.region = 'REGIÓN DE LOS RÍOS';
-        } else if (regClean.includes('LOS LAGOS')) {
+        } else if (regClean.includes('LOS LAGOS') || regClean === 'X' || regClean.includes('X REGION')) {
           d.region = 'REGIÓN DE LOS LAGOS';
+        } else if (regClean.includes('AYSEN') || regClean.includes('AISEN') || regClean === 'XI' || regClean.includes('XI REGION')) {
+          d.region = 'REGIÓN DE AYSÉN';
+        } else if (regClean.includes('MAGALLANES') || regClean === 'XII' || regClean.includes('XII REGION')) {
+          d.region = 'REGIÓN DE MAGALLANES';
+        } else if (regClean.includes('ANTOFAGASTA') || regClean === 'II' || regClean.includes('II REGION')) {
+          d.region = 'REGIÓN DE ANTOFAGASTA';
+        } else if (regClean.includes('TARAPACA') || regClean === 'I' || regClean.includes('I REGION')) {
+          d.region = 'REGIÓN DE TARAPACÁ';
+        } else if (regClean.includes('ARICA') || regClean.includes('PARINACOTA') || regClean === 'XV' || regClean.includes('XV REGION')) {
+          d.region = 'REGIÓN DE ARICA Y PARINACOTA';
+        } else if (regClean.length < 3) {
+          d.region = '';
         }
       }
 
@@ -537,9 +586,12 @@
     fetchDistributorData(jsonUrl, sheetUrl, dataSource, cacheMins)
       .then(async data => {
         allData = data.filter(d => d.nombre && d.nombre.trim());
-        regionList = [...new Set(allData.map(d => d.region).filter(Boolean))].sort();
+        regionList = [...new Set(allData.map(d => d.region).filter(r => r && r.trim().length > 3))].sort();
 
         if (regionSelect) {
+          while (regionSelect.options.length > 1) {
+            regionSelect.remove(1);
+          }
           regionList.forEach(region => {
             const opt = document.createElement('option');
             opt.value = region;
