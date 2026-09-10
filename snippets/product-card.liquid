@@ -81,8 +81,15 @@
 
 {%- assign current_variant = product_card_product.selected_or_first_available_variant -%}
 
+{%- assign is_coming_soon = false -%}
+{%- if product_card_product.tags contains 'proximamente' or product_card_product.tags contains 'Próximamente' or product_card_product.tags contains 'proximo' or product_card_product.tags contains 'coming-soon' or product_card_product.tags contains 'Coming Soon' -%}
+  {%- assign is_coming_soon = true -%}
+{%- endif -%}
+
 {%- capture badges -%}
-{%- if product_card_product.available == false and show_badge_sold_out -%}
+{%- if is_coming_soon -%}
+<span class="badges-item__medium" style="background:#033097; color:#ffffff; font-weight:800; border-radius:4px; letter-spacing:0.04em; text-transform:uppercase;">Próximamente</span>
+{%- elsif product_card_product.available == false and show_badge_sold_out -%}
 <span class="badges-item__medium badges-item__sold-out">{{ 'products.product.sold_out' | t }}</span>
 {%- elsif product_card_product.available and show_badge_on_sale -%}
 {%- if button_type_product == "hide" or settings.badge_sale_type == "text" -%}
