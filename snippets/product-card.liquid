@@ -215,84 +215,132 @@
   
 {%- endcapture -%}
 {%- liquid
-  # 1. Weight Badge (Top Right)
-  assign weight_num = ''
-  assign weight_unit = ''
-  
-  if product_card_product.metafields.custom.peso != blank
+  # 1. Multi-format Weight Badges (Top Right)
+  assign weights_list = ''
+
+  # Extract from variants
+  for v in product_card_product.variants
+    assign v_num = ''
+    assign v_unit = ''
+
+    if v.weight_in_unit != blank and v.weight_in_unit > 0
+      assign v_num = v.weight_in_unit
+      assign v_unit = v.weight_unit | default: 'KG' | upcase
+    elsif v.weight > 0
+      if v.weight >= 1000
+        assign v_kg = v.weight | times: 1.0 | divided_by: 1000.0 | round: 1
+        assign v_str = v_kg | append: ''
+        if v_str contains '.0'
+          assign v_num = v.weight | divided_by: 1000
+        else
+          assign v_num = v_kg
+        endif
+        assign v_unit = 'KG'
+      else
+        assign v_num = v.weight
+        assign v_unit = 'G'
+      endif
+    endif
+
+    assign v_num_check = v_num | plus: 0
+    if v_unit == 'KG' and v_num_check >= 100
+      assign v_kg = v_num_check | times: 1.0 | divided_by: 1000.0 | round: 1
+      assign v_str = v_kg | append: ''
+      if v_str contains '.0'
+        assign v_num = v_num_check | divided_by: 1000
+      else
+        assign v_num = v_kg
+      endif
+    endif
+
+    if v_num == blank or v_num == 0 or v_num == '0'
+      assign v_text = v.title | append: ' ' | append: v.option1 | append: ' ' | append: v.option2 | append: ' ' | append: v.option3 | downcase
+      assign test_weights = "15kg,15 kg,15 k,12kg,12 kg,10kg,10 kg,8kg,8 kg,7.5kg,7.5 kg,3kg,3 kg,2.7kg,2.7 kg,2,7kg,2,7 kg,2kg,2 kg,1.5kg,1.5 kg,1kg,1 kg,800g,800 g,500g,500 g,400g,400 g,100g,100 g,85g,85 g,80g,80 g" | split: ','
+      for tw in test_weights
+        if v_text contains tw
+          if tw contains 'kg' or tw contains 'k'
+            assign v_num = tw | replace: 'kg', '' | replace: 'k', '' | replace: ' ', '' | replace: ',', '.'
+            assign v_unit = 'KG'
+          elsif tw contains 'g'
+            assign v_num = tw | replace: 'g', '' | replace: ' ', ''
+            assign v_unit = 'G'
+          endif
+          break
+        endif
+      endfor
+    endif
+
+    if v_num != blank and v_num != 0 and v_num != '0'
+      assign v_str = v_num | append: ''
+      if v_str contains '.'
+        assign v_parts = v_str | split: '.'
+        if v_parts.size == 2
+          if v_parts[1] == '0' or v_parts[1] == '00' or v_parts[1] == '000'
+            assign v_num = v_parts[0]
+          endif
+        endif
+      elsif v_str contains ','
+        assign v_parts = v_str | split: ','
+        if v_parts.size == 2
+          if v_parts[1] == '0' or v_parts[1] == '00' or v_parts[1] == '000'
+            assign v_num = v_parts[0]
+          endif
+        endif
+      endif
+      assign v_key = v_num | append: '_' | append: v_unit
+      unless weights_list contains v_key
+        if weights_list == ''
+          assign weights_list = v_key
+        else
+          assign weights_list = weights_list | append: ',' | append: v_key
+        endif
+      endunless
+    endif
+  endfor
+
+  # Check tags and title
+  assign all_tags_text = product_card_product.title
+  for tag in product_card_product.tags
+    assign all_tags_text = all_tags_text | append: ' ' | append: tag
+  endfor
+  assign all_tags_down = all_tags_text | downcase
+
+  assign test_weights = "15kg,15 kg,12kg,12 kg,10kg,10 kg,8kg,8 kg,7.5kg,7.5 kg,3kg,3 kg,2.7kg,2.7 kg,2,7kg,2,7 kg,2kg,2 kg,1.5kg,1.5 kg,1kg,1 kg,800g,800 g,500g,500 g,400g,400 g,100g,100 g,85g,85 g,80g,80 g" | split: ','
+  for tw in test_weights
+    if all_tags_down contains tw
+      if tw contains 'kg'
+        assign t_num = tw | replace: 'kg', '' | replace: ' ', '' | replace: ',', '.'
+        assign t_unit = 'KG'
+      elsif tw contains 'g'
+        assign t_num = tw | replace: 'g', '' | replace: ' ', ''
+        assign t_unit = 'G'
+      endif
+      assign t_key = t_num | append: '_' | append: t_unit
+      unless weights_list contains t_key
+        if weights_list == ''
+          assign weights_list = t_key
+        else
+          assign weights_list = weights_list | append: ',' | append: t_key
+        endif
+      endunless
+    endif
+  endfor
+
+  # Fallback to metafield custom.peso
+  if weights_list == '' and product_card_product.metafields.custom.peso != blank
     assign weight_raw = product_card_product.metafields.custom.peso | strip
     assign weight_parts = weight_raw | split: ' '
-    assign weight_num = weight_parts[0]
-    assign weight_unit = weight_parts[1] | default: 'KG' | upcase
-  elsif current_variant.weight_in_unit != blank and current_variant.weight_in_unit > 0
-    assign weight_num = current_variant.weight_in_unit
-    assign weight_unit = current_variant.weight_unit | default: 'KG' | upcase
-  elsif current_variant.weight > 0
-    if current_variant.weight >= 1000
-      assign weight_kg = current_variant.weight | times: 1.0 | divided_by: 1000.0 | round: 1
-      assign weight_str = weight_kg | append: ''
-      if weight_str contains '.0'
-        assign weight_num = current_variant.weight | divided_by: 1000
-      else
-        assign weight_num = weight_kg
-      endif
-      assign weight_unit = 'KG'
-    else
-      assign weight_num = current_variant.weight
-      assign weight_unit = 'G'
-    endif
+    assign m_num = weight_parts[0]
+    assign m_unit = weight_parts[1] | default: 'KG' | upcase
+    assign weights_list = m_num | append: '_' | append: m_unit
   endif
 
-  # Failsafe: Si el peso está en KG pero viene en gramos (> 99)
-  assign weight_num_check = weight_num | plus: 0
-  if weight_unit == 'KG' and weight_num_check >= 100
-    assign weight_kg = weight_num_check | times: 1.0 | divided_by: 1000.0 | round: 1
-    assign weight_str = weight_kg | append: ''
-    if weight_str contains '.0'
-      assign weight_num = weight_num_check | divided_by: 1000
-    else
-      assign weight_num = weight_kg
-    endif
-  endif
-
-  if weight_num == blank or weight_num == 0 or weight_num == '0'
-    assign combined_text = product_card_product.title | append: ' ' | append: current_variant.title
-    for tag in product_card_product.tags
-      assign combined_text = combined_text | append: ' ' | append: tag
-    endfor
-    assign test_weights = "15kg,15 kg,15 k,12kg,12 kg,10kg,10 kg,8kg,8 kg,7.5kg,7.5 kg,3kg,3 kg,2.7kg,2.7 kg,2,7kg,2,7 kg,2kg,2 kg,1.5kg,1.5 kg,1kg,1 kg,800g,800 g,500g,500 g,400g,400 g,100g,100 g,85g,85 g,80g,80 g" | split: ','
-    for tw in test_weights
-      assign tw_down = tw | downcase
-      assign comb_down = combined_text | downcase
-      if comb_down contains tw_down
-        if tw_down contains 'kg' or tw_down contains 'k'
-          assign weight_num = tw_down | replace: 'kg', '' | replace: 'k', '' | replace: ' ', '' | replace: ',', '.'
-          assign weight_unit = 'KG'
-        elsif tw_down contains 'g'
-          assign weight_num = tw_down | replace: 'g', '' | replace: ' ', ''
-          assign weight_unit = 'G'
-        endif
-        break
-      endif
-    endfor
-  endif
-
-  # Limpiar decimales .0 o ,0 innecesarios (ej: 315.0 -> 315, 2.0 -> 2, 2.00 -> 2)
-  assign weight_str = weight_num | append: ''
-  if weight_str contains '.'
-    assign w_parts = weight_str | split: '.'
-    if w_parts.size == 2
-      if w_parts[1] == '0' or w_parts[1] == '00' or w_parts[1] == '000'
-        assign weight_num = w_parts[0]
-      endif
-    endif
-  elsif weight_str contains ','
-    assign w_parts = weight_str | split: ','
-    if w_parts.size == 2
-      if w_parts[1] == '0' or w_parts[1] == '00' or w_parts[1] == '000'
-        assign weight_num = w_parts[0]
-      endif
-    endif
+  if weights_list != blank
+    assign weights_array = weights_list | split: ','
+    assign formats_count = weights_array.size
+  else
+    assign weights_array = ''
+    assign formats_count = 0
   endif
 
   # 3. Vendor & Type
@@ -354,11 +402,23 @@
     <div class="gerolamo-card__top-badges">
       <div class="gerolamo-card__top-badges-left">
       </div>
-      {%- if weight_num != blank -%}
+      {%- if formats_count > 0 -%}
       <div class="gerolamo-card__top-badges-right">
-        <div class="gerolamo-card__badge-weight">
-          <span class="gerolamo-card__weight-num">{{ weight_num }}</span>
-          <span class="gerolamo-card__weight-unit">{{ weight_unit | default: 'KG' }}</span>
+        <div class="gerolamo-card__formats-col">
+          {%- if formats_count > 1 -%}
+            <span class="gerolamo-card__formats-label">{{ formats_count }} formatos de:</span>
+          {%- endif -%}
+          <div class="gerolamo-card__formats-list">
+            {%- for w_item in weights_array -%}
+              {%- assign w_parts = w_item | split: '_' -%}
+              {%- assign w_num = w_parts[0] -%}
+              {%- assign w_unit = w_parts[1] | default: 'KG' -%}
+              <div class="gerolamo-card__badge-weight">
+                <span class="gerolamo-card__weight-num">{{ w_num }}</span>
+                <span class="gerolamo-card__weight-unit">{{ w_unit }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
         </div>
       </div>
       {%- endif -%}
