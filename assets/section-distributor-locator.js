@@ -562,15 +562,24 @@
     const cardsPane     = section.querySelector('.distributor-locator__cards-pane');
     const mapPane       = section.querySelector('.distributor-locator__map-pane');
 
+    const mapProvider   = section.dataset.mapProvider || (section.dataset.googleApiKey ? 'google' : 'osm');
+    const googleApiKey  = section.dataset.googleApiKey || '';
+
     let allData         = [];
     let regionList      = [];
     let userLocation    = null;   // { lat, lng, city?, source }
     let isNearbyMode    = false;
-    let mapObj          = null;
-    let markersLayer    = null;
-    let userMarker      = null;
-    let radiusCircle    = null;
-    let markersMap      = new Map(); // globalIndex -> Leaflet Marker
+    let activeMapType   = 'none'; // 'google' | 'leaflet'
+    let mapObj          = null;   // Leaflet map
+    let googleMap       = null;   // Google Map
+    let googleInfoWindow = null;  // Google InfoWindow
+    let googleMarkers   = [];     // Google Markers
+    let googleUserMarker = null;  // Google User Marker
+    let googleRadiusCircle = null;// Google Radius Circle
+    let markersLayer    = null;   // Leaflet featureGroup
+    let userMarker      = null;   // Leaflet user marker
+    let radiusCircle    = null;   // Leaflet radius circle
+    let markersMap      = new Map(); // globalIndex -> Marker (Leaflet or Google)
     let searchTerm      = '';
     let activeRegion    = '';
     let renderTimer     = null;
@@ -602,9 +611,9 @@
 
         if (skeleton) skeleton.remove();
 
-        // -- Init OpenStreetMap if available --
-        if (mapEl && typeof window.L !== 'undefined') {
-          initLeafletMap(mapEl);
+        // -- Init Map (Google Maps or OpenStreetMap) --
+        if (mapEl) {
+          initMap(mapEl);
         }
 
         // -- Try geolocation --
@@ -622,7 +631,7 @@
             showGeoStatus('noneNearby', userLocation, 0, radiusKm);
             renderCards(allData, true);
           }
-          if (mapObj) updateUserLocationOnMap(userLocation, radiusKm);
+          updateUserLocationOnMap(userLocation, radiusKm);
         } else {
           showGeoStatus('denied');
           renderCards(allData, true);
@@ -637,7 +646,7 @@
     // --- Filter by radius -------------------------------------
     function filterByRadius(data, lat, lng, km) {
       return data
-        .filter(d => d.lat != null && d.lng != null)
+        .filter(d => d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng))
         .map(d => ({ ...d, _distance: haversine(lat, lng, d.lat, d.lng) }))
         .filter(d => d._distance <= km)
         .sort((a, b) => a._distance - b._distance);
@@ -680,7 +689,7 @@
           paginationEl.hidden = true;
           paginationEl.innerHTML = '';
         }
-        if (mapObj) updateMapMarkers([]);
+        updateMapMarkers([]);
         return;
       }
 
@@ -738,7 +747,7 @@
       renderPagination(totalItems, totalPages, startIndex, endIndex);
 
       // Update Map with all filtered markers
-      if (mapObj) updateMapMarkers(filteredData);
+      updateMapMarkers(filteredData);
     }
 
     // --- Render Pagination HTML & Event Listeners -------------
@@ -881,7 +890,7 @@
           }
           const item = cityMatches.get(key);
           item.count++;
-          if (item.lat == null && d.lat != null) {
+          if ((item.lat == null || isNaN(item.lat)) && d.lat != null && !isNaN(d.lat)) {
             item.lat = d.lat;
             item.lng = d.lng;
           }
@@ -953,9 +962,14 @@
 
           applyFilters();
 
-          // Smoothly fly Leaflet map to city/store if coordinates are valid
-          if (mapObj && !isNaN(lat) && !isNaN(lng)) {
-            mapObj.flyTo([lat, lng], 13, { duration: 0.8 });
+          // Smoothly fly map to city/store if coordinates are valid
+          if (!isNaN(lat) && !isNaN(lng)) {
+            if (activeMapType === 'google' && googleMap) {
+              googleMap.panTo({ lat, lng });
+              googleMap.setZoom(13);
+            } else if (mapObj) {
+              mapObj.flyTo([lat, lng], 13, { duration: 0.8 });
+            }
           }
         });
       });
@@ -988,8 +1002,54 @@
       renderTimer = setTimeout(applyFilters, 160);
     }
 
+    // --- Map Initializer Dispatcher --------------------------
+    function initMap(el) {
+      if (mapProvider === 'google' && typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined') {
+        initGoogleMap(el);
+      } else if (typeof window.L !== 'undefined') {
+        initLeafletMap(el);
+      } else if (mapProvider === 'google' && googleApiKey) {
+        // Retry when Google Maps script finishes loading
+        const checkGoogle = setInterval(() => {
+          if (typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined') {
+            clearInterval(checkGoogle);
+            initGoogleMap(el);
+            if (filteredData.length > 0) updateMapMarkers(filteredData);
+          }
+        }, 150);
+        setTimeout(() => clearInterval(checkGoogle), 6000);
+      }
+    }
+
+    // --- Google Maps Implementation --------------------------
+    function initGoogleMap(el) {
+      activeMapType = 'google';
+      const zoom = parseInt(el.dataset.zoom, 10) || 6;
+      const lat  = parseFloat(el.dataset.lat) || -35.6751;
+      const lng  = parseFloat(el.dataset.lng) || -71.5430;
+
+      googleMap = new google.maps.Map(el, {
+        center: { lat, lng },
+        zoom: zoom,
+        mapTypeControl: false,
+        streetViewControl: true,
+        fullscreenControl: false,
+        zoomControl: true,
+        styles: [
+          { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
+          { featureType: 'transit', stylers: [{ visibility: 'simplified' }] }
+        ]
+      });
+
+      googleInfoWindow = new google.maps.InfoWindow();
+
+      const mapLoader = section.querySelector('.distributor-locator__map-loader');
+      if (mapLoader) mapLoader.classList.add('is-loaded');
+    }
+
     // --- OpenStreetMap (Leaflet) Implementation ---------------
     function initLeafletMap(el) {
+      activeMapType = 'leaflet';
       const zoom = parseInt(el.dataset.zoom, 10) || 6;
       const lat  = parseFloat(el.dataset.lat) || -35.6751;
       const lng  = parseFloat(el.dataset.lng) || -71.5430;
@@ -1021,136 +1081,247 @@
     }
 
     function updateUserLocationOnMap(loc, km) {
-      if (!mapObj || !loc) return;
+      if (!loc) return;
 
-      if (userMarker) mapObj.removeLayer(userMarker);
-      if (radiusCircle) mapObj.removeLayer(radiusCircle);
+      // Google Maps User Marker & Radius
+      if (activeMapType === 'google' && googleMap) {
+        if (googleUserMarker) googleUserMarker.setMap(null);
+        if (googleRadiusCircle) googleRadiusCircle.setMap(null);
 
-      // User location marker
-      const userIcon = L.divIcon({
-        className: 'dloc-user-marker-wrap',
-        html: `<div class="dloc-user-marker-dot" title="Tu ubicación"><div class="dloc-user-marker-pulse"></div></div>`,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11]
-      });
+        googleUserMarker = new google.maps.Marker({
+          position: { lat: loc.lat, lng: loc.lng },
+          map: googleMap,
+          title: 'Tu ubicación',
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: '#033097',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2.5
+          },
+          zIndex: 1000
+        });
 
-      userMarker = L.marker([loc.lat, loc.lng], { icon: userIcon, zIndexOffset: 1000 })
-        .addTo(mapObj)
-        .bindPopup(`<strong>Tu ubicación</strong>${loc.city ? '<br>' + esc(loc.city) : ''}`);
+        if (isNearbyMode) {
+          googleRadiusCircle = new google.maps.Circle({
+            center: { lat: loc.lat, lng: loc.lng },
+            radius: km * 1000,
+            fillColor: '#033097',
+            fillOpacity: 0.07,
+            strokeColor: '#033097',
+            strokeWeight: 1.5,
+            map: googleMap
+          });
+        }
+        return;
+      }
 
-      // 100 km Radius Circle
-      if (isNearbyMode) {
-        radiusCircle = L.circle([loc.lat, loc.lng], {
-          radius: km * 1000,
-          color: '#033097',
-          fillColor: '#033097',
-          fillOpacity: 0.07,
-          weight: 1.5,
-          dashArray: '5, 5'
-        }).addTo(mapObj);
+      // Leaflet User Marker & Radius
+      if (mapObj) {
+        if (userMarker) mapObj.removeLayer(userMarker);
+        if (radiusCircle) mapObj.removeLayer(radiusCircle);
+
+        const userIcon = L.divIcon({
+          className: 'dloc-user-marker-wrap',
+          html: `<div class="dloc-user-marker-dot" title="Tu ubicación"><div class="dloc-user-marker-pulse"></div></div>`,
+          iconSize: [22, 22],
+          iconAnchor: [11, 11]
+        });
+
+        userMarker = L.marker([loc.lat, loc.lng], { icon: userIcon, zIndexOffset: 1000 })
+          .addTo(mapObj)
+          .bindPopup(`<strong>Tu ubicación</strong>${loc.city ? '<br>' + esc(loc.city) : ''}`);
+
+        if (isNearbyMode) {
+          radiusCircle = L.circle([loc.lat, loc.lng], {
+            radius: km * 1000,
+            color: '#033097',
+            fillColor: '#033097',
+            fillOpacity: 0.07,
+            weight: 1.5,
+            dashArray: '5, 5'
+          }).addTo(mapObj);
+        }
       }
     }
 
     function updateMapMarkers(data) {
-      if (!mapObj || !markersLayer) return;
+      if (activeMapType === 'none') return;
 
-      markersLayer.clearLayers();
       markersMap.clear();
-
-      const validCoords = [];
 
       // Group identical/near-identical coordinates to disperse markers nicely
       const coordGroups = new Map();
       data.forEach(d => {
-        if (d.lat == null || d.lng == null) return;
+        if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng)) return;
         const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
         if (!coordGroups.has(key)) coordGroups.set(key, []);
         coordGroups.get(key).push(d);
       });
 
-      data.forEach((d, globalIdx) => {
-        if (d.lat == null || d.lng == null) return;
+      // ── Google Maps Render ──
+      if (activeMapType === 'google' && googleMap) {
+        googleMarkers.forEach(m => m.setMap(null));
+        googleMarkers = [];
 
-        let markerLat = d.lat;
-        let markerLng = d.lng;
+        const bounds = new google.maps.LatLngBounds();
+        let validCount = 0;
 
-        // Disperse overlapping points in a small radius so all markers are visible and clickable
-        const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
-        const group = coordGroups.get(key);
-        if (group && group.length > 1) {
-          const indexInGroup = group.indexOf(d);
-          const totalInGroup = group.length;
-          const angle = (indexInGroup / totalInGroup) * 2 * Math.PI;
-          const radiusOffset = 0.0022; // approx 180-240 meters
-          markerLat = d.lat + Math.sin(angle) * radiusOffset;
-          markerLng = d.lng + Math.cos(angle) * (radiusOffset * 1.25);
-        }
-
-        const pinHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42" style="overflow:visible;display:block;">
-            <defs>
-              <filter id="pin-shadow-${globalIdx}" x="-30%" y="-10%" width="160%" height="140%">
-                <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="rgba(0,0,0,0.4)"/>
-              </filter>
-            </defs>
+        const pinSvgUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M15 1C7.27 1 1 7.27 1 15c0 9.5 14 26 14 26S29 24.5 29 15C29 7.27 22.73 1 15 1z M15 9.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z"
               fill="#d42b2b"
               stroke="#8b0000"
-              stroke-width="1"
-              stroke-linejoin="round"
-              filter="url(#pin-shadow-${globalIdx})"
+              stroke-width="1.2"
             />
-          </svg>`;
+          </svg>
+        `);
 
-        const markerIcon = L.divIcon({
-          className: 'dloc-leaflet-pin-icon',
-          html: pinHtml,
-          iconSize: [30, 42],
-          iconAnchor: [15, 42],
-          popupAnchor: [0, -44]
-        });
+        data.forEach((d, globalIdx) => {
+          if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng)) return;
 
-        const marker = L.marker([markerLat, markerLng], { icon: markerIcon });
-        marker.bindPopup(buildPopupContent(d), { maxWidth: 300, className: 'dloc-custom-leaflet-popup' });
+          let markerLat = d.lat;
+          let markerLng = d.lng;
 
-        marker.on('click', () => {
-          handleMarkerClick(globalIdx);
-        });
-
-        markersLayer.addLayer(marker);
-        markersMap.set(globalIdx, marker);
-        validCoords.push([markerLat, markerLng]);
-      });
-
-      // Fit map bounds to show markers
-      if (validCoords.length > 0) {
-        try {
-          if (userLocation && isNearbyMode) {
-            const bounds = L.latLngBounds(validCoords);
-            bounds.extend([userLocation.lat, userLocation.lng]);
-            mapObj.fitBounds(bounds, { padding: [40, 40], maxZoom: 13, animate: true });
-          } else {
-            mapObj.fitBounds(markersLayer.getBounds(), { padding: [40, 40], maxZoom: 13, animate: true });
+          const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
+          const group = coordGroups.get(key);
+          if (group && group.length > 1) {
+            const indexInGroup = group.indexOf(d);
+            const totalInGroup = group.length;
+            const angle = (indexInGroup / totalInGroup) * 2 * Math.PI;
+            const radiusOffset = 0.0022;
+            markerLat = d.lat + Math.sin(angle) * radiusOffset;
+            markerLng = d.lng + Math.cos(angle) * (radiusOffset * 1.25);
           }
-        } catch (e) {
-          // ignore fitBounds error if single point
+
+          const marker = new google.maps.Marker({
+            position: { lat: markerLat, lng: markerLng },
+            map: googleMap,
+            title: d.nombre,
+            icon: {
+              url: pinSvgUrl,
+              scaledSize: new google.maps.Size(30, 42),
+              anchor: new google.maps.Point(15, 42)
+            }
+          });
+
+          marker.addListener('click', () => {
+            googleInfoWindow.setContent(buildPopupContent(d));
+            googleInfoWindow.open(googleMap, marker);
+            handleMarkerClick(globalIdx);
+          });
+
+          googleMarkers.push(marker);
+          markersMap.set(globalIdx, marker);
+          bounds.extend({ lat: markerLat, lng: markerLng });
+          validCount++;
+        });
+
+        if (validCount > 0) {
+          if (userLocation && isNearbyMode) {
+            bounds.extend({ lat: userLocation.lat, lng: userLocation.lng });
+          }
+          googleMap.fitBounds(bounds);
+        }
+        return;
+      }
+
+      // ── Leaflet Render ──
+      if (activeMapType === 'leaflet' && mapObj && markersLayer) {
+        markersLayer.clearLayers();
+        const validCoords = [];
+
+        data.forEach((d, globalIdx) => {
+          if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng)) return;
+
+          let markerLat = d.lat;
+          let markerLng = d.lng;
+
+          const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
+          const group = coordGroups.get(key);
+          if (group && group.length > 1) {
+            const indexInGroup = group.indexOf(d);
+            const totalInGroup = group.length;
+            const angle = (indexInGroup / totalInGroup) * 2 * Math.PI;
+            const radiusOffset = 0.0022;
+            markerLat = d.lat + Math.sin(angle) * radiusOffset;
+            markerLng = d.lng + Math.cos(angle) * (radiusOffset * 1.25);
+          }
+
+          const pinHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42" style="overflow:visible;display:block;">
+              <defs>
+                <filter id="pin-shadow-${globalIdx}" x="-30%" y="-10%" width="160%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="rgba(0,0,0,0.4)"/>
+                </filter>
+              </defs>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M15 1C7.27 1 1 7.27 1 15c0 9.5 14 26 14 26S29 24.5 29 15C29 7.27 22.73 1 15 1z M15 9.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z"
+                fill="#d42b2b"
+                stroke="#8b0000"
+                stroke-width="1"
+                stroke-linejoin="round"
+                filter="url(#pin-shadow-${globalIdx})"
+              />
+            </svg>`;
+
+          const markerIcon = L.divIcon({
+            className: 'dloc-leaflet-pin-icon',
+            html: pinHtml,
+            iconSize: [30, 42],
+            iconAnchor: [15, 42],
+            popupAnchor: [0, -44]
+          });
+
+          const marker = L.marker([markerLat, markerLng], { icon: markerIcon });
+          marker.bindPopup(buildPopupContent(d), { maxWidth: 300, className: 'dloc-custom-leaflet-popup' });
+
+          marker.on('click', () => {
+            handleMarkerClick(globalIdx);
+          });
+
+          markersLayer.addLayer(marker);
+          markersMap.set(globalIdx, marker);
+          validCoords.push([markerLat, markerLng]);
+        });
+
+        if (validCoords.length > 0) {
+          try {
+            if (userLocation && isNearbyMode) {
+              const bounds = L.latLngBounds(validCoords);
+              bounds.extend([userLocation.lat, userLocation.lng]);
+              mapObj.fitBounds(bounds, { padding: [40, 40], maxZoom: 13, animate: true });
+            } else {
+              mapObj.fitBounds(markersLayer.getBounds(), { padding: [40, 40], maxZoom: 13, animate: true });
+            }
+          } catch (e) {
+            // ignore fitBounds error
+          }
         }
       }
     }
 
     function highlightMarker(globalIdx, openPopup) {
-      if (!mapObj || !markersMap.has(globalIdx)) return;
+      if (!markersMap.has(globalIdx)) return;
       const marker = markersMap.get(globalIdx);
-      const latLng = marker.getLatLng();
+      const distData = filteredData[globalIdx] || allData[globalIdx];
 
-      mapObj.panTo(latLng, { animate: true, duration: 0.5 });
-      if (openPopup) {
-        marker.openPopup();
+      if (activeMapType === 'google' && googleMap && marker) {
+        googleMap.panTo(marker.getPosition());
+        if (openPopup && distData) {
+          googleInfoWindow.setContent(buildPopupContent(distData));
+          googleInfoWindow.open(googleMap, marker);
+        }
+      } else if (activeMapType === 'leaflet' && mapObj && marker) {
+        mapObj.panTo(marker.getLatLng(), { animate: true, duration: 0.5 });
+        if (openPopup) {
+          marker.openPopup();
+        }
       }
     }
 
     function handleMarkerClick(globalIdx) {
-      // Calculate which page this item belongs to
       const targetPage = Math.floor(globalIdx / itemsPerPage) + 1;
       if (targetPage !== currentPage) {
         currentPage = targetPage;
@@ -1180,7 +1351,9 @@
         if (tab === 'map') {
           cardsPane.style.display = 'none';
           mapPane.style.display = 'block';
-          if (mapObj) {
+          if (activeMapType === 'google' && googleMap) {
+            setTimeout(() => { google.maps.event.trigger(googleMap, 'resize'); }, 50);
+          } else if (mapObj) {
             setTimeout(() => { mapObj.invalidateSize(); }, 50);
           }
         } else {
