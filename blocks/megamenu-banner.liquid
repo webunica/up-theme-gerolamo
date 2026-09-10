@@ -97,14 +97,7 @@
   {%- endif -%}
   </style>
   
-  {%- render "component-banner-item",
-      section:section,
-      block:block,
-      image_ratio_value: block.settings.image_ratio,
-      image_ratio_mobile_value: block..settings.image_ratio_mobile,
-      placeholder_icon: 'hero-apparel-1',
-      load_priority_low: 'false'
-  -%}
+  {%- render "component-banner-item", section: section, block: block, image_ratio_value: block.settings.image_ratio, image_ratio_mobile_value: block.settings.image_ratio_mobile, placeholder_icon: 'hero-apparel-1', load_priority_low: 'false' -%}
 </div>
 
 {% schema %}
@@ -640,4 +633,23 @@
       }
     ]
   }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render "component-banner-item",
+          section:section,
+          block:block,
+          image_ratio_value: block.settings.image_ratio,
+          image_ratio_mobile_value: block..settings.image_ratio_mobile,
+          placeholder_icon: 'hero-apparel-1',
+          load_priority_low: 'false'
+      -%}
+  to: '{%- render "component-banner-item", section: section, block: block, image_ratio_value:
+    block.settings.image_ratio, image_ratio_mobile_value: block.settings.image_ratio_mobile,
+    placeholder_icon: ''hero-apparel-1'', load_priority_low: ''false'' -%}'
+  position: 6881..7123
+{%- endcomment -%}

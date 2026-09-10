@@ -12,7 +12,7 @@
   Usage:
   {% render 'visual-display', value: value, presentation: filter.presentation, enable_products_count:true %}
 {% endcomment %}
-{%- capture text_label = -%}{{- value.label | escape }}{% if enable_products_count %} ({{ value.count }}){% endif %}{%- endcapture -%}
+{%- capture text_label -%}{{- value.label | escape }}{% if enable_products_count %} ({{ value.count }}){% endif %}{%- endcapture -%}
 <div class="visual-display{% unless value.swatch.color or value.image != blank %} visual-display--button btn__transition-text{% endunless %}">
     {%- if value.swatch.color -%}
     {% capture main_bg_color %}{{ settings.color_background }}{%- endcapture -%}
@@ -77,3 +77,13 @@
     </div>
   {%- endif -%}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- capture text_label = -%}"
+  to: "{%- capture text_label -%}"
+  position: 659..685
+{% endcomment %}

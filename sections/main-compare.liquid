@@ -213,7 +213,7 @@ slider-slide{
 {%- assign ss = section.settings -%}
 {%- assign data_settings = "" -%}
 {%- for i in (1..16) -%}
-{%- capture value -%}{%- cycle ss.image_hover,ss.image_ratio,ss.hover_underline,ss.show_badge_on_sale,ss.show_badge_sold_out,ss.show_badge_feature,ss.show_sku,ss.show_vendor,ss.show_type,ss.show_price,ss.show_inventory,ss.inventory,ss.truncate_product_name,ss.button_type_product,ss.show_wishlist,ss.enable_rating_product_card -%}{%- endcapture -%}
+{%- capture value -%}{%- cycle ss.image_hover, ss.image_ratio, ss.hover_underline, ss.show_badge_on_sale, ss.show_badge_sold_out, ss.show_badge_feature, ss.show_sku, ss.show_vendor, ss.show_type, ss.show_price, ss.show_inventory, ss.inventory, ss.truncate_product_name, ss.button_type_product, ss.show_wishlist, ss.enable_rating_product_card -%}{%- endcapture -%}
 {%- if forloop.last -%}
 {%- assign data_settings = data_settings | append:value -%}
 {%- else -%}
@@ -501,4 +501,17 @@ slider-slide{
       }
     ]
   }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- cycle ss.image_hover,ss.image_ratio,ss.hover_underline,ss.show_badge_on_sale,ss.show_badge_sold_out,ss.show_badge_feature,ss.show_sku,ss.show_vendor,ss.show_type,ss.show_price,ss.show_inventory,ss.inventory,ss.truncate_product_name,ss.button_type_product,ss.show_wishlist,ss.enable_rating_product_card
+    -%}"
+  to: "{%- cycle ss.image_hover, ss.image_ratio, ss.hover_underline, ss.show_badge_on_sale,
+    ss.show_badge_sold_out, ss.show_badge_feature, ss.show_sku, ss.show_vendor, ss.show_type,
+    ss.show_price, ss.show_inventory, ss.inventory, ss.truncate_product_name, ss.button_type_product,
+    ss.show_wishlist, ss.enable_rating_product_card -%}"
+  position: 4863..5187
+{%- endcomment -%}
