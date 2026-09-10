@@ -221,7 +221,7 @@
         "nearby_radius": 100,
         "empty_message": "No se encontraron distribuidores para tu búsqueda. Intenta con otro término.",
         "show_map": true,
-        "map_provider": "google",
+        "map_provider": "osm",
         "google_maps_api_key": "AIzaSyDoi6mQXZangew7xqK8F7WM4jOqA6hY0GE",
         "map_zoom": 5,
         "map_center_lat": "-35.6751",
