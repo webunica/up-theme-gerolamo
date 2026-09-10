@@ -398,10 +398,10 @@
           d.email = val;
         } else if (h === 'horario' || h === 'atencion') {
           d.horario = val;
-        } else if (h === 'lat' || h === 'latitud') {
+        } else if (h === 'lat_validada' || h === 'latitud_validada' || h === 'lat_candidato' || h === 'lat' || h === 'latitud') {
           const num = parseCoordinate(val);
           if (num != null) d.lat = num;
-        } else if (h === 'lng' || h === 'lon' || h === 'longitud') {
+        } else if (h === 'lng_validada' || h === 'longitud_validada' || h === 'lng_candidato' || h === 'lng' || h === 'lon' || h === 'longitud' || h === 'ing') {
           const num = parseCoordinate(val);
           if (num != null) d.lng = num;
         }
@@ -414,7 +414,7 @@
 
         if (!d.nombre && (h.includes('nombre') || h.includes('tienda') || h.includes('distribuidor'))) {
           d.nombre = val;
-        } else if (!d.direccion && h.includes('direccion') && !h.includes('encontrada') && !h.includes('google') && !h.includes('geocode')) {
+        } else if (!d.direccion && h.includes('direccion') && !h.includes('encontrada') && !h.includes('google') && !h.includes('geocode') && !h.includes('normalizada')) {
           d.direccion = val;
         } else if (!d.comuna && h.includes('comuna')) {
           d.comuna = val;
@@ -432,10 +432,10 @@
           d.email = val;
         } else if (!d.horario && (h.includes('hora') || h.includes('atencion'))) {
           d.horario = val;
-        } else if (d.lat == null && (h.includes('lat') || h.includes('latitud'))) {
+        } else if (d.lat == null && (h.includes('lat_validada') || h.includes('lat_candidato') || h.includes('lat') || h.includes('latitud'))) {
           const num = parseCoordinate(val);
           if (num != null) d.lat = num;
-        } else if (d.lng == null && (h.includes('lng') || h.includes('lon') || h.includes('longitud'))) {
+        } else if (d.lng == null && (h.includes('lng_validada') || h.includes('lng_candidato') || h.includes('lng') || h.includes('lon') || h.includes('longitud') || h.includes('ing'))) {
           const num = parseCoordinate(val);
           if (num != null) d.lng = num;
         }
