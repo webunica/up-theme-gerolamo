@@ -372,11 +372,13 @@
                       type="submit"
                       name="add"
                       class="product-form__submit btn btn--addtocart-page btn__transition-text w-full{% if button_type_product == "only_icon" %} only-child{% endif %}"
-                      {% if current_variant.available == false %}disabled{% endif %}
+                      {% if current_variant.available == false or is_coming_soon %}disabled{% endif %}
                       >
                 <div class="btn__texts">
                   <span class="btn__top-text is-visible">
-                  {%- if current_variant.available -%}
+                  {%- if is_coming_soon -%}
+                    <span class="btn__texts__item">Próximamente</span>
+                  {%- elsif current_variant.available -%}
                   {%- if button_type_product != "only_text" -%}
                     {%- render "icon-cart" -%}
                   {%- endif -%}
@@ -392,7 +394,9 @@
                   {%- endif -%}
                   </span>
                   <span class="btn__bottom-text is-hidden">
-                  {%- if current_variant.available -%}
+                  {%- if is_coming_soon -%}
+                    <span class="btn__texts__item">Próximamente</span>
+                  {%- elsif current_variant.available -%}
                   {%- if button_type_product != "only_text" -%}
                     {%- render "icon-cart" -%}
                   {%- endif -%}
@@ -648,7 +652,9 @@
     {{ block.settings.custom_liquid }}
     {%- when "inventory" -%}
       {%- capture invertory -%}
-      {%- if product.available and current_variant.available -%}
+      {%- if is_coming_soon -%}
+        {%- comment -%}No mostrar En stock para productos con etiqueta Próximamente{%- endcomment -%}
+      {%- elsif product.available and current_variant.available -%}
       {%- if current_variant.inventory_management == "shopify" and current_variant.inventory_policy != "continue" and current_variant.inventory_quantity <= block.settings.inventory -%}
       <div class="display-flex animation-pulse">{%- render "icons-inventory" icon_name:"hot" -%}</div>
       <span class="inventory-block__hot h6">{{ 'products.product.inventory.hot' | t: quantity: current_variant.inventory_quantity }}</span>
@@ -658,7 +664,7 @@
       {%- endif -%}
       {%- endif -%}
       {%- endcapture -%}
-      <div id="inventory-{{ section.id }}" class="inventory-block" {{ block.shopify_attributes }}>{{ invertory }}</div>
+      <div id="inventory-{{ section.id }}" class="inventory-block{% if is_coming_soon or invertory == blank %} hide{% endif %}" {{ block.shopify_attributes }}>{{ invertory }}</div>
 
     {%- when "countdown" -%}
 
