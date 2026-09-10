@@ -588,17 +588,47 @@
 
 .gerolamo-card__top-badges-right {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.gerolamo-card__formats-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.gerolamo-card__formats-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: #033097;
+  background: #ffffff;
+  border: 1.5px solid #bfdbfe;
+  padding: 2.5px 7px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 6px rgba(3, 48, 151, 0.08);
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.gerolamo-card__formats-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
 }
 
 .gerolamo-card__badge-weight {
   background: #ffffff;
   border: 1.5px solid #e2e8f0;
-  border-radius: 9px;
-  padding: 4px 8px;
+  border-radius: 8px;
+  padding: 3px 6px;
   text-align: center;
-  min-width: 42px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-width: 38px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -607,13 +637,13 @@
 }
 
 .gerolamo-card__weight-num {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   color: #1B4B8A;
 }
 
 .gerolamo-card__weight-unit {
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 800;
   color: #1B4B8A;
   letter-spacing: 0.04em;
