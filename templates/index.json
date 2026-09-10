@@ -301,6 +301,7 @@
         "subcard_y7PxEJ",
         "subcard_dr8DCX"
       ],
+      "disabled": true,
       "name": "Línea Prescripción (Secos y Húmedos)",
       "settings": {
         "title": "PRESCRIPCIÓN VETERINARIA",
