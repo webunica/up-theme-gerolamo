@@ -572,6 +572,48 @@
   gap: 6px;
 }
 
+.gerolamo-card__badge-coming-soon {
+  background: #033097;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(3, 48, 151, 0.3);
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.gerolamo-card__badge-sold-out {
+  background: #64748b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(100, 116, 139, 0.25);
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.gerolamo-card__badge-sale {
+  background: #C91C28;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(201, 28, 40, 0.25);
+  display: inline-block;
+  line-height: 1.2;
+}
+
 .gerolamo-card__badge-stage {
   background: #C91C28;
   color: #ffffff;
