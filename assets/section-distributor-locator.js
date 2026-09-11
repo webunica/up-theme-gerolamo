@@ -1,158 +1,181 @@
 /**
- * Distributor Locator Section JS
- * Theme: GEROLAMO
- * Supports Google Sheets Live Sync (CSV) and local JSON fallback.
- * Maps: Dual Provider (Google Maps JavaScript API & Leaflet / OpenStreetMap).
+ * section-distributor-locator.js - OpenStreetMap (Leaflet) & Pagination Edition
+ * Wokiee Theme - Distributor Locator
+ *
+ * - Free, no API Key needed (OpenStreetMap tiles + Leaflet.js)
+ * - Split Desktop Layout: 2 Columns of Cards + Right Sticky Interactive Map
+ * - Automatic 100 km radius filter with Geolocation
+ * - Maximum 18 cards per page with smart pagination
+ * - Interactive synchronization between cards, pagination, and map markers
  */
 
 (function () {
   'use strict';
 
   const DEFAULT_RADIUS_KM = 100;
-  const DEFAULT_PER_PAGE  = 12;
+  const DEFAULT_PER_PAGE = 18;
 
-  // -- SVG Icons Helper -----------------------------------------
+  // -- Icon helpers ---------------------------------------------
   const ICON = {
-    pin: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-    phone: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
-    clock: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    globe: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
-    instagram: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
-    maplink: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>`,
-    locme: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.94 11a8 8 0 1 0-7.94 8.94"/><path d="M22 12h-4"/><path d="M12 22v-4"/><path d="M12 2v4"/><path d="M2 12h4"/></svg>`,
-    warning: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
-    chevronLeft: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>`,
-    chevronRight: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`
+    pin:          `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    clock:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    phone:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+    globe:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    instagram:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+    maplink:      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+    locme:        `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.94 11a8 8 0 1 0-7.94 8.94"/><path d="M22 12h-4"/><path d="M12 22v-4"/><path d="M12 2v4"/><path d="M2 12h4"/></svg>`,
+    warning:      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    close:        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    chevronLeft:  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>`,
+    chevronRight: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`,
+    target:       `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg>`,
   };
 
-  // -- Haversine Formula ----------------------------------------
-  function haversine(lat1, lon1, lat2, lon2) {
-    const R = 6371; // km
+  // -- Region colour palette -------------------------------------
+  const REGION_COLORS = [
+    '#033097','#1d3557','#9b2226','#6d3b47',
+    '#583101','#3d405b','#4a4e69','#22577a',
+    '#344e41','#7b2d8b','#c05c2e','#2b6cb0',
+  ];
+
+  function getRegionColor(region, regionList) {
+    const idx = regionList.indexOf(region);
+    return REGION_COLORS[idx % REGION_COLORS.length] || '#033097';
+  }
+
+  // -- Haversine distance (km) -----------------------------------
+  function haversine(lat1, lng1, lat2, lng2) {
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(lat1 * Math.PI / 180) *
+              Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.asin(Math.sqrt(a));
   }
 
-  // -- Geolocation via IP fallback ------------------------------
-  async function detectLocationByIp() {
-    try {
-      const res = await fetch('https://ipapi.co/json/', { timeout: 4000 });
-      if (!res.ok) throw new Error('ipapi failed');
-      const data = await res.json();
-      if (data.latitude && data.longitude) {
-        return {
-          lat: data.latitude,
-          lng: data.longitude,
-          city: data.city || 'tu ciudad',
-          source: 'ip'
-        };
-      }
-    } catch (e) {}
-    return null;
+  // -- Road Distance Estimation (Circuity Factor for Chilean Street Networks) --
+  function estimateRoadDistance(straightKm) {
+    if (straightKm <= 0) return 0;
+    // Urban network circuity factor: ~1.28x for city streets (<5km), smoothly transitioning to 1.15x for highways (>30km)
+    let factor = 1.28;
+    if (straightKm > 30) {
+      factor = 1.15;
+    } else if (straightKm > 5) {
+      factor = 1.28 - ((straightKm - 5) / 25) * (1.28 - 1.15);
+    }
+    return straightKm * factor;
   }
 
-  // -- Detect Browser / Device Location -------------------------
-  function detectLocation() {
-    return new Promise(resolve => {
-      if (!navigator.geolocation) {
-        detectLocationByIp().then(resolve);
-        return;
-      }
+  function formatRoadDistance(roadKm) {
+    if (roadKm == null || isNaN(roadKm) || !isFinite(roadKm)) return '';
+    if (roadKm < 1) {
+      const meters = Math.round(roadKm * 1000);
+      return `a ${meters} m`;
+    }
+    if (roadKm < 10) {
+      return `a ${roadKm.toFixed(1)} km`;
+    }
+    return `a ${Math.round(roadKm)} km`;
+  }
+
+  // -- Geolocation helpers ---------------------------------------
+  function getBrowserLocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) return reject(new Error('no-geolocation'));
       navigator.geolocation.getCurrentPosition(
-        pos => {
-          resolve({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-            city: null,
-            source: 'gps'
-          });
-        },
-        async () => {
-          const ipLoc = await detectLocationByIp();
-          resolve(ipLoc);
-        },
-        { timeout: 5000, maximumAge: 60000 }
+        pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude, source: 'browser' }),
+        err => reject(err),
+        { timeout: 8000, maximumAge: 300000 }
       );
     });
   }
 
-  // -- Security Escapers ----------------------------------------
-  function esc(str) {
-    if (str == null) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+  function getIPLocation() {
+    return fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(5000) })
+      .then(r => r.json())
+      .then(d => {
+        if (d.latitude && d.longitude) {
+          return { lat: d.latitude, lng: d.longitude, city: d.city, source: 'ip' };
+        }
+        throw new Error('ip-no-coords');
+      });
   }
 
-  function escAttr(str) {
-    if (str == null) return '';
-    return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  async function detectLocation() {
+    try {
+      return await getBrowserLocation();
+    } catch (browserErr) {
+      try {
+        return await getIPLocation();
+      } catch {
+        return null;
+      }
+    }
   }
 
+  // -- URL helpers -----------------------------------------------
   function ensureUrl(url) {
-    if (!url) return '';
-    const u = url.trim();
-    if (!u) return '';
-    if (!/^https?:\/\//i.test(u)) return 'https://' + u;
-    return u;
+    if (!url || url === '*') return null;
+    return url.startsWith('http') ? url : 'https://' + url;
   }
 
-  function ensureInstagram(ig) {
-    if (!ig) return '';
-    let handle = ig.trim().replace(/^@/, '');
-    if (!handle) return '';
-    if (/^https?:\/\//i.test(handle)) return handle;
-    return `https://instagram.com/${handle}`;
+  function ensureInstagram(handle) {
+    if (!handle) return null;
+    const clean = handle
+      .replace(/^https?:\/\/(?:www\.)?instagram\.com\//i, '')
+      .replace(/^@/, '').split(/\s/)[0].trim();
+    if (!clean || clean.length < 2) return null;
+    return 'https://www.instagram.com/' + clean + '/';
   }
 
-  // -- Region Color Palette -------------------------------------
-  const REGION_COLORS = [
-    '#2563eb', '#059669', '#d97706', '#dc2626',
-    '#7c3aed', '#db2777', '#0891b2', '#4b5563'
-  ];
-  function getRegionColor(region, regionList) {
-    const idx = regionList.indexOf(region);
-    if (idx === -1) return '#2563eb';
-    return REGION_COLORS[idx % REGION_COLORS.length];
+  // -- Escape helpers --------------------------------------------
+  function esc(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function escAttr(str) {
+    return String(str || '').replace(/"/g,'&quot;');
   }
 
-  // -- Build Distributor Card HTML ------------------------------
+  // -- Build distributor card ------------------------------------
   function buildCard(d, regionList, userLat, userLng, globalIndex) {
-    const color = getRegionColor(d.region, regionList);
-    const hasDist = userLat != null && userLng != null && d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng);
-    const distVal = hasDist ? (d._distance != null && !isNaN(d._distance) ? d._distance : haversine(userLat, userLng, d.lat, d.lng)) : null;
+    const color  = getRegionColor(d.region, regionList);
+    const mapQ   = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
+    const web    = ensureUrl(d.sitio_web);
+    const ig     = ensureInstagram(d.instagram);
 
+    // Distance badge (estimated road distance)
     let distanceBadge = '';
-    if (distVal != null && !isNaN(distVal)) {
-      const distFormatted = distVal < 1 ? `${Math.round(distVal * 1000)} m` : `${distVal.toFixed(1)} km`;
-      distanceBadge = `<span class="distributor-card__distance-badge">${ICON.locme} a ${distFormatted}</span>`;
+    if (userLat != null && userLng != null && d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng)) {
+      const straightDist = d._distance ?? haversine(userLat, userLng, d.lat, d.lng);
+      if (!isNaN(straightDist) && isFinite(straightDist)) {
+        const roadDist = d._roadDistance ?? estimateRoadDistance(straightDist);
+        const formatted = formatRoadDistance(roadDist);
+        if (formatted) {
+          distanceBadge = `<span class="distributor-card__distance" title="Distancia vial estimada">${ICON.target} ${formatted}</span>`;
+        }
+      }
     }
 
-    const ig = ensureInstagram(d.instagram);
-    const web = ensureUrl(d.sitio_web);
-    const mapQ = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
-
+    // Info rows
     let rows = '';
     if (d.direccion || d.ciudad) {
-      rows += `<div class="distributor-card__row">${ICON.pin} <span>${esc(d.direccion || '')}${d.ciudad ? ', ' + esc(d.ciudad) : ''}</span></div>`;
+      const loc = [d.direccion, d.ciudad].filter(Boolean).join(', ');
+      rows += `<div class="distributor-card__row">${ICON.pin}<span>${esc(loc)}</span></div>`;
     }
     if (d.telefono) {
-      rows += `<div class="distributor-card__row">${ICON.phone} <a href="tel:${esc(d.telefono.replace(/\s/g,''))}">${esc(d.telefono)}</a></div>`;
+      const telClean = d.telefono.replace(/\s/g, '');
+      rows += `<div class="distributor-card__row">${ICON.phone}<a href="tel:${esc(telClean)}" style="color:inherit;text-decoration:none;">${esc(d.telefono)}</a></div>`;
     }
     if (d.horario) {
-      rows += `<div class="distributor-card__row">${ICON.clock} <span>${esc(d.horario)}</span></div>`;
+      rows += `<div class="distributor-card__row">${ICON.clock}<span>${esc(d.horario)}</span></div>`;
     }
 
+    // Link buttons
     let links = '';
     if (d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng)) {
-      links += `<button type="button" class="distributor-card__link distributor-card__link--primary dloc-focus-map" data-global-index="${globalIndex}">${ICON.maplink} Ver en mapa</button>`;
+      links += `<button type="button" class="distributor-card__link distributor-card__link--primary dloc-focus-map" data-global-index="${globalIndex}">${ICON.pin} Ver en mapa</button>`;
     } else if (mapQ) {
       links += `<a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" class="distributor-card__link distributor-card__link--primary">${ICON.maplink} Ver en mapa</a>`;
     }
@@ -179,8 +202,9 @@
 </article>`;
   }
 
-  // -- Build Popup Content for Maps -----------------------------
+  // -- Build Popup Content for Leaflet Map -----------------------
   function buildPopupContent(d) {
+    const mapQ = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
     const ig   = ensureInstagram(d.instagram);
     const web  = ensureUrl(d.sitio_web);
 
@@ -232,9 +256,12 @@
     let url = rawUrl.trim();
     if (!url) return null;
 
+    // Already a direct CSV export link
     if (url.includes('output=csv') || url.includes('format=csv') || url.includes('out:csv')) {
       return url;
     }
+
+    // Google Sheets published web link: /pubhtml -> /pub?output=csv
     if (url.includes('/pubhtml')) {
       return url.replace(/\/pubhtml(\?.*)?$/, '/pub?output=csv');
     }
@@ -242,6 +269,7 @@
       return url.includes('?') ? `${url}&output=csv` : `${url}?output=csv`;
     }
 
+    // Standard sheet edit or share URL: https://docs.google.com/spreadsheets/d/{ID}/edit#gid={GID}
     const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
     if (match && match[1]) {
       const sheetId = match[1];
@@ -249,77 +277,54 @@
       const gidParam = gidMatch ? `&gid=${gidMatch[1]}` : '';
       return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv${gidParam}`;
     }
+
     return url;
   }
 
   function parseCSV(text) {
     const lines = [];
     let row = [];
-    let cell = '';
     let inQuotes = false;
-    let i = 0;
+    let current = '';
 
-    while (i < text.length) {
+    for (let i = 0; i < text.length; i++) {
       const char = text[i];
       const next = text[i + 1];
 
-      if (inQuotes) {
-        if (char === '"' && next === '"') {
-          cell += '"';
-          i += 2;
-          continue;
-        }
-        if (char === '"') {
-          inQuotes = false;
+      if (char === '"') {
+        if (inQuotes && next === '"') {
+          current += '"';
           i++;
-          continue;
+        } else {
+          inQuotes = !inQuotes;
         }
-        cell += char;
-        i++;
+      } else if ((char === '\r' || char === '\n') && !inQuotes) {
+        if (char === '\r' && next === '\n') i++;
+        row.push(current.trim());
+        if (row.length > 1 || (row.length === 1 && row[0] !== '')) {
+          lines.push(row);
+        }
+        row = [];
+        current = '';
+      } else if (char === ',' && !inQuotes) {
+        row.push(current.trim());
+        current = '';
       } else {
-        if (char === '"') {
-          inQuotes = true;
-          i++;
-          continue;
-        }
-        if (char === ',') {
-          row.push(cell.trim());
-          cell = '';
-          i++;
-          continue;
-        }
-        if (char === '\r' || char === '\n') {
-          row.push(cell.trim());
-          cell = '';
-          if (row.some(c => c.length > 0)) {
-            lines.push(row);
-          }
-          row = [];
-          if (char === '\r' && next === '\n') i++;
-          i++;
-          continue;
-        }
-        cell += char;
-        i++;
+        current += char;
       }
     }
-
-    if (cell.length > 0 || row.length > 0) {
-      row.push(cell.trim());
-      if (row.some(c => c.length > 0)) {
-        lines.push(row);
-      }
+    if (current || row.length > 0) {
+      row.push(current.trim());
+      lines.push(row);
     }
     return lines;
   }
 
-  function normalizeHeaderKey(str) {
-    return String(str || '')
-      .toLowerCase()
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9_]/g, '_')
+  function normalizeHeaderKey(header) {
+    if (!header) return '';
+    return header.toString().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '_')
       .replace(/_+/g, '_')
       .replace(/^_|_$/g, '');
   }
@@ -373,6 +378,7 @@
     let s = String(val).trim();
     if (!s) return null;
 
+    // Handle formats like -71,041,282 or -70,648,205 (Spanish Google Sheet thousands format for decimals)
     if (s.includes(',') && !s.includes('.')) {
       const parts = s.split(',');
       if (parts.length > 1) {
@@ -430,7 +436,7 @@
         }
       });
 
-      // 2. Pass: Fallback match ONLY for properties not yet found
+      // 2. Pass: Fallback match ONLY for properties not yet found (and explicitly ignore 'direccion_encontrada')
       headers.forEach((h, idx) => {
         const val = (row[idx] || '').trim();
         if (!h || !val) return;
@@ -537,7 +543,9 @@
             return parsed.data;
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        // Ignore localStorage error
+      }
     }
 
     // 2. Fetch from Google Sheets if configured
@@ -609,30 +617,31 @@
 
     let allData         = [];
     let regionList      = [];
-    let userLocation    = null;
+    let userLocation    = null;   // { lat, lng, city?, source }
     let isNearbyMode    = false;
-    let activeMapType   = 'none';
-    let mapObj          = null;
-    let googleMap       = null;
-    let googleInfoWindow = null;
-    let googleMarkers   = [];
-    let googleUserMarker = null;
-    let googleRadiusCircle = null;
-    let markersLayer    = null;
-    let userMarker      = null;
-    let radiusCircle    = null;
-    let markersMap      = new Map();
+    let activeMapType   = 'none'; // 'google' | 'leaflet'
+    let mapObj          = null;   // Leaflet map
+    let googleMap       = null;   // Google Map
+    let googleInfoWindow = null;  // Google InfoWindow
+    let googleMarkers   = [];     // Google Markers
+    let googleUserMarker = null;  // Google User Marker
+    let googleRadiusCircle = null;// Google Radius Circle
+    let markersLayer    = null;   // Leaflet featureGroup
+    let userMarker      = null;   // Leaflet user marker
+    let radiusCircle    = null;   // Leaflet radius circle
+    let markersMap      = new Map(); // globalIndex -> Marker (Leaflet or Google)
     let searchTerm      = '';
     let activeRegion    = '';
     let renderTimer     = null;
     let filteredData    = [];
     let currentPage     = 1;
 
+    // Helper to normalize strings for search (lowercase and remove accents)
     function cleanStr(s) {
       return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
     }
 
-    // --- Load Data -------------------------------------------
+    // --- Load Data (Google Sheets / JSON) ---------------------
     fetchDistributorData(jsonUrl, sheetUrl, dataSource, cacheMins)
       .then(async data => {
         allData = data.filter(d => d.nombre && d.nombre.trim());
@@ -652,14 +661,17 @@
 
         if (skeleton) skeleton.remove();
 
+        // -- Init Map (Google Maps or OpenStreetMap) --
         if (mapEl) {
           initMap(mapEl);
         }
 
+        // -- Try geolocation --
         showGeoStatus('loading');
         userLocation = await detectLocation();
 
         if (userLocation) {
+          // Filter nearby within 100km
           const nearby = filterByRadius(allData, userLocation.lat, userLocation.lng, radiusKm);
           if (nearby.length > 0) {
             isNearbyMode = true;
@@ -681,14 +693,20 @@
         showEmpty();
       });
 
+    // --- Filter by radius -------------------------------------
     function filterByRadius(data, lat, lng, km) {
       return data
         .filter(d => d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng))
-        .map(d => ({ ...d, _distance: haversine(lat, lng, d.lat, d.lng) }))
+        .map(d => {
+          const straight = haversine(lat, lng, d.lat, d.lng);
+          const road = estimateRoadDistance(straight);
+          return { ...d, _distance: straight, _roadDistance: road };
+        })
         .filter(d => d._distance <= km)
-        .sort((a, b) => a._distance - b._distance);
+        .sort((a, b) => (a._roadDistance ?? a._distance) - (b._roadDistance ?? b._distance));
     }
 
+    // --- Geo banner state machine -----------------------------
     function showGeoStatus(state, loc, count, km) {
       if (!geoBanner) return;
 
@@ -704,10 +722,12 @@
 
       if (geoBannerText) geoBannerText.innerHTML = messages[state] || '';
 
+      // Show/hide action buttons
       if (geoShowAll) geoShowAll.hidden  = state !== 'found';
       if (geoLocate)  geoLocate.hidden   = state === 'loading' || state === 'found' || state === 'noneNearby';
     }
 
+    // --- Render cards with pagination -------------------------
     function renderCards(data, resetPage = false) {
       filteredData = data;
       if (resetPage) {
@@ -747,6 +767,7 @@
         countEl.innerHTML = `<strong>${totalItems}</strong> distribuidor${totalItems !== 1 ? 'es' : ''} encontrado${totalItems !== 1 ? 's' : ''}`;
       }
 
+      // Render cards for current page
       const frag = document.createDocumentFragment();
       pageData.forEach((d, i) => {
         const globalIdx = startIndex + i;
@@ -782,10 +803,14 @@
         });
       });
 
+      // Render Pagination Controls
       renderPagination(totalItems, totalPages, startIndex, endIndex);
+
+      // Update Map with all filtered markers
       updateMapMarkers(filteredData);
     }
 
+    // --- Render Pagination HTML & Event Listeners -------------
     function renderPagination(totalItems, totalPages, startIndex, endIndex) {
       if (!paginationEl) return;
 
@@ -816,31 +841,33 @@
               data-page="${p}"
               aria-label="Página ${p}"
               ${isActive ? 'aria-current="page"' : ''}
-            >
-              ${p}
-            </button>
+            >${p}</button>
           `;
         }
       });
 
       paginationEl.innerHTML = `
-        <div class="dloc-pagination__summary">
-          Mostrando <strong>${startIndex + 1}–${endIndex}</strong> de <strong>${totalItems}</strong> distribuidores
+        <div class="dloc-pagination-summary">
+          Mostrando <strong>${startIndex + 1}-${endIndex}</strong> de <strong>${totalItems}</strong> distribuidores
         </div>
-        <div class="dloc-pagination__controls">
+        <div class="dloc-pagination-nav">
           <button
             type="button"
-            class="dloc-page-btn dloc-page-btn--nav dloc-page-btn--prev"
+            class="dloc-page-btn dloc-page-btn--prev"
             data-page="${currentPage - 1}"
             ${currentPage === 1 ? 'disabled' : ''}
             aria-label="Página anterior"
           >
             ${ICON.chevronLeft} <span>Anterior</span>
           </button>
-          <div class="dloc-pagination__numbers">${pageButtonsHtml}</div>
+
+          <div class="dloc-pagination-numbers">
+            ${pageButtonsHtml}
+          </div>
+
           <button
             type="button"
-            class="dloc-page-btn dloc-page-btn--nav dloc-page-btn--next"
+            class="dloc-page-btn dloc-page-btn--next"
             data-page="${currentPage + 1}"
             ${currentPage === totalPages ? 'disabled' : ''}
             aria-label="Página siguiente"
@@ -850,6 +877,7 @@
         </div>
       `;
 
+      // Attach click events
       paginationEl.querySelectorAll('.dloc-page-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           if (btn.disabled || !btn.dataset.page) return;
@@ -859,6 +887,7 @@
           currentPage = targetPage;
           renderCards(filteredData, false);
 
+          // Smooth scroll to top of list
           const controlsEl = section.querySelector('.distributor-locator__controls');
           if (controlsEl) {
             controlsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -884,6 +913,7 @@
       }
     }
 
+    // --- Autocomplete Suggestions Logic -----------------------
     function renderSuggestions(query) {
       if (!suggestionsEl) return;
       const cleanQ = cleanStr(query);
@@ -894,6 +924,7 @@
         return;
       }
 
+      // Group matching cities/communes
       const cityMatches = new Map();
       const storeMatches = [];
 
@@ -902,6 +933,7 @@
         const comunaClean = cleanStr(d.comuna);
         const nameClean = cleanStr(d.nombre);
 
+        // Check if city or commune matches
         const matchedCityName = (cityClean.includes(cleanQ) ? d.ciudad : null) ||
                                (comunaClean.includes(cleanQ) ? d.comuna : null);
 
@@ -924,6 +956,7 @@
           }
         }
 
+        // Check if store name matches directly
         if (nameClean.includes(cleanQ) && storeMatches.length < 5) {
           storeMatches.push(d);
         }
@@ -973,6 +1006,7 @@
       suggestionsEl.innerHTML = html;
       suggestionsEl.hidden = false;
 
+      // Attach click listeners to suggestions
       suggestionsEl.querySelectorAll('.distributor-locator__suggestion-item').forEach(item => {
         item.addEventListener('click', () => {
           const val = item.dataset.value;
@@ -988,6 +1022,7 @@
 
           applyFilters();
 
+          // Smoothly fly map to city/store if coordinates are valid
           if (!isNaN(lat) && !isNaN(lng)) {
             if (activeMapType === 'google' && googleMap) {
               googleMap.panTo({ lat, lng });
@@ -1006,6 +1041,7 @@
       const region = activeRegion;
       const isSearchActive = Boolean(term || region);
 
+      // If user typed a search term or selected a region, search globally across all Chilean stores
       let base = (!isSearchActive && isNearbyMode && userLocation)
         ? filterByRadius(allData, userLocation.lat, userLocation.lng, radiusKm)
         : allData;
@@ -1020,6 +1056,7 @@
         return matchRegion && matchSearch;
       });
 
+      // Update geoBanner visibility based on active search
       if (geoBanner) {
         if (isSearchActive) {
           geoBanner.hidden = true;
@@ -1043,6 +1080,7 @@
       } else if (typeof window.L !== 'undefined') {
         initLeafletMap(el);
       } else if (mapProvider === 'google' && googleApiKey) {
+        // Retry when Google Maps script finishes loading
         const checkGoogle = setInterval(() => {
           if (typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined') {
             clearInterval(checkGoogle);
@@ -1054,6 +1092,7 @@
       }
     }
 
+    // --- Google Maps Implementation --------------------------
     function initGoogleMap(el) {
       activeMapType = 'google';
       const zoom = parseInt(el.dataset.zoom, 10) || 6;
@@ -1079,6 +1118,7 @@
       if (mapLoader) mapLoader.classList.add('is-loaded');
     }
 
+    // --- OpenStreetMap (Leaflet) Implementation ---------------
     function initLeafletMap(el) {
       activeMapType = 'leaflet';
       const zoom = parseInt(el.dataset.zoom, 10) || 6;
@@ -1088,12 +1128,11 @@
       mapObj = L.map(el, {
         center: [lat, lng],
         zoom: zoom,
-        minZoom: 4,
-        maxZoom: 19,
         scrollWheelZoom: false,
         zoomControl: true,
       });
 
+      // OpenStreetMap tiles
       const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
@@ -1113,8 +1152,9 @@
     }
 
     function updateUserLocationOnMap(loc, km) {
-      if (!loc || loc.lat == null || loc.lng == null) return;
+      if (!loc) return;
 
+      // Google Maps User Marker & Radius
       if (activeMapType === 'google' && googleMap) {
         if (googleUserMarker) googleUserMarker.setMap(null);
         if (googleRadiusCircle) googleRadiusCircle.setMap(null);
@@ -1126,64 +1166,69 @@
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
-            fillColor: '#2563eb',
+            fillColor: '#033097',
             fillOpacity: 1,
             strokeColor: '#ffffff',
-            strokeWeight: 3
-          }
+            strokeWeight: 2.5
+          },
+          zIndex: 1000
         });
 
-        googleRadiusCircle = new google.maps.Circle({
-          strokeColor: '#2563eb',
-          strokeOpacity: 0.5,
-          strokeWeight: 1.5,
-          fillColor: '#2563eb',
-          fillOpacity: 0.08,
-          map: googleMap,
-          center: { lat: loc.lat, lng: loc.lng },
-          radius: km * 1000
-        });
-      } else if (activeMapType === 'leaflet' && mapObj) {
+        if (isNearbyMode) {
+          googleRadiusCircle = new google.maps.Circle({
+            center: { lat: loc.lat, lng: loc.lng },
+            radius: km * 1000,
+            fillColor: '#033097',
+            fillOpacity: 0.07,
+            strokeColor: '#033097',
+            strokeWeight: 1.5,
+            map: googleMap
+          });
+        }
+        return;
+      }
+
+      // Leaflet User Marker & Radius
+      if (mapObj) {
         if (userMarker) mapObj.removeLayer(userMarker);
         if (radiusCircle) mapObj.removeLayer(radiusCircle);
 
-        const userPinIcon = L.divIcon({
-          className: 'dloc-user-location-pin',
-          html: `
-            <div class="dloc-user-pulse-wrap">
-              <div class="dloc-user-pulse"></div>
-              <div class="dloc-user-dot"></div>
-            </div>
-          `,
-          iconSize: [24, 24],
-          iconAnchor: [12, 12]
+        const userIcon = L.divIcon({
+          className: 'dloc-user-marker-wrap',
+          html: `<div class="dloc-user-marker-dot" title="Tu ubicación"><div class="dloc-user-marker-pulse"></div></div>`,
+          iconSize: [22, 22],
+          iconAnchor: [11, 11]
         });
 
-        userMarker = L.marker([loc.lat, loc.lng], { icon: userPinIcon, zIndexOffset: 1000 })
+        userMarker = L.marker([loc.lat, loc.lng], { icon: userIcon, zIndexOffset: 1000 })
           .addTo(mapObj)
-          .bindPopup('<strong>Tu ubicación aproximada</strong>');
+          .bindPopup(`<strong>Tu ubicación</strong>${loc.city ? '<br>' + esc(loc.city) : ''}`);
 
-        radiusCircle = L.circle([loc.lat, loc.lng], {
-          radius: km * 1000,
-          color: '#2563eb',
-          fillColor: '#2563eb',
-          fillOpacity: 0.08,
-          weight: 1.5,
-          dashArray: '4, 4'
-        }).addTo(mapObj);
+        if (isNearbyMode) {
+          radiusCircle = L.circle([loc.lat, loc.lng], {
+            radius: km * 1000,
+            color: '#033097',
+            fillColor: '#033097',
+            fillOpacity: 0.07,
+            weight: 1.5,
+            dashArray: '5, 5'
+          }).addTo(mapObj);
+        }
       }
     }
 
     function updateMapMarkers(data) {
+      if (activeMapType === 'none') return;
+
       markersMap.clear();
 
+      // Group identical/near-identical coordinates to disperse markers nicely
       const coordGroups = new Map();
       data.forEach(d => {
-        if (d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng)) {
-          const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
-          if (!coordGroups.has(key)) coordGroups.set(key, []);
-          coordGroups.get(key).push(d);
-        }
+        if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng)) return;
+        const key = `${Number(d.lat).toFixed(4)}_${Number(d.lng).toFixed(4)}`;
+        if (!coordGroups.has(key)) coordGroups.set(key, []);
+        coordGroups.get(key).push(d);
       });
 
       // ── Google Maps Render ──
@@ -1198,7 +1243,9 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M15 1C7.27 1 1 7.27 1 15c0 9.5 14 26 14 26S29 24.5 29 15C29 7.27 22.73 1 15 1z M15 9.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z"
-              fill="#d42b2b" stroke="#8b0000" stroke-width="1" stroke-linejoin="round"
+              fill="#d42b2b"
+              stroke="#8b0000"
+              stroke-width="1.2"
             />
           </svg>
         `);
@@ -1430,6 +1477,7 @@
         scheduleFilter();
       });
 
+      // Close suggestions on blur or click outside
       document.addEventListener('click', (e) => {
         if (!section.querySelector('.distributor-locator__search-wrap')?.contains(e.target)) {
           if (suggestionsEl) suggestionsEl.hidden = true;
@@ -1460,6 +1508,7 @@
       });
     }
 
+    // "Ver todos" - exit nearby mode
     if (geoShowAll) {
       geoShowAll.addEventListener('click', () => {
         isNearbyMode = false;
@@ -1472,6 +1521,7 @@
       });
     }
 
+    // "Detectar ubicación" - re-trigger geolocation
     if (geoLocate) {
       geoLocate.addEventListener('click', async () => {
         showGeoStatus('loading');
@@ -1493,12 +1543,14 @@
       });
     }
 
+    // Close banner
     if (geoBannerClose) {
       geoBannerClose.addEventListener('click', () => {
         if (geoBanner) geoBanner.hidden = true;
       });
     }
 
+    // Empty state reset
     if (emptyState) {
       const resetBtn = emptyState.querySelector('.distributor-locator__empty-reset');
       if (resetBtn) {
