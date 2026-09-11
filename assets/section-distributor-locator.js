@@ -153,10 +153,32 @@
 
   function ensureInstagram(handle) {
     if (!handle) return null;
-    const clean = handle
+    let s = String(handle).trim();
+    if (!s || s === '*' || s === '-' || s === 'n/a' || s === 'null' || s === 'undefined' || s === '0' || s === 'no' || s === 'none') return null;
+
+    // Ignore pure numbers (such as row IDs, internal store codes, or postal numbers)
+    if (/^\d+$/.test(s)) return null;
+
+    // If it is a full URL
+    if (s.startsWith('http://') || s.startsWith('https://')) {
+      if (s.includes('instagram.com')) {
+        return s.endsWith('/') ? s : s + '/';
+      }
+      if (s.includes('facebook.com') || s.includes('fb.me') || s.includes('fb.com')) {
+        return s;
+      }
+      return s;
+    }
+
+    // Clean @, domain prefixes, and query parameters
+    const clean = s
       .replace(/^https?:\/\/(?:www\.)?instagram\.com\//i, '')
-      .replace(/^@/, '').split(/\s/)[0].trim();
-    if (!clean || clean.length < 2) return null;
+      .replace(/^instagram\.com\//i, '')
+      .replace(/^@/, '')
+      .split(/[\s/?#]/)[0]
+      .trim();
+
+    if (!clean || clean.length < 2 || clean === 'null' || clean === 'undefined' || /^\d+$/.test(clean)) return null;
     return 'https://www.instagram.com/' + clean + '/';
   }
 
@@ -456,9 +478,9 @@
           d.region = val;
         } else if (h === 'telefono' || h === 'fono' || h === 'celular' || h === 'whatsapp' || h === 'tel') {
           d.telefono = val;
-        } else if (h === 'sitio_web' || h === 'web' || h === 'url') {
+        } else if (h === 'sitio_web' || h === 'web' || h === 'url' || h === 'pagina_web' || h === 'link') {
           d.sitio_web = val;
-        } else if (h === 'instagram' || h === 'ig') {
+        } else if (h === 'instagram' || h === 'ig' || h === 'insta' || h === 'rrss' || h === 'red_social' || h === 'redes_sociales') {
           d.instagram = val;
         } else if (h === 'email' || h === 'correo') {
           d.email = val;
@@ -488,20 +510,20 @@
           d.ciudad = val;
         } else if (!d.region && h.includes('region')) {
           d.region = val;
-        } else if (!d.telefono && (h.includes('tel') || h.includes('fono') || h.includes('celular') || h.includes('whatsapp'))) {
+        } else if (!d.telefono && (h.includes('telefono') || h.includes('fono') || h.includes('celular') || h.includes('whatsapp') || h.startsWith('tel_') || h.startsWith('tel-'))) {
           d.telefono = val;
-        } else if (!d.sitio_web && (h.includes('web') || h.includes('sitio'))) {
+        } else if (!d.sitio_web && (h.includes('sitio_web') || h.includes('pagina_web') || h.startsWith('web') || h.startsWith('url'))) {
           d.sitio_web = val;
-        } else if (!d.instagram && (h.includes('insta') || h.includes('ig'))) {
+        } else if (!d.instagram && (h.includes('instagram') || h.startsWith('insta') || h === 'rrss' || h === 'red_social' || h.startsWith('ig_') || h.startsWith('ig-') || h.endsWith('_ig'))) {
           d.instagram = val;
         } else if (!d.email && (h.includes('email') || h.includes('correo'))) {
           d.email = val;
-        } else if (!d.horario && (h.includes('hora') || h.includes('atencion'))) {
+        } else if (!d.horario && (h.includes('horario') || h.includes('atencion'))) {
           d.horario = val;
-        } else if (d.lat == null && (h.includes('lat_validada') || h.includes('lat_candidato') || h.includes('lat') || h.includes('latitud'))) {
+        } else if (d.lat == null && (h.includes('lat_validada') || h.includes('lat_candidato') || h.startsWith('lat') || h.includes('latitud'))) {
           const num = parseCoordinate(val);
           if (num != null) d.lat = num;
-        } else if (d.lng == null && (h.includes('lng_validada') || h.includes('lng_candidato') || h.includes('lng') || h.includes('lon') || h.includes('longitud') || h.includes('ing'))) {
+        } else if (d.lng == null && (h.includes('lng_validada') || h.includes('lng_candidato') || h.startsWith('lng') || h.startsWith('lon') || h.includes('longitud'))) {
           const num = parseCoordinate(val);
           if (num != null) d.lng = num;
         }
