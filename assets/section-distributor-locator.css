@@ -432,8 +432,18 @@
   font-weight: 700;
   color: #033097;
   background: #e8edf8;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.distributor-card__distance svg {
+  flex-shrink: 0;
+  color: #033097;
 }
 
 .distributor-card__name {
