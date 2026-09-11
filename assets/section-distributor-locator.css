@@ -247,13 +247,13 @@
   font-weight: 500;
 }
 
-/* â”€â”€ Geo Banner â”€â”€ */
+/* ── Geo Banner ── */
 .distributor-locator__geo-banner {
-  background: #eef2fc;
-  border-bottom: 1px solid #bbf7d0;
+  background: #f0f5ff;
+  border-bottom: 1px solid #d0e1fd;
   padding: 12px 0;
   font-size: 0.9rem;
-  color: #166534;
+  color: #1e3a8a;
 }
 
 .distributor-locator__geo-banner--noneNearby {
@@ -291,29 +291,66 @@
   padding: 4px;
   display: flex;
   opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 .distributor-locator__geo-banner-close:hover { opacity: 1; }
 
 .dloc-btn {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 50px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  text-decoration: none;
+  line-height: 1.2;
 }
+
 .dloc-btn--outline {
   background: #ffffff;
-  border: 1px solid #033097;
+  border: 1.5px solid #033097;
   color: #033097;
+  box-shadow: 0 2px 6px rgba(3, 48, 151, 0.08);
 }
 .dloc-btn--outline:hover {
   background: #033097;
   color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(3, 48, 151, 0.25);
 }
+
+.dloc-btn--locate,
+.distributor-locator__geo-locate {
+  background: linear-gradient(135deg, #033097 0%, #1e40af 100%) !important;
+  color: #ffffff !important;
+  border: 1.5px solid #033097 !important;
+  box-shadow: 0 3px 12px rgba(3, 48, 151, 0.28) !important;
+}
+
+.dloc-btn--locate:hover,
+.distributor-locator__geo-locate:hover {
+  background: linear-gradient(135deg, #02226b 0%, #033097 100%) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 18px rgba(3, 48, 151, 0.4) !important;
+  color: #ffffff !important;
+}
+
+.dloc-btn--locate svg,
+.distributor-locator__geo-locate svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.dloc-btn--locate:hover svg,
+.distributor-locator__geo-locate:hover svg {
+  transform: rotate(45deg) scale(1.15);
+}
+
 .dloc-btn--ghost {
   background: transparent;
   border: 1px solid transparent;
