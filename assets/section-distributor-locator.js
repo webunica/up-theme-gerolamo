@@ -154,32 +154,78 @@
   function ensureInstagram(handle) {
     if (!handle) return null;
     let s = String(handle).trim();
-    if (!s || s === '*' || s === '-' || s === 'n/a' || s === 'null' || s === 'undefined' || s === '0' || s === 'no' || s === 'none') return null;
+    if (!s) return null;
+
+    // Check placeholders / none
+    const lower = s.toLowerCase();
+    if (['*', '-', 'n/a', 'na', 'null', 'undefined', '0', 'no', 'none', 'no tiene', 'sin rrss', 'sin instagram', 'no aplica', 'no cuenta'].includes(lower)) {
+      return null;
+    }
 
     // Ignore pure numbers (such as row IDs, internal store codes, or postal numbers)
     if (/^\d+$/.test(s)) return null;
 
-    // If it is a full URL
+    // 1. If it contains an Instagram URL anywhere in the text
+    const igUrlMatch = s.match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/([a-zA-Z0-9._-]+)\/?/i);
+    if (igUrlMatch && igUrlMatch[1]) {
+      const user = igUrlMatch[1].replace(/\/$/, '');
+      if (user && !['p', 'reel', 'stories', 'explore', 'direct'].includes(user.toLowerCase()) && !/^\d+$/.test(user)) {
+        return `https://www.instagram.com/${user}/`;
+      } else if (user) {
+        return igUrlMatch[0].startsWith('http') ? igUrlMatch[0] : 'https://' + igUrlMatch[0];
+      }
+    }
+
+    // 2. If it contains Facebook URL
+    const fbUrlMatch = s.match(/(?:https?:\/\/)?(?:www\.)?(?:facebook\.com|fb\.me|fb\.com)\/[a-zA-Z0-9._-]+/i);
+    if (fbUrlMatch) {
+      return fbUrlMatch[0].startsWith('http') ? fbUrlMatch[0] : 'https://' + fbUrlMatch[0];
+    }
+
+    // 3. If it contains @handle
+    const atMatch = s.match(/@([a-zA-Z0-9._-]+)/);
+    if (atMatch && atMatch[1]) {
+      const user = atMatch[1];
+      if (user.length >= 2 && !/^\d+$/.test(user)) {
+        return `https://www.instagram.com/${user}/`;
+      }
+    }
+
+    // 4. If it's prefixed by "IG:", "Instagram:", "Insta:", "RRSS:" etc.
+    const prefixMatch = s.match(/(?:ig|insta|instagram|rrss)\s*[:\-]?\s*@?([a-zA-Z0-9._-]+)/i);
+    if (prefixMatch && prefixMatch[1]) {
+      const user = prefixMatch[1];
+      if (user.length >= 2 && !/^\d+$/.test(user) && !['null', 'undefined', 'na', 'no'].includes(user.toLowerCase())) {
+        return `https://www.instagram.com/${user}/`;
+      }
+    }
+
+    // 5. If it starts with http/https
     if (s.startsWith('http://') || s.startsWith('https://')) {
-      if (s.includes('instagram.com')) {
-        return s.endsWith('/') ? s : s + '/';
-      }
-      if (s.includes('facebook.com') || s.includes('fb.me') || s.includes('fb.com')) {
-        return s;
-      }
       return s;
     }
 
-    // Clean @, domain prefixes, and query parameters
+    // 6. Direct username (e.g. "tienda_mascotas", "petshop.cl")
     const clean = s
-      .replace(/^https?:\/\/(?:www\.)?instagram\.com\//i, '')
-      .replace(/^instagram\.com\//i, '')
       .replace(/^@/, '')
       .split(/[\s/?#]/)[0]
       .trim();
 
-    if (!clean || clean.length < 2 || clean === 'null' || clean === 'undefined' || /^\d+$/.test(clean)) return null;
-    return 'https://www.instagram.com/' + clean + '/';
+    if (!clean || clean.length < 2 || ['null', 'undefined', 'none', 'no'].includes(clean.toLowerCase()) || /^\d+$/.test(clean)) {
+      return null;
+    }
+
+    // If it looks like a website domain (e.g. "tienda.cl") without being an ig user
+    if (clean.includes('.cl') || clean.includes('.com')) {
+      return 'https://' + clean;
+    }
+
+    // Valid IG username characters: letters, numbers, periods, underscores
+    if (/^[a-zA-Z0-9._]+$/.test(clean)) {
+      return `https://www.instagram.com/${clean}/`;
+    }
+
+    return null;
   }
 
   // -- Escape helpers --------------------------------------------
@@ -480,7 +526,7 @@
           d.telefono = val;
         } else if (h === 'sitio_web' || h === 'web' || h === 'url' || h === 'pagina_web' || h === 'link') {
           d.sitio_web = val;
-        } else if (h === 'instagram' || h === 'ig' || h === 'insta' || h === 'rrss' || h === 'red_social' || h === 'redes_sociales') {
+        } else if (h === 'instagram' || h === 'ig' || h === 'insta' || h === 'rrss' || h === 'red_social' || h === 'redes_sociales' || h === 'redes' || h === 'redes_social') {
           d.instagram = val;
         } else if (h === 'email' || h === 'correo') {
           d.email = val;
@@ -514,7 +560,7 @@
           d.telefono = val;
         } else if (!d.sitio_web && (h.includes('sitio_web') || h.includes('pagina_web') || h.startsWith('web') || h.startsWith('url'))) {
           d.sitio_web = val;
-        } else if (!d.instagram && (h.includes('instagram') || h.startsWith('insta') || h === 'rrss' || h === 'red_social' || h.startsWith('ig_') || h.startsWith('ig-') || h.endsWith('_ig'))) {
+        } else if (!d.instagram && (h.includes('instagram') || h.startsWith('insta') || h.includes('redes') || h.includes('red_social') || h.includes('rrss') || h.startsWith('ig_') || h.startsWith('ig-') || h.endsWith('_ig'))) {
           d.instagram = val;
         } else if (!d.email && (h.includes('email') || h.includes('correo'))) {
           d.email = val;
