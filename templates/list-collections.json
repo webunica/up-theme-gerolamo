@@ -169,33 +169,6 @@
         "mobile_alignment": "flex-start"
       }
     },
-    "custom_liquid_Ai7HEX": {
-      "type": "custom-liquid",
-      "name": "t:names.custom_liquid",
-      "settings": {
-        "top_spacing": "normal",
-        "width": "default",
-        "custom_liquid": "",
-        "show_lines": false,
-        "lines_width": "fullwidth",
-        "background": "hide",
-        "color_background": "rgba(0,0,0,0)",
-        "gradient": "",
-        "image_overlay_opacity": 0,
-        "image_overlay_color": "rgba(0,0,0,0)",
-        "image_overlay_opacity_mobile": 0,
-        "image_overlay_color_mobile": "rgba(0,0,0,0)",
-        "show_parallax": false,
-        "imagealign": "center",
-        "imagesize": "cover",
-        "background_width": "fullwidth",
-        "background_spacing": "normal",
-        "remove_bottom_spacing": false,
-        "color_base": "rgba(0,0,0,0)",
-        "color_accent": "rgba(0,0,0,0)",
-        "color_lines": "rgba(0,0,0,0)"
-      }
-    },
     "collection_list_with_text_inside_UP9nrm": {
       "type": "collection-list-with-text-inside",
       "blocks": {
@@ -442,7 +415,6 @@
   "order": [
     "gerolamo_page_banner_JTKrPm",
     "gerolamo_curved_features_HXGDfR",
-    "custom_liquid_Ai7HEX",
     "collection_list_with_text_inside_UP9nrm",
     "main",
     "custom_liquid_WPLGDg",
