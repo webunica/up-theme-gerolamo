@@ -145,18 +145,21 @@
     }
   }
 
-  // -- URL helpers -----------------------------------------------
+  // -- URL & Social helpers ---------------------------------------
   function ensureUrl(url) {
-    if (!url || url === '*') return null;
-    return url.startsWith('http') ? url : 'https://' + url;
+    if (!url) return null;
+    let s = String(url).trim();
+    if (!s || s === '*' || s === '-' || s === 'n/a' || s === 'na' || s === 'null' || s === 'undefined' || s === '0' || s === 'no' || s === 'none' || s === 'no tiene' || /^\d+$/.test(s)) return null;
+    s = s.replace(/,+/g, '.').replace(/\s+/g, '');
+    if (!s.includes('.') && !s.startsWith('http')) return null;
+    return s.startsWith('http') ? s : 'https://' + s;
   }
 
-  function ensureInstagram(handle) {
-    if (!handle) return null;
-    let s = String(handle).trim();
+  function detectSocialOrWeb(value) {
+    if (!value) return null;
+    let s = String(value).trim();
     if (!s) return null;
 
-    // Check placeholders / none
     const lower = s.toLowerCase();
     if (['*', '-', 'n/a', 'na', 'null', 'undefined', '0', 'no', 'none', 'no tiene', 'sin rrss', 'sin instagram', 'no aplica', 'no cuenta'].includes(lower)) {
       return null;
@@ -165,67 +168,73 @@
     // Ignore pure numbers (such as row IDs, internal store codes, or postal numbers)
     if (/^\d+$/.test(s)) return null;
 
-    // 1. If it contains an Instagram URL anywhere in the text
+    // 1. Explicit Instagram URL
     const igUrlMatch = s.match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/([a-zA-Z0-9._-]+)\/?/i);
     if (igUrlMatch && igUrlMatch[1]) {
       const user = igUrlMatch[1].replace(/\/$/, '');
       if (user && !['p', 'reel', 'stories', 'explore', 'direct'].includes(user.toLowerCase()) && !/^\d+$/.test(user)) {
-        return `https://www.instagram.com/${user}/`;
+        return { type: 'instagram', url: `https://www.instagram.com/${user}/`, label: 'Instagram' };
       } else if (user) {
-        return igUrlMatch[0].startsWith('http') ? igUrlMatch[0] : 'https://' + igUrlMatch[0];
+        const full = igUrlMatch[0].startsWith('http') ? igUrlMatch[0] : 'https://' + igUrlMatch[0];
+        return { type: 'instagram', url: full, label: 'Instagram' };
       }
     }
 
-    // 2. If it contains Facebook URL
+    // 2. Explicit Facebook URL
     const fbUrlMatch = s.match(/(?:https?:\/\/)?(?:www\.)?(?:facebook\.com|fb\.me|fb\.com)\/[a-zA-Z0-9._-]+/i);
     if (fbUrlMatch) {
-      return fbUrlMatch[0].startsWith('http') ? fbUrlMatch[0] : 'https://' + fbUrlMatch[0];
+      const full = fbUrlMatch[0].startsWith('http') ? fbUrlMatch[0] : 'https://' + fbUrlMatch[0];
+      return { type: 'web', url: full, label: 'Facebook' };
     }
 
-    // 3. If it contains @handle
-    const atMatch = s.match(/@([a-zA-Z0-9._-]+)/);
-    if (atMatch && atMatch[1]) {
-      const user = atMatch[1];
-      if (user.length >= 2 && !/^\d+$/.test(user)) {
-        return `https://www.instagram.com/${user}/`;
-      }
-    }
-
-    // 4. If it's prefixed by "IG:", "Instagram:", "Insta:", "RRSS:" etc.
-    const prefixMatch = s.match(/(?:ig|insta|instagram|rrss)\s*[:\-]?\s*@?([a-zA-Z0-9._-]+)/i);
+    // 3. Explicit prefix like "IG:", "Instagram:", "Insta:"
+    const prefixMatch = s.match(/(?:ig|insta|instagram)\s*[:\-]?\s*@?([a-zA-Z0-9._-]+)/i);
     if (prefixMatch && prefixMatch[1]) {
       const user = prefixMatch[1];
       if (user.length >= 2 && !/^\d+$/.test(user) && !['null', 'undefined', 'na', 'no'].includes(user.toLowerCase())) {
-        return `https://www.instagram.com/${user}/`;
+        return { type: 'instagram', url: `https://www.instagram.com/${user}/`, label: 'Instagram' };
       }
     }
 
-    // 5. If it starts with http/https
-    if (s.startsWith('http://') || s.startsWith('https://')) {
-      return s;
+    // 4. Handle starting with @ (e.g. @superfelines) -> Instagram
+    const atMatch = s.match(/^@([a-zA-Z0-9._-]+)/);
+    if (atMatch && atMatch[1]) {
+      const user = atMatch[1];
+      if (user.length >= 2 && !/^\d+$/.test(user)) {
+        return { type: 'instagram', url: `https://www.instagram.com/${user}/`, label: 'Instagram' };
+      }
     }
 
-    // 6. Direct username (e.g. "tienda_mascotas", "petshop.cl")
-    const clean = s
+    // 5. Website URL / Domain (e.g. WWW.SUPERFELINES.CL, https://superfelines.cl, superfelines.cl, www.petshop.com)
+    const cleanNoHttp = s.replace(/^https?:\/\//i, '').replace(/[\s/?#].*$/, '').toLowerCase();
+    const isWebDomain = cleanNoHttp.startsWith('www.') || /\.(?:cl|com|org|net|io|store|shop|site|vet|lat|online|co|biz|info|edu|gob)(?:\/|$)/i.test(s.toLowerCase());
+    
+    if (isWebDomain || s.startsWith('http://') || s.startsWith('https://')) {
+      const webUrl = s.startsWith('http') ? s : 'https://' + s;
+      return { type: 'web', url: webUrl, label: 'Web' };
+    }
+
+    // 6. Plain alphanumeric username with no domain extension (e.g. "superfelines", "vet_amigos")
+    const cleanUser = s
       .replace(/^@/, '')
       .split(/[\s/?#]/)[0]
       .trim();
 
-    if (!clean || clean.length < 2 || ['null', 'undefined', 'none', 'no'].includes(clean.toLowerCase()) || /^\d+$/.test(clean)) {
+    if (!cleanUser || cleanUser.length < 2 || ['null', 'undefined', 'none', 'no'].includes(cleanUser.toLowerCase()) || /^\d+$/.test(cleanUser)) {
       return null;
     }
 
-    // If it looks like a website domain (e.g. "tienda.cl") without being an ig user
-    if (clean.includes('.cl') || clean.includes('.com')) {
-      return 'https://' + clean;
-    }
-
-    // Valid IG username characters: letters, numbers, periods, underscores
-    if (/^[a-zA-Z0-9._]+$/.test(clean)) {
-      return `https://www.instagram.com/${clean}/`;
+    if (/^[a-zA-Z0-9._]+$/.test(cleanUser)) {
+      return { type: 'instagram', url: `https://www.instagram.com/${cleanUser}/`, label: 'Instagram' };
     }
 
     return null;
+  }
+
+  // Backward-compatible alias
+  function ensureInstagram(handle) {
+    const res = detectSocialOrWeb(handle);
+    return res ? res.url : null;
   }
 
   // -- Escape helpers --------------------------------------------
@@ -241,7 +250,7 @@
     const color  = getRegionColor(d.region, regionList);
     const mapQ   = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
     const web    = ensureUrl(d.sitio_web);
-    const ig     = ensureInstagram(d.instagram);
+    const social = detectSocialOrWeb(d.instagram);
 
     // Distance badge (exact road route or estimated road distance)
     let distanceBadge = '';
@@ -281,8 +290,22 @@
     } else if (mapQ) {
       links += `<a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" class="distributor-card__link distributor-card__link--primary">${ICON.maplink} Ver en mapa</a>`;
     }
-    if (web)  links += `<a href="${esc(web)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.globe} Web</a>`;
-    if (ig)   links += `<a href="${esc(ig)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.instagram} Instagram</a>`;
+
+    if (web) {
+      links += `<a href="${esc(web)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.globe} Web</a>`;
+    }
+
+    if (social) {
+      if (social.type === 'instagram') {
+        links += `<a href="${esc(social.url)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.instagram} Instagram</a>`;
+      } else if (social.type === 'web') {
+        const cleanSocialUrl = social.url.toLowerCase().replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '');
+        const cleanWebUrl = (web || '').toLowerCase().replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '');
+        if (!web || cleanSocialUrl !== cleanWebUrl) {
+          links += `<a href="${esc(social.url)}" target="_blank" rel="noopener" class="distributor-card__link">${ICON.globe} ${esc(social.label || 'Web')}</a>`;
+        }
+      }
+    }
 
     return `
 <article class="distributor-card"
@@ -306,9 +329,9 @@
 
   // -- Build Popup Content for Leaflet Map -----------------------
   function buildPopupContent(d) {
-    const mapQ = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
-    const ig   = ensureInstagram(d.instagram);
-    const web  = ensureUrl(d.sitio_web);
+    const mapQ   = encodeURIComponent([d.direccion, d.ciudad, d.region, 'Chile'].filter(Boolean).join(', '));
+    const web    = ensureUrl(d.sitio_web);
+    const social = detectSocialOrWeb(d.instagram);
 
     let infoHtml = '';
     if (d._realDistance != null && !isNaN(d._realDistance)) {
@@ -325,10 +348,12 @@
     }
 
     let actionsHtml = `<a href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}&travelmode=driving" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--primary">${ICON.maplink} <span>Cómo llegar</span></a>`;
-    if (ig) {
-      actionsHtml += `<a href="${esc(ig)}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--instagram">${ICON.instagram} <span>Instagram</span></a>`;
+    if (social && social.type === 'instagram') {
+      actionsHtml += `<a href="${esc(social.url)}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--instagram">${ICON.instagram} <span>Instagram</span></a>`;
     } else if (web) {
       actionsHtml += `<a href="${esc(web)}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--web">${ICON.globe} <span>Web</span></a>`;
+    } else if (social && social.type === 'web') {
+      actionsHtml += `<a href="${esc(social.url)}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--web">${ICON.globe} <span>${esc(social.label || 'Web')}</span></a>`;
     }
 
     return `
