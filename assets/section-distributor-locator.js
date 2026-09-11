@@ -80,6 +80,36 @@
     return `a ${Math.round(roadKm)} km`;
   }
 
+  function formatDuration(seconds) {
+    if (!seconds || isNaN(seconds) || seconds <= 0) return '';
+    const mins = Math.round(seconds / 60);
+    if (mins < 60) {
+      return `${mins} min`;
+    }
+    const hours = Math.floor(mins / 60);
+    const remMins = mins % 60;
+    if (remMins === 0) return `${hours} h`;
+    return `${hours} h ${remMins} min`;
+  }
+
+  function formatExactRouteBadge(distMeters, durSec) {
+    const distKm = distMeters / 1000;
+    let distText = '';
+    if (distKm < 1) {
+      distText = `a ${Math.round(distMeters)} m`;
+    } else if (distKm < 10) {
+      distText = `a ${distKm.toFixed(1)} km`;
+    } else {
+      distText = `a ${Math.round(distKm)} km`;
+    }
+
+    const durText = formatDuration(durSec);
+    if (durText) {
+      return `${ICON.target} <span>${distText}</span> <span class="dloc-dist-time">(${durText})</span>`;
+    }
+    return `${ICON.target} <span>${distText}</span>`;
+  }
+
   // -- Geolocation helpers ---------------------------------------
   function getBrowserLocation() {
     return new Promise((resolve, reject) => {
@@ -145,15 +175,19 @@
     const web    = ensureUrl(d.sitio_web);
     const ig     = ensureInstagram(d.instagram);
 
-    // Distance badge (estimated road distance)
+    // Distance badge (exact road route or estimated road distance)
     let distanceBadge = '';
     if (userLat != null && userLng != null && d.lat != null && d.lng != null && !isNaN(d.lat) && !isNaN(d.lng)) {
-      const straightDist = d._distance ?? haversine(userLat, userLng, d.lat, d.lng);
-      if (!isNaN(straightDist) && isFinite(straightDist)) {
-        const roadDist = d._roadDistance ?? estimateRoadDistance(straightDist);
-        const formatted = formatRoadDistance(roadDist);
-        if (formatted) {
-          distanceBadge = `<span class="distributor-card__distance" title="Distancia vial estimada">${ICON.target} ${formatted}</span>`;
+      if (d._realDistance != null && !isNaN(d._realDistance)) {
+        distanceBadge = `<span class="distributor-card__distance is-exact-route" title="Distancia y tiempo real por carretera">${formatExactRouteBadge(d._realDistance, d._realDuration)}</span>`;
+      } else {
+        const straightDist = d._distance ?? haversine(userLat, userLng, d.lat, d.lng);
+        if (!isNaN(straightDist) && isFinite(straightDist)) {
+          const roadDist = d._roadDistance ?? estimateRoadDistance(straightDist);
+          const formatted = formatRoadDistance(roadDist);
+          if (formatted) {
+            distanceBadge = `<span class="distributor-card__distance" title="Distancia vial estimada">${ICON.target} <span>${formatted}</span></span>`;
+          }
         }
       }
     }
@@ -209,6 +243,9 @@
     const web  = ensureUrl(d.sitio_web);
 
     let infoHtml = '';
+    if (d._realDistance != null && !isNaN(d._realDistance)) {
+      infoHtml += `<div class="dloc-popup__row dloc-popup__row--distance">${formatExactRouteBadge(d._realDistance, d._realDuration)}</div>`;
+    }
     if (d.direccion || d.ciudad) {
       infoHtml += `<div class="dloc-popup__row">${ICON.pin} <span>${esc(d.direccion || '')}${d.ciudad ? ', ' + esc(d.ciudad) : ''}</span></div>`;
     }
@@ -219,7 +256,7 @@
       infoHtml += `<div class="dloc-popup__row">${ICON.clock} <span>${esc(d.horario)}</span></div>`;
     }
 
-    let actionsHtml = `<a href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--primary">${ICON.maplink} <span>Cómo llegar</span></a>`;
+    let actionsHtml = `<a href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}&travelmode=driving" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--primary">${ICON.maplink} <span>Cómo llegar</span></a>`;
     if (ig) {
       actionsHtml += `<a href="${esc(ig)}" target="_blank" rel="noopener" class="dloc-popup__btn dloc-popup__btn--instagram">${ICON.instagram} <span>Instagram</span></a>`;
     } else if (web) {
@@ -635,6 +672,115 @@
     let renderTimer     = null;
     let filteredData    = [];
     let currentPage     = 1;
+    const routeCache    = new Map(); // key -> { dist: meters, dur: seconds }
+
+    function getRouteCacheKey(userLoc, destLat, destLng) {
+      return `${Number(userLoc.lat).toFixed(3)},${Number(userLoc.lng).toFixed(3)}_${Number(destLat).toFixed(3)},${Number(destLng).toFixed(3)}`;
+    }
+
+    function applyRouteToCard(globalIdx, distMeters, durSec) {
+      const card = document.getElementById(`dloc-card-${globalIdx}`);
+      if (!card) return;
+      const distBadge = card.querySelector('.distributor-card__distance');
+      if (distBadge) {
+        distBadge.innerHTML = formatExactRouteBadge(distMeters, durSec);
+        distBadge.setAttribute('title', 'Distancia y tiempo real por carretera');
+        distBadge.classList.add('is-exact-route');
+      }
+    }
+
+    async function enrichVisibleCardsWithRoutes(pageData, startIndex) {
+      if (!userLocation || userLocation.lat == null || userLocation.lng == null) return;
+
+      const uncached = [];
+
+      pageData.forEach((d, i) => {
+        if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng)) return;
+        const globalIdx = startIndex + i;
+        const cacheKey = getRouteCacheKey(userLocation, d.lat, d.lng);
+
+        if (routeCache.has(cacheKey)) {
+          const cached = routeCache.get(cacheKey);
+          d._realDistance = cached.dist;
+          d._realDuration = cached.dur;
+          applyRouteToCard(globalIdx, cached.dist, cached.dur);
+        } else {
+          uncached.push({ d, globalIdx, cacheKey });
+        }
+      });
+
+      if (!uncached.length) return;
+
+      // 1. Try Google Maps Distance Matrix if active
+      if (activeMapType === 'google' && typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined' && window.google.maps.DistanceMatrixService) {
+        try {
+          const service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+            origins: [{ lat: userLocation.lat, lng: userLocation.lng }],
+            destinations: uncached.map(item => ({ lat: item.d.lat, lng: item.d.lng })),
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+          }, (response, status) => {
+            if (status === 'OK' && response && response.rows && response.rows[0]) {
+              const elements = response.rows[0].elements;
+              elements.forEach((el, idx) => {
+                if (el && el.status === 'OK') {
+                  const target = uncached[idx];
+                  if (target) {
+                    const distMeters = el.distance.value;
+                    const durSec = el.duration.value;
+                    routeCache.set(target.cacheKey, { dist: distMeters, dur: durSec });
+                    target.d._realDistance = distMeters;
+                    target.d._realDuration = durSec;
+                    applyRouteToCard(target.globalIdx, distMeters, durSec);
+                  }
+                }
+              });
+              return;
+            }
+            // Fallback to OSRM if Google Distance Matrix fails
+            fetchOSRMTable(uncached);
+          });
+          return;
+        } catch (e) {
+          console.warn('[DistributorLocator] Google Distance Matrix error, falling back to OSRM:', e);
+        }
+      }
+
+      // 2. Fetch OSRM Table Service
+      fetchOSRMTable(uncached);
+    }
+
+    async function fetchOSRMTable(items) {
+      if (!items || !items.length || !userLocation) return;
+      try {
+        const coords = [`${Number(userLocation.lng).toFixed(5)},${Number(userLocation.lat).toFixed(5)}`];
+        items.forEach(it => {
+          coords.push(`${Number(it.d.lng).toFixed(5)},${Number(it.d.lat).toFixed(5)}`);
+        });
+
+        const url = `https://router.project-osrm.org/table/v1/driving/${coords.join(';')}?sources=0&annotations=distance,duration`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+        if (!res.ok) return;
+        const json = await res.json();
+
+        if (json.code === 'Ok' && json.distances && json.distances[0]) {
+          items.forEach((it, idx) => {
+            const distMeters = json.distances[0][idx + 1];
+            const durSec = json.durations && json.durations[0] ? json.durations[0][idx + 1] : null;
+
+            if (distMeters != null && !isNaN(distMeters)) {
+              routeCache.set(it.cacheKey, { dist: distMeters, dur: durSec });
+              it.d._realDistance = distMeters;
+              it.d._realDuration = durSec;
+              applyRouteToCard(it.globalIdx, distMeters, durSec);
+            }
+          });
+        }
+      } catch (err) {
+        console.warn('[DistributorLocator] OSRM routing network error:', err);
+      }
+    }
 
     // Helper to normalize strings for search (lowercase and remove accents)
     function cleanStr(s) {
@@ -789,6 +935,9 @@
         frag.appendChild(card);
       });
       grid.appendChild(frag);
+
+      // Asynchronously fetch exact driving route distances & travel times for visible cards
+      enrichVisibleCardsWithRoutes(pageData, startIndex);
 
       // Button "Ver en mapa" event
       grid.querySelectorAll('.dloc-focus-map').forEach(btn => {
