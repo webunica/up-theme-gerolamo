@@ -82,9 +82,13 @@
 {%- assign current_variant = product_card_product.selected_or_first_available_variant -%}
 
 {%- assign is_coming_soon = false -%}
-{%- if product_card_product.tags contains 'proximamente' or product_card_product.tags contains 'Próximamente' or product_card_product.tags contains 'proximo' or product_card_product.tags contains 'coming-soon' or product_card_product.tags contains 'Coming Soon' -%}
-  {%- assign is_coming_soon = true -%}
-{%- endif -%}
+{%- for tag in product_card_product.tags -%}
+  {%- assign tag_clean = tag | downcase | strip -%}
+  {%- if tag_clean == 'proximamente' or tag_clean == 'próximamente' or tag_clean == 'proximo' or tag_clean == 'próximo' or tag_clean == 'coming-soon' or tag_clean == 'coming soon' or tag_clean contains 'proxim' or tag_clean contains 'coming' -%}
+    {%- assign is_coming_soon = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
 
 {%- capture badges -%}
 {%- if is_coming_soon -%}
@@ -398,9 +402,16 @@
   {%- if product_card_product.featured_media != blank -%}
   <div class="product-card__image__container image-hover-personal-element">
     
-    <!-- Gerolamo Top Badges (Weight Right) -->
+    <!-- Gerolamo Top Badges (Status Left & Formats Right) -->
     <div class="gerolamo-card__top-badges">
       <div class="gerolamo-card__top-badges-left">
+        {%- if is_coming_soon -%}
+          <span class="gerolamo-card__badge-coming-soon">Próximamente</span>
+        {%- elsif product_card_product.available == false and show_badge_sold_out -%}
+          <span class="gerolamo-card__badge-sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {%- elsif product_card_product.available and show_badge_on_sale and product_card_product.compare_at_price > product_card_product.price -%}
+          <span class="gerolamo-card__badge-sale">{{ 'products.product.on_sale' | t }}</span>
+        {%- endif -%}
       </div>
       {%- if formats_count > 0 -%}
       <div class="gerolamo-card__top-badges-right">
