@@ -838,3 +838,74 @@
   box-shadow: 0 4px 14px rgba(27, 75, 138, 0.25);
   transform: translateY(-1px);
 }
+
+/* ── Mobile 2-column adaptations ── */
+@media (max-width: 576px) {
+  .product-card.gerolamo-product-card,
+  .product-card {
+    padding: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .product-card.gerolamo-product-card .product-card__heading {
+    min-height: 3.6em !important;
+    margin-bottom: 4px;
+  }
+
+  .product-card .product-card-small__heading {
+    font-size: 12.5px !important;
+    line-height: 1.25 !important;
+    min-height: 3.6em !important;
+  }
+
+  .gerolamo-card__badge-stage,
+  .gerolamo-card__badge-sale,
+  .gerolamo-card__badge-coming-soon,
+  .gerolamo-card__badge-sold-out {
+    font-size: 9.5px !important;
+    padding: 2.5px 6px !important;
+    border-radius: 4px !important;
+  }
+
+  .gerolamo-card__badge-weight {
+    min-width: 30px !important;
+    padding: 2px 4px !important;
+    border-radius: 6px !important;
+  }
+
+  .gerolamo-card__weight-num {
+    font-size: 11px !important;
+  }
+
+  .gerolamo-card__weight-unit {
+    font-size: 8px !important;
+  }
+
+  .gerolamo-card__formats-label {
+    font-size: 8px !important;
+    padding: 2px 5px !important;
+  }
+
+  .gerolamo-card__vendor-type {
+    font-size: 9.5px !important;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .gerolamo-card__btn-view {
+    padding: 7px 8px !important;
+    font-size: 11.5px !important;
+    border-radius: 6px !important;
+    gap: 4px !important;
+  }
+
+  .gerolamo-card__btn-view svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .gerolamo-card__chip {
+    padding: 2px 6px !important;
+    font-size: 9.5px !important;
+  }
+}
