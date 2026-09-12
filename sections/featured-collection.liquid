@@ -174,9 +174,13 @@ component-price.css,component-product-card.css
     {%- if section.settings.background != 'show' and section.settings.show_parallax -%}<div class="section-background__elements"><div class="section-background__elements__item"></div></div>{%- endif -%}
 
     {%- assign f_collection = section.settings.collection -%}
+    {%- assign total_product_limit = section.settings.product_limit -%}
+    {%- if section.settings.show_all_products -%}
+      {%- assign total_product_limit = 250 -%}
+    {%- endif -%}
 
     {%- capture button_html -%}
-    {%- if section.settings.link_name != blank and f_collection.products.size > section.settings.product_limit -%}
+    {%- if section.settings.link_name != blank and f_collection.products.size > total_product_limit -%}
     <div>
       <a href="{{ f_collection.url }}" class="btn btn--border btn__transition-text btn-wide">
         <div class="btn__texts">
@@ -207,7 +211,7 @@ component-price.css,component-product-card.css
 
     {%- capture content -%}
       {%- if f_collection != blank -%}
-      {%- for product in f_collection.products limit: section.settings.product_limit -%}
+      {%- for product in f_collection.products limit: total_product_limit -%}
       {%- if section.settings.swipe -%}<div class="swiper-slide" lazy="true">{%- endif -%}
 
       {%- render 'product-card',
@@ -244,7 +248,7 @@ component-price.css,component-product-card.css
       {%- endfor -%}
       {%- else -%}
 
-      {%- for i in (1..section.settings.product_limit) -%}
+      {%- for i in (1..total_product_limit) -%}
       {%- if section.settings.swipe -%}<div class="swiper-slide" lazy="true">{%- endif -%}
       {%- capture placeholder_icon -%}
       {%- cycle 'product-apparel-1', 'product-apparel-2', 'product-apparel-3', 'product-apparel-4' -%}
@@ -508,7 +512,7 @@ component-price.css,component-product-card.css
     {
       "type": "checkbox",
       "id": "swipe",
-      "default": true,
+      "default": false,
       "label": "Enable slider"
     },
     {
@@ -611,6 +615,66 @@ component-price.css,component-product-card.css
       "content": "Products"
     },
     {
+      "type": "checkbox",
+      "id": "show_all_products",
+      "default": false,
+      "label": "Mostrar todos los productos de la colección",
+      "info": "Muestra todos los productos disponibles en múltiples filas (máx 6 por fila)."
+    },
+    {
+      "visible_if": "{{ section.settings.show_all_products == false }}",
+      "type": "range",
+      "id": "product_limit",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 18,
+      "label": "Products"
+    },
+    {
+      "type": "select",
+      "id": "button_type_product",
+      "options": [
+        {
+          "value": "hide",
+          "label": "Ocultar botón añadir al carrito (Ver producto)"
+        },
+        {
+          "value": "show",
+          "label": "Mostrar botón añadir al carrito"
+        },
+        {
+          "value": "only_text",
+          "label": "Mostrar solo texto"
+        },
+        {
+          "value": "only_icon",
+          "label": "Mostrar solo icono"
+        },
+        {
+          "value": "none",
+          "label": "No mostrar ningún botón"
+        }
+      ],
+      "default": "hide",
+      "label": "Botón en tarjeta de producto"
+    },
+    {
+      "visible_if": "{{ section.settings.button_type_product != 'hide' and section.settings.button_type_product != 'none' }}",
+      "type": "checkbox",
+      "id": "button_type_product_mobile",
+      "default": true,
+      "label": "Button \"Add to cart\" on mobile"
+    },
+    {
+      "visible_if": "{{ section.settings.button_type_product != 'hide' and section.settings.button_type_product != 'none' }}",
+      "type": "checkbox",
+      "id": "show_quantity",
+      "default": false,
+      "label": "Enable quantity",
+      "info": "Button type always \"Show only icon\""
+    },
+    {
       "type": "select",
       "id": "image_hover",
       "options": [
@@ -689,15 +753,6 @@ component-price.css,component-product-card.css
       ],
       "default": "auto",
       "label": "Image ratio"
-    },
-    {
-      "type": "range",
-      "id": "product_limit",
-      "min": 2,
-      "max": 50,
-      "step": 1,
-      "default": 12,
-      "label": "Products"
     },
     {
       "type": "select",
@@ -816,46 +871,6 @@ component-price.css,component-product-card.css
       "id": "truncate_product_name",
       "default": false,
       "label": "Truncate product name"
-    },
-    {
-      "visible_if": "{{ section.settings.customize == true and section.settings.button_type_product != 'hide' }}",
-      "type": "checkbox",
-      "id": "show_quantity",
-      "default": false,
-      "label": "Enable quantity",
-      "info": "Button type always \"Show only icon\""
-    },
-    {
-      "visible_if": "{{ section.settings.customize == true }}",
-      "type": "select",
-      "id": "button_type_product",
-      "options": [
-        {
-          "value": "hide",
-          "label": "Hide"
-        },
-        {
-          "value": "show",
-          "label": "Show"
-        },
-        {
-          "value": "only_text",
-          "label": "Show only text"
-        },
-        {
-          "value": "only_icon",
-          "label": "Show only icon"
-        }
-      ],
-      "default": "hide",
-      "label": "Button \"Add to cart\""
-    },
-    {
-      "visible_if": "{{ section.settings.customize == true and section.settings.button_type_product != 'hide' }}",
-      "type": "checkbox",
-      "id": "button_type_product_mobile",
-      "default": true,
-      "label": "Button \"Add to cart\" on mobile"
     },
     {
       "visible_if": "{{ section.settings.customize == true and settings.enable_rating == true }}",
