@@ -27,7 +27,7 @@
             "desc": "<p></p><p>Mantención, Prescripción Veterinaria y Snacks para perros y gatos.</p><p><br/></p>",
             "heading_after_description": false,
             "button_name": "Ver productos",
-            "button_link_1": "https://gerolamo.cl/collections",
+            "button_link_1": "shopify://pages/linea-de-productos",
             "button_name_2": "Conoce más",
             "button_link_2": "shopify://pages/historia",
             "customize_button_size": "custom",
