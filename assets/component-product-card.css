@@ -539,6 +539,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100% !important;
 }
 
 .product-card.gerolamo-product-card:hover,
@@ -548,9 +549,34 @@
   border-color: #cbd5e1;
 }
 
-.product-card__image__container {
+/* Ensure equal height in swiper and grid items */
+.swiper-slide > .product-card.gerolamo-product-card,
+[class*="page-grid-"] > .product-card.gerolamo-product-card,
+[class*="page-grid-"] > * > .product-card.gerolamo-product-card {
+  height: 100% !important;
+}
+
+/* Standardized Image Box (Equal height and centered contain) */
+.product-card.gerolamo-product-card .product-card__image__container {
   position: relative;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.product-card.gerolamo-product-card .product-card__image__container .image-hover-box__container,
+.product-card.gerolamo-product-card .product-card__image__container .image-hover-box {
+  width: 100%;
+}
+
+/* Force 1:1 square ratio for product image canvas so no image is taller than others */
+.product-card.gerolamo-product-card [style*="--aspect-ratio"]:before {
+  padding-top: 100% !important;
+}
+
+.product-card.gerolamo-product-card .product-card__image img {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Top Badges (Stage Left & Weight Right) */
@@ -703,14 +729,51 @@
   text-align: left;
 }
 
-/* Heading / Title */
+/* Content flex container */
+.product-card.gerolamo-product-card .product-card__content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0;
+  width: 100%;
+}
+
+.product-card.gerolamo-product-card .product-card__content form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1 1 auto;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.product-card.gerolamo-product-card .product-card__content__main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Heading / Title - Uniform Height & 3-line clamp */
+.product-card.gerolamo-product-card .product-card__heading {
+  margin-bottom: 6px;
+  min-height: 3.9em;
+  display: flex;
+  align-items: flex-start;
+}
+
 .product-card .product-card-small__heading {
   color: #0f2b48 !important;
   font-weight: 700 !important;
-  font-size: 15px !important;
+  font-size: 14.5px !important;
   line-height: 1.3 !important;
   text-align: left;
-  display: block;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-height: 3.9em !important;
+  width: 100%;
 }
 
 .product-card .product-card-small__heading:hover {
@@ -722,8 +785,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 8px;
-  margin-bottom: 12px;
+  margin-top: 6px;
+  margin-bottom: 10px;
   justify-content: flex-start;
 }
 
@@ -737,9 +800,16 @@
   white-space: nowrap;
 }
 
-/* Ver producto Button */
-.gerolamo-card__btn-wrap {
-  margin-top: 8px;
+/* Ver producto Button - Pinned to bottom */
+.product-card.gerolamo-product-card .gerolamo-card__btn-wrap {
+  margin-top: auto !important;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.product-card.gerolamo-product-card .product-card__interface {
+  margin-top: auto !important;
+  padding-top: 10px;
   width: 100%;
 }
 
