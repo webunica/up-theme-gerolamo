@@ -1,10 +1,7 @@
 {%- capture css -%}
-component-price.css,component-product-card.css
+component-price.css,component-product-card.css,swiper-bundle.min.css,component-swiper-slider.css
 {%- if section.settings.button_type_product != 'hide' or settings.button_type_product_product_card != 'hide' -%}
 ,component-inputs.css,component-visual-display.css,component-visual-display-card.css
-{%- endif -%}
-{%- if section.settings.swipe or section.settings.image_action == "gallery" -%}
-,swiper-bundle.min.css,component-swiper-slider.css
 {%- endif -%}
 {%- endcapture -%}
 {%- render 'style-loader', array:css -%}
@@ -161,6 +158,16 @@ component-price.css,component-product-card.css
   font-weight: {{ section.settings.heading_font_weight }} !important;
 }
 {%- endif -%}
+@media (min-width: 577px) {
+  #theme-section-{{ section.id }} .featured-collection__mobile-slider {
+    display: none !important;
+  }
+}
+@media (max-width: 576px) {
+  #theme-section-{{ section.id }} .featured-collection__desktop-grid {
+    display: none !important;
+  }
+}
 {%- endcapture -%}
 <style>
   {{ section_styles }}
@@ -214,11 +221,10 @@ component-price.css,component-product-card.css
         endif
     -%}
 
-    {%- capture content -%}
+    {%- capture content_slides -%}
       {%- if f_collection != blank -%}
       {%- for product in f_collection.products limit: total_product_limit -%}
-      {%- if section.settings.swipe -%}<div class="swiper-slide" lazy="true">{%- endif -%}
-
+      <div class="swiper-slide" lazy="true">
       {%- render 'product-card',
           customize: section.settings.customize,
           product_card_product: product,
@@ -248,13 +254,12 @@ component-price.css,component-product-card.css
           show_description: section.settings.show_description,
           enable_rating_product_card: section.settings.enable_rating_product_card
         -%}
-        
-      {%- if section.settings.swipe -%}</div>{%- endif -%}
+      </div>
       {%- endfor -%}
       {%- else -%}
 
       {%- for i in (1..total_product_limit) -%}
-      {%- if section.settings.swipe -%}<div class="swiper-slide" lazy="true">{%- endif -%}
+      <div class="swiper-slide" lazy="true">
       {%- capture placeholder_icon -%}
       {%- cycle 'product-apparel-1', 'product-apparel-2', 'product-apparel-3', 'product-apparel-4' -%}
       {%- endcapture -%}
@@ -285,11 +290,84 @@ component-price.css,component-product-card.css
           placeholder_icon:placeholder_icon,
           show_description: section.settings.show_description
         -%}
-      {%- if section.settings.swipe -%}</div>{%- endif -%}
+      </div>
       {%- endfor -%}
 
       {%- endif -%}
     {%- endcapture -%}
+
+    {%- unless section.settings.swipe -%}
+    {%- capture content_grid -%}
+      {%- if f_collection != blank -%}
+      {%- for product in f_collection.products limit: total_product_limit -%}
+      {%- render 'product-card',
+          customize: section.settings.customize,
+          product_card_product: product,
+          product_collection:f_collection,
+          image_ratio_value: section.settings.image_ratio,
+          image_hover_type: section.settings.image_hover,
+          show_secondary_image: section.settings.image_action,
+          show_price:section.settings.show_price,
+          show_vendor:section.settings.show_vendor,
+          show_type:section.settings.show_type,
+          hover_underline:section.settings.hover_underline,
+          button_type_product: section.settings.button_type_product,
+          button_type_product_mobile: section.settings.button_type_product_mobile,
+          show_quantity: section.settings.show_quantity,
+          show_badge_sold_out:section.settings.show_badge_sold_out,
+          show_badge_on_sale:section.settings.show_badge_on_sale,
+          show_badge_feature:section.settings.show_badge_feature,
+          show_countdown:section.settings.show_countdown,
+          truncate_product_name:section.settings.truncate_product_name,
+          show_wishlist: section.settings.show_wishlist,
+          show_compare: section.settings.show_compare,
+          show_quick_view: section.settings.show_quick_view,
+          show_wishlist_mobile: section.settings.show_wishlist_mobile,
+          show_compare_mobile: section.settings.show_compare_mobile,
+          show_quick_view_mobile: section.settings.show_quick_view_mobile,
+          text_aligment: section.settings.text_align,
+          show_description: section.settings.show_description,
+          enable_rating_product_card: section.settings.enable_rating_product_card
+        -%}
+      {%- endfor -%}
+      {%- else -%}
+
+      {%- for i in (1..total_product_limit) -%}
+      {%- capture placeholder_icon -%}
+      {%- cycle 'product-apparel-1', 'product-apparel-2', 'product-apparel-3', 'product-apparel-4' -%}
+      {%- endcapture -%}
+      {%- render 'product-card-placeholder',
+          customize: section.settings.customize,
+          image_ratio_value: section.settings.image_ratio,
+          image_hover_type: section.settings.image_hover,
+          show_secondary_image: section.settings.image_action,
+          show_price:section.settings.show_price,
+          show_vendor:section.settings.show_vendor,
+          show_type:section.settings.show_type,
+          hover_underline:section.settings.hover_underline,
+          button_type_product: section.settings.button_type_product,
+          button_type_product_mobile: section.settings.button_type_product_mobile,
+          show_quantity: section.settings.show_quantity,
+          show_badge_sold_out:section.settings.show_badge_sold_out,
+          show_badge_on_sale:section.settings.show_badge_on_sale,
+          show_badge_feature:section.settings.show_badge_feature,
+          show_countdown:section.settings.show_countdown,
+          truncate_product_name:section.settings.truncate_product_name,
+          show_wishlist: section.settings.show_wishlist,
+          show_compare: section.settings.show_compare,
+          show_quick_view: section.settings.show_quick_view,
+          show_wishlist_mobile: section.settings.show_wishlist_mobile,
+          show_compare_mobile: section.settings.show_compare_mobile,
+          show_quick_view_mobile: section.settings.show_quick_view_mobile,
+          text_aligment: section.settings.text_align,
+          placeholder_icon:placeholder_icon,
+          show_description: section.settings.show_description
+        -%}
+      {%- endfor -%}
+
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- endunless -%}
       
     {%- if section.settings.swipe -%}
     {%- assign data_grid_xl = section.settings.grid | split: "page-grid-" | last -%}
@@ -297,33 +375,58 @@ component-price.css,component-product-card.css
     {%- assign data_grid_md = section.settings.grid | split: "page-grid-md-" | last | split: " " | first -%}
     <div class="page-grid-1 no-row-gap swiper-no-mask-mobile{% if section.settings.heading_aligment == "text-center" %} justify-content-center{% endif %}">
       {%- assign data_tablet_grid_lg = section.settings.grid_tablet | split: "page-grid-st-" | last -%}
-      {%- assign data_grid = section.settings.mobile_grid | append: "," | append: data_tablet_grid_lg | append: "," | append:data_grid_md | append: "," | append:data_grid_lg | append: "," | append:data_grid_xl -%}
+      {%- assign data_grid = "2," | append: data_tablet_grid_lg | append: "," | append:data_grid_md | append: "," | append:data_grid_lg | append: "," | append:data_grid_xl -%}
       <swiper-slider class="swiper{% if section.settings.swipe_edges == false %} swiper__custom-mask{% else %} swiper-no-mask{% endif %}"
                      data-swiper-desktop-grid="{{ data_grid_xl }}"
                      data-swiper-desktop-lg-grid="{{ data_grid_lg }}"
                      data-swiper-desktop-md-grid="{{ data_grid_md }}"
                      data-swiper-tablet-grid="{{ data_tablet_grid_lg }}"
-                     data-swiper-mobile-grid="{{ section.settings.mobile_grid }}"
+                     data-swiper-mobile-grid="2"
                      data-gutter="{{ settings.spacing_grid_horizontal }}"
-                     data-gutter-mobile="15"
+                     data-gutter-mobile="12"
                      data-grid="{{ data_grid }}"
                      {% if section.settings.autoplay_enabled and request.design_mode == false %} data-autoplay-delay="{{ section.settings.autoplay_time | times: 1000 }}"{% endif %}
                      data-autoplay="{%- if section.settings.autoplay_enabled and request.design_mode == false -%}true{%- else -%}false{%- endif -%}"
                      data-script="{{ 'swiper-bundle.min.js' | asset_url }}"
         >
         <div class="swiper-wrapper swiper-wrapper--max-height">
-          {{ content }}
+          {{ content_slides }}
         </div>
       </swiper-slider>
       <div class="swiper-control-container{% if section.settings.heading_aligment == "text-center" %} justify-content-center{% endif %}">
         <div class="custom-swiper-button-prev{% unless section.settings.desktop_navigation contains "arrows" %} hide-desktop{% endunless %}">{{- 'icon-arrow-left' | append: settings.system_icon_thickness | inline_asset_content -}}</div>
-        <div class="swiper-pagination{% unless section.settings.desktop_navigation contains "dots" %} hide-desktop{% endunless %}{% unless section.settings.mobile_navigation contains "dots" %} hide-mobile-xl-st{% endunless %}"></div>
+        <div class="swiper-pagination{% unless section.settings.desktop_navigation contains "dots" %} hide-desktop{% endunless %}"></div>
         <div class="custom-swiper-button-next{% unless section.settings.desktop_navigation contains "arrows" %} hide-desktop{% endunless %}">{{- 'icon-arrow-right' | append: settings.system_icon_thickness | inline_asset_content -}}</div>
       </div>
     </div>
     {%- else -%}
-    <div class="page-grid-sp-{{ section.settings.mobile_grid }} {{ section.settings.grid_tablet }} {{ section.settings.grid }} page-vertical-gap-40 {{ section.settings.heading_aligment }}{% if section.settings.heading_aligment == "text-center" %} justify-content-center{% endif %}">
-      {{ content }}
+    {% comment %} Desktop & Tablet Grid (hidden on mobile <= 576px) {% endcomment %}
+    <div class="featured-collection__desktop-grid page-grid-sp-2 {{ section.settings.grid_tablet }} {{ section.settings.grid }} page-vertical-gap-40 {{ section.settings.heading_aligment }}{% if section.settings.heading_aligment == "text-center" %} justify-content-center{% endif %}">
+      {{ content_grid }}
+    </div>
+
+    {% comment %} Mobile Slider (visible ONLY on mobile <= 576px, always 2 units per row) {% endcomment %}
+    <div class="featured-collection__mobile-slider page-grid-1 no-row-gap swiper-no-mask-mobile{% if section.settings.heading_aligment == "text-center" %} justify-content-center{% endif %}">
+      <swiper-slider class="swiper{% if section.settings.swipe_edges == false %} swiper__custom-mask{% else %} swiper-no-mask{% endif %}"
+                     data-swiper-desktop-grid="2"
+                     data-swiper-desktop-lg-grid="2"
+                     data-swiper-desktop-md-grid="2"
+                     data-swiper-tablet-grid="2"
+                     data-swiper-mobile-grid="2"
+                     data-gutter="{{ settings.spacing_grid_horizontal }}"
+                     data-gutter-mobile="12"
+                     data-grid="2,2,2,2,2"
+                     {% if section.settings.autoplay_enabled and request.design_mode == false %} data-autoplay-delay="{{ section.settings.autoplay_time | times: 1000 }}"{% endif %}
+                     data-autoplay="{%- if section.settings.autoplay_enabled and request.design_mode == false -%}true{%- else -%}false{%- endif -%}"
+                     data-script="{{ 'swiper-bundle.min.js' | asset_url }}"
+        >
+        <div class="swiper-wrapper swiper-wrapper--max-height">
+          {{ content_slides }}
+        </div>
+      </swiper-slider>
+      <div class="swiper-control-container justify-content-center">
+        <div class="swiper-pagination"></div>
+      </div>
     </div>
     {%- endif -%} 
 
