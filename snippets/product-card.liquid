@@ -64,7 +64,7 @@
     assign show_description = settings.show_description_product_card
     assign truncate_product_name = settings.truncate_product_name_product_card
     assign show_quantity = settings.show_quantity_product_card
-    assign button_type_product = settings.button_type_product_product_card
+    assign button_type_product = button_type_product | default: settings.button_type_product_product_card
     assign button_type_product_mobile = settings.button_type_product_mobile_product_card
     assign show_wishlist = settings.show_wishlist_product_card
     assign show_compare = settings.show_compare_product_card
