@@ -156,6 +156,11 @@ component-price.css,component-product-card.css
 {{ block_css }}
 }
 {%- endif -%}
+{%- if section.settings.heading_font_weight != 'default' and section.settings.heading_font_weight != blank -%}
+#theme-section-{{ section.id }} .section-heading-text {
+  font-weight: {{ section.settings.heading_font_weight }} !important;
+}
+{%- endif -%}
 {%- endcapture -%}
 <style>
   {{ section_styles }}
@@ -361,6 +366,22 @@ component-price.css,component-product-card.css
       "id": "main_heading",
       "default": "t:names.featured_collection",
       "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "options": [
+        { "value": "default", "label": "Por defecto" },
+        { "value": "300", "label": "300 - Light" },
+        { "value": "400", "label": "400 - Regular" },
+        { "value": "500", "label": "500 - Medium" },
+        { "value": "600", "label": "600 - Semi Bold" },
+        { "value": "700", "label": "700 - Bold" },
+        { "value": "800", "label": "800 - Extra Bold" },
+        { "value": "900", "label": "900 - Black" }
+      ],
+      "default": "default",
+      "label": "Grosor de fuente del título"
     },
     {
       "type": "textarea",
@@ -751,7 +772,7 @@ component-price.css,component-product-card.css
           "label": "Widescreen (16:9)"
         }
       ],
-      "default": "auto",
+      "default": "1",
       "label": "Image ratio"
     },
     {
