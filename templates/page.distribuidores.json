@@ -218,7 +218,7 @@
         "search_placeholder": "Buscar por nombre o ciudad…",
         "show_region_filter": true,
         "region_all_label": "Todas las regiones",
-        "nearby_radius": 100,
+        "nearby_radius": 25,
         "empty_message": "No se encontraron distribuidores para tu búsqueda. Intenta con otro término.",
         "show_map": true,
         "map_provider": "osm",
