@@ -888,43 +888,7 @@
 
       if (!uncached.length) return;
 
-      // 1. Try Google Maps Distance Matrix if active
-      if (activeMapType === 'google' && typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined' && window.google.maps.DistanceMatrixService) {
-        try {
-          const service = new google.maps.DistanceMatrixService();
-          service.getDistanceMatrix({
-            origins: [{ lat: userLocation.lat, lng: userLocation.lng }],
-            destinations: uncached.map(item => ({ lat: item.d.lat, lng: item.d.lng })),
-            travelMode: google.maps.TravelMode.DRIVING,
-            unitSystem: google.maps.UnitSystem.METRIC,
-          }, (response, status) => {
-            if (status === 'OK' && response && response.rows && response.rows[0]) {
-              const elements = response.rows[0].elements;
-              elements.forEach((el, idx) => {
-                if (el && el.status === 'OK') {
-                  const target = uncached[idx];
-                  if (target) {
-                    const distMeters = el.distance.value;
-                    const durSec = el.duration.value;
-                    routeCache.set(target.cacheKey, { dist: distMeters, dur: durSec });
-                    target.d._realDistance = distMeters;
-                    target.d._realDuration = durSec;
-                    applyRouteToCard(target.globalIdx, distMeters, durSec);
-                  }
-                }
-              });
-              return;
-            }
-            // Fallback to OSRM if Google Distance Matrix fails
-            fetchOSRMTable(uncached);
-          });
-          return;
-        } catch (e) {
-          console.warn('[DistributorLocator] Google Distance Matrix error, falling back to OSRM:', e);
-        }
-      }
-
-      // 2. Fetch OSRM Table Service
+      // Real road distance & driving duration (OSRM Chilean Network Table Service)
       fetchOSRMTable(uncached);
     }
 
@@ -1505,7 +1469,29 @@
       renderTimer = setTimeout(applyFilters, 160);
     }
 
-    // --- Map Initializer Dispatcher --------------------------
+    // --- Map Initializer Dispatcher & Fallback ----------------
+    window.gm_authFailure = function () {
+      console.warn('[DistributorLocator] Google Maps API error (gm_authFailure). Switching automatically to OpenStreetMap (Leaflet).');
+      switchToLeafletFallback();
+    };
+
+    function switchToLeafletFallback() {
+      if (activeMapType === 'leaflet' && mapObj) return;
+      activeMapType = 'leaflet';
+
+      // Remove Google error alert modal from DOM if rendered
+      document.querySelectorAll('.gm-err-container').forEach(el => el.remove());
+
+      if (mapEl) {
+        mapEl.innerHTML = '';
+        if (typeof window.L !== 'undefined') {
+          initLeafletMap(mapEl);
+          if (filteredData.length > 0) updateMapMarkers(filteredData);
+          if (userLocation) updateUserLocationOnMap(userLocation, radiusKm);
+        }
+      }
+    }
+
     function initMap(el) {
       if (mapProvider === 'google' && typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined') {
         initGoogleMap(el);
@@ -1513,54 +1499,22 @@
         initLeafletMap(el);
       } else if (mapProvider === 'google' && googleApiKey) {
         // Retry when Google Maps script finishes loading
+        let attempts = 0;
         const checkGoogle = setInterval(() => {
+          attempts++;
           if (typeof window.google !== 'undefined' && typeof window.google.maps !== 'undefined') {
             clearInterval(checkGoogle);
             initGoogleMap(el);
             if (filteredData.length > 0) updateMapMarkers(filteredData);
+          } else if (attempts >= 40) {
+            clearInterval(checkGoogle);
+            switchToLeafletFallback();
           }
         }, 150);
-        setTimeout(() => clearInterval(checkGoogle), 6000);
       }
     }
 
     // --- Google Maps Implementation --------------------------
-    let autocompleteInitialized = false;
-    function initGooglePlacesAutocomplete() {
-      if (autocompleteInitialized) return;
-      if (!searchInput || typeof window.google === 'undefined' || !window.google.maps || !window.google.maps.places) return;
-
-      try {
-        const autocomplete = new google.maps.places.Autocomplete(searchInput, {
-          componentRestrictions: { country: 'cl' },
-          fields: ['geometry', 'name', 'formatted_address']
-        });
-
-        autocomplete.addListener('place_changed', () => {
-          const place = autocomplete.getPlace();
-          if (!place || !place.geometry || !place.geometry.location) {
-            geocodeAddress(searchInput.value.trim());
-            return;
-          }
-
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          const label = place.formatted_address || place.name || searchInput.value;
-
-          setUserSearchLocation({
-            lat: lat,
-            lng: lng,
-            city: label,
-            source: 'places'
-          });
-        });
-
-        autocompleteInitialized = true;
-      } catch (err) {
-        console.warn('[DistributorLocator] Places Autocomplete error:', err);
-      }
-    }
-
     function initGoogleMap(el) {
       activeMapType = 'google';
       const zoom = parseInt(el.dataset.zoom, 10) || 6;
@@ -1593,8 +1547,6 @@
           source: 'manual'
         });
       });
-
-      initGooglePlacesAutocomplete();
 
       const mapLoader = section.querySelector('.distributor-locator__map-loader');
       if (mapLoader) mapLoader.classList.add('is-loaded');
