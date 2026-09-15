@@ -1274,3 +1274,10 @@
   font-weight: 400;
 }
 
+/* Suppress Google Maps API Auth / Billing Error Modal */
+.gm-err-container,
+.gm-err-autocomplete,
+.gm-err-content {
+  display: none !important;
+}
+
