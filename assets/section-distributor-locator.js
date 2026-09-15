@@ -115,9 +115,26 @@
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) return reject(new Error('no-geolocation'));
       navigator.geolocation.getCurrentPosition(
-        pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude, source: 'browser' }),
-        err => reject(err),
-        { timeout: 8000, maximumAge: 300000 }
+        pos => resolve({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+          source: 'gps'
+        }),
+        err => {
+          // If high accuracy times out, try once with relaxed settings before giving up to IP
+          navigator.geolocation.getCurrentPosition(
+            pos => resolve({
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude,
+              accuracy: pos.coords.accuracy,
+              source: 'browser'
+            }),
+            err2 => reject(err2),
+            { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
+          );
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
       );
     });
   }
@@ -460,6 +477,54 @@
   }
 
   const CITY_COORDS = {
+    // Comunas Gran Santiago (Región Metropolitana)
+    'pudahuel': { lat: -33.4485, lng: -70.7485 },
+    'maipu': { lat: -33.5040, lng: -70.7620 },
+    'cerrillos': { lat: -33.4950, lng: -70.7180 },
+    'estacion central': { lat: -33.4610, lng: -70.7020 },
+    'quinta normal': { lat: -33.4350, lng: -70.6950 },
+    'lo prado': { lat: -33.4440, lng: -70.7220 },
+    'cerro navia': { lat: -33.4250, lng: -70.7380 },
+    'renca': { lat: -33.4050, lng: -70.7120 },
+    'quilicura': { lat: -33.3640, lng: -70.7310 },
+    'conchali': { lat: -33.3850, lng: -70.6750 },
+    'huechuraba': { lat: -33.3750, lng: -70.6400 },
+    'recoleta': { lat: -33.4100, lng: -70.6450 },
+    'independencia': { lat: -33.4180, lng: -70.6650 },
+    'santiago': { lat: -33.4489, lng: -70.6693 },
+    'santiago centro': { lat: -33.4489, lng: -70.6693 },
+    'providencia': { lat: -33.4310, lng: -70.6150 },
+    'las condes': { lat: -33.4120, lng: -70.5650 },
+    'vitacura': { lat: -33.3880, lng: -70.5750 },
+    'lo barnechea': { lat: -33.3550, lng: -70.5150 },
+    'la reina': { lat: -33.4450, lng: -70.5450 },
+    'nunoa': { lat: -33.4550, lng: -70.6000 },
+    'macul': { lat: -33.4850, lng: -70.6000 },
+    'penalolen': { lat: -33.4850, lng: -70.5450 },
+    'san joaquin': { lat: -33.4950, lng: -70.6300 },
+    'san miguel': { lat: -33.4950, lng: -70.6550 },
+    'pedro aguirre cerda': { lat: -33.4880, lng: -70.6780 },
+    'lo espejo': { lat: -33.5200, lng: -70.6900 },
+    'la cisterna': { lat: -33.5280, lng: -70.6650 },
+    'san ramon': { lat: -33.5350, lng: -70.6450 },
+    'la granja': { lat: -33.5350, lng: -70.6250 },
+    'el bosque': { lat: -33.5600, lng: -70.6650 },
+    'la pintana': { lat: -33.5850, lng: -70.6350 },
+    'san bernardo': { lat: -33.5950, lng: -70.7050 },
+    'puente alto': { lat: -33.6150, lng: -70.5750 },
+    'pirque': { lat: -33.6350, lng: -70.5750 },
+    'buin': { lat: -33.7320, lng: -70.7420 },
+    'paine': { lat: -33.8150, lng: -70.7450 },
+    'talagante': { lat: -33.6650, lng: -70.9250 },
+    'penaflor': { lat: -33.6100, lng: -70.8850 },
+    'padre hurtado': { lat: -33.5650, lng: -70.8150 },
+    'melipilla': { lat: -33.6850, lng: -71.2150 },
+    'colina': { lat: -33.2050, lng: -70.6750 },
+    'lampa': { lat: -33.2850, lng: -70.8750 },
+    'tiltil': { lat: -33.0850, lng: -70.9250 },
+    'chicureo': { lat: -33.2750, lng: -70.6600 },
+
+    // Regiones y ciudades principales
     'temuco': { lat: -38.7359, lng: -72.5904 },
     'padre las casas': { lat: -38.7619, lng: -72.5978 },
     'villarrica': { lat: -39.2844, lng: -72.2272 },
@@ -487,7 +552,10 @@
     'rancagua': { lat: -34.1708, lng: -70.7444 },
     'machali': { lat: -34.1800, lng: -70.6500 },
     'san fernando': { lat: -34.5838, lng: -70.9889 },
-    'santiago': { lat: -33.4489, lng: -70.6693 },
+    'codegua': { lat: -34.0333, lng: -70.6500 },
+    'graneros': { lat: -34.0667, lng: -70.7167 },
+    'san francisco de mostazal': { lat: -34.0200, lng: -70.7100 },
+    'mostazal': { lat: -34.0200, lng: -70.7100 },
     'valparaiso': { lat: -33.0472, lng: -71.6127 },
     'vina del mar': { lat: -33.0245, lng: -71.5518 },
     'quilpue': { lat: -33.0494, lng: -71.4428 },
@@ -502,6 +570,14 @@
     'iquique': { lat: -20.2167, lng: -70.1444 },
     'arica': { lat: -18.4783, lng: -70.3126 }
   };
+
+  function isGenericCoordinates(lat, lng) {
+    if (lat == null || lng == null || isNaN(lat) || isNaN(lng)) return true;
+    // Santiago Centro centroid: -33.4569, -70.6483 or -33.4489, -70.6693
+    const isStgoCentroid = Math.abs(lat - (-33.4569)) < 0.005 && Math.abs(lng - (-70.6483)) < 0.005;
+    const isOldCentroid  = Math.abs(lat - (-33.4489)) < 0.005 && Math.abs(lng - (-70.6693)) < 0.005;
+    return isStgoCentroid || isOldCentroid;
+  }
 
   function parseCoordinate(val) {
     if (val == null) return null;
@@ -640,14 +716,22 @@
         }
       }
 
-      // Auto-geolocalización de respaldo si no se ingresó latitud o longitud en Google Sheets
-      if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng)) {
+      // Auto-geolocalización de respaldo si no se ingresó latitud o longitud en Google Sheets, o si son genéricas del centro
+      if (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng) || isGenericCoordinates(d.lat, d.lng)) {
         const fullText = `${d.direccion} ${d.ciudad} ${d.comuna} ${d.region}`.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        let matched = false;
         for (const [cityName, coords] of Object.entries(CITY_COORDS)) {
-          if (fullText.includes(cityName)) {
+          if (cityName !== 'santiago' && cityName !== 'santiago centro' && fullText.includes(cityName)) {
             d.lat = coords.lat;
             d.lng = coords.lng;
+            matched = true;
             break;
+          }
+        }
+        if (!matched && (d.lat == null || d.lng == null || isNaN(d.lat) || isNaN(d.lng))) {
+          if (fullText.includes('santiago')) {
+            d.lat = CITY_COORDS['santiago'].lat;
+            d.lng = CITY_COORDS['santiago'].lng;
           }
         }
       }
@@ -880,10 +964,49 @@
       return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
     }
 
+    function geocodeMissingDistributors(distributors) {
+      if (typeof window.google === 'undefined' || !window.google.maps || !window.google.maps.Geocoder) return;
+      const needGeocode = distributors.filter(d => (d.lat == null || d.lng == null || isGenericCoordinates(d.lat, d.lng)) && d.direccion && (d.comuna || d.ciudad));
+      if (!needGeocode.length) return;
+
+      const geocoder = new google.maps.Geocoder();
+      const CACHE_KEY_PREFIX = 'dloc_geo_cache_';
+
+      needGeocode.slice(0, 8).forEach((d, i) => {
+        const query = `${d.direccion}, ${d.comuna || d.ciudad || ''}, Chile`;
+        const cacheKey = CACHE_KEY_PREFIX + cleanStr(query);
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            d.lat = parsed.lat;
+            d.lng = parsed.lng;
+            return;
+          } catch {}
+        }
+
+        setTimeout(() => {
+          geocoder.geocode({ address: query, componentRestrictions: { country: 'CL' } }, (results, status) => {
+            if (status === 'OK' && results && results[0] && results[0].geometry) {
+              const loc = results[0].geometry.location;
+              d.lat = loc.lat();
+              d.lng = loc.lng();
+              try {
+                localStorage.setItem(cacheKey, JSON.stringify({ lat: d.lat, lng: d.lng }));
+              } catch {}
+            }
+          });
+        }, i * 350);
+      });
+    }
+
     // --- Load Data (Google Sheets / JSON) ---------------------
     fetchDistributorData(jsonUrl, sheetUrl, dataSource, cacheMins)
       .then(async data => {
         allData = data.filter(d => d.nombre && d.nombre.trim());
+        if (typeof window.google !== 'undefined' && window.google.maps) {
+          geocodeMissingDistributors(allData);
+        }
         regionList = [...new Set(allData.map(d => d.region).filter(r => r && r.trim().length > 3))].sort();
 
         if (regionSelect) {
@@ -952,9 +1075,16 @@
       geoBanner.hidden = false;
       geoBanner.className = 'distributor-locator__geo-banner distributor-locator__geo-banner--' + state;
 
+      let foundMsg = `${ICON.locme} Mostrando <strong>${count}</strong> distribuidores dentro de <strong>${km} km</strong>${loc && loc.city ? ' de <strong>' + esc(loc.city) + '</strong>' : ' de tu ubicación'}.`;
+      if (loc && loc.source === 'ip') {
+        foundMsg = `${ICON.locme} Ubicación por red estimada en <strong>${esc(loc.city || 'Santiago')}</strong> (${count} tiendas en ${km} km). <span class="dloc-geo-hint">Puedes buscar tu comuna o mover el pin en el mapa para máxima precisión.</span>`;
+      } else if (loc && (loc.source === 'places' || loc.source === 'manual' || loc.source === 'search')) {
+        foundMsg = `${ICON.locme} Mostrando <strong>${count}</strong> distribuidores cerca de <strong>${esc(loc.city || 'tu ubicación')}</strong> (radio ${km} km).`;
+      }
+
       const messages = {
         loading:    `${ICON.locme} Detectando tu ubicación...`,
-        found:      `${ICON.locme} Mostrando <strong>${count}</strong> distribuidores dentro de <strong>${km} km</strong>${loc && loc.city ? ' de <strong>' + esc(loc.city) + '</strong>' : ' de tu ubicación'}.`,
+        found:      foundMsg,
         noneNearby: `${ICON.warning} No hay distribuidores dentro de ${km} km de tu ubicación. Mostrando todos.`,
         denied:     `${ICON.locme} No se pudo detectar tu ubicación. Mostrando todos los distribuidores.`,
       };
@@ -964,6 +1094,66 @@
       // Show/hide action buttons
       if (geoShowAll) geoShowAll.hidden  = state !== 'found';
       if (geoLocate)  geoLocate.hidden   = state === 'loading' || state === 'found' || state === 'noneNearby';
+    }
+
+    // --- Dynamic User Search Location (Map click, Place Autocomplete, or Search query) ---
+    function setUserSearchLocation(loc) {
+      if (!loc || loc.lat == null || loc.lng == null || isNaN(loc.lat) || isNaN(loc.lng)) return;
+      userLocation = loc;
+      isNearbyMode = true;
+
+      const nearby = filterByRadius(allData, loc.lat, loc.lng, radiusKm);
+      if (nearby.length > 0) {
+        showGeoStatus('found', loc, nearby.length, radiusKm);
+        renderCards(nearby, true);
+      } else {
+        showGeoStatus('noneNearby', loc, 0, radiusKm);
+        renderCards(allData, true);
+      }
+
+      updateUserLocationOnMap(loc, radiusKm);
+
+      if (activeMapType === 'google' && googleMap) {
+        googleMap.panTo({ lat: loc.lat, lng: loc.lng });
+        if (googleMap.getZoom() < 12) googleMap.setZoom(12);
+      } else if (mapObj) {
+        mapObj.panTo([loc.lat, loc.lng]);
+        if (mapObj.getZoom() < 12) mapObj.setZoom(12);
+      }
+    }
+
+    function geocodeAddress(query) {
+      if (!query || !query.trim()) return;
+      const clean = cleanStr(query);
+
+      // 1. Check CITY_COORDS first
+      for (const [cityName, coords] of Object.entries(CITY_COORDS)) {
+        if (clean === cityName || clean.includes(cityName)) {
+          setUserSearchLocation({
+            lat: coords.lat,
+            lng: coords.lng,
+            city: cityName.toUpperCase(),
+            source: 'search'
+          });
+          return;
+        }
+      }
+
+      // 2. Google Maps Geocoder if active
+      if (typeof window.google !== 'undefined' && window.google.maps && window.google.maps.Geocoder) {
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: query, componentRestrictions: { country: 'CL' } }, (results, status) => {
+          if (status === 'OK' && results && results[0] && results[0].geometry && results[0].geometry.location) {
+            const loc = results[0].geometry.location;
+            setUserSearchLocation({
+              lat: loc.lat(),
+              lng: loc.lng(),
+              city: results[0].formatted_address || query,
+              source: 'search'
+            });
+          }
+        });
+      }
     }
 
     // --- Render cards with pagination -------------------------
@@ -1335,6 +1525,42 @@
     }
 
     // --- Google Maps Implementation --------------------------
+    let autocompleteInitialized = false;
+    function initGooglePlacesAutocomplete() {
+      if (autocompleteInitialized) return;
+      if (!searchInput || typeof window.google === 'undefined' || !window.google.maps || !window.google.maps.places) return;
+
+      try {
+        const autocomplete = new google.maps.places.Autocomplete(searchInput, {
+          componentRestrictions: { country: 'cl' },
+          fields: ['geometry', 'name', 'formatted_address']
+        });
+
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (!place || !place.geometry || !place.geometry.location) {
+            geocodeAddress(searchInput.value.trim());
+            return;
+          }
+
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          const label = place.formatted_address || place.name || searchInput.value;
+
+          setUserSearchLocation({
+            lat: lat,
+            lng: lng,
+            city: label,
+            source: 'places'
+          });
+        });
+
+        autocompleteInitialized = true;
+      } catch (err) {
+        console.warn('[DistributorLocator] Places Autocomplete error:', err);
+      }
+    }
+
     function initGoogleMap(el) {
       activeMapType = 'google';
       const zoom = parseInt(el.dataset.zoom, 10) || 6;
@@ -1355,6 +1581,20 @@
       });
 
       googleInfoWindow = new google.maps.InfoWindow();
+
+      googleMap.addListener('click', (e) => {
+        if (!e.latLng) return;
+        const clickedLat = e.latLng.lat();
+        const clickedLng = e.latLng.lng();
+        setUserSearchLocation({
+          lat: clickedLat,
+          lng: clickedLng,
+          city: 'Punto seleccionado en el mapa',
+          source: 'manual'
+        });
+      });
+
+      initGooglePlacesAutocomplete();
 
       const mapLoader = section.querySelector('.distributor-locator__map-loader');
       if (mapLoader) mapLoader.classList.add('is-loaded');
@@ -1390,6 +1630,16 @@
         if (mapLoader) mapLoader.classList.add('is-loaded');
       }, 1000);
 
+      mapObj.on('click', (e) => {
+        if (!e.latlng) return;
+        setUserSearchLocation({
+          lat: e.latlng.lat,
+          lng: e.latlng.lng,
+          city: 'Punto seleccionado en el mapa',
+          source: 'manual'
+        });
+      });
+
       markersLayer = L.featureGroup().addTo(mapObj);
     }
 
@@ -1404,16 +1654,27 @@
         googleUserMarker = new google.maps.Marker({
           position: { lat: loc.lat, lng: loc.lng },
           map: googleMap,
-          title: 'Tu ubicación',
+          title: 'Tu ubicación (arrástrame para mover)',
+          draggable: true,
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
+            scale: 9,
             fillColor: '#033097',
             fillOpacity: 1,
             strokeColor: '#ffffff',
             strokeWeight: 2.5
           },
           zIndex: 1000
+        });
+
+        googleUserMarker.addListener('dragend', (e) => {
+          if (!e.latLng) return;
+          setUserSearchLocation({
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng(),
+            city: 'Punto seleccionado en el mapa',
+            source: 'manual'
+          });
         });
 
         if (isNearbyMode) {
@@ -1442,9 +1703,19 @@
           iconAnchor: [11, 11]
         });
 
-        userMarker = L.marker([loc.lat, loc.lng], { icon: userIcon, zIndexOffset: 1000 })
+        userMarker = L.marker([loc.lat, loc.lng], { icon: userIcon, zIndexOffset: 1000, draggable: true })
           .addTo(mapObj)
-          .bindPopup(`<strong>Tu ubicación</strong>${loc.city ? '<br>' + esc(loc.city) : ''}`);
+          .bindPopup(`<strong>Tu ubicación</strong>${loc.city ? '<br>' + esc(loc.city) : ''}<br><small>Arrástrame para mover</small>`);
+
+        userMarker.on('dragend', (e) => {
+          const pos = e.target.getLatLng();
+          setUserSearchLocation({
+            lat: pos.lat,
+            lng: pos.lng,
+            city: 'Punto seleccionado en el mapa',
+            source: 'manual'
+          });
+        });
 
         if (isNearbyMode) {
           radiusCircle = L.circle([loc.lat, loc.lng], {
@@ -1729,6 +2000,11 @@
       searchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (suggestionsEl) suggestionsEl.hidden = true;
+        } else if (e.key === 'Enter') {
+          const val = searchInput.value.trim();
+          if (val) {
+            geocodeAddress(val);
+          }
         }
       });
     }
@@ -1760,6 +2036,10 @@
         if (radiusCircle && mapObj) {
           mapObj.removeLayer(radiusCircle);
         }
+        if (googleRadiusCircle) {
+          googleRadiusCircle.setMap(null);
+          googleRadiusCircle = null;
+        }
       });
     }
 
@@ -1778,7 +2058,7 @@
             showGeoStatus('noneNearby', userLocation, 0, radiusKm);
             renderCards(allData, true);
           }
-          if (mapObj) updateUserLocationOnMap(userLocation, radiusKm);
+          updateUserLocationOnMap(userLocation, radiusKm);
         } else {
           showGeoStatus('denied');
         }
