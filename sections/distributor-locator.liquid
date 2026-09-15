@@ -172,7 +172,7 @@
             id="dloc-search-{{ section.id }}"
             class="distributor-locator__search"
             type="search"
-            placeholder="{{ section.settings.search_placeholder | default: 'Buscar por nombre o ciudad' }}"
+            placeholder="{{ section.settings.search_placeholder | default: 'Buscar por nombre, comuna o dirección' }}"
             autocomplete="off"
           >
           <button class="distributor-locator__search-clear" aria-label="Limpiar" hidden>
@@ -460,7 +460,7 @@
       "type": "text",
       "id": "search_placeholder",
       "label": "Placeholder del buscador",
-      "default": "Buscar por nombre o ciudad"
+      "default": "Buscar por nombre, comuna o dirección"
     },
     {
       "type": "checkbox",
