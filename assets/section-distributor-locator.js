@@ -335,7 +335,7 @@
   data-lat="${d.lat ?? ''}"
   data-lng="${d.lng ?? ''}">
   <div class="distributor-card__header">
-    <span class="distributor-card__region-badge" style="background:${color}">${esc(d.region || 'Sin región')}</span>
+    <span class="distributor-card__region-badge" style="background:${color}">${esc((d.region || 'Sin región').replace(/^REGI[ÓO]N\s+(DE\s+LA\s+|DEL\s+|DE\s+)/i, ''))}</span>
     ${distanceBadge}
   </div>
   <h3 class="distributor-card__name">${esc(d.nombre)}</h3>
