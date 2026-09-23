@@ -248,7 +248,7 @@
       "settings": {
         "top_spacing": "small",
         "width": "default",
-        "page_width": 55,
+        "page_width": 53,
         "gallery_position": "to left",
         "default_variant": "select_variant",
         "top_spacing_blocks": 50,
