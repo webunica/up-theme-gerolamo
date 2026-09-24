@@ -389,5 +389,10 @@
       }
     },
     "content_for_index": []
+  },
+  "platform_customizations": {
+    "custom_css": [
+      "@media (max-width: 749px) {.gerolamo-accordion--recommendations .gerolamo-product-table-wrap {overflow-x: auto; } .gerolamo-accordion--recommendations .gerolamo-product-table {min-width: 620px; } .gerolamo-accordion--recommendations .gerolamo-product-table tr > :first-child {width: 110px !important; min-width: 110px; }}"
+    ]
   }
 }
