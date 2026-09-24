@@ -392,7 +392,8 @@
   },
   "platform_customizations": {
     "custom_css": [
-      "@media (max-width: 749px) {.gerolamo-accordion--recommendations .gerolamo-product-table-wrap {overflow-x: auto; } .gerolamo-accordion--recommendations .gerolamo-product-table {min-width: 620px; } .gerolamo-accordion--recommendations .gerolamo-product-table tr > :first-child {width: 110px !important; min-width: 110px; }}"
+      "@media (max-width: 749px) {.gerolamo-accordion--recommendations .gerolamo-product-table-wrap {overflow-x: auto; } .gerolamo-accordion--recommendations .gerolamo-product-table {min-width: 620px; } .gerolamo-accordion--recommendations .gerolamo-product-table tr > :first-child {width: 110px !important; min-width: 110px; }}",
+      "@media (max-width: 749px) {.gerolamo-product-table--razas th, .gerolamo-product-table--razas td {font-size: 12px; white-space: nowrap; padding: 8px 10px; } .gerolamo-product-table--razas {min-width: 620px; } .gerolamo-product-table--razas tr > :first-child {width: auto !important; min-width: 110px; }}"
     ]
   }
 }
